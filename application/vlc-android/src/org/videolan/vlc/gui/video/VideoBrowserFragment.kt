@@ -24,6 +24,7 @@
 
 package org.videolan.vlc.gui.video
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -47,6 +48,7 @@ import org.videolan.tools.isStarted
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
 import org.videolan.vlc.gui.ContentActivity
+import org.videolan.vlc.gui.SecondaryActivity
 import org.videolan.vlc.gui.dialogs.DisplaySettingsDialog
 import org.videolan.vlc.gui.dialogs.VIDEO_GROUPING
 import org.videolan.vlc.gui.network.MRLPanelDialog
@@ -120,31 +122,31 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
     override fun onDestroyActionMode(mode: ActionMode?) {}
 
     override fun onTabSelected(tab: TabLayout.Tab) {
+        if (tab.position == 0) {
+            viewPager.currentItem = tab.position
+            val tabTitle = tab.view.findViewById<TextView>(R.id.tab_title)
+            tabTitle?.setTextColor(getColor(requireContext(), R.color.white))
+            return
+        }
+        tabLayout?.selectTab(tabLayout!!.getTabAt(0))
+        val tabTitle = tab.view.findViewById<TextView>(R.id.tab_title)
+        tabTitle?.setTextColor(R.attr.tab_unselected_color)
         when (tab.position) {
-            0 -> {
-                viewPager.currentItem = tab.position
-            }
-
             1 -> {
                 Toast.makeText(requireContext(), "Network!!", Toast.LENGTH_SHORT).show()
                 MRLPanelDialog().show(requireActivity().supportFragmentManager, TAG_)
-                tabLayout?.selectTab(tabLayout!!.getTabAt(0))
             }
 
             2 -> {
                 Toast.makeText(requireContext(), "Cleaner!!", Toast.LENGTH_SHORT).show()
-                tabLayout?.selectTab(tabLayout!!.getTabAt(0))
+                val i = Intent(requireActivity(), SecondaryActivity::class.java)
+                i.putExtra("fragment", SecondaryActivity.CLEANER)
+                requireActivity().startActivityForResult(i, SecondaryActivity.ACTIVITY_RESULT_SECONDARY)
             }
-
             3 -> {
                 Toast.makeText(requireContext(), "Privacy!!", Toast.LENGTH_SHORT).show()
-                tabLayout?.selectTab(tabLayout!!.getTabAt(0))
             }
         }
-        val tabTitle = tab.view.findViewById<TextView>(R.id.tab_title)
-        tabTitle?.setTextColor(getColor(requireContext(), R.color.white))
-        Log.d(TAG, "onTabSelected tab.position: ${tab.position}")
-        Log.d(TAG, "onTabSelected tabTitle: ${tabTitle?.text}")
     }
 
     override fun onTabReselected(tab: TabLayout.Tab) {

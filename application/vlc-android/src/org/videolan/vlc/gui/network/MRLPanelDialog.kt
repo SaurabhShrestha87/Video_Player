@@ -24,31 +24,33 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.launch
 import org.videolan.medialibrary.MLServiceLocator
 import org.videolan.tools.Settings
 import org.videolan.tools.isValidUrl
 import org.videolan.tools.setVisible
 import org.videolan.vlc.R
 import org.videolan.vlc.databinding.MrlDialogBinding
-import org.videolan.vlc.gui.ContentActivity
 import org.videolan.vlc.gui.MainActivity
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.interfaces.BrowserFragmentInterface
+import org.videolan.vlc.util.VLCDownloadManager
 import org.videolan.vlc.viewmodels.StreamsModel
 
 const val TAG_ = "VLC/MrlPanelDialog"
@@ -64,16 +66,13 @@ class MRLPanelDialog : DialogFragment(), View.OnKeyListener, TextView.OnEditorAc
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(
-            requireActivity(),
-            StreamsModel.Factory(requireContext())
+            requireActivity(), StreamsModel.Factory(requireContext())
         )[StreamsModel::class.java]
         setup(this, viewModel, this)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = MrlDialogBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawableResource(R.drawable.rounded_corners_dialog)
@@ -83,7 +82,7 @@ class MRLPanelDialog : DialogFragment(), View.OnKeyListener, TextView.OnEditorAc
         binding.mrlEdit.editText?.requestFocus()
 
         binding.play.setOnClickListener(this)
-
+        binding.download.setOnClickListener(this)
         return binding.root
     }
 
@@ -96,10 +95,7 @@ class MRLPanelDialog : DialogFragment(), View.OnKeyListener, TextView.OnEditorAc
             val gridLayoutManager = GridLayoutManager(activity, 2)
             recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(
-                    outRect: Rect,
-                    view: View,
-                    parent: RecyclerView,
-                    state: RecyclerView.State
+                    outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
                 ) {
                     outRect.left = resources.getDimension(R.dimen.kl_half).toInt()
                     outRect.right = resources.getDimension(R.dimen.kl_half).toInt()
@@ -110,17 +106,13 @@ class MRLPanelDialog : DialogFragment(), View.OnKeyListener, TextView.OnEditorAc
             val horizontalOverscan = resources.getDimension(R.dimen.tv_overscan_horizontal).toInt()
             val verticalOverscan = resources.getDimension(R.dimen.tv_overscan_vertical).toInt()
             binding.mrlRoot.setPadding(
-                horizontalOverscan,
-                verticalOverscan,
-                horizontalOverscan,
-                verticalOverscan
+                horizontalOverscan, verticalOverscan, horizontalOverscan, verticalOverscan
             )
         } else {
             recyclerView.layoutManager = LinearLayoutManager(activity)
             recyclerView.addItemDecoration(
                 DividerItemDecoration(
-                    activity,
-                    DividerItemDecoration.VERTICAL
+                    activity, DividerItemDecoration.VERTICAL
                 )
             )
         }
@@ -172,7 +164,24 @@ class MRLPanelDialog : DialogFragment(), View.OnKeyListener, TextView.OnEditorAc
     override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?) = false
 
     override fun onClick(v: View) {
-        processUri()
+        when (v.id) {
+            R.id.play -> {
+                processUri()
+            }
+            R.id.download -> {
+                if (!viewModel.observableSearchText.get().isNullOrEmpty()) {
+                    val mw = MLServiceLocator.getAbstractMediaWrapper(
+                        viewModel.observableSearchText.get()?.trim()?.toUri()
+                    )
+                    Log.d(TAG, "onClick: $mw")
+                    lifecycleScope.launch {
+                        VLCDownloadManager.download(requireActivity(), mw)
+                    }
+                    viewModel.observableSearchText.set("")
+                }
+            }
+        }
+        this.dismiss()
     }
 
 

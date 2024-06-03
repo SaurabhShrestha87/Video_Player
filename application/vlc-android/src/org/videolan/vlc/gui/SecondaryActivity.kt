@@ -24,10 +24,14 @@
 package org.videolan.vlc.gui
 
 import android.content.Intent
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowInsets
 import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
@@ -189,6 +193,7 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
                 }
             }
             ABOUT -> fragment = AboutFragment()
+            CLEANER -> fragment = CleanerFragment()
             STREAMS -> fragment = MRLPanelFragment()
             HISTORY -> fragment = HistoryFragment()
             VIDEO_GROUP_LIST -> {
@@ -223,6 +228,7 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
 
         const val ALBUMS_SONGS = "albumsSongs"
         const val ABOUT = "about"
+        const val CLEANER = "cleaner"
         const val STREAMS = "streams"
         const val HISTORY = "history"
         const val VIDEO_GROUP_LIST = "videoGroupList"

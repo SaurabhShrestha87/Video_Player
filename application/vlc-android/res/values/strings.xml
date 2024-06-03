@@ -6,4 +6,6 @@
     <string name="all_videos">All Videos</string>
     <string name="sort_by">Sort by</string>
     <string name="error">Error</string>
+    <string name="clean_up_wa">Clean up watched videos</string>
+    <string name="clean_up_big">Clean up big Files</string>
 </resources>
