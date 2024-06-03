@@ -26,16 +26,14 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ActionMode
 import androidx.core.net.toUri
 import androidx.core.view.doOnLayout
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
@@ -46,33 +44,39 @@ import org.videolan.tools.Settings
 import org.videolan.tools.isValidUrl
 import org.videolan.tools.setVisible
 import org.videolan.vlc.R
-import org.videolan.vlc.databinding.MrlPanelBinding
-import org.videolan.vlc.gui.BaseFragment
+import org.videolan.vlc.databinding.MrlDialogBinding
 import org.videolan.vlc.gui.ContentActivity
 import org.videolan.vlc.gui.MainActivity
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.interfaces.BrowserFragmentInterface
 import org.videolan.vlc.viewmodels.StreamsModel
 
-const val TAG = "VLC/MrlPanelFragment"
+const val TAG_ = "VLC/MrlPanelDialog"
 
-class MRLPanelFragment : BaseFragment(), View.OnKeyListener, TextView.OnEditorActionListener,
-        View.OnClickListener, BrowserFragmentInterface,
-        IStreamsFragmentDelegate by StreamsFragmentDelegate(), KeyboardListener {
+class MRLPanelDialog : DialogFragment(), View.OnKeyListener, TextView.OnEditorActionListener,
+    View.OnClickListener, BrowserFragmentInterface,
+    IStreamsFragmentDelegate by StreamsFragmentDelegate(), KeyboardListener {
 
-    private lateinit var binding: MrlPanelBinding
+    private lateinit var binding: MrlDialogBinding
     private lateinit var adapter: MRLAdapter
     private lateinit var viewModel: StreamsModel
-    override fun getTitle() = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity(), StreamsModel.Factory(requireContext()))[StreamsModel::class.java]
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            StreamsModel.Factory(requireContext())
+        )[StreamsModel::class.java]
         setup(this, viewModel, this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = MrlPanelBinding.inflate(inflater, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = MrlDialogBinding.inflate(inflater, container, false)
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.rounded_corners_dialog)
         binding.viewmodel = viewModel
         binding.mrlEdit.editText?.setOnKeyListener(this)
         binding.mrlEdit.editText?.setOnEditorActionListener(this)
@@ -83,12 +87,6 @@ class MRLPanelFragment : BaseFragment(), View.OnKeyListener, TextView.OnEditorAc
         return binding.root
     }
 
-    override fun onCreateActionMode(mode: ActionMode?, menu: Menu?) = false
-
-    override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?) = false
-
-    override fun onDestroyActionMode(mode: ActionMode?) {}
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = MRLAdapter(getlistEventActor())
@@ -97,7 +95,12 @@ class MRLPanelFragment : BaseFragment(), View.OnKeyListener, TextView.OnEditorAc
         if (Settings.showTvUi) {
             val gridLayoutManager = GridLayoutManager(activity, 2)
             recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
                     outRect.left = resources.getDimension(R.dimen.kl_half).toInt()
                     outRect.right = resources.getDimension(R.dimen.kl_half).toInt()
                     super.getItemOffsets(outRect, view, parent, state)
@@ -106,14 +109,26 @@ class MRLPanelFragment : BaseFragment(), View.OnKeyListener, TextView.OnEditorAc
             recyclerView.layoutManager = gridLayoutManager
             val horizontalOverscan = resources.getDimension(R.dimen.tv_overscan_horizontal).toInt()
             val verticalOverscan = resources.getDimension(R.dimen.tv_overscan_vertical).toInt()
-            binding.mrlRoot.setPadding(horizontalOverscan, verticalOverscan, horizontalOverscan, verticalOverscan)
+            binding.mrlRoot.setPadding(
+                horizontalOverscan,
+                verticalOverscan,
+                horizontalOverscan,
+                verticalOverscan
+            )
         } else {
             recyclerView.layoutManager = LinearLayoutManager(activity)
-            recyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
+            recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    activity,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
         recyclerView.adapter = adapter
         viewModel.dataset.observe(requireActivity()) { adapter.update(it) }
-        viewModel.loading.observe(requireActivity()) { (activity as? MainActivity)?.refreshing = it }
+        viewModel.loading.observe(requireActivity()) {
+            (activity as? MainActivity)?.refreshing = it
+        }
     }
 
     override fun onResume() {
@@ -121,7 +136,8 @@ class MRLPanelFragment : BaseFragment(), View.OnKeyListener, TextView.OnEditorAc
         //Needed after privacy changes made in Android 10
         binding.mrlEdit.doOnLayout {
             try {
-                val clipBoardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+                val clipBoardManager =
+                    requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
                 val text = clipBoardManager?.primaryClip?.getItemAt(0)?.text?.toString()
                 if (text.isValidUrl()) {
                     viewModel.observableSearchText.set(text)
@@ -135,17 +151,16 @@ class MRLPanelFragment : BaseFragment(), View.OnKeyListener, TextView.OnEditorAc
     override fun onStart() {
         super.onStart()
         viewModel.refresh()
-        (activity as? ContentActivity)?.setTabLayoutVisibility(false)
-        (activity as? AppCompatActivity)?.supportActionBar?.setTitle(R.string.streams)
     }
 
-    override fun onKey(v: View, keyCode: Int, event: KeyEvent) = (keyCode == EditorInfo.IME_ACTION_DONE ||
-            keyCode == EditorInfo.IME_ACTION_GO ||
-            event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER) && processUri()
+    override fun onKey(v: View, keyCode: Int, event: KeyEvent) =
+        (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_GO || event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER) && processUri()
 
     private fun processUri(): Boolean {
         if (!viewModel.observableSearchText.get().isNullOrEmpty()) {
-            val mw = MLServiceLocator.getAbstractMediaWrapper(viewModel.observableSearchText.get()?.trim()?.toUri())
+            val mw = MLServiceLocator.getAbstractMediaWrapper(
+                viewModel.observableSearchText.get()?.trim()?.toUri()
+            )
             playMedia(mw)
             viewModel.observableSearchText.set("")
             return true

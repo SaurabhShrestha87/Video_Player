@@ -223,7 +223,10 @@ open class AudioPlayerContainerActivity : BaseActivity(), KeycodeListener, Sched
         bottomBar = findViewById(R.id.navigation)
         tabLayout?.viewTreeObserver?.addOnGlobalLayoutListener {
             //add a shadow if there are tabs
-            val needToElevate = (tabLayout?.layoutParams?.height != 0) || navigationRail?.visibility ?: View.GONE != View.GONE
+            val needToElevate =
+                (tabLayout?.layoutParams?.height != 0) || ((navigationRail?.visibility
+                    ?: View.GONE) != View.GONE)
+
             if (AndroidUtil.isLolliPopOrLater) appBarLayout.elevation = if (needToElevate) 8.dp.toFloat() else 0.dp.toFloat()
         }
         audioPlayerContainer = findViewById(R.id.audio_player_container)

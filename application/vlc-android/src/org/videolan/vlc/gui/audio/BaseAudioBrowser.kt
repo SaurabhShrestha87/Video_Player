@@ -32,6 +32,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
@@ -241,12 +242,16 @@ abstract class BaseAudioBrowser<T : MedialibraryViewModel> : MediaBrowserFragmen
     override fun onTabSelected(tab: TabLayout.Tab) {
         val activity = activity ?: return
         activity.invalidateOptionsMenu()
+        val tabTitle = tab.view.findViewById<TextView>(R.id.tab_title)
+        tabTitle?.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
     }
 
     override fun onTabUnselected(tab: TabLayout.Tab) {
         stopActionMode()
         needToReopenSearch = (activity as? ContentActivity)?.isSearchViewVisible() ?: false
         lastQuery = (activity as? ContentActivity)?.getCurrentQuery() ?: ""
+        val tabTitle = tab.view.findViewById<TextView>(R.id.tab_title)
+        tabTitle?.setTextColor(R.attr.tab_unselected_color)
     }
 
     override fun onTabReselected(tab: TabLayout.Tab) {}

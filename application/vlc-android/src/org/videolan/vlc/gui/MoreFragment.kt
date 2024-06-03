@@ -74,9 +74,9 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
     private lateinit var settingsButton: Button
     private lateinit var aboutButton: Button
     private lateinit var donationsButton: CardView
-    private lateinit var viewModel: HistoryModel
+    private lateinit var historyViewModel: HistoryModel
     private lateinit var streamsViewModel: StreamsModel
-    private lateinit var multiSelectHelper: MultiSelectHelper<MediaWrapper>
+    private lateinit var multiSelectHelperHistory: MultiSelectHelper<MediaWrapper>
     private val historyAdapter: HistoryAdapter = HistoryAdapter(true)
     override fun hasFAB() = false
     @Suppress("UNCHECKED_CAST")
@@ -88,7 +88,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
         super.onCreate(savedInstanceState)
         (savedInstanceState?.getIntegerArrayList(KEY_SELECTION))?.let { savedSelection = it }
         dialogsDelegate.observeDialogs(this, this)
-        viewModel = ViewModelProvider(requireActivity(), HistoryModel.Factory(requireContext()))[HistoryModel::class.java]
+        historyViewModel = ViewModelProvider(requireActivity(), HistoryModel.Factory(requireContext()))[HistoryModel::class.java]
         streamsViewModel = ViewModelProvider(requireActivity(), StreamsModel.Factory(requireContext(), showDummy = true))[StreamsModel::class.java]
     }
 
@@ -105,7 +105,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
         aboutButton = view.findViewById(R.id.aboutButton)
         donationsButton = view.findViewById(R.id.donationsButton)
         if (!Settings.getInstance(requireActivity()).getBoolean(PLAYBACK_HISTORY, true)) historyEntry.setGone()
-        viewModel.dataset.observe(viewLifecycleOwner) { list ->
+        historyViewModel.dataset.observe(viewLifecycleOwner) { list ->
             list?.let {
                 historyAdapter.update(it)
                 if (list.isEmpty()) historyEntry.setGone() else {
@@ -116,7 +116,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
             }
             restoreMultiSelectHelper()
         }
-        viewModel.loading.observe(viewLifecycleOwner) {
+        historyViewModel.loading.observe(viewLifecycleOwner) {
             lifecycleScope.launchWhenStarted {
                 if (it) delay(300L)
                 (activity as? MainActivity)?.refreshing = it
@@ -185,7 +185,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
             requireActivity().startActivityForResult(i, SecondaryActivity.ACTIVITY_RESULT_SECONDARY)
         }
 
-        multiSelectHelper = historyAdapter.multiSelectHelper
+        multiSelectHelperHistory = historyAdapter.multiSelectHelper
         historyEntry.list.requestFocus()
         registerForContextMenu(historyEntry.list)
     }
@@ -197,7 +197,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
 
     override fun onStart() {
         super.onStart()
-        viewModel.refresh()
+        historyViewModel.refresh()
         (activity as? ContentActivity)?.setTabLayoutVisibility(false)
     }
 
@@ -209,7 +209,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
         super.onSaveInstanceState(outState)
     }
 
-    override fun refresh() = viewModel.refresh()
+    override fun refresh() = historyViewModel.refresh()
 
 
     override fun isEmpty(): Boolean {
@@ -217,7 +217,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
     }
 
     override fun clearHistory() {
-        viewModel.clearHistory()
+        historyViewModel.clearHistory()
         Medialibrary.getInstance().clearHistory(Medialibrary.HISTORY_TYPE_GLOBAL)
     }
 
@@ -226,7 +226,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
     }
 
     override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-        val selectionCount = multiSelectHelper.getSelectionCount()
+        val selectionCount = multiSelectHelperHistory.getSelectionCount()
         if (selectionCount == 0) {
             stopActionMode()
             return false
@@ -239,7 +239,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
 
     override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
         if (!isStarted()) return false
-        val selection = multiSelectHelper.getSelection()
+        val selection = multiSelectHelperHistory.getSelection()
         if (selection.isNotEmpty()) {
             when (item?.itemId) {
                 R.id.action_history_play -> MediaUtils.openList(activity, selection, 0)
@@ -257,7 +257,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
 
     override fun onDestroyActionMode(mode: ActionMode?) {
         actionMode = null
-        multiSelectHelper.clearSelection()
+        multiSelectHelperHistory.clearSelection()
     }
 
     private fun restoreMultiSelectHelper() {
@@ -278,7 +278,7 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
 
     private fun Click.process() {
         if (position >= 0) {
-            val item = viewModel.dataset.get(position)
+            val item = historyViewModel.dataset.get(position)
             when (this) {
                 is SimpleClick -> onClick(position, item)
                 is LongClick -> onLongClick(position, item)
@@ -297,17 +297,17 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
             return
         }
         if (actionMode != null) {
-            multiSelectHelper.toggleSelection(position)
+            multiSelectHelperHistory.toggleSelection(position)
             historyAdapter.notifyItemChanged(position, item)
             invalidateActionMode()
             return
         }
-        if (position != 0) viewModel.moveUp(item)
+        if (position != 0) historyViewModel.moveUp(item)
         MediaUtils.openMedia(requireContext(), item)
     }
 
     fun onLongClick(position: Int, item: MediaWrapper) {
-        multiSelectHelper.toggleSelection(position, true)
+        multiSelectHelperHistory.toggleSelection(position, true)
         historyAdapter.notifyItemChanged(position, item)
         if (actionMode == null) startActionMode()
         invalidateActionMode()

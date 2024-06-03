@@ -4,4 +4,6 @@
     <string name="privacy">Privacy</string>
     <string name="all_folder">All Folder</string>
     <string name="all_videos">All Videos</string>
+    <string name="sort_by">Sort by</string>
+    <string name="error">Error</string>
 </resources>

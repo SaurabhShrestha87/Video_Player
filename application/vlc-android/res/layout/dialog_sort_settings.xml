@@ -27,12 +27,25 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners_dialog"
         android:padding="10dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:fontFamily="@font/urbanist_bold"
+            android:text="@string/sort_by"
+            android:textColor="?attr/font_default"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <RadioGroup
             android:id="@+id/sortRg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title">
 
             <RadioButton
                 android:id="@+id/sort_name"
@@ -40,42 +53,42 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:textColor="?attr/font_default"
-                android:text="Name" />
+                android:text="Name"
+                android:textColor="?attr/font_default" />
 
             <RadioButton
                 android:id="@+id/sort_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="?attr/font_default"
-                android:text="Date" />
+                android:text="Date"
+                android:textColor="?attr/font_default" />
 
             <RadioButton
                 android:id="@+id/sort_size"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="?attr/font_default"
-                android:text="Size" />
+                android:text="Size"
+                android:textColor="?attr/font_default" />
 
             <RadioButton
                 android:id="@+id/sort_length"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="?attr/font_default"
-                android:text="Length" />
+                android:text="Length"
+                android:textColor="?attr/font_default" />
 
         </RadioGroup>
 
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="1.5dp"
+            android:layout_height="0.5dp"
             android:layout_below="@+id/sortRg"
-            android:background="?attr/font_default"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:background="?attr/font_default" />
 
         <RadioGroup
             android:id="@+id/optionRg"
@@ -90,16 +103,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:textColor="?attr/font_default"
-                android:text="From A to Z" />
+                android:text="From A to Z"
+                android:textColor="?attr/font_default" />
 
             <RadioButton
                 android:id="@+id/option_b"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="?attr/font_default"
-                android:text="From Z to A" />
+                android:text="From Z to A"
+                android:textColor="?attr/font_default" />
 
         </RadioGroup>
 
@@ -107,34 +120,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/optionRg"
-            android:gravity="center"
-            >
+            android:gravity="center">
+
             <TextView
                 android:id="@+id/cancel"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="45dp"
-                android:gravity="center"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
                 android:background="@drawable/dialog_button_bg"
                 android:backgroundTint="@color/grey"
-                android:textColor="@color/black"
-                android:layout_margin="20dp"
-                android:text="@string/cancel"/>
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/okay"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="45dp"
                 android:layout_margin="20dp"
-                android:gravity="center"
+                android:layout_weight="1"
                 android:background="@drawable/dialog_button_bg"
                 android:backgroundTint="@color/green"
-                android:textColor="@color/white"
-                android:text="@string/ok"/>
+                android:gravity="center"
+                android:text="@string/ok"
+                android:textColor="@color/white" />
 
         </LinearLayout>
     </RelativeLayout>
-
-
 </layout>

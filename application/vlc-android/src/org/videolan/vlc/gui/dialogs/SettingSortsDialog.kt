@@ -48,8 +48,6 @@ import org.videolan.vlc.viewmodels.DisplaySettingsViewModel
  * Dialog showing the display settings for a media list (audio video)
  */
 class SettingSortsDialog : DialogFragment() {
-    private lateinit var context: Context
-    private lateinit var mAlertDialog: AlertDialog
 
     private val TAG = "SortSettingsDialog"
 
@@ -86,6 +84,7 @@ class SettingSortsDialog : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = DialogSortSettingsBinding.inflate(layoutInflater, container, false)
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.rounded_corners_dialog)
         return binding.root
     }
 

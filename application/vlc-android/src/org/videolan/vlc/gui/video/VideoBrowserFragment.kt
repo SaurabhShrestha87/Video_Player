@@ -29,6 +29,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
@@ -38,9 +39,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
-import org.videolan.medialibrary.interfaces.media.Playlist
 import org.videolan.resources.GROUP_VIDEOS_NAME
 import org.videolan.resources.KEY_GROUP_VIDEOS
 import org.videolan.tools.Settings
@@ -48,15 +47,13 @@ import org.videolan.tools.isStarted
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
 import org.videolan.vlc.gui.ContentActivity
-import org.videolan.vlc.gui.PlaylistFragment
 import org.videolan.vlc.gui.dialogs.DisplaySettingsDialog
 import org.videolan.vlc.gui.dialogs.VIDEO_GROUPING
-import org.videolan.vlc.gui.helpers.UiTools.addFavoritesIcon
-import org.videolan.vlc.gui.helpers.UiTools.removeDrawables
+import org.videolan.vlc.gui.network.MRLPanelDialog
+import org.videolan.vlc.gui.network.TAG_
 import org.videolan.vlc.interfaces.Filterable
 import org.videolan.vlc.util.findCurrentFragment
 import org.videolan.vlc.viewmodels.DisplaySettingsViewModel
-import org.videolan.vlc.viewmodels.mobile.VideoGroupingType
 
 
 /**
@@ -68,7 +65,8 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
     private lateinit var videoPagerAdapter: VideoPagerAdapter
     override val hasTabs = true
     private var tabLayout: TabLayout? = null
-    private lateinit var tabLayoutMediator: TabLayoutMediator
+
+    //    private lateinit var tabLayoutMediator: TabLayoutMediator
     private lateinit var viewPager: ViewPager2
 
     private var needToReopenSearch = false
@@ -89,7 +87,9 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
             updateTabs()
         }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.video_browser, container, false)
     }
 
@@ -120,8 +120,31 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
     override fun onDestroyActionMode(mode: ActionMode?) {}
 
     override fun onTabSelected(tab: TabLayout.Tab) {
+        when (tab.position) {
+            0 -> {
+                viewPager.currentItem = tab.position
+            }
+
+            1 -> {
+                Toast.makeText(requireContext(), "Network!!", Toast.LENGTH_SHORT).show()
+                MRLPanelDialog().show(requireActivity().supportFragmentManager, TAG_)
+                tabLayout?.selectTab(tabLayout!!.getTabAt(0))
+            }
+
+            2 -> {
+                Toast.makeText(requireContext(), "Cleaner!!", Toast.LENGTH_SHORT).show()
+                tabLayout?.selectTab(tabLayout!!.getTabAt(0))
+            }
+
+            3 -> {
+                Toast.makeText(requireContext(), "Privacy!!", Toast.LENGTH_SHORT).show()
+                tabLayout?.selectTab(tabLayout!!.getTabAt(0))
+            }
+        }
         val tabTitle = tab.view.findViewById<TextView>(R.id.tab_title)
         tabTitle?.setTextColor(getColor(requireContext(), R.color.white))
+        Log.d(TAG, "onTabSelected tab.position: ${tab.position}")
+        Log.d(TAG, "onTabSelected tabTitle: ${tabTitle?.text}")
     }
 
     override fun onTabReselected(tab: TabLayout.Tab) {
@@ -132,23 +155,21 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
                     tabTitle.text = getString(R.string.all_folder)
                     lifecycleScope.launch {
                         displaySettingsViewModel.send(
-                            VIDEO_GROUPING,
-                            DisplaySettingsDialog.VideoGroup.GROUP_BY_FOLDER
+                            VIDEO_GROUPING, DisplaySettingsDialog.VideoGroup.GROUP_BY_FOLDER
                         )
                     }
-                }  else if (tab.text == getString(R.string.all_folder)) {
+                } else if (tabTitle.text == getString(R.string.all_folder)) {
                     tabTitle.text = getString(R.string.all_videos)
                     lifecycleScope.launch {
                         displaySettingsViewModel.send(
-                            VIDEO_GROUPING,
-                            DisplaySettingsDialog.VideoGroup.GROUP_BY_NAME
+                            VIDEO_GROUPING, DisplaySettingsDialog.VideoGroup.GROUP_BY_NAME
                         )
                     }
                 }
             }
         }
+        Log.d(TAG, "onTabReselected tab.position: ${tab.position}")
         Log.d(TAG, "onTabReselected tabTitle: ${tabTitle.text}")
-        Log.d(TAG, "onTabReselected: tab : ${tab.text}")
     }
 
     override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -182,22 +203,25 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
         if (tabLayout == null || !::viewPager.isInitialized) return
         tabLayout?.addOnTabSelectedListener(this)
         tabLayout?.let {
-            tabLayoutMediator = TabLayoutMediator(it, viewPager) { tab, position ->
-                tab.text = getPageTitle(position)
-            }
-            tabLayoutMediator.attach()
+            it.addTab(tabLayout!!.newTab())
+            it.addTab(tabLayout!!.newTab())
+            it.addTab(tabLayout!!.newTab())
+            it.addTab(tabLayout!!.newTab())
         }
         updateTabs()
     }
 
-    private fun getPageTitle(position: Int) : String {
+    private fun getPageTitle(position: Int): String {
         val videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NAME)
-        return  when (position) {
-            0 -> if (videoGroup == GROUP_VIDEOS_NAME) getString(R.string.all_videos) else getString(R.string.all_folder)
+        return when (position) {
+            0 -> if (videoGroup == GROUP_VIDEOS_NAME) getString(R.string.all_videos) else getString(
+                R.string.all_folder
+            )
+
             1 -> getString(R.string.network)
             2 -> getString(R.string.cleaner)
             3 -> getString(R.string.privacy)
-            else -> getString(R.string.playlists)
+            else -> getString(R.string.error)
         }
     }
 
@@ -208,7 +232,7 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
     private fun unSetTabLayout() {
         if (tabLayout == null || !::viewPager.isInitialized) return
         tabLayout?.removeOnTabSelectedListener(this)
-        tabLayoutMediator.detach()
+//        tabLayoutMediator.detach()
     }
 
     /**
@@ -218,16 +242,12 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
      */
     inner class VideoPagerAdapter(fa: VideoBrowserFragment) : FragmentStateAdapter(fa) {
 
-        override fun getItemCount() = 5
+        override fun getItemCount() = 1
 
         // Returns the fragment to display for that page
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> VideoGridFragment.newInstance()
-                1 -> VideoGridFragment.newInstance()
-                2 -> VideoGridFragment.newInstance()
-                3 -> VideoGridFragment.newInstance()
-                5 -> PlaylistFragment.newInstance(Playlist.Type.Video)
                 else -> throw IllegalStateException("Invalid fragment index")
             }
         }
@@ -238,7 +258,8 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
      *
      * @return the current shown fragment
      */
-    private fun getCurrentFragment() = childFragmentManager.findFragmentByTag("f" + viewPager.currentItem)
+    private fun getCurrentFragment() =
+        childFragmentManager.findFragmentByTag("f" + viewPager.currentItem)
 
     override fun getFilterQuery() = try {
         (getCurrentFragment() as? Filterable)?.getFilterQuery()
@@ -246,7 +267,8 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
         null
     }
 
-    override fun enableSearchOption() = (getCurrentFragment() as? Filterable)?.enableSearchOption() ?: false
+    override fun enableSearchOption() =
+        (getCurrentFragment() as? Filterable)?.enableSearchOption() ?: false
 
     override fun filter(query: String) {
         (getCurrentFragment() as? Filterable)?.filter(query)
@@ -260,13 +282,15 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
         (getCurrentFragment() as? Filterable)?.setSearchVisibility(visible)
     }
 
-    override fun allowedToExpand() = (getCurrentFragment() as? Filterable)?.allowedToExpand() ?: false
+    override fun allowedToExpand() =
+        (getCurrentFragment() as? Filterable)?.allowedToExpand() ?: false
+
     private fun updateTabs() {
         for (i in 0 until tabLayout!!.tabCount) {
             val tab = tabLayout!!.getTabAt(i)
             val view = tab?.customView ?: View.inflate(requireActivity(), R.layout.audio_tab, null)
             val title = view.findViewById<TextView>(R.id.tab_title)
-            if(tabLayout?.selectedTabPosition == i) {
+            if (tabLayout?.selectedTabPosition == i) {
                 title.setTextColor(getColor(requireContext(), R.color.white))
             }
             title.text = getPageTitle(i)
