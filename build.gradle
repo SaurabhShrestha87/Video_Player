@@ -44,7 +44,7 @@ ext {
     vlcMajorVersion = project.hasProperty('forceVlc4') && project.getProperty('forceVlc4') ? 4 : 3
     libvlcVersion = vlcMajorVersion == 3 ? '3.6.0-eap12' :'4.0.0-eap15'
     medialibraryVersion = vlcMajorVersion == 3 ? '0.13.13-rc12' : '0.13.13-vlc4-rc12'
-    minSdkVersion = 17
+    minSdkVersion = 26
     targetSdkVersion = 34
     compileSdkVersion = 34
     desugarLib = '2.0.4'

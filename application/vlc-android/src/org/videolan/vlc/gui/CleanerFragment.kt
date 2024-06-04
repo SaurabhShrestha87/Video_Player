@@ -21,20 +21,16 @@
 package org.videolan.vlc.gui
 
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.view.ActionMode
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.getColor
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.launch
-import org.videolan.tools.dp
 import org.videolan.tools.setGone
 import org.videolan.vlc.R
-import org.videolan.vlc.gui.helpers.UiTools
+import org.videolan.vlc.gui.video.CleanerListFragment
 
 class CleanerFragment : BaseFragment() {
 
@@ -54,8 +50,13 @@ class CleanerFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().findViewById<FloatingActionButton>(R.id.fab).setGone()
         requireActivity().findViewById<View>(R.id.sliding_tabs).setGone()
-        lifecycleScope.launch {
-//            UiTools.fillAboutView(requireActivity(), view)
+        view.findViewById<View>(R.id.cleanerWatchedTv).setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(R.id.fragment_placeholder, CleanerListFragment.newInstance())?.commit()
+        }
+        view.findViewById<View>(R.id.cleanerSpaceTv).setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(R.id.fragment_placeholder, CleanerListFragment.newInstance())?.commit()
         }
     }
 }

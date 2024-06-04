@@ -37,6 +37,7 @@ import org.videolan.tools.Settings
 import org.videolan.tools.isStarted
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.gui.helpers.UiTools.addToPlaylist
+import org.videolan.vlc.gui.video.CleanerListFragment
 import org.videolan.vlc.gui.video.VideoGridFragment
 import org.videolan.vlc.media.MediaUtils
 import org.videolan.vlc.media.PlaylistManager
@@ -244,8 +245,7 @@ enum class VideoGroupingType {
     NONE, FOLDER, NAME
 }
 
-enum class ViewModeType {
-    LIST, GRID, COMPACT
-}
 internal fun VideoGridFragment.getViewModel(type: VideoGroupingType = VideoGroupingType.NONE, folder: Folder?, group: VideoGroup?) = ViewModelProvider(requireActivity(), VideosViewModel.Factory(requireContext(), type, folder, group))[VideosViewModel::class.java]
+
+internal fun CleanerListFragment.getViewModel(type: VideoGroupingType = VideoGroupingType.NONE, folder: Folder?, group: VideoGroup?) = ViewModelProvider(requireActivity(), VideosViewModel.Factory(requireContext(), type, folder, group))[VideosViewModel::class.java]
 

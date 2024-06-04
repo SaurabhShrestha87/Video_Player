@@ -24,14 +24,10 @@
 package org.videolan.vlc.gui
 
 import android.content.Intent
-import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowInsets
 import androidx.activity.OnBackPressedCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
@@ -60,6 +56,7 @@ import org.videolan.vlc.gui.browser.MLStorageBrowserFragment
 import org.videolan.vlc.gui.browser.NetworkBrowserFragment
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.gui.network.MRLPanelFragment
+import org.videolan.vlc.gui.privacy.PrivacyFragment
 import org.videolan.vlc.gui.video.VideoGridFragment
 import org.videolan.vlc.reloadLibrary
 import org.videolan.vlc.util.DialogDelegate
@@ -194,6 +191,7 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
             }
             ABOUT -> fragment = AboutFragment()
             CLEANER -> fragment = CleanerFragment()
+            PRIVACY -> fragment = PrivacyFragment()
             STREAMS -> fragment = MRLPanelFragment()
             HISTORY -> fragment = HistoryFragment()
             VIDEO_GROUP_LIST -> {
@@ -220,6 +218,9 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
     }
 
     companion object {
+        @JvmField
+        var GLIDE_KEY: Long = 0
+
         const val TAG = "VLC/SecondaryActivity"
 
         const val ACTIVITY_RESULT_SECONDARY = 3
@@ -229,8 +230,12 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
         const val ALBUMS_SONGS = "albumsSongs"
         const val ABOUT = "about"
         const val CLEANER = "cleaner"
+        const val PRIVACY = "privacy"
+
         const val STREAMS = "streams"
         const val HISTORY = "history"
+        const val CLEANER_WATCHED = "cleanerWatched"
+        const val CLEANER_SPACE = "cleanerSpace"
         const val VIDEO_GROUP_LIST = "videoGroupList"
         const val STORAGE_BROWSER = "storage_browser"
         const val STORAGE_BROWSER_ONBOARDING = "storage_browser_onboarding"

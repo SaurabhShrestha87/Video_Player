@@ -8,4 +8,63 @@
     <string name="error">Error</string>
     <string name="clean_up_wa">Clean up watched videos</string>
     <string name="clean_up_big">Clean up big Files</string>
+
+    <string name="anemo_description">Local private storage</string>
+    <string name="anemo_info">Files stored in the Anemo storage are private and other apps can\'t access them without the user\'s consent.</string>
+
+    <string name="password_label">Anemo password</string>
+
+    <string name="password_hint_field">Password</string>
+    <string name="password_hint_repeat">Type again to confirm</string>
+    <string name="password_hint_current">Current password</string>
+
+    <string name="password_error_length">The password should have length at least %1$d</string>
+    <string name="password_error_mismatch">The passwords do not match</string>
+    <string name="password_error_wrong">Wrong password</string>
+
+    <string name="password_input_message">Type your Anemo password to unlock the Anemo Storage</string>
+    <string name="password_input_action">Unlock</string>
+    <string name="password_input_biometric_message">Authenticate to unlock the Anemo Storage</string>
+    <string name="password_input_biometric_fallback">Use password</string>
+
+    <string name="password_set_title">Add password protection</string>
+    <string name="password_set_message">Set a password to lock the access to the Anemo Storage</string>
+    <string name="password_set_action">Set password</string>
+
+    <string name="password_change_title">Change password</string>
+    <string name="password_change_message">Change the password to unlock the Anemo Storage</string>
+    <string name="password_change_action">Change</string>
+    <string name="password_change_remove">Remove</string>
+
+    <string name="receiver_label">Import into Anemo</string>
+
+    <string name="receiver_importing_message">Importing the file…</string>
+    <string name="receiver_importing_done_ok">Imported to Anemo</string>
+    <string name="receiver_importing_done_fail">Could not import the file. Try again</string>
+
+    <string name="receiver_default_file_name">Shared file</string>
+
+    <string name="tile_title">Anemo storage</string>
+
+    <string name="tile_lock">Lock Private</string>
+    <string name="tile_unlock">Unlock Private</string>
+    <string name="tile_status_locked">Now locked</string>
+    <string name="tile_status_unlocked">Now unlocked</string>
+
+    <string name="tile_auto_lock">Private storage was automatically locked</string>
+
+    <string name="launcher_no_activity">Can\'t find system Files app</string>
+    <string name="shortcut_config_long">Configuration</string>
+    <string name="shortcut_config_short">Configure</string>
+    <string name="shortcut_config_disabled">Configuration (disabled)</string>
+
+    <string name="configuration_label">Configuration</string>
+    <string name="configuration_shortcut">Show shortcut in app list</string>
+    <string name="configuration_protection">Protection</string>
+    <string name="configuration_password_set">Set password</string>
+    <string name="configuration_password_change">Change password</string>
+    <string name="configuration_storage_lock">Lock storage access</string>
+    <string name="configuration_storage_unlock">Unlock storage access</string>
+    <string name="configuration_storage_unlock_biometric">Allow storage unlock with biometric access</string>
+    <string name="configuration_storage_lock_auto">Automatically lock access after 15 minutes</string>
 </resources>

@@ -32,6 +32,7 @@
     <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <!-- Custom permissions for our content provider -->
     <permission
         android:name="${applicationId}.MEDIA"
@@ -968,6 +969,10 @@
             android:theme="@style/Theme.VLC.Onboarding"/>
         <activity
             android:name=".gui.SecondaryActivity"
+            android:theme="@style/Theme.VLC"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".gui.privacy.PrivacyActivity"
             android:theme="@style/Theme.VLC"
             android:windowSoftInputMode="adjustPan"/>
         <activity

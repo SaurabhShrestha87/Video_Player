@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".gui.privacy.PrivacyFragment">
+
+    <LinearLayout
+        android:id="@+id/pin_lyt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/set_pin"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.4"
+        android:gravity="center|bottom"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Set PIN"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/biometric_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="Unlock with fingerpint" />
+
+        <android.inputmethodservice.KeyboardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/enter_pin"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.4"
+        android:gravity="center|bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Enter Current Pin"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="Forgot"
+            android:textColor="@color/prussian_blue"/>
+
+        <android.inputmethodservice.KeyboardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+    <com.karikari.goodpinkeypad.GoodPinKeyPad
+        android:id="@+id/key"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:defaultIndicator="@drawable/black_hollow_dot"
+        app:errorIndicator="@drawable/black_hollow_dot_error"
+        app:font="@font/urbanist_medium"
+        app:keyBackground="@drawable/keys_white_theme_selector"
+        app:keySize="65dp"
+        app:keyTextSize="30"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:marginTop="10dp"
+        app:pinEntry="four"
+        app:selectedIndicator="@drawable/black_solid_dot"
+        app:textColor="#db3a34"
+        tools:layout_editor_absoluteY="100dp" />
+
+    </LinearLayout>
+</LinearLayout>

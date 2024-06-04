@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gallery_encrypt_file">Encrypt file</string>
+    <string name="gallery_decrypt_file">Decrypt file</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="open_directory">Encrypt files in dir</string>
+    <string name="decrypt_files">Decrypt files in dir</string>
+    <string name="load_files">Load encrypted thumbnails</string>
+    <string name="add_edit_note">Add/edit note</string>
+    <string name="open_with">Open with</string>
+    <string name="licenses">Licenses</string>
+
+    <string name="launcher_title">Vault locked</string>
+    <string name="launcher_subtitle">Enter decryption password</string>
+    <string name="launcher_password_hint">Password</string>
+    <string name="launcher_button">Unlock vault</string>
+    <string name="launcher_help_title">Help</string>
+    <string name="launcher_help_message">Enter a password to use as decryption and encryption key. At least eight characters is recommended.\n\nTip: use different passwords to manage different vaults</string>
+
+    <string name="menu_gallery_edit_included_folders">Edit included folders</string>
+    <string name="menu_gallery_import">Import files</string>
+    <string name="menu_lock_vault">Lock vault</string>
+    <string name="menu_toggle_filename">Toggle filename visibility</string>
+    <string name="menu_select_all">Select all</string>
+    <string name="menu_about">About</string>
+
+    <string name="gallery_all">All</string>
+    <string name="gallery_adapter_folder_name">%1$s (%2$d)</string>
+    <string name="gallery_adapter_file_name">%1$s (%2$s)</string>
+    <string name="gallery_add_folder">Add a folder</string>
+    <string name="gallery_added_folder">Added %1$s</string>
+    <string name="gallery_added_folder_duplicate">You have already added %1$s</string>
+    <string name="gallery_added_folder_child">Added %1$s as a child of %2$s</string>
+    <string name="gallery_import_files">Import files</string>
+    <string name="gallery_import_images">Images/GIFs</string>
+    <string name="gallery_import_videos">Videos</string>
+    <string name="gallery_remove_selected_folders">Remove selected folders</string>
+    <string name="gallery_delete_selected_files">Delete %1$d selected files</string>
+    <string name="gallery_export_selected_files">Export selected</string>
+    <string name="gallery_copy_selected_files">Copy to</string>
+    <string name="gallery_move_selected_files">Move to</string>
+    <string name="gallery_title">Gallery</string>
+    <string name="gallery_file_deleted">File deleted</string>
+    <string name="gallery_file_not_deleted">Error, file could not be deleted</string>
+    <string name="gallery_file_exported">Exported to %1$s</string>
+    <string name="gallery_selected_files_exported">Exported %1$d files</string>
+    <string name="gallery_selected_files_exported_with_failed">Exported %1$d files, %2$d failed</string>
+    <string name="gallery_selected_files_copied">Copied %1$d files</string>
+    <string name="gallery_selected_files_copied_with_failed">Copied %1$d files, %2$d failed</string>
+    <string name="gallery_selected_files_moved">Moved %1$d files</string>
+    <string name="gallery_selected_files_moved_with_failed">Moved %1$d files, %2$d failed</string>
+    <string name="gallery_file_not_exported">Export error: %1$s</string>
+    <string name="gallery_loading_all_progress">Loading %1$d files in %2$d directories</string>
+    <string name="gallery_importing_progress">Importing %1$d out of %2$d\n%3$s/%4$s MB\n%5$d%%</string>
+    <string name="gallery_exporting_progress">Exporting %1$d out of %2$d\nFailed: %3$d</string>
+    <string name="gallery_deleting_progress">Deleting %1$d out of %2$d\nFailed: %3$d</string>
+    <string name="gallery_moving_progress">Moving %1$d out of %2$d</string>
+    <string name="gallery_copying_progress">Copying %1$d out of %2$d</string>
+    <string name="gallery_importing_error">Failed to import %1$s</string>
+    <string name="gallery_importing_error_no_thumb">Failed to create thumb for %1$s</string>
+    <string name="gallery_importing_done">Encrypted and imported %1$d files</string>
+    <string name="gallery_video_error">Playback error: %1$s</string>
+    <string name="main_press_back_again_to_exit">Press the back button again to lock the vault</string>
+    <string name="gallery_loading_note">Decrypting note</string>
+    <string name="gallery_note_decrypt_failed">Failed to decrypt note: %1$s</string>
+    <string name="gallery_note_read_failed">Failed to read note: %1$s</string>
+    <string name="gallery_note_edit_hint">Note text</string>
+    <string name="gallery_note_save">Save note</string>
+    <string name="gallery_note_delete">Delete note</string>
+    <string name="gallery_note_click_to_show">Show note</string>
+    <string name="gallery_share_locked">Unlock your vault to import the shared files</string>
+    <string name="gallery_share_decrypting">Decrypting to cache…</string>
+    <string name="gallery_share_decrypting_error">Decrypt error: %1$s</string>
+    <string name="gallery_share_with">Share/open with</string>
+    <string name="gallery_click_to_open_directory">Click to open\n%1$s</string>
+
+    <string name="dialog_remove_folder_title">Remove?</string>
+    <plurals name="dialog_remove_folder_message">
+        <item quantity="one">Remove the selected folder from your vault? The folder on disk and contained files will not be deleted</item>
+        <item quantity="other">Remove the selected folders from your vault? The folder on disk and contained files will not be deleted</item>
+    </plurals>
+    <string name="dialog_delete_files_title">Delete?</string>
+    <plurals name="dialog_delete_files_message">
+        <item quantity="one">Delete the selected file permanently? This action is irreversible</item>
+        <item quantity="other">Delete the selected files permanently? This action is irreversible</item>
+    </plurals>
+    <string name="dialog_import_to_title">Destination</string>
+    <string name="dialog_import_to_button_neutral">Add new</string>
+    <string name="dialog_edit_included_title">Select folders to remove</string>
+    <string name="directory_does_not_exist">Folder does not exit</string>
+    <plurals name="dialog_import_to_delete_original">
+        <item quantity="one">Delete the original file after importing</item>
+        <item quantity="other">Delete the original files after importing</item>
+    </plurals>
+    <plurals name="edit_included_removed">
+        <item quantity="one">Removed %1$d folder</item>
+        <item quantity="other">Removed %1$d folders</item>
+    </plurals>
+    <string name="dialog_export_title">Export?</string>
+    <string name="dialog_export_message">Decrypt and export this file?</string>
+    <string name="dialog_export_selected_title">Export?</string>
+    <string name="dialog_export_selected_message">Decrypt and export the selected files?\n\nDestination: %1$s</string>
+    <string name="dialog_export_selected_message_all_folder">Decrypt and export the selected files?</string>
+    <string name="dialog_delete_file_title">Delete?</string>
+    <string name="dialog_delete_file_message">Delete this file permanently?</string>
+    <string name="dialog_about_title">About</string>
+    <string name="dialog_about_message">Valv gallery vault\n\nVersion %1$s-%2$s (%3$d)\n\nFiles are encrypted using ChaCha20 and keys are derived using PBKDF2 with HMAC-SHA512.\n\n\u00A9 2023 Arctosoft AB</string>
+</resources>

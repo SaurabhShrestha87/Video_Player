@@ -145,6 +145,12 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
             }
             3 -> {
                 Toast.makeText(requireContext(), "Privacy!!", Toast.LENGTH_SHORT).show()
+                val i = Intent(requireActivity(), SecondaryActivity::class.java)
+                i.putExtra("fragment", SecondaryActivity.PRIVACY)
+                requireActivity().startActivityForResult(
+                    i,
+                    SecondaryActivity.ACTIVITY_RESULT_SECONDARY
+                )
             }
         }
     }
