@@ -33,6 +33,7 @@ enum class ContextOption : Flag {
     CTX_COPY,
     CTX_CUSTOM_REMOVE,
     CTX_DELETE,
+    CTX_PRIVATE,
     CTX_DOWNLOAD_SUBTITLES,
     CTX_FAV_ADD,
     CTX_FAV_EDIT,
@@ -69,13 +70,13 @@ enum class ContextOption : Flag {
         }
 
         fun createCtxVideoFlags() = createBaseFlags().apply {
-            addAll(CTX_DELETE, CTX_DOWNLOAD_SUBTITLES, CTX_INFORMATION)
+            addAll(CTX_DELETE,CTX_PRIVATE, CTX_DOWNLOAD_SUBTITLES, CTX_INFORMATION)
             addAll(CTX_PLAY, CTX_PLAY_ALL, CTX_PLAY_AS_AUDIO, CTX_PLAY_NEXT)
             addAll(CTX_SET_RINGTONE, CTX_SHARE)
         }
 
         fun createCtxTrackFlags() = createBaseFlags().apply {
-            addAll(CTX_DELETE, CTX_GO_TO_FOLDER, CTX_INFORMATION, CTX_PLAY_ALL, CTX_PLAY_NEXT)
+            addAll(CTX_DELETE, CTX_PRIVATE, CTX_GO_TO_FOLDER, CTX_INFORMATION, CTX_PLAY_ALL, CTX_PLAY_NEXT)
             addAll(CTX_SET_RINGTONE, CTX_SHARE)
         }
 

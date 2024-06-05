@@ -53,7 +53,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.4"
-        android:gravity="center|bottom"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -85,7 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        app:defaultIndicator="@drawable/black_hollow_dot"
+        app:defaultIndicator="@drawable/grey_solid_dot"
         app:errorIndicator="@drawable/black_hollow_dot_error"
         app:font="@font/urbanist_medium"
         app:keyBackground="@drawable/keys_white_theme_selector"
@@ -95,8 +95,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:marginTop="10dp"
         app:pinEntry="four"
+        app:textColor="@color/black"
         app:selectedIndicator="@drawable/black_solid_dot"
-        app:textColor="#db3a34"
         tools:layout_editor_absoluteY="100dp" />
 
     </LinearLayout>

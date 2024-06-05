@@ -238,28 +238,28 @@ class GoodPinKeyPad : LinearLayout {
         }
         if (keypadBackPressIcon != null) {
             //mBackRight.setImageResource(this.keypadBackPressIcon);
-            mBackRight!!.setImageDrawable(keypadBackPressIcon)
+//            mBackRight!!.setImageDrawable(keypadBackPressIcon)
         }
         if (keypadCallAllIcon != null) {
             //mBackLeft.setImageResource(this.keypadCallAllIcon);
-            mBackLeft!!.setImageDrawable(keypadCallAllIcon)
+//            mBackLeft!!.setImageDrawable(keypadCallAllIcon)
         }
         val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         params.setMargins(
             dpToPx(marginLeft), dpToPx(marginTop), dpToPx(marginRight), dpToPx(marginBottom)
         )
         keyPadContainer!!.layoutParams = params
-        if (backPressVisibility == 0) {
-            mBackLeft!!.visibility = GONE
-            mBackRight!!.visibility = GONE
-        } else {
-            mBackLeft!!.visibility = VISIBLE
-            mBackRight!!.visibility = VISIBLE
-            if (keypadBackPressIcon == null && keypadCallAllIcon == null) {
-                mBackLeft!!.setImageDrawable(cancel)
-                mBackRight!!.setImageDrawable(back)
-            }
-        }
+//        if (backPressVisibility == 0) {
+//            mBackLeft!!.visibility = GONE
+//            mBackRight!!.visibility = GONE
+//        } else {
+//            mBackLeft!!.visibility = VISIBLE
+//            mBackRight!!.visibility = VISIBLE
+//            if (keypadBackPressIcon == null && keypadCallAllIcon == null) {
+////                mBackLeft!!.setImageDrawable(cancel)
+////                mBackRight!!.setImageDrawable(back)
+//            }
+//        }
 
         if (selectedIndicator != null) {
             solid = selectedIndicator

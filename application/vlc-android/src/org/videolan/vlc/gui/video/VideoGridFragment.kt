@@ -120,38 +120,13 @@ import org.videolan.vlc.gui.view.EmptyLoadingState
 import org.videolan.vlc.interfaces.IHistory
 import org.videolan.vlc.interfaces.IRefreshable
 import org.videolan.vlc.media.MediaUtils
+import org.videolan.vlc.media.MediaUtils.appendMedia
 import org.videolan.vlc.media.PlaylistManager
 import org.videolan.vlc.media.getAll
 import org.videolan.vlc.providers.medialibrary.VideosProvider
 import org.videolan.vlc.reloadLibrary
 import org.videolan.vlc.util.ContextOption
-import org.videolan.vlc.util.ContextOption.CTX_ADD_GROUP
-import org.videolan.vlc.util.ContextOption.CTX_ADD_SHORTCUT
-import org.videolan.vlc.util.ContextOption.CTX_ADD_TO_PLAYLIST
-import org.videolan.vlc.util.ContextOption.CTX_APPEND
-import org.videolan.vlc.util.ContextOption.CTX_BAN_FOLDER
-import org.videolan.vlc.util.ContextOption.CTX_DELETE
-import org.videolan.vlc.util.ContextOption.CTX_DOWNLOAD_SUBTITLES
-import org.videolan.vlc.util.ContextOption.CTX_FAV_ADD
-import org.videolan.vlc.util.ContextOption.CTX_FAV_REMOVE
-import org.videolan.vlc.util.ContextOption.CTX_FIND_METADATA
-import org.videolan.vlc.util.ContextOption.CTX_GO_TO_FOLDER
-import org.videolan.vlc.util.ContextOption.CTX_GROUP_SIMILAR
-import org.videolan.vlc.util.ContextOption.CTX_INFORMATION
-import org.videolan.vlc.util.ContextOption.CTX_MARK_ALL_AS_PLAYED
-import org.videolan.vlc.util.ContextOption.CTX_MARK_ALL_AS_UNPLAYED
-import org.videolan.vlc.util.ContextOption.CTX_MARK_AS_PLAYED
-import org.videolan.vlc.util.ContextOption.CTX_MARK_AS_UNPLAYED
-import org.videolan.vlc.util.ContextOption.CTX_PLAY
-import org.videolan.vlc.util.ContextOption.CTX_PLAY_ALL
-import org.videolan.vlc.util.ContextOption.CTX_PLAY_AS_AUDIO
-import org.videolan.vlc.util.ContextOption.CTX_PLAY_FROM_START
-import org.videolan.vlc.util.ContextOption.CTX_PLAY_NEXT
-import org.videolan.vlc.util.ContextOption.CTX_REMOVE_GROUP
-import org.videolan.vlc.util.ContextOption.CTX_RENAME_GROUP
-import org.videolan.vlc.util.ContextOption.CTX_SET_RINGTONE
-import org.videolan.vlc.util.ContextOption.CTX_SHARE
-import org.videolan.vlc.util.ContextOption.CTX_UNGROUP
+import org.videolan.vlc.util.ContextOption.*
 import org.videolan.vlc.util.ContextOption.Companion.createCtxFolderFlags
 import org.videolan.vlc.util.ContextOption.Companion.createCtxVideoFlags
 import org.videolan.vlc.util.ContextOption.Companion.createCtxVideoGroupFlags
@@ -777,7 +752,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 if (list.isNotEmpty()) {
                     when (item.itemId) {
                         R.id.action_video_play -> MediaUtils.openList(activity, list, 0)
-                        R.id.action_video_append -> MediaUtils.appendMedia(activity, list)
+                        R.id.action_video_append -> appendMedia(activity, list)
                         R.id.action_video_share -> requireActivity().share(list)
                         R.id.action_video_info -> showInfoDialog(list.first())
                         R.id.action_video_download_subtitles -> MediaUtils.getSubs(
@@ -856,7 +831,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                         activity, selection.getAll(), 0
                     )
 
-                    R.id.action_videogroup_append -> MediaUtils.appendMedia(
+                    R.id.action_videogroup_append -> appendMedia(
                         activity, selection.getAll()
                     )
 
@@ -938,7 +913,8 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 CTX_PLAY -> viewModel.play(position)
                 CTX_INFORMATION -> showInfoDialog(media)
                 CTX_DELETE -> removeItem(media)
-                CTX_APPEND -> MediaUtils.appendMedia(activity, media)
+                CTX_PRIVATE -> makePrivateItem(media)
+                CTX_APPEND -> appendMedia(activity, media)
                 CTX_SET_RINGTONE -> requireActivity().setRingtone(media)
                 CTX_PLAY_NEXT -> MediaUtils.insertNext(requireActivity(), media.tracks)
                 CTX_DOWNLOAD_SUBTITLES -> MediaUtils.getSubs(requireActivity(), media)

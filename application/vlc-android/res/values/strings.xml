@@ -67,4 +67,8 @@
     <string name="configuration_storage_unlock">Unlock storage access</string>
     <string name="configuration_storage_unlock_biometric">Allow storage unlock with biometric access</string>
     <string name="configuration_storage_lock_auto">Automatically lock access after 15 minutes</string>
+    <string name="lock_in_private_folder">Lock in private folder</string>
+    <string name="confirm_lock">Lock the file \'%1$s\'  in private folder ?</string>
+    <string name="confirm_lock_folder">Lock the folder \'%1$s\' and all its contents?</string>
+    <string name="confirm_lock_several_media">Delete these %1$d media?</string>
 </resources>

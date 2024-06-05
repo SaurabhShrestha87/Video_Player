@@ -448,6 +448,7 @@ abstract class BaseAudioBrowser<T : MedialibraryViewModel> : MediaBrowserFragmen
             }
             CTX_INFORMATION -> showInfoDialog(media)
             CTX_DELETE -> removeItem(media)
+            CTX_PRIVATE -> makePrivateItem(media)
             CTX_APPEND -> MediaUtils.appendMedia(requireActivity(), media.tracks)
             CTX_PLAY_NEXT -> MediaUtils.insertNext(requireActivity(), media.tracks)
             CTX_ADD_TO_PLAYLIST -> requireActivity().addToPlaylist(media.tracks, SavePlaylistDialog.KEY_NEW_TRACKS)

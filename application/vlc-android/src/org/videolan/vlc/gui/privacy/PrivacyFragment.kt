@@ -42,6 +42,7 @@ import com.karikari.goodpinkeypad.KeyPadListerner
 import org.videolan.tools.setGone
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
+import org.videolan.vlc.gui.CleanerFragment
 import org.videolan.vlc.gui.privacy.lock.LockStore
 import java.util.concurrent.Executor
 
@@ -78,7 +79,7 @@ class PrivacyFragment : BaseFragment() {
         eTPassword = view.findViewById(R.id.key)
         biometricCb = view.findViewById(R.id.biometric_cb)
 
-        if (!lockStore.hasPassword()) {
+        if (lockStore.hasPassword()) {
             view.findViewById<LinearLayout>(R.id.set_pin).visibility = View.GONE
             view.findViewById<LinearLayout>(R.id.enter_pin).visibility = View.VISIBLE
         } else {
@@ -90,7 +91,7 @@ class PrivacyFragment : BaseFragment() {
             override fun onKeyPadPressed(value: String?) {
                 Log.d(TAG, "Key pressed : $value")
                 if (value?.count() == 4) {
-                    if (!lockStore.hasPassword()) {
+                    if (lockStore.hasPassword()) {
                         if (lockStore.passwordMatch(value)) {
                             doUnlock()
                         } else {
@@ -125,6 +126,9 @@ class PrivacyFragment : BaseFragment() {
 
     private fun goToNextPage() {
         Toast.makeText(requireContext(), "TODO: GO NEXT PAGE!", Toast.LENGTH_SHORT).show()
+        requireActivity().supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_placeholder, CleanerFragment())
+            .commit()
     }
 
     @RequiresApi(29)
@@ -154,6 +158,7 @@ class PrivacyFragment : BaseFragment() {
                 }
 
                 override fun onAuthenticationFailed() {
+                    Toast.makeText(requireContext(), "Fingerprint mismatch!", Toast.LENGTH_SHORT).show()
                     requireActivity().setResult(Activity.RESULT_CANCELED)
                     requireActivity().finish()
                 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#017343</color>
+    <color name="colorPrimaryDark">#017343</color>
+    <color name="colorAccent">#019355</color>
     
     <color name="soap">#B3CFD6EA</color>
 
@@ -11,9 +11,12 @@
     <color name="eeirie_black">#1B1B1E</color>
     <color name="eeirie_black_transparent">#731B1B1E</color>
 
+    <color name="grey">#D9D9D9</color>
+
     <color name="transparent">#00FFFFFF</color>
     <color name="green_sheen">#70A9A1</color>
     <color name="prussian_blue">#003049</color>
+    <color name="num_unselected">#F7F7F7</color>
 
 
     <!--

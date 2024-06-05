@@ -44,11 +44,16 @@ import org.videolan.tools.MultiSelectHelper
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.BaseFragment
 import org.videolan.vlc.gui.dialogs.ConfirmDeleteDialog
+import org.videolan.vlc.gui.dialogs.ConfirmMakePrivateDialog
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.gui.helpers.fillActionMode
 import org.videolan.vlc.interfaces.Filterable
 import org.videolan.vlc.media.MediaUtils
-import org.videolan.vlc.viewmodels.*
+import org.videolan.vlc.viewmodels.DisplaySettingsViewModel
+import org.videolan.vlc.viewmodels.MedialibraryViewModel
+import org.videolan.vlc.viewmodels.SortableModel
+import org.videolan.vlc.viewmodels.prepareOptionsMenu
+import org.videolan.vlc.viewmodels.sortMenuTitles
 
 private const val TAG = "VLC/MediaBrowserFragment"
 private const val KEY_SELECTION = "key_selection"
@@ -164,6 +169,15 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
         dialog.show(requireActivity().supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
         dialog.setListener {
             MediaUtils.deleteItem(requireActivity(), item) { onDeleteFailed(it)}
+        }
+        return true
+    }
+
+    protected open fun makePrivateItem(item: MediaLibraryItem): Boolean {
+        val dialog = ConfirmMakePrivateDialog.newInstance(arrayListOf(item))
+        dialog.show(requireActivity().supportFragmentManager, ConfirmMakePrivateDialog::class.simpleName)
+        dialog.setListener {
+            MediaUtils.makePrivateItem(requireActivity(), item) { onDeleteFailed(it) }
         }
         return true
     }

@@ -75,6 +75,7 @@ import org.videolan.vlc.interfaces.Filterable
 import org.videolan.vlc.interfaces.IEventsHandler
 import org.videolan.vlc.interfaces.IListEventsHandler
 import org.videolan.vlc.media.MediaUtils
+import org.videolan.vlc.media.MediaUtils.makePrivateItem
 import org.videolan.vlc.media.PlaylistManager
 import org.videolan.vlc.util.*
 import org.videolan.vlc.util.ContextOption.*
@@ -478,6 +479,7 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         when (option) {
             CTX_INFORMATION -> showInfoDialog(media)
             CTX_DELETE -> lifecycleScope.launch { removeItem(position, media) }
+            CTX_PRIVATE -> lifecycleScope.launch { makePrivateItem(position, media) }
             CTX_APPEND -> MediaUtils.appendMedia(this, media.tracks)
             CTX_PLAY_NEXT -> MediaUtils.insertNext(this, media.tracks)
             CTX_ADD_TO_PLAYLIST -> addToPlaylist(media.tracks, SavePlaylistDialog.KEY_NEW_TRACKS)
@@ -512,6 +514,13 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         }
     }
 
+    private suspend fun makePrivateItem(position: Int, media: MediaWrapper) {
+        if (isPlaylist) {
+//            removeFromPlaylist(listOf(media), listOf(position))
+        } else {
+            makePrivateItems(listOf(media))
+        }
+    }
     private fun removeItems(items: List<MediaWrapper>) {
         val dialog = ConfirmDeleteDialog.newInstance(ArrayList(items))
         dialog.show(supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
@@ -521,6 +530,25 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
                     val deleteAction = kotlinx.coroutines.Runnable {
                         lifecycleScope.launch {
                             MediaUtils.deleteItem(this@HeaderMediaListActivity, item) {
+                                UiTools.snacker(this@HeaderMediaListActivity, getString(R.string.msg_delete_failed, it.title))
+                            }
+                            if (isStarted()) viewModel.refresh()
+                        }
+                    }
+                    if (Permissions.checkWritePermission(this@HeaderMediaListActivity, item, deleteAction)) deleteAction.run()
+                }
+            }
+        }
+    }
+    private fun makePrivateItems(items: List<MediaWrapper>) {
+        val dialog = ConfirmDeleteDialog.newInstance(ArrayList(items))
+        dialog.show(supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
+        dialog.setListener {
+            lifecycleScope.launch {
+                for (item in items) {
+                    val deleteAction = kotlinx.coroutines.Runnable {
+                        lifecycleScope.launch {
+                            makePrivateItem(this@HeaderMediaListActivity, item) {
                                 UiTools.snacker(this@HeaderMediaListActivity, getString(R.string.msg_delete_failed, it.title))
                             }
                             if (isStarted()) viewModel.refresh()

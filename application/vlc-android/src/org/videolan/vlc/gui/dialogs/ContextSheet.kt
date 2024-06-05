@@ -130,6 +130,7 @@ class ContextSheet : VLCBottomSheetDialogFragment() {
         if (flags.contains(CTX_RENAME)) add(Simple(CTX_RENAME, getString(R.string.rename), R.drawable.ic_edit))
         if (flags.contains(CTX_COPY)) add(Simple(CTX_COPY, getString(R.string.copy_to_clipboard), R.drawable.ic_link))
         if (flags.contains(CTX_DELETE)) add(Simple(CTX_DELETE, getString(R.string.delete), R.drawable.ic_delete))
+        if (flags.contains(CTX_PRIVATE)) add(Simple(CTX_PRIVATE, getString(R.string.lock_in_private_folder), R.drawable.ic_folder_lock))
         if (flags.contains(CTX_SHARE)) add(Simple(CTX_SHARE, getString(R.string.share), R.drawable.ic_share))
         if (flags.contains(CTX_ADD_SHORTCUT) && ShortcutManagerCompat.isRequestPinShortcutSupported(requireActivity())) add(Simple(CTX_ADD_SHORTCUT, getString(R.string.create_shortcut), R.drawable.ic_app_shortcut))
         if (flags.contains(CTX_FIND_METADATA)) add(Simple(CTX_FIND_METADATA, getString(R.string.find_metadata), R.drawable.ic_delete))

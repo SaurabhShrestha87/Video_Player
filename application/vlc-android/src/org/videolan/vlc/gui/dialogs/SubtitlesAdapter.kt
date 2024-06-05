@@ -30,9 +30,7 @@ internal class SubtitlesAdapter(private val eventActor: SendChannel<SubtitleEven
 
     override fun getItemCount() = dataset?.size ?: 0
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     inner class ViewHolder(val binding: SubtitleDownloadItemBinding) : RecyclerView.ViewHolder(binding.root) {
-
         init {
             itemView.setOnClickListener {
                 dataset?.get(layoutPosition)?.let {

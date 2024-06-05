@@ -549,6 +549,22 @@ abstract class BaseBrowserFragment : MediaBrowserFragment<BrowserModel>(), IRefr
         return true
     }
 
+    override fun makePrivateItem(item: MediaLibraryItem): Boolean {
+        val mw = item as? MediaWrapper
+            ?: return false
+        val deleteAction = Runnable {
+            lifecycleScope.launch {
+                MediaUtils.makePrivateItem(requireActivity(), mw) { viewModel.refresh() }
+                viewModel.remove(mw)
+            }
+        }
+        val dialog = ConfirmDeleteDialog.newInstance(arrayListOf(mw))
+        dialog.show(requireActivity().supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
+        dialog.setListener {
+            if (Permissions.checkWritePermission(requireActivity(), mw, deleteAction)) deleteAction.run()
+        }
+        return true
+    }
     private fun playAll(mw: MediaWrapper?) {
         lifecycleScope.launch {
             var positionInPlaylist = 0

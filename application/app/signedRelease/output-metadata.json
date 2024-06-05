@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "org.videolan.vlc",
+  "variantName": "signedRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 13050420,
+      "versionName": "3.6.0 Beta 2",
+      "outputFile": "VLC-Android-3.6.0-Beta-2-all.apk"
+    }
+  ],
+  "elementType": "File"
+}

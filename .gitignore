@@ -72,3 +72,4 @@ libvlc.pc.backup
 libvlcpp.pc
 lib/
 /buildsystem/automation/certificates/
+/application/app/signedRelease/*.apk
