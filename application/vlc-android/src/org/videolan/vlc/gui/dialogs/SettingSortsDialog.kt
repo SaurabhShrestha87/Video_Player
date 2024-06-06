@@ -24,8 +24,6 @@
 
 package org.videolan.vlc.gui.dialogs
 
-import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -38,6 +36,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.videolan.medialibrary.interfaces.Medialibrary
+import org.videolan.resources.GROUP_VIDEOS_FOLDER
+import org.videolan.resources.GROUP_VIDEOS_NAME
+import org.videolan.resources.GROUP_VIDEOS_NONE
+import org.videolan.tools.setGone
+import org.videolan.tools.setVisible
 import org.videolan.vlc.R
 import org.videolan.vlc.databinding.DialogSortSettingsBinding
 import org.videolan.vlc.gui.helpers.UiTools.showPinIfNeeded
@@ -54,6 +57,7 @@ class SettingSortsDialog : DialogFragment() {
     private var currentSort: Int = -1
     private var currentSortDesc = false
     private var selectedSort: Int = -1
+    private var currentVideoGrouping: String = GROUP_VIDEOS_NAME
     private lateinit var binding: DialogSortSettingsBinding
 
     private val displaySettingsViewModel: DisplaySettingsViewModel by activityViewModels()
@@ -61,11 +65,13 @@ class SettingSortsDialog : DialogFragment() {
     companion object {
 
         fun newInstance(
-            currentSort: Int, currentSortDesc: Boolean
+            currentSort: Int, currentSortDesc: Boolean, videoGroup: String
         ): SettingSortsDialog {
             return SettingSortsDialog().apply {
                 arguments = bundleOf(
-                    CURRENT_SORT to currentSort, CURRENT_SORT_DESC to currentSortDesc
+                    CURRENT_SORT to currentSort,
+                    CURRENT_SORT_DESC to currentSortDesc,
+                    VIDEO_GROUPING to videoGroup
                 )
             }
         }
@@ -77,6 +83,8 @@ class SettingSortsDialog : DialogFragment() {
         currentSort = arguments?.getInt(CURRENT_SORT)
             ?: throw IllegalStateException("Current sort should be provided")
         currentSortDesc = arguments?.getBoolean(CURRENT_SORT_DESC)
+            ?: throw IllegalStateException("Current sort desc should be provided")
+        currentVideoGrouping = arguments?.getString(VIDEO_GROUPING)
             ?: throw IllegalStateException("Current sort desc should be provided")
     }
 
@@ -124,6 +132,22 @@ class SettingSortsDialog : DialogFragment() {
                     binding.optionA.text = "From short to long"
                     binding.optionB.text = "From long to short"
                 }
+            }
+        }
+
+        when (currentVideoGrouping) {
+            GROUP_VIDEOS_FOLDER -> {
+                binding.sortDate.setGone()
+                binding.sortDate.isClickable = false
+                binding.sortLength.setGone()
+                binding.sortLength.isClickable = false
+            }
+
+            else -> {
+                binding.sortDate.setVisible()
+                binding.sortDate.isClickable = true
+                binding.sortLength.setVisible()
+                binding.sortLength.isClickable = true
             }
         }
 

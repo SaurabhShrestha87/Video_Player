@@ -136,7 +136,6 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
                 Toast.makeText(requireContext(), "Network!!", Toast.LENGTH_SHORT).show()
                 MRLPanelDialog().show(requireActivity().supportFragmentManager, TAG_)
             }
-
             2 -> {
                 Toast.makeText(requireContext(), "Cleaner!!", Toast.LENGTH_SHORT).show()
                 val i = Intent(requireActivity(), SecondaryActivity::class.java)

@@ -601,6 +601,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 SettingSortsDialog.newInstance(
                     currentSort = viewModel.provider.sort,
                     currentSortDesc = viewModel.provider.desc,
+                    videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NAME)?: GROUP_VIDEOS_NAME
                 ).show(requireActivity().supportFragmentManager, "DisplaySettingsDialog")
             }
 
