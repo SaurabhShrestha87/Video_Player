@@ -54,10 +54,10 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -73,10 +73,12 @@ import org.videolan.vlc.gui.helpers.UiTools.showPinIfNeeded
 const val RENAME_DIALOG_MEDIA = "RENAME_DIALOG_MEDIA"
 const val RENAME_DIALOG_FILE = "RENAME_DIALOG_FILE"
 
-class RenameDialog : VLCBottomSheetDialogFragment() {
+class RenameDialog : DialogFragment() {
 
     private lateinit var listener: (media: MediaLibraryItem, name: String) -> Unit
     private lateinit var renameButton: Button
+    private lateinit var cancelButton: Button
+
     private lateinit var newNameInputtext: TextInputEditText
     private lateinit var media: MediaLibraryItem
     private var renameFile: Boolean = false
@@ -108,6 +110,7 @@ class RenameDialog : VLCBottomSheetDialogFragment() {
         val name = if (renameFile && media is MediaWrapper) (media as MediaWrapper).fileName else media.title
         newNameInputtext = view.findViewById(R.id.new_name)
         renameButton = view.findViewById(R.id.rename_button)
+        cancelButton = view.findViewById(R.id.cancel_button)
         if (media.title.isNotEmpty()) {
             newNameInputtext.setText(name)
         }
@@ -115,6 +118,9 @@ class RenameDialog : VLCBottomSheetDialogFragment() {
         if (extIndex != -1 && renameFile) newNameInputtext.setSelection(0, extIndex) else newNameInputtext.setSelection(0, name.length)
         renameButton.setOnClickListener {
             performRename()
+        }
+        cancelButton.setOnClickListener {
+            dismiss()
         }
         newNameInputtext.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -141,6 +147,7 @@ class RenameDialog : VLCBottomSheetDialogFragment() {
                 }
             }
         }
+        newNameInputtext.requestFocus()
         return view
     }
 
@@ -149,15 +156,5 @@ class RenameDialog : VLCBottomSheetDialogFragment() {
             listener.invoke(media, newNameInputtext.text.toString())
             dismiss()
         }
-    }
-
-    override fun getDefaultState(): Int {
-        return STATE_EXPANDED
-    }
-
-    override fun initialFocusedView(): View = newNameInputtext
-
-    override fun needToManageOrientation(): Boolean {
-        return true
     }
 }

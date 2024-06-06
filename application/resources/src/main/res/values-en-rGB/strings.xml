@@ -43,7 +43,7 @@
     <string name="medialibrary_scan">Media library scan</string>
     <string name="Medialibrary_progress">Media library scanning progress updates</string>
     <string name="play_from_start">Play from start</string>
-    <string name="play_as_audio">Play as audio</string>
+    <string name="play_as_audio">Background play</string>
     <string name="play_as_video">Play as video</string>
     <string name="return_to_video">Long tap the cover to restore the video</string>
     <string name="video_app_switch_title">Background/PiP mode</string>
@@ -292,7 +292,7 @@
     <string name="add_custom_path">Add a custom path</string>
     <string name="add_custom_path_description">Enter additional custom directory to scan:</string>
     <string name="remove_custom_path">Remove custom path</string>
-    <string name="group_ban_folder">Ban folder from media library</string>
+    <string name="group_ban_folder">Hide from scan list</string>
 
     <string name="hardware_acceleration">Hardware Acceleration</string>
     <string name="hardware_acceleration_summary">Disabled: better stability\nDecoding: may improve performance\nFull: may improve performance further</string>

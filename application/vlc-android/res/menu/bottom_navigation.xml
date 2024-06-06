@@ -48,6 +48,6 @@
         android:id="@+id/nav_more"
         android:icon="@drawable/ic_nav_more"
         android:title="@string/more"
-        android:visible="false"/>
+        android:visible="true"/>
 
 </menu>

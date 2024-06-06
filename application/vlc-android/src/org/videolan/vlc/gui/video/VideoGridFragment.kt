@@ -23,6 +23,7 @@ package org.videolan.vlc.gui.video
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -81,6 +82,7 @@ import org.videolan.tools.PLAYBACK_HISTORY
 import org.videolan.tools.RESULT_RESTART
 import org.videolan.tools.Settings
 import org.videolan.tools.dp
+import org.videolan.tools.getFileNameFromPath
 import org.videolan.tools.isStarted
 import org.videolan.tools.putSingle
 import org.videolan.tools.retrieveParent
@@ -131,6 +133,7 @@ import org.videolan.vlc.util.ContextOption.Companion.createCtxFolderFlags
 import org.videolan.vlc.util.ContextOption.Companion.createCtxVideoFlags
 import org.videolan.vlc.util.ContextOption.Companion.createCtxVideoGroupFlags
 import org.videolan.vlc.util.Permissions
+import org.videolan.vlc.util.getParentFolder
 import org.videolan.vlc.util.isMissing
 import org.videolan.vlc.util.isTalkbackIsEnabled
 import org.videolan.vlc.util.launchWhenStarted
@@ -959,12 +962,18 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
             is Folder -> when (option) {
                 CTX_PLAY -> viewModel.play(position)
                 CTX_APPEND -> viewModel.append(position)
+                CTX_PLAY_AS_AUDIO -> viewModel.playFoldersSelectionBackground(listOf(media))
+                CTX_RENAME -> {
+                    renameFolder(media)
+                }
+                CTX_DELETE -> removeItems(media.getAll())
+                CTX_PRIVATE -> makePrivateItem(media)
                 CTX_ADD_TO_PLAYLIST -> viewModel.addItemToPlaylist(requireActivity(), position)
                 CTX_MARK_ALL_AS_PLAYED -> lifecycleScope.launch { viewModel.markAsPlayed(media) }
                 CTX_MARK_ALL_AS_UNPLAYED -> lifecycleScope.launch { viewModel.markAsUnplayed(media) }
-                CTX_FAV_ADD, CTX_FAV_REMOVE -> lifecycleScope.launch(Dispatchers.IO) {
-                    media.isFavorite = option == CTX_FAV_ADD
-                }
+//                CTX_FAV_ADD, CTX_FAV_REMOVE -> lifecycleScope.launch(Dispatchers.IO) {
+//                    media.isFavorite = option == CTX_FAV_ADD
+//                }
 
                 CTX_BAN_FOLDER -> banFolder(media)
                 else -> {}
@@ -1012,6 +1021,15 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
             }
 
         } ?: Log.e(TAG, "banFolder: path is null")
+    }
+
+    private fun renameFolder(media: MediaLibraryItem) {
+        val dialog = RenameDialog.newInstance(media)
+        dialog.setListener { item, name ->
+            viewModel.renameFolder(item as FolderImpl, name)
+            onRefresh()
+        }
+        dialog.show(requireActivity().supportFragmentManager, RenameDialog::class.simpleName)
     }
 
     private fun renameGroup(media: VideoGroup) {

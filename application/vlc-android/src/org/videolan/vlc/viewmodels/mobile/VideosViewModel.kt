@@ -21,6 +21,7 @@
 package org.videolan.vlc.viewmodels.mobile
 
 import android.content.Context
+import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -31,10 +32,12 @@ import kotlinx.coroutines.withContext
 import org.videolan.medialibrary.interfaces.media.Folder
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.interfaces.media.VideoGroup
+import org.videolan.medialibrary.media.FolderImpl
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.tools.FORCE_PLAY_ALL_VIDEO
 import org.videolan.tools.Settings
 import org.videolan.tools.isStarted
+import org.videolan.tools.retrieveParent
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.gui.helpers.UiTools.addToPlaylist
 import org.videolan.vlc.gui.video.CleanerListFragment
@@ -47,6 +50,7 @@ import org.videolan.vlc.providers.medialibrary.MedialibraryProvider
 import org.videolan.vlc.providers.medialibrary.VideoGroupsProvider
 import org.videolan.vlc.providers.medialibrary.VideosProvider
 import org.videolan.vlc.viewmodels.MedialibraryViewModel
+import java.io.File
 
 class VideosViewModel(context: Context, type: VideoGroupingType, val folder: Folder?, val group: VideoGroup?) : MedialibraryViewModel(context) {
 
@@ -113,6 +117,11 @@ class VideosViewModel(context: Context, type: VideoGroupingType, val folder: Fol
         MediaUtils.openList(context, list, 0)
     }
 
+    internal fun playFoldersSelectionBackground(selection: List<Folder>) = viewModelScope.launch {
+        val list = selection.flatMap { folder1 -> folder1.getAll().onEach { it.addFlags(MediaWrapper.MEDIA_FORCE_AUDIO) } }
+        MediaUtils.openList(context, list, 0)
+    }
+
     internal fun addItemToPlaylist(activity: FragmentActivity, position: Int) = viewModelScope.launch {
         val item = provider.pagedList.value?.get(position) ?: return@launch
         withContext(Dispatchers.IO) {
@@ -168,6 +177,15 @@ class VideosViewModel(context: Context, type: VideoGroupingType, val folder: Fol
     fun renameGroup(videoGroup: VideoGroup, newName: String) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             videoGroup.rename(newName)
+        }
+    }
+
+    fun renameFolder(videoGroup: FolderImpl, newName: String) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            val path = videoGroup.mMrl.toUri().retrieveParent()?.path
+            val oldFolder = File(path, videoGroup.title)
+            val newFolder = File(path, newName)
+            oldFolder.renameTo(newFolder)
         }
     }
 
