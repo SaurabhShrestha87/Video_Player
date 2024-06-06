@@ -229,7 +229,6 @@ class VideoListAdapter(private var isSeenMediaMarkerVisible: Boolean, private va
 
     override fun getItemId(position: Int) = 0L
 
-    @TargetApi(Build.VERSION_CODES.M)
     inner class ViewHolder(binding: ViewDataBinding) : SelectorViewHolder<ViewDataBinding>(binding) {
         val overlay: ImageView = itemView.findViewById(R.id.ml_item_overlay)
         val title : TextView = itemView.findViewById(R.id.ml_item_title)
