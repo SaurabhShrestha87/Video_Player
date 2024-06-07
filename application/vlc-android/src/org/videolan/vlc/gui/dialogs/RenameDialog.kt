@@ -68,7 +68,6 @@ import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.resources.util.parcelable
 import org.videolan.vlc.R
 import org.videolan.vlc.gui.helpers.UiTools
-import org.videolan.vlc.gui.helpers.UiTools.showPinIfNeeded
 
 const val RENAME_DIALOG_MEDIA = "RENAME_DIALOG_MEDIA"
 const val RENAME_DIALOG_FILE = "RENAME_DIALOG_FILE"
@@ -98,7 +97,6 @@ class RenameDialog : DialogFragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        lifecycleScope.launch { if (requireActivity().showPinIfNeeded()) dismiss() }
         media = arguments?.parcelable(RENAME_DIALOG_MEDIA) ?: return
         renameFile = arguments?.getBoolean(RENAME_DIALOG_FILE) ?: false
         super.onCreate(savedInstanceState)
@@ -107,6 +105,7 @@ class RenameDialog : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_rename, container)
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.rounded_corners_dialog)
         val name = if (renameFile && media is MediaWrapper) (media as MediaWrapper).fileName else media.title
         newNameInputtext = view.findViewById(R.id.new_name)
         renameButton = view.findViewById(R.id.rename_button)
