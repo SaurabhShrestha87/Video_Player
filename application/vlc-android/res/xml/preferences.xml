@@ -3,13 +3,16 @@
                                       xmlns:app="http://schemas.android.com/apk/res-auto"
                                       android:title="@string/preferences">
 
-    <PreferenceCategory android:title="@string/medialibrary">
+    <PreferenceCategory android:title="@string/medialibrary"
+        android:layout="@layout/preference_category_layout">
+
         <PreferenceScreen
                 android:key="directories"
                 android:summary="@string/directories_summary"
                 android:title="@string/medialibrary_directories"/>
 
         <CheckBoxPreference
+                app:allowDividerAbove="true"
                 app:singleLineTitle="false"
                 android:defaultValue="true"
                 android:key="auto_rescan"

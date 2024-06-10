@@ -47,6 +47,7 @@ import org.videolan.vlc.BuildConfig
 import org.videolan.vlc.R
 import org.videolan.vlc.StartActivity
 import org.videolan.vlc.gui.audio.AudioBrowserFragment
+import org.videolan.vlc.gui.audio.EqualizerFragment
 import org.videolan.vlc.gui.browser.BaseBrowserFragment
 import org.videolan.vlc.gui.dialogs.AllAccessPermissionDialog
 import org.videolan.vlc.gui.dialogs.NotificationPermissionManager
@@ -55,6 +56,7 @@ import org.videolan.vlc.gui.helpers.Navigator
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.gui.helpers.UiTools.isTablet
 import org.videolan.vlc.gui.helpers.UiTools.showPinIfNeeded
+import org.videolan.vlc.gui.preferences.PreferencesActivity
 import org.videolan.vlc.gui.video.VideoGridFragment
 import org.videolan.vlc.interfaces.Filterable
 import org.videolan.vlc.interfaces.IRefreshable
@@ -159,10 +161,7 @@ class MainActivity : ContentActivity(),
         reloadPreferences()
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
     override fun onBackPressed() {
-
-
         /* Close playlist search if open or Slide down the audio player if it is shown entirely. */
         if (isAudioPlayerReady && (audioPlayer.backPressed() || slideDownAudioPlayer()))
             return
@@ -198,6 +197,20 @@ class MainActivity : ContentActivity(),
 
         // Handle item selection
         return when (item.itemId) {
+            R.id.ml_menu_theme -> {
+                lifecycleScope.launch {
+                    PreferencesActivity.launchWithPref(this@MainActivity, "app_theme")
+                }
+                true
+            }
+            R.id.ml_menu_equalizer -> {
+                EqualizerFragment.newInstance().show(supportFragmentManager, "equalizer")
+                true
+            }
+            R.id.ml_menu_settings -> {
+                startActivityForResult(Intent(this@MainActivity, PreferencesActivity::class.java), ACTIVITY_RESULT_PREFERENCES)
+                true
+            }
             // Refresh
             R.id.ml_menu_refresh -> {
                 if (Permissions.canReadStorage(this)) forceRefresh()

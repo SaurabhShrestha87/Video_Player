@@ -23,7 +23,6 @@ package org.videolan.vlc.gui.video
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
@@ -82,7 +81,6 @@ import org.videolan.tools.PLAYBACK_HISTORY
 import org.videolan.tools.RESULT_RESTART
 import org.videolan.tools.Settings
 import org.videolan.tools.dp
-import org.videolan.tools.getFileNameFromPath
 import org.videolan.tools.isStarted
 import org.videolan.tools.putSingle
 import org.videolan.tools.retrieveParent
@@ -118,6 +116,8 @@ import org.videolan.vlc.gui.helpers.UiTools.addToPlaylist
 import org.videolan.vlc.gui.helpers.UiTools.createShortcut
 import org.videolan.vlc.gui.helpers.UiTools.showPinIfNeeded
 import org.videolan.vlc.gui.helpers.fillActionMode
+import org.videolan.vlc.gui.network.MRLPanelDialog
+import org.videolan.vlc.gui.network.TAG_
 import org.videolan.vlc.gui.view.EmptyLoadingState
 import org.videolan.vlc.interfaces.IHistory
 import org.videolan.vlc.interfaces.IRefreshable
@@ -128,12 +128,39 @@ import org.videolan.vlc.media.getAll
 import org.videolan.vlc.providers.medialibrary.VideosProvider
 import org.videolan.vlc.reloadLibrary
 import org.videolan.vlc.util.ContextOption
-import org.videolan.vlc.util.ContextOption.*
+import org.videolan.vlc.util.ContextOption.CTX_ADD_GROUP
+import org.videolan.vlc.util.ContextOption.CTX_ADD_SHORTCUT
+import org.videolan.vlc.util.ContextOption.CTX_ADD_TO_PLAYLIST
+import org.videolan.vlc.util.ContextOption.CTX_APPEND
+import org.videolan.vlc.util.ContextOption.CTX_BAN_FOLDER
+import org.videolan.vlc.util.ContextOption.CTX_DELETE
+import org.videolan.vlc.util.ContextOption.CTX_DOWNLOAD_SUBTITLES
+import org.videolan.vlc.util.ContextOption.CTX_FAV_ADD
+import org.videolan.vlc.util.ContextOption.CTX_FAV_REMOVE
+import org.videolan.vlc.util.ContextOption.CTX_FIND_METADATA
+import org.videolan.vlc.util.ContextOption.CTX_GO_TO_FOLDER
+import org.videolan.vlc.util.ContextOption.CTX_GROUP_SIMILAR
+import org.videolan.vlc.util.ContextOption.CTX_INFORMATION
+import org.videolan.vlc.util.ContextOption.CTX_MARK_ALL_AS_PLAYED
+import org.videolan.vlc.util.ContextOption.CTX_MARK_ALL_AS_UNPLAYED
+import org.videolan.vlc.util.ContextOption.CTX_MARK_AS_PLAYED
+import org.videolan.vlc.util.ContextOption.CTX_MARK_AS_UNPLAYED
+import org.videolan.vlc.util.ContextOption.CTX_PLAY
+import org.videolan.vlc.util.ContextOption.CTX_PLAY_ALL
+import org.videolan.vlc.util.ContextOption.CTX_PLAY_AS_AUDIO
+import org.videolan.vlc.util.ContextOption.CTX_PLAY_FROM_START
+import org.videolan.vlc.util.ContextOption.CTX_PLAY_NEXT
+import org.videolan.vlc.util.ContextOption.CTX_PRIVATE
+import org.videolan.vlc.util.ContextOption.CTX_REMOVE_GROUP
+import org.videolan.vlc.util.ContextOption.CTX_RENAME
+import org.videolan.vlc.util.ContextOption.CTX_RENAME_GROUP
+import org.videolan.vlc.util.ContextOption.CTX_SET_RINGTONE
+import org.videolan.vlc.util.ContextOption.CTX_SHARE
+import org.videolan.vlc.util.ContextOption.CTX_UNGROUP
 import org.videolan.vlc.util.ContextOption.Companion.createCtxFolderFlags
 import org.videolan.vlc.util.ContextOption.Companion.createCtxVideoFlags
 import org.videolan.vlc.util.ContextOption.Companion.createCtxVideoGroupFlags
 import org.videolan.vlc.util.Permissions
-import org.videolan.vlc.util.getParentFolder
 import org.videolan.vlc.util.isMissing
 import org.videolan.vlc.util.isTalkbackIsEnabled
 import org.videolan.vlc.util.launchWhenStarted
@@ -269,42 +296,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
         }
     }
 
-    private fun Click.process() {
-        if (position >= 0) {
-            val item = historyViewModel.dataset.get(position)
-            when (this) {
-                is SimpleClick -> onClickHistory(position, item)
-                is LongClick -> onLongClickHistory(position, item)
-                is ImageClick -> {
-                    if (actionMode != null) onClickHistory(position, item)
-                    else onLongClickHistory(position, item)
-                }
-                else -> {}
-            }
-        }
-    }
 
-    private fun onClickHistory(position: Int, item: MediaWrapper) {
-        if (KeyHelper.isShiftPressed && actionMode == null) {
-            onLongClickHistory(position, item)
-            return
-        }
-        if (actionMode != null) {
-            multiSelectHelper.toggleSelection(position)
-            historyAdapter.notifyItemChanged(position, item)
-            invalidateActionMode()
-            return
-        }
-        if (position != 0) historyViewModel.moveUp(item)
-        MediaUtils.openMedia(requireContext(), item)
-    }
-
-    private fun onLongClickHistory(position: Int, item: MediaWrapper) {
-        multiSelectHelper.toggleSelection(position, true)
-        historyAdapter.notifyItemChanged(position, item)
-        if (actionMode == null) startActionMode()
-        invalidateActionMode()
-    }
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.ml_menu_last_playlist).isVisible =
@@ -320,6 +312,12 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.ml_menu_select -> {
+                onLongClick(0)
+            }
+            R.id.ml_menu_network_stream -> {
+                MRLPanelDialog().show(requireActivity().supportFragmentManager, TAG_)
+            }
             R.id.ml_menu_last_playlist -> {
                 MediaUtils.loadlastPlaylist(activity, PLAYLIST_TYPE_VIDEO)
             }
@@ -369,7 +367,9 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 ).show(requireActivity().supportFragmentManager, "DisplaySettingsDialog")
             }
 
-            else -> return super.onOptionsItemSelected(item)
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
         }
         return true
     }
@@ -1161,6 +1161,43 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
     }
 
 
+    private fun Click.process() {
+        if (position >= 0) {
+            val item = historyViewModel.dataset.get(position)
+            when (this) {
+                is SimpleClick -> onClickHistory(position, item)
+                is LongClick -> onLongClickHistory(position, item)
+                is ImageClick -> {
+                    if (actionMode != null) onClickHistory(position, item)
+                    else onLongClickHistory(position, item)
+                }
+
+                else -> {}
+            }
+        }
+    }
+
+    private fun onClickHistory(position: Int, item: MediaWrapper) {
+        if (KeyHelper.isShiftPressed && actionMode == null) {
+            onLongClickHistory(position, item)
+            return
+        }
+        if (actionMode != null) {
+            multiSelectHelper.toggleSelection(position)
+            historyAdapter.notifyItemChanged(position, item)
+            invalidateActionMode()
+            return
+        }
+        if (position != 0) historyViewModel.moveUp(item)
+        MediaUtils.openMedia(requireContext(), item)
+    }
+
+    private fun onLongClickHistory(position: Int, item: MediaWrapper) {
+        multiSelectHelperHistory.toggleSelection(position, true)
+        historyAdapter.notifyItemChanged(position, item)
+        if (actionMode == null) startActionMode()
+        invalidateActionMode()
+    }
 }
 
 sealed class VideoAction

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                                      xmlns:app="http://schemas.android.com/apk/res-auto"
-                                      android:key="ui_category"
-                                      android:title="@string/interface_prefs_screen">
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="ui_category"
+    android:title="@string/interface_prefs_screen">
 
     <ListPreference
             android:defaultValue="-1"

@@ -599,6 +599,7 @@
     <string name="tv_ui_title">Android TV interface</string>
     <string name="tv_ui_summary">Change UI to TV adapted theme</string>
     <string name="medialibrary">Media library</string>
+    <string name="general_pref_title">General</string>
     <string name="medialibrary_directories">Media library folders</string>
 
     <!--What's new-->
