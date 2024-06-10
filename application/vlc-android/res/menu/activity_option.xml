@@ -3,6 +3,27 @@
       xmlns:vlc="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:orderInCategory="0"
+        android:id="@+id/ml_menu_select"
+        android:icon="@drawable/ic_select"
+        android:title="@string/select"
+        vlc:showAsAction="collapseActionView"/>
+
+    <item
+        android:orderInCategory="0"
+        android:id="@+id/ml_menu_network_stream"
+        android:icon="@drawable/ic_network_stream"
+        android:title="@string/network_stream"
+        vlc:showAsAction="collapseActionView"/>
+
+    <item
+        android:orderInCategory="0"
+        android:id="@+id/ml_menu_theme"
+        android:icon="@drawable/ic_theme_brush"
+        android:title="@string/theme"
+        vlc:showAsAction="collapseActionView"/>
+
+    <item
             android:orderInCategory="0"
             android:id="@+id/pin_relocked"
             android:icon="@drawable/ic_pin_lock"
@@ -179,8 +200,23 @@
             android:orderInCategory="4"
             android:id="@+id/ml_menu_refresh"
             android:icon="@drawable/ic_refresh"
-            vlc:showAsAction="never"
+            vlc:showAsAction="collapseActionView"
             android:title="@string/refresh"/>
+
+    <item
+        android:orderInCategory="4"
+        android:id="@+id/ml_menu_equalizer"
+        android:icon="@drawable/ic_equalizer_action"
+        vlc:showAsAction="collapseActionView"
+        android:title="@string/equalizer"/>
+
+    <item
+        android:orderInCategory="4"
+        android:id="@+id/ml_menu_settings"
+        android:icon="@drawable/ic_settings"
+        vlc:showAsAction="collapseActionView"
+        android:title="@string/action_settings"/>
+
     <item
             android:orderInCategory="3"
             android:id="@+id/ml_menu_custom_dir"

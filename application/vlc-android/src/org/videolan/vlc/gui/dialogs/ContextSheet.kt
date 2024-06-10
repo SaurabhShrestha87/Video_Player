@@ -32,7 +32,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+import org.videolan.medialibrary.Tools
+import org.videolan.medialibrary.interfaces.media.Folder
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
+import org.videolan.medialibrary.interfaces.media.VideoGroup
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.resources.AndroidDevices
 import org.videolan.tools.isStarted
@@ -40,8 +43,47 @@ import org.videolan.vlc.R
 import org.videolan.vlc.databinding.ContextItemBinding
 import org.videolan.vlc.databinding.ContextualSheetBinding
 import org.videolan.vlc.util.ContextOption
-import org.videolan.vlc.util.ContextOption.*
+import org.videolan.vlc.util.ContextOption.CTX_ADD_FOLDER_AND_SUB_PLAYLIST
+import org.videolan.vlc.util.ContextOption.CTX_ADD_FOLDER_PLAYLIST
+import org.videolan.vlc.util.ContextOption.CTX_ADD_GROUP
+import org.videolan.vlc.util.ContextOption.CTX_ADD_SCANNED
+import org.videolan.vlc.util.ContextOption.CTX_ADD_SHORTCUT
+import org.videolan.vlc.util.ContextOption.CTX_ADD_TO_PLAYLIST
+import org.videolan.vlc.util.ContextOption.CTX_APPEND
+import org.videolan.vlc.util.ContextOption.CTX_BAN_FOLDER
+import org.videolan.vlc.util.ContextOption.CTX_COPY
+import org.videolan.vlc.util.ContextOption.CTX_CUSTOM_REMOVE
+import org.videolan.vlc.util.ContextOption.CTX_DELETE
+import org.videolan.vlc.util.ContextOption.CTX_DOWNLOAD_SUBTITLES
+import org.videolan.vlc.util.ContextOption.CTX_FAV_ADD
+import org.videolan.vlc.util.ContextOption.CTX_FAV_EDIT
+import org.videolan.vlc.util.ContextOption.CTX_FAV_REMOVE
+import org.videolan.vlc.util.ContextOption.CTX_FIND_METADATA
+import org.videolan.vlc.util.ContextOption.CTX_GO_TO_FOLDER
+import org.videolan.vlc.util.ContextOption.CTX_GROUP_SIMILAR
+import org.videolan.vlc.util.ContextOption.CTX_INFORMATION
+import org.videolan.vlc.util.ContextOption.CTX_MARK_ALL_AS_PLAYED
+import org.videolan.vlc.util.ContextOption.CTX_MARK_ALL_AS_UNPLAYED
+import org.videolan.vlc.util.ContextOption.CTX_MARK_AS_PLAYED
+import org.videolan.vlc.util.ContextOption.CTX_MARK_AS_UNPLAYED
+import org.videolan.vlc.util.ContextOption.CTX_PLAY
+import org.videolan.vlc.util.ContextOption.CTX_PLAY_ALL
+import org.videolan.vlc.util.ContextOption.CTX_PLAY_AS_AUDIO
+import org.videolan.vlc.util.ContextOption.CTX_PLAY_FROM_START
+import org.videolan.vlc.util.ContextOption.CTX_PLAY_NEXT
+import org.videolan.vlc.util.ContextOption.CTX_PLAY_SHUFFLE
+import org.videolan.vlc.util.ContextOption.CTX_PRIVATE
+import org.videolan.vlc.util.ContextOption.CTX_REMOVE_FROM_PLAYLIST
+import org.videolan.vlc.util.ContextOption.CTX_REMOVE_GROUP
+import org.videolan.vlc.util.ContextOption.CTX_RENAME
+import org.videolan.vlc.util.ContextOption.CTX_RENAME_GROUP
+import org.videolan.vlc.util.ContextOption.CTX_SET_RINGTONE
+import org.videolan.vlc.util.ContextOption.CTX_SHARE
+import org.videolan.vlc.util.ContextOption.CTX_STOP_AFTER_THIS
+import org.videolan.vlc.util.ContextOption.CTX_UNGROUP
 import org.videolan.vlc.util.FlagSet
+import org.videolan.vlc.util.generateResolutionClass
+import org.videolan.vlc.util.getPresenceDescription
 
 const val CTX_TITLE_KEY = "CTX_TITLE_KEY"
 const val CTX_POSITION_KEY = "CTX_POSITION_KEY"
@@ -94,7 +136,34 @@ class ContextSheet : VLCBottomSheetDialogFragment() {
                 is MediaWrapper -> media.artworkURL
                 else -> media.artworkMrl
             }
-            binding.showCover = !artwork.isNullOrBlank()
+            when (media) {
+                is Folder -> {
+                    val count = media.mediaCount(Folder.TYPE_FOLDER_VIDEO)
+                    binding.time = requireContext().resources.getQuantityString(
+                        R.plurals.videos_quantity,
+                        count,
+                        count
+                    )
+                }
+
+                is VideoGroup -> {
+                    val count = media.mediaCount()
+                    binding.time =
+                        if (count < 2) null else if (media.presentCount == media.mediaCount()) requireContext().resources.getQuantityString(
+                            R.plurals.videos_quantity,
+                            count,
+                            count
+                        ) else if (media.presentCount == 0) requireContext().resources.getString(R.string.no_video) else media.getPresenceDescription()
+                }
+
+                is MediaWrapper -> {
+                    val resolution = generateResolutionClass(media.width, media.height)
+                    binding.time = "${Tools.millisToString(media.length)}  •  $resolution"
+                }
+            }
+
+            binding.showCover =
+                !artwork.isNullOrBlank() || media.itemType == MediaLibraryItem.TYPE_FOLDER
             binding.ctxCoverTitle.text = media.title
             binding.ctxTitle.text = media.title
         } else if (arguments?.containsKey(CTX_TITLE_KEY) == true) {
@@ -117,8 +186,8 @@ class ContextSheet : VLCBottomSheetDialogFragment() {
         if (flags.contains(CTX_PLAY_SHUFFLE)) add(Simple(CTX_PLAY_SHUFFLE, getString(R.string.shuffle_play), R.drawable.ic_shuffle))
         if (flags.contains(CTX_PLAY_NEXT)) add(Simple(CTX_PLAY_NEXT, getString(R.string.insert_next), R.drawable.ic_play_next))
         if (flags.contains(CTX_DOWNLOAD_SUBTITLES)) add(Simple(CTX_DOWNLOAD_SUBTITLES, getString(R.string.download_subtitles), R.drawable.ic_download_subtitles))
-        if (flags.contains(CTX_INFORMATION)) add(Simple(CTX_INFORMATION, getString(R.string.info), R.drawable.ic_information))
         if (flags.contains(CTX_PRIVATE)) add(Simple(CTX_PRIVATE, getString(R.string.lock_in_private_folder), R.drawable.ic_folder_lock))
+        if (flags.contains(CTX_INFORMATION)) add(Simple(CTX_INFORMATION, getString(R.string.info), R.drawable.ic_information))
         if (flags.contains(CTX_PLAY_AS_AUDIO)) add(Simple(CTX_PLAY_AS_AUDIO, getString(R.string.play_as_audio), R.drawable.ic_play_as_audio))
         if (flags.contains(CTX_BAN_FOLDER)) add(Simple(CTX_BAN_FOLDER, getString(R.string.group_ban_folder), R.drawable.ic_hide_source))
         if (flags.contains(CTX_ADD_TO_PLAYLIST)) add(Simple(CTX_ADD_TO_PLAYLIST, getString(R.string.add_to_playlist), R.drawable.ic_add_to_playlist))

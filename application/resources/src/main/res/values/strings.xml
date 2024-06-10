@@ -327,6 +327,7 @@
     <string name="enable_black_theme">Black theme</string>
     <string name="dark_theme">Dark theme</string>
     <string name="theme_auto">Auto theme</string>
+    <string name="theme">Theme</string>
     <string name="subtitle_text_encoding">Subtitle text encoding</string>
     <string name="subtitle_preferred_language">Preferred subtitle language</string>
     <string name="daynight_title">DayNight mode</string>
@@ -575,6 +576,7 @@
     <string name="retry">Retry</string>
     <string name="subs_download_error">Service unavailable. Please try again later</string>
 
+    <string name="network_stream">Network Stream</string>
     <string name="network_browsing">Local Network</string>
     <string name="browsing">Browsing</string>
 
@@ -1154,6 +1156,7 @@
     <string name="talkback_track" translatable="false">%s: %s. %s</string>
     <string name="talkback_subtitle_dowload_item">Language: %1$s. %2$s. Name: %3$s</string>
     <string name="selected">Selected</string>
+    <string name="select">Select</string>
     <string name="talkback_increase_delay">Increase delay</string>
     <string name="talkback_decrease_delay">Decrease delay</string>
     <string name="talkback_increase_speed">Increase speed</string>

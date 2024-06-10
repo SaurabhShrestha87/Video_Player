@@ -70,9 +70,10 @@ enum class ContextOption : Flag {
         }
 
         fun createCtxVideoFlags() = createBaseFlags().apply {
-            addAll(CTX_DELETE,CTX_PRIVATE, CTX_DOWNLOAD_SUBTITLES, CTX_INFORMATION)
+            addAll(CTX_DELETE, CTX_RENAME, CTX_PRIVATE, CTX_DOWNLOAD_SUBTITLES, CTX_INFORMATION)
             addAll(CTX_PLAY, CTX_PLAY_ALL, CTX_PLAY_AS_AUDIO, CTX_PLAY_NEXT)
             addAll(CTX_SET_RINGTONE, CTX_SHARE)
+            removeAll(CTX_GROUP_SIMILAR, CTX_REMOVE_GROUP, CTX_ADD_GROUP, CTX_RENAME_GROUP)
         }
 
         fun createCtxTrackFlags() = createBaseFlags().apply {

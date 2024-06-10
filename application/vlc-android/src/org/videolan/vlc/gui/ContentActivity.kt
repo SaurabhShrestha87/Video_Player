@@ -23,12 +23,14 @@
 
 package org.videolan.vlc.gui
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.SearchView
 import org.videolan.resources.AndroidDevices
 import org.videolan.tools.Settings
@@ -76,10 +78,12 @@ open class ContentActivity : AudioPlayerContainerActivity(), SearchView.OnQueryT
         if (::searchItem.isInitialized) searchItem.collapseActionView()
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val current = currentFragment
         super.onCreateOptionsMenu(menu)
         if (current is AboutFragment) return true
+        if (menu is MenuBuilder) menu.setOptionalIconsVisible(true)
         menuInflater.inflate(R.menu.activity_option, menu)
         if (current is Filterable) {
             val filterable = current as Filterable?

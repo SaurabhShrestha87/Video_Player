@@ -1094,9 +1094,9 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                             if (item.seen > 0) add(CTX_MARK_AS_UNPLAYED) else add(CTX_MARK_AS_PLAYED)
                             if (item.time != 0L) add(CTX_PLAY_FROM_START)
                             if (viewModel.groupingType == VideoGroupingType.NAME || viewModel.group != null) {
-                                if (viewModel.group != null) add(CTX_REMOVE_GROUP) else addAll(
-                                    CTX_ADD_GROUP, CTX_GROUP_SIMILAR
-                                )
+//                                if (viewModel.group != null) add(CTX_REMOVE_GROUP) else addAll(
+//                                    CTX_ADD_GROUP, CTX_GROUP_SIMILAR
+//                                )
                             }
                             //go to folder
                             if (item.uri.retrieveParent() != null) add(CTX_GO_TO_FOLDER)
