@@ -29,12 +29,14 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
+import androidx.preference.SwitchPreference
 import org.videolan.libvlc.util.AndroidUtil
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.resources.KEY_AUDIO_LAST_PLAYLIST
@@ -200,6 +202,9 @@ class PreferencesFragment : BasePreferenceFragment(), SharedPreferences.OnShared
         if (sharedPreferences == null || key == null) return
 
         when (key) {
+            "auto_rescan" -> {
+                Toast.makeText(requireContext(), "rescan switched!", Toast.LENGTH_SHORT).show()
+            }
             "video_action_switch" -> if (!AndroidUtil.isOOrLater && findPreference<ListPreference>(key)?.value == "2"
                     && !Permissions.canDrawOverlays(activity))
                 Permissions.checkDrawOverlaysPermission(activity)

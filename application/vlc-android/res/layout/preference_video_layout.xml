@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/medialibrary"
+    android:text="@string/video_prefs_category"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_margin="10dp"
     style="@style/VLC.TextViewTitle"

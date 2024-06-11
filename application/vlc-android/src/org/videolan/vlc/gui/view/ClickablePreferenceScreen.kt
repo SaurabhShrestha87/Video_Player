@@ -5,18 +5,16 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.appcompat.widget.SwitchCompat
+import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
-import androidx.preference.TwoStatePreference
 import androidx.recyclerview.widget.RecyclerView
 import org.videolan.vlc.R
 
-class ClickableSwitchPreference(context: Context, val attrs: AttributeSet) :
-    TwoStatePreference(context, attrs, androidx.preference.R.attr.switchPreferenceCompatStyle, 0) {
+class ClickablePreferenceScreen(context: Context, val attrs: AttributeSet) :
+    Preference(context, attrs, androidx.preference.R.attr.preferenceScreenStyle, 0) {
 
-    private var switchView: View? = null
     private var rootView: View? = null
-    private var switchClickListener: View.OnClickListener? = null
+    private var prefClickListener: View.OnClickListener? = null
     private var position: Int = 1
 
     init {
@@ -31,11 +29,17 @@ class ClickableSwitchPreference(context: Context, val attrs: AttributeSet) :
             0 -> {
                 setBackground(R.drawable.pref_top_card_background)
             }
+
             1 -> {
                 setBackground(R.drawable.pref_middle_card_background)
             }
-            else -> { //2
-                setBackground(R.drawable.pref_bottom_card_background)
+
+            2 -> {
+                setBackground(R.drawable.pref_middle_card_background)
+            }
+
+            else -> { //3
+                setBackground(R.drawable.pref_single_card_background)
             }
         }
         setMargins(20, 0, 20, 0)
@@ -44,10 +48,7 @@ class ClickableSwitchPreference(context: Context, val attrs: AttributeSet) :
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         rootView = holder.itemView
-        switchView = holder.findViewById(androidx.preference.R.id.switchWidget)
-        //for some reason, it does not initialize itself;
-        (switchView as SwitchCompat).isChecked = isChecked
-        setMargins(20, 0, 20, 0)
+        if (prefClickListener != null) rootView!!.setOnClickListener(prefClickListener)
         init()
     }
 
@@ -62,12 +63,12 @@ class ClickableSwitchPreference(context: Context, val attrs: AttributeSet) :
         rootView?.background = getDrawable(context, drawable)
     }
 
-    fun setOnSwitchClickListener(listener: View.OnClickListener) {
-        switchClickListener = listener
+    fun setOnViewClickListener(listener: View.OnClickListener) {
+        prefClickListener = listener
     }
 
     override fun onClick() {
-        if (switchClickListener == null) {
+        if (prefClickListener == null) {
             super.onClick()
         }
         //Do not call super.onClick();

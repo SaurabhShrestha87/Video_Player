@@ -6,13 +6,14 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.appcompat.widget.SwitchCompat
+import androidx.preference.ListPreference
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.TwoStatePreference
 import androidx.recyclerview.widget.RecyclerView
 import org.videolan.vlc.R
 
-class ClickableSwitchPreference(context: Context, val attrs: AttributeSet) :
-    TwoStatePreference(context, attrs, androidx.preference.R.attr.switchPreferenceCompatStyle, 0) {
+class ClickableListPreference(context: Context, val attrs: AttributeSet) :
+    ListPreference(context, attrs, androidx.preference.R.attr.preferenceScreenStyle, 0) {
 
     private var switchView: View? = null
     private var rootView: View? = null
@@ -44,9 +45,7 @@ class ClickableSwitchPreference(context: Context, val attrs: AttributeSet) :
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         rootView = holder.itemView
-        switchView = holder.findViewById(androidx.preference.R.id.switchWidget)
         //for some reason, it does not initialize itself;
-        (switchView as SwitchCompat).isChecked = isChecked
         setMargins(20, 0, 20, 0)
         init()
     }

@@ -118,4 +118,7 @@
 
     <attr name="marginTopContent" format="dimension" />
 
+    <declare-styleable name="prefView">
+        <attr name="pref_position" format="integer" />
+    </declare-styleable>
 </resources>
