@@ -16,35 +16,34 @@
 
         <FrameLayout
             android:id="@+id/indicator_1"
-            style="@style/dots_style"
+            android:layout_marginEnd="24dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/white_solid_dot" />
 
         <FrameLayout
             android:id="@+id/indicator_2"
-            style="@style/dots_style"
+            android:layout_marginEnd="24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/white_solid_dot" />
 
         <FrameLayout
             android:id="@+id/indicator_3"
-            style="@style/dots_style"
+            android:layout_marginEnd="24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/white_solid_dot" />
 
         <FrameLayout
             android:id="@+id/indicator_4"
-            style="@style/dots_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/white_solid_dot" />
 
         <FrameLayout
+            android:visibility="gone"
             android:id="@+id/indicator_5"
-            style="@style/dots_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/white_solid_dot">
@@ -52,8 +51,8 @@
         </FrameLayout>
 
         <FrameLayout
+            android:visibility="gone"
             android:id="@+id/indicator_6"
-            style="@style/dots_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/white_solid_dot" />

@@ -86,7 +86,7 @@ public class GalleryActivity extends BaseActivity {
         setSupportActionBar(binding.toolbar);
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(false);
+            ab.setDisplayHomeAsUpEnabled(true);
             ab.setTitle(R.string.gallery_title);
         }
         init();
@@ -164,7 +164,6 @@ public class GalleryActivity extends BaseActivity {
             }
         }
     }
-
 
     private void onSelectionModeChanged(boolean inSelectionMode) {
         this.inSelectionMode = inSelectionMode;

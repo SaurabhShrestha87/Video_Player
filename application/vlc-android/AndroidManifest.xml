@@ -1221,14 +1221,17 @@
                 android:foregroundServiceType="dataSync" />
         <activity
             android:name=".gui.privacy.vault.GalleryDirectoryActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.VLC" />
         <activity
             android:name=".gui.privacy.vault.LaunchActivity"
-            android:exported="true"/>
+            android:exported="true"
+            android:theme="@style/Theme.VLC" />
 
         <activity
             android:name=".gui.privacy.vault.GalleryActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.VLC">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

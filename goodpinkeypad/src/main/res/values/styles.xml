@@ -23,9 +23,4 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="dots_style">
-        <item name="android:layout_marginEnd">24dp</item>
-    </style>
-
-
 </resources>
