@@ -100,8 +100,7 @@ public class GalleryActivity extends BaseActivity {
                 this.shareIntent = intent;
                 this.isWaitingForUnlock = true;
                 Toaster.getInstance(this).showShort(getString(R.string.gallery_share_locked));
-                startActivity(new Intent(this, LaunchActivity.class)
-                        .putExtra(LaunchActivity.EXTRA_ONLY_UNLOCK, true));
+                startActivity(new Intent(this, LaunchActivity.class).putExtra(LaunchActivity.EXTRA_ONLY_UNLOCK, true));
             } else {
                 handleShareIntent(intent, action, type);
             }
@@ -168,35 +167,35 @@ public class GalleryActivity extends BaseActivity {
     private void onSelectionModeChanged(boolean inSelectionMode) {
         this.inSelectionMode = inSelectionMode;
         if (inSelectionMode) {
-            binding.lLButtons.setVisibility(View.GONE);
+            binding.btnImportFiles.setVisibility(View.GONE);
+            binding.btnAddFolder.setVisibility(View.GONE);
             binding.lLSelectionButtons.setVisibility(View.VISIBLE);
         } else {
             binding.lLSelectionButtons.setVisibility(View.GONE);
-            binding.lLButtons.setVisibility(View.VISIBLE);
+            binding.btnImportFiles.setVisibility(View.VISIBLE);
+            binding.btnAddFolder.setVisibility(View.VISIBLE);
         }
     }
 
     private void setClickListeners() {
         binding.btnAddFolder.setOnClickListener(v -> activityLauncher.launch(new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), this::addFolder));
         binding.btnImportFiles.setOnClickListener(v -> showImportOverlay(true));
-        binding.btnRemoveFolder.setOnClickListener(v -> Dialogs.showConfirmationDialog(this, getString(R.string.dialog_remove_folder_title),
-                getResources().getQuantityString(R.plurals.dialog_remove_folder_message, galleryGridAdapter.getSelectedFiles().size()),
-                (dialog, which) -> {
-                    for (GalleryFile f : galleryGridAdapter.getSelectedFiles()) {
-                        settings.removeGalleryDirectory(f.getUri());
-                        try {
-                            getContentResolver().releasePersistableUriPermission(f.getUri(), Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                        } catch (SecurityException e) {
-                            e.printStackTrace();
-                        }
-                        int i = galleryFiles.indexOf(f);
-                        if (i >= 0) {
-                            galleryFiles.remove(i);
-                            galleryGridAdapter.notifyItemRemoved(i);
-                        }
-                    }
-                    galleryGridAdapter.onSelectionModeChanged(false);
-                }));
+        binding.btnRemoveFolder.setOnClickListener(v -> Dialogs.showConfirmationDialog(this, getString(R.string.dialog_remove_folder_title), getResources().getQuantityString(R.plurals.dialog_remove_folder_message, galleryGridAdapter.getSelectedFiles().size()), (dialog, which) -> {
+            for (GalleryFile f : galleryGridAdapter.getSelectedFiles()) {
+                settings.removeGalleryDirectory(f.getUri());
+                try {
+                    getContentResolver().releasePersistableUriPermission(f.getUri(), Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                }
+                int i = galleryFiles.indexOf(f);
+                if (i >= 0) {
+                    galleryFiles.remove(i);
+                    galleryGridAdapter.notifyItemRemoved(i);
+                }
+            }
+            galleryGridAdapter.onSelectionModeChanged(false);
+        }));
         binding.btnImportImages.setOnClickListener(v -> {
             FileStuff.pickImageFiles(activityLauncher, result -> onImportImagesOrVideos(result.getData()));
             showImportOverlay(false);
@@ -328,8 +327,7 @@ public class GalleryActivity extends BaseActivity {
             final IOnProgress onProgress = progress1 -> {
                 if (System.currentTimeMillis() - lastPublish[0] > 20) {
                     lastPublish[0] = System.currentTimeMillis();
-                    runOnUiThread(() -> setLoadingProgress(progress[0], documentFiles.size(), decimalFormat.format((bytesDone[0] + progress1) / 1000000.0), totalMB,
-                            (int) Math.round((bytesDone[0] + progress1) / finalTotalSize * 100.0)));
+                    runOnUiThread(() -> setLoadingProgress(progress[0], documentFiles.size(), decimalFormat.format((bytesDone[0] + progress1) / 1000000.0), totalMB, (int) Math.round((bytesDone[0] + progress1) / finalTotalSize * 100.0)));
                 }
             };
             for (DocumentFile file : documentFiles) {
@@ -437,11 +435,6 @@ public class GalleryActivity extends BaseActivity {
                 Toaster.getInstance(this).showLong(getResources().getQuantityString(R.plurals.edit_included_removed, selectedToRemove.size(), selectedToRemove.size()));
                 findFolders();
             });
-        } else if (id == R.id.about) {
-            Dialogs.showAboutDialog(this);
-        } else if (id == R.id.lock) {
-            lock();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -496,8 +489,8 @@ public class GalleryActivity extends BaseActivity {
         } else if (inSelectionMode && galleryGridAdapter != null) {
             galleryGridAdapter.onSelectionModeChanged(false);
         } else if (snackBarBackPressed == null || !snackBarBackPressed.isShownOrQueued()) {
-            snackBarBackPressed = Snackbar.make(binding.lLButtons, getString(R.string.main_press_back_again_to_exit), 2000);
-            snackBarBackPressed.setAnchorView(binding.lLButtons);
+            snackBarBackPressed = Snackbar.make(binding.btnAddFolder, getString(R.string.main_press_back_again_to_exit), 2000);
+            snackBarBackPressed.setAnchorView(binding.btnAddFolder);
             snackBarBackPressed.show();
         } else {
             if (isTaskRoot()) {
