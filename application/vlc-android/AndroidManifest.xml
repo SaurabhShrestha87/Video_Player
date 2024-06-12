@@ -1219,6 +1219,37 @@
         <service android:name=".DebugLogService"
                 android:process=":logger"
                 android:foregroundServiceType="dataSync" />
+        <activity
+            android:name=".gui.privacy.vault.GalleryDirectoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".gui.privacy.vault.LaunchActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".gui.privacy.vault.GalleryActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

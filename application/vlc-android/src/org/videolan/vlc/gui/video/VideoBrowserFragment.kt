@@ -53,6 +53,7 @@ import org.videolan.vlc.gui.dialogs.DisplaySettingsDialog
 import org.videolan.vlc.gui.dialogs.VIDEO_GROUPING
 import org.videolan.vlc.gui.network.MRLPanelDialog
 import org.videolan.vlc.gui.network.TAG_
+import org.videolan.vlc.gui.privacy.vault.LaunchActivity
 import org.videolan.vlc.interfaces.Filterable
 import org.videolan.vlc.util.findCurrentFragment
 import org.videolan.vlc.viewmodels.DisplaySettingsViewModel
@@ -133,19 +134,15 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
         tabTitle?.setTextColor(R.attr.tab_unselected_color)
         when (tab.position) {
             1 -> {
-                Toast.makeText(requireContext(), "Network!!", Toast.LENGTH_SHORT).show()
                 MRLPanelDialog().show(requireActivity().supportFragmentManager, TAG_)
             }
             2 -> {
-                Toast.makeText(requireContext(), "Cleaner!!", Toast.LENGTH_SHORT).show()
                 val i = Intent(requireActivity(), SecondaryActivity::class.java)
                 i.putExtra("fragment", SecondaryActivity.CLEANER)
                 requireActivity().startActivityForResult(i, SecondaryActivity.ACTIVITY_RESULT_SECONDARY)
             }
             3 -> {
-                Toast.makeText(requireContext(), "Privacy!!", Toast.LENGTH_SHORT).show()
-                val i = Intent(requireActivity(), SecondaryActivity::class.java)
-                i.putExtra("fragment", SecondaryActivity.PRIVACY)
+                val i = Intent(requireActivity(), LaunchActivity::class.java)
                 requireActivity().startActivityForResult(
                     i,
                     SecondaryActivity.ACTIVITY_RESULT_SECONDARY

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/lock"
+        android:icon="@drawable/ic_folder_lock"
+        android:title="@string/menu_lock_vault"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/toggle_filename"
+        android:icon="@drawable/ic_view_grid"
+        android:iconTint="@color/black"
+        android:title="@string/menu_toggle_filename"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/select_all"
+        android:icon="@drawable/ic_select"
+        android:title="@string/menu_select_all"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/export_selected"
+        android:icon="@drawable/ic_outline_file_download_24"
+        android:title="@string/gallery_export_selected_files"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/copy_selected"
+        android:icon="@drawable/outline_file_copy_24"
+        android:title="@string/gallery_copy_selected_files"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/move_selected"
+        android:icon="@drawable/outline_drive_file_move_24"
+        android:title="@string/gallery_move_selected_files"
+        app:showAsAction="ifRoom"/>
+</menu>
