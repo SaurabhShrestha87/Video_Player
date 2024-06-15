@@ -21,6 +21,7 @@
 package org.videolan.vlc.providers.medialibrary
 
 import android.content.Context
+import android.net.Uri
 import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.Config
@@ -33,6 +34,9 @@ import kotlinx.coroutines.withContext
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.media.MediaLibraryItem
+import org.videolan.resources.KEY_CLEANER
+import org.videolan.resources.KEY_CLEANER_BIG
+import org.videolan.resources.KEY_CLEANER_WATCHED
 import org.videolan.resources.MEDIALIBRARY_PAGE_SIZE
 import org.videolan.resources.util.HeaderProvider
 import org.videolan.tools.Settings
@@ -42,6 +46,7 @@ import org.videolan.vlc.util.ModelsHelper
 import org.videolan.vlc.util.Permissions
 import org.videolan.vlc.util.SortModule
 import org.videolan.vlc.viewmodels.SortableModel
+import java.io.File
 import kotlin.math.min
 
 abstract class MedialibraryProvider<T : MediaLibraryItem>(val context: Context, val model: SortableModel) : HeaderProvider(),
@@ -64,6 +69,7 @@ abstract class MedialibraryProvider<T : MediaLibraryItem>(val context: Context, 
         }
 
     protected open val sortKey : String = this.javaClass.simpleName
+    var cleanerType :String? =  null
     var sort = settings.getInt(sortKey, Medialibrary.SORT_DEFAULT)
     var desc = settings.getBoolean("${sortKey}_desc", false)
     var onlyFavorites = settings.getBoolean("${sortKey}_only_favs", false)
@@ -134,6 +140,9 @@ abstract class MedialibraryProvider<T : MediaLibraryItem>(val context: Context, 
         }
     }
 
+    fun isCleaner(cleanerType : String){
+        this.cleanerType = cleanerType
+    }
     fun showOnlyFavs(showOnlyFavs:Boolean) {
         onlyFavorites = showOnlyFavs
         settings.edit {
@@ -175,12 +184,30 @@ abstract class MedialibraryProvider<T : MediaLibraryItem>(val context: Context, 
     inner class MLDataSource : PositionalDataSource<T>() {
 
         override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<T>) {
-            val page = getPage(params.requestedLoadSize, params.requestedStartPosition)
+            val initialPage = getPage(params.requestedLoadSize, params.requestedStartPosition)
+            var page = initialPage
+            if(cleanerType != null) {
+                page = applyFilter(initialPage) as Array<T>
+            }
             val count = if (page.size < params.requestedLoadSize) page.size else getTotalCount()
             try {
                 callback.onResult(page.toList(), params.requestedStartPosition, count)
-            } catch (e: IllegalArgumentException) {}
+            } catch (_: IllegalArgumentException) {}
             isRefreshing = !medialibrary.isStarted
+        }
+
+         private fun applyFilter(item: Array<T>): Array<MediaLibraryItem> {
+            val items = item.toMutableList()
+            when (cleanerType) {
+                KEY_CLEANER_WATCHED -> items.removeIf {
+                    (it is MediaWrapper && it.seen == 0L)
+                }
+                KEY_CLEANER_BIG -> items.removeIf {
+                    (it is MediaWrapper && File(Uri.decode(it.location.substring(5))).length() < 50 * 1024 * 1024)
+                }
+                else -> {}
+            }
+             return items.toTypedArray()
         }
 
         override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<T>) {
@@ -190,6 +217,8 @@ abstract class MedialibraryProvider<T : MediaLibraryItem>(val context: Context, 
     }
 
     inner class MLDatasourceFactory : DataSource.Factory<Int, T>() {
+
+
         override fun create() = MLDataSource().also { dataSource = it }
     }
 }

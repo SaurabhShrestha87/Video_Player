@@ -231,8 +231,6 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
 
         const val STREAMS = "streams"
         const val HISTORY = "history"
-        const val CLEANER_WATCHED = "cleanerWatched"
-        const val CLEANER_SPACE = "cleanerSpace"
         const val VIDEO_GROUP_LIST = "videoGroupList"
         const val STORAGE_BROWSER = "storage_browser"
         const val STORAGE_BROWSER_ONBOARDING = "storage_browser_onboarding"

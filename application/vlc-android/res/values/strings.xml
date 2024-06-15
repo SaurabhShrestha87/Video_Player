@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="cleaner">Cleaner</string>
+    <string name="clean">Clean</string>
     <string name="privacy">Privacy</string>
     <string name="all_folder">All Folder</string>
     <string name="all_videos">All Videos</string>

@@ -38,10 +38,11 @@ import org.videolan.tools.FORCE_PLAY_ALL_VIDEO
 import org.videolan.tools.Settings
 import org.videolan.tools.isStarted
 import org.videolan.tools.retrieveParent
+import org.videolan.vlc.gui.CleanerFragment
 import org.videolan.vlc.gui.helpers.UiTools
 import org.videolan.vlc.gui.helpers.UiTools.addToPlaylist
-import org.videolan.vlc.gui.video.CleanerListFragment
 import org.videolan.vlc.gui.video.VideoGridFragment
+import org.videolan.vlc.gui.video.cleaner.CleanerListFragment
 import org.videolan.vlc.media.MediaUtils
 import org.videolan.vlc.media.PlaylistManager
 import org.videolan.vlc.media.getAll
@@ -266,4 +267,6 @@ enum class VideoGroupingType {
 internal fun VideoGridFragment.getViewModel(type: VideoGroupingType = VideoGroupingType.NONE, folder: Folder?, group: VideoGroup?) = ViewModelProvider(requireActivity(), VideosViewModel.Factory(requireContext(), type, folder, group))[VideosViewModel::class.java]
 
 internal fun CleanerListFragment.getViewModel(type: VideoGroupingType = VideoGroupingType.NONE, folder: Folder?, group: VideoGroup?) = ViewModelProvider(requireActivity(), VideosViewModel.Factory(requireContext(), type, folder, group))[VideosViewModel::class.java]
+
+internal fun CleanerFragment.getViewModel(type: VideoGroupingType = VideoGroupingType.NONE, folder: Folder?, group: VideoGroup?) = ViewModelProvider(requireActivity(), VideosViewModel.Factory(requireContext(), type, folder, group))[VideosViewModel::class.java]
 
