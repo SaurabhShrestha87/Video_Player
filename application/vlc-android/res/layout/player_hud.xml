@@ -126,6 +126,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <include
+            android:id="@+id/adv_function_main"
+            layout="@layout/adv_option_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            vlc:layout_constraintEnd_toEndOf="parent"
+            vlc:layout_constraintStart_toStartOf="parent"
+            vlc:layout_constraintTop_toTopOf="parent" />
+
 
         <include
                 android:id="@+id/ab_repeat_container"

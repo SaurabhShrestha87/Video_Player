@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:longClickable="true"
+    android:focusable="true"
+    android:gravity="center">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <ImageButton
+                android:id="@+id/moonButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginVertical="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_moon" />
+
+            <ImageButton
+                android:id="@+id/repeatButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_repeat_ab" />
+
+            <ImageButton
+                android:id="@+id/popupButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_popup" />
+
+            <ImageButton
+                android:id="@+id/iconSetButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_set_equalizer" />
+
+            <ImageButton
+                android:id="@+id/circleButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_slider_horizontal" />
+
+            <ImageButton
+                android:id="@+id/volumeButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_volume_high" />
+
+            <ImageButton
+                android:id="@+id/cameraButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_camera" />
+
+            <ImageButton
+                android:id="@+id/rotateButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_rotate_right" />
+
+            <ImageButton
+                android:id="@+id/volumeUpButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_volume_off" />
+
+            <ImageButton
+                android:id="@+id/musicPlayButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_play_as_audio" />
+
+            <TextView
+                android:id="@+id/textButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:text="1.0x"
+                android:textColor="@color/white" />
+
+            <ImageButton
+                android:id="@+id/groupButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginVertical="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_lock_player" />
+
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
