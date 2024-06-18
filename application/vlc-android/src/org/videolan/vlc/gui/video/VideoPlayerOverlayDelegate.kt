@@ -617,7 +617,7 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
             hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.cameraButton).setOnClickListener(player)
             hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.rotateButton).setOnClickListener(player)
             hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.musicPlayButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.speedButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<TextView>(R.id.speedButton).setOnClickListener(player)
             hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.lockButton).setOnClickListener(player)
 
 
