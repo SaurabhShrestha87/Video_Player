@@ -39,8 +39,10 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.ViewStubCompat
@@ -603,6 +605,22 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
             hudBinding.abRepeatReset.setOnClickListener(player)
             hudBinding.abRepeatStop.setOnClickListener(player)
             abRepeatAddMarker.setOnClickListener(player)
+
+
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.moonButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.repeatButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.popupButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.equalizerButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.sliderButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.volumeSetButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.muteButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.cameraButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.rotateButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.musicPlayButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.speedButton).setOnClickListener(player)
+            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.lockButton).setOnClickListener(player)
+
+
             hudBinding.orientationToggle.setOnClickListener(if (enabled) player else null)
             hudBinding.orientationToggle.setOnLongClickListener(if (enabled) player else null)
             hudBinding.swipeToUnlock.setOnStartTouchingListener { showOverlayTimeout(VideoPlayerActivity.OVERLAY_INFINITE) }

@@ -129,6 +129,8 @@
         <include
             android:id="@+id/adv_function_main"
             layout="@layout/adv_option_main"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             vlc:layout_constraintEnd_toEndOf="parent"

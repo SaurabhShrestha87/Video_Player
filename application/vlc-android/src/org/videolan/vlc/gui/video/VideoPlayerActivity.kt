@@ -66,6 +66,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.CheckBox
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
@@ -1892,13 +1893,13 @@ open class VideoPlayerActivity : AppCompatActivity(), PlaybackService.Callback, 
                 clone = displayManager.isSecondary
                 recreate()
             }
-            R.id.playback_speed_quick_action -> {
+            R.id.playback_speed_quick_action, R.id.speedButton -> {
                 val newFragment = PlaybackSpeedDialog.newInstance()
                 newFragment.onDismissListener = DialogInterface.OnDismissListener { overlayDelegate.dimStatusBar(true) }
                 newFragment.show(supportFragmentManager, "playback_speed")
                 overlayDelegate.hideOverlay(false)
             }
-            R.id.sleep_quick_action -> {
+            R.id.sleep_quick_action, R.id.moonButton -> {
                 val newFragment = SleepTimerDialog.newInstance()
                 newFragment.onDismissListener = DialogInterface.OnDismissListener { overlayDelegate.dimStatusBar(true) }
                 newFragment.show(supportFragmentManager, "time")
@@ -1912,9 +1913,28 @@ open class VideoPlayerActivity : AppCompatActivity(), PlaybackService.Callback, 
                 delayDelegate.showSubsDelaySetting()
                 overlayDelegate.hideOverlay(false)
             }
-            R.id.player_screenshot -> {
+            R.id.player_screenshot, R.id.cameraButton -> {
                 overlayDelegate.hideOverlay(false)
                 takeScreenshot()
+            }
+            R.id.repeatButton -> service?.playlistManager?.toggleABRepeat()
+            R.id.popupButton -> {
+                switchToPopup()
+            }
+            R.id.equalizerButton -> {
+                showEqualizer()
+            }
+            R.id.sliderButton -> {
+                Toast.makeText(this@VideoPlayerActivity, "TODO: SLIDER?!!", Toast.LENGTH_SHORT).show()
+            }
+            R.id.volumeSetButton -> {
+                Toast.makeText(this@VideoPlayerActivity, "TODO: VOLUME POPUP!!", Toast.LENGTH_SHORT).show()
+            }
+            R.id.muteButton -> {mute(true)}
+            R.id.rotateButton -> {orientationDelegate.displayOrientation()}
+            R.id.musicPlayButton -> {switchToAudioMode(true)}
+            R.id.lockButton -> {
+                this.toggleLock()
             }
         }
     }

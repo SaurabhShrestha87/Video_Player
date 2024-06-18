@@ -6,7 +6,8 @@
     android:clickable="true"
     android:longClickable="true"
     android:focusable="true"
-    android:gravity="center">
+    android:gravity="center"
+    android:id="@+id/adv_function_main_lyt">
 
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -19,7 +20,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
 
             <ImageButton
                 android:id="@+id/moonButton"
@@ -48,7 +48,7 @@
                 android:src="@drawable/ic_popup" />
 
             <ImageButton
-                android:id="@+id/iconSetButton"
+                android:id="@+id/equalizerButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="4dp"
@@ -56,7 +56,7 @@
                 android:src="@drawable/ic_set_equalizer" />
 
             <ImageButton
-                android:id="@+id/circleButton"
+                android:id="@+id/sliderButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="4dp"
@@ -64,7 +64,7 @@
                 android:src="@drawable/ic_slider_horizontal" />
 
             <ImageButton
-                android:id="@+id/volumeButton"
+                android:id="@+id/volumeSetButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="4dp"
@@ -77,7 +77,7 @@
                 android:layout_height="50dp"
                 android:layout_margin="4dp"
                 android:background="@drawable/circle"
-                android:src="@drawable/ic_camera" />
+                android:src="@drawable/ic_screenshot" />
 
             <ImageButton
                 android:id="@+id/rotateButton"
@@ -88,7 +88,7 @@
                 android:src="@drawable/ic_rotate_right" />
 
             <ImageButton
-                android:id="@+id/volumeUpButton"
+                android:id="@+id/muteButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="4dp"
@@ -101,27 +101,29 @@
                 android:layout_height="50dp"
                 android:layout_margin="4dp"
                 android:background="@drawable/circle"
-                android:src="@drawable/ic_play_as_audio" />
+                android:src="@drawable/ic_play_as_audio_2"
+                app:tint="@color/white" />
 
             <TextView
-                android:id="@+id/textButton"
+                android:id="@+id/speedButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="4dp"
                 android:background="@drawable/circle"
                 android:gravity="center"
                 android:text="1.0x"
+                android:textSize="20sp"
                 android:textColor="@color/white" />
 
             <ImageButton
-                android:id="@+id/groupButton"
+                android:id="@+id/lockButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginVertical="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/circle"
-                android:src="@drawable/ic_lock_player" />
+                android:src="@drawable/ic_lock_player_2" />
 
 
         </LinearLayout>
