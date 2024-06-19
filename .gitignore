@@ -73,3 +73,5 @@ libvlcpp.pc
 lib/
 /buildsystem/automation/certificates/
 /application/app/signedRelease/*.apk
+/application/app/noTv/output-metadata.json
+/application/app/noTv/VLC-Android-3.6.0-Beta-2-all.apk
