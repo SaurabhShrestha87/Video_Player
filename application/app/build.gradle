@@ -78,6 +78,10 @@ android {
             applicationIdSuffix ".debug"
             jniDebuggable true
         }
+        noTv {
+            initWith release
+            matchingFallbacks = ['release']
+        }
         dev {
             initWith debug
             matchingFallbacks = ['debug']
