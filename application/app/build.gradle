@@ -81,6 +81,7 @@ android {
         noTv {
             initWith release
             matchingFallbacks = ['release']
+            signingConfig signingConfigs.debug
         }
         dev {
             initWith debug

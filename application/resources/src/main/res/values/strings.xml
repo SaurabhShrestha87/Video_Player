@@ -325,6 +325,11 @@
     <string name="screen_orientation_landscape_sensor">Landscape (sensor)</string>
     <string name="screen_orientation_last_locked">Last locked orientation</string>
     <string name="enable_black_theme">Black theme</string>
+    <string name="black_theme">Black</string>
+    <string name="purple_theme">Purple</string>
+    <string name="orange_theme">Orange</string>
+    <string name="pink_theme">Pink</string>
+    <string name="red_theme">Red</string>
     <string name="dark_theme">Dark theme</string>
     <string name="theme_auto">Auto theme</string>
     <string name="theme">Theme</string>
