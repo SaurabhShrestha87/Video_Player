@@ -2,6 +2,7 @@ package org.videolan.vlc.gui.preferences.theme
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,15 +68,16 @@ class ThemeAdapter(
             context, R.drawable.rounded_corners_audio
         )?.mutate().also {
             if (it != null) {
+                Log.d("TAG", "getThemeBackground: $str")
                 when (str) {
-                    "daynight_follow_system_title" -> DrawableCompat.setTint(it, 0xFFff0000.toInt())
-                    "daynight_title" -> DrawableCompat.setTint(it, 0xFFff0000.toInt())
-                    "light_theme" -> DrawableCompat.setTint(it, 0xFFff0000.toInt())
-                    "black_theme" -> DrawableCompat.setTint(it, 0xFF000000.toInt())
-                    "purple_theme" -> DrawableCompat.setTint(it, 0xFF5353FF.toInt())
-                    "orange_theme" -> DrawableCompat.setTint(it, 0xFFFFA653.toInt())
-                    "pink_theme" -> DrawableCompat.setTint(it, 0xFFFF5391.toInt())
-                    "red_theme" -> DrawableCompat.setTint(it, 0xFFD1183E.toInt())
+                    context.getString(R.string.daynight_follow_system_title) -> DrawableCompat.setTint(it, 0xFFff0000.toInt())
+                    context.getString(R.string.daynight_title) -> DrawableCompat.setTint(it, 0xFFff0000.toInt())
+                    context.getString(R.string.light_theme) -> DrawableCompat.setTint(it, 0xFFff0000.toInt())
+                    context.getString(R.string.black_theme) -> DrawableCompat.setTint(it, 0xFF000000.toInt())
+                    context.getString(R.string.purple_theme) -> DrawableCompat.setTint(it, 0xFF5353FF.toInt())
+                    context.getString(R.string.orange_theme) -> DrawableCompat.setTint(it, 0xFFFFA653.toInt())
+                    context.getString(R.string.pink_theme) -> DrawableCompat.setTint(it, 0xFFFF5391.toInt())
+                    context.getString(R.string.red_theme) -> DrawableCompat.setTint(it, 0xFFD1183E.toInt())
                     else -> DrawableCompat.setTint(it, 0xFFff0000.toInt())
                 }
             }

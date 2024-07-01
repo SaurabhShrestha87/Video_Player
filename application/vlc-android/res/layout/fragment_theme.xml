@@ -4,18 +4,111 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".gui.preferences.theme.ThemeFragment">
 
-        <ImageView
-            android:id="@+id/them_preview_iv"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/screen_1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/prv_background"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/sort_view_mode_layout"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/prv_background"
+                app:layout_constraintStart_toStartOf="@+id/prv_background"
+                app:layout_constraintTop_toTopOf="@+id/prv_background">
+
+
+                <TextView
+                    android:id="@+id/video_count_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:text="9 Folders"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/view_mode_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:src="@drawable/view_mode_list"
+                    android:tint="@color/white"
+                    app:tint="@color/white" />
+
+                <ImageView
+                    android:id="@+id/sort_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:src="@drawable/sort_icon"
+                    android:tint="@color/white"
+                    app:tint="@color/white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="@+id/prv_background"
+                app:layout_constraintStart_toStartOf="@+id/prv_background"
+                app:layout_constraintTop_toBottomOf="@+id/sort_view_mode_layout">
+
+                <include
+                    layout="@layout/prv_list"/>
+                <include
+                    layout="@layout/prv_list"/>
+                <include
+                    layout="@layout/prv_list"/>
+                <include
+                    layout="@layout/prv_list"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/prv_footer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/prv_footer"
+                app:layout_constraintBottom_toBottomOf="@+id/prv_background"
+                app:layout_constraintEnd_toEndOf="@+id/prv_background"
+                app:layout_constraintStart_toStartOf="@+id/prv_background" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -29,17 +122,17 @@
         <TextView
             android:id="@+id/use_theme_btn"
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
             android:layout_height="45dp"
+            android:layout_gravity="center"
             android:layout_margin="20dp"
-            android:paddingVertical="5dp"
-            android:paddingHorizontal="50dp"
             android:background="@drawable/dialog_button_bg"
             android:backgroundTint="@color/green"
             android:gravity="center"
+            android:paddingHorizontal="50dp"
+            android:paddingVertical="5dp"
             android:text="@string/use"
             android:textColor="@color/white" />
-<!--        8878tp.com-->
+        <!--        8878tp.com-->
     </LinearLayout>
 
 </layout>
