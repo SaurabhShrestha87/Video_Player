@@ -98,10 +98,10 @@
             vlc:elevation="1dp">
 
 
-        <!-- Image loading is handled by org.videolan.vlc.gui.helpers.ImageLoader.loadImage() -->
+        <!-- Image loading is handled by com.video.offline.videoplayer.gui.helpers.ImageLoader.loadImage() -->
 
 
-        <org.videolan.vlc.gui.view.FadableImageView
+        <com.video.offline.videoplayer.gui.view.FadableImageView
                 android:id="@+id/media_cover"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

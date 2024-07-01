@@ -45,7 +45,7 @@ import org.videolan.television.R
 import org.videolan.television.databinding.ActivityColorPickerBinding
 import org.videolan.television.databinding.ColorPickerItemBinding
 import org.videolan.tools.dp
-import org.videolan.vlc.gui.DiffUtilAdapter
+import com.video.offline.videoplayer.gui.DiffUtilAdapter
 import kotlin.math.abs
 
 const val COLOR_PICKER_SELECTED_COLOR = "color_picker_selected_color"

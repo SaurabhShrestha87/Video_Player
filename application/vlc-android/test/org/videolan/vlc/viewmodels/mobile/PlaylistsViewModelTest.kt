@@ -1,11 +1,11 @@
-package org.videolan.vlc.viewmodels.mobile
+package com.video.offline.videoplayer.viewmodels.mobile
 
 import com.jraska.livedata.test
 import org.junit.Assert.*
 import org.junit.Test
 import org.videolan.medialibrary.MLServiceLocator
 import org.videolan.medialibrary.stubs.StubDataSource
-import org.videolan.vlc.BaseTest
+import com.video.offline.videoplayer.BaseTest
 import org.videolan.resources.MEDIALIBRARY_PAGE_SIZE
 
 class PlaylistsViewModelTest : BaseTest() {

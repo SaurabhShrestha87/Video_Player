@@ -19,10 +19,10 @@ import org.videolan.television.viewmodel.getMediaBrowserModel
 import org.videolan.tools.FORCE_PLAY_ALL_AUDIO
 import org.videolan.tools.FORCE_PLAY_ALL_VIDEO
 import org.videolan.tools.Settings
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.view.EmptyLoadingState
-import org.videolan.vlc.interfaces.IEventsHandler
-import org.videolan.vlc.providers.medialibrary.MedialibraryProvider
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.view.EmptyLoadingState
+import com.video.offline.videoplayer.interfaces.IEventsHandler
+import com.video.offline.videoplayer.providers.medialibrary.MedialibraryProvider
 
 class MediaBrowserTvFragment : BaseBrowserTvFragment<MediaLibraryItem>() {
     override fun provideAdapter(eventsHandler: IEventsHandler<MediaLibraryItem>, itemSize: Int): TvItemAdapter {

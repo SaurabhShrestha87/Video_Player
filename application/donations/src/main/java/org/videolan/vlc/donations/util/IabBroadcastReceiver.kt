@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.videolan.vlc.donations.util
+package com.video.offline.videoplayer.donations.util
 
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -41,9 +41,9 @@ import org.videolan.tools.REMOTE_ACCESS_NETWORK_BROWSER_CONTENT
 import org.videolan.tools.REMOTE_ACCESS_PLAYBACK_CONTROL
 import org.videolan.tools.Settings
 import org.videolan.tools.putSingle
-import org.videolan.vlc.R
-import org.videolan.vlc.StartActivity
-import org.videolan.vlc.util.TextUtils
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.StartActivity
+import com.video.offline.videoplayer.util.TextUtils
 
 class PreferencesRemoteAccess : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener, CoroutineScope by MainScope() {
 

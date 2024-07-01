@@ -1,4 +1,4 @@
-package org.videolan.vlc.mediadb.models
+package com.video.offline.videoplayer.mediadb.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

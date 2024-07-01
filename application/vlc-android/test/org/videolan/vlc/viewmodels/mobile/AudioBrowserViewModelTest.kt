@@ -1,4 +1,4 @@
-package org.videolan.vlc.viewmodels.mobile
+package com.video.offline.videoplayer.viewmodels.mobile
 
 import androidx.core.content.edit
 import com.jraska.livedata.test
@@ -9,7 +9,7 @@ import org.videolan.medialibrary.stubs.StubDataSource
 import org.videolan.resources.MEDIALIBRARY_PAGE_SIZE
 import org.videolan.tools.KEY_ARTISTS_SHOW_ALL
 import org.videolan.tools.Settings
-import org.videolan.vlc.BaseTest
+import com.video.offline.videoplayer.BaseTest
 
 class AudioBrowserViewModelTest : BaseTest() {
     private lateinit var audioBrowserViewModel: AudioBrowserViewModel

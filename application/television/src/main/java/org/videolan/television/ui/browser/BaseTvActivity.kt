@@ -42,13 +42,13 @@ import org.videolan.television.ui.dialogs.ConfirmationTvActivity
 import org.videolan.tools.KeyHelper
 import org.videolan.tools.Settings
 import org.videolan.tools.getContextWithLocale
-import org.videolan.vlc.ExternalMonitor
-import org.videolan.vlc.MediaParsingService
-import org.videolan.vlc.ScanProgress
-import org.videolan.vlc.gui.DialogActivity
-import org.videolan.vlc.gui.helpers.UiTools
-import org.videolan.vlc.util.DialogDelegate
-import org.videolan.vlc.util.IDialogManager
+import com.video.offline.videoplayer.ExternalMonitor
+import com.video.offline.videoplayer.MediaParsingService
+import com.video.offline.videoplayer.ScanProgress
+import com.video.offline.videoplayer.gui.DialogActivity
+import com.video.offline.videoplayer.gui.helpers.UiTools
+import com.video.offline.videoplayer.util.DialogDelegate
+import com.video.offline.videoplayer.util.IDialogManager
 
 private const val TAG = "VLC/BaseTvActivity"
 const val REQUEST_CODE_NO_CONNECTION = 100

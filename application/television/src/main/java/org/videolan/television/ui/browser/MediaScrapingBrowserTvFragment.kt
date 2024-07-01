@@ -42,9 +42,9 @@ import org.videolan.resources.util.getFromMl
 import org.videolan.television.ui.*
 import org.videolan.television.viewmodel.MediaScrapingBrowserViewModel
 import org.videolan.television.viewmodel.getMoviepediaBrowserModel
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.view.EmptyLoadingState
-import org.videolan.vlc.interfaces.IEventsHandler
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.view.EmptyLoadingState
+import com.video.offline.videoplayer.interfaces.IEventsHandler
 
 class MediaScrapingBrowserTvFragment : BaseBrowserTvFragment<MediaMetadataWithImages>() {
     override fun provideAdapter(eventsHandler: IEventsHandler<MediaMetadataWithImages>, itemSize: Int): TvItemAdapter {

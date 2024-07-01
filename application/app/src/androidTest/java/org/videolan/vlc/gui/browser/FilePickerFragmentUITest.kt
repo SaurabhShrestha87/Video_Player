@@ -22,7 +22,7 @@
  *
  */
 
-package org.videolan.vlc.gui.browser
+package com.video.offline.videoplayer.gui.browser
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -33,9 +33,9 @@ import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.greaterThan
 import org.junit.Rule
 import org.junit.Test
-import org.videolan.vlc.R
+import com.video.offline.videoplayer.R
 
-class FilePickerFragmentUITest : org.videolan.vlc.BaseUITest() {
+class FilePickerFragmentUITest : com.video.offline.videoplayer.BaseUITest() {
     @Rule
     @JvmField
     val activityTestRule = ActivityTestRule(FilePickerActivity::class.java)
@@ -48,10 +48,10 @@ class FilePickerFragmentUITest : org.videolan.vlc.BaseUITest() {
 
     @Test
     fun whenAtSomeFolder_clickOnHomeIconReturnsBackToRoot() {
-        onView(org.videolan.vlc.withRecyclerView(R.id.network_list).atPosition(0)).perform(click())
-        onView(org.videolan.vlc.withRecyclerView(R.id.network_list).atPosition(0)).perform(click())
+        onView(com.video.offline.videoplayer.withRecyclerView(R.id.network_list).atPosition(0)).perform(click())
+        onView(com.video.offline.videoplayer.withRecyclerView(R.id.network_list).atPosition(0)).perform(click())
 
-        onView(withId(R.id.network_list)).check(matches(org.videolan.vlc.withCount(greaterThan(2))))
+        onView(withId(R.id.network_list)).check(matches(com.video.offline.videoplayer.withCount(greaterThan(2))))
 
     }
 }

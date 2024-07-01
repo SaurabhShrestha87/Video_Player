@@ -9,7 +9,7 @@
 
         <import type="android.view.View" />
         <import type="android.text.TextUtils" />
-        <import type="org.videolan.vlc.gui.helpers.TalkbackUtil" />
+        <import type="com.video.offline.videoplayer.gui.helpers.TalkbackUtil" />
         <import type="org.videolan.medialibrary.Tools" />
 
         <variable
@@ -42,7 +42,7 @@
                 android:background="?attr/background_default"
                 android:fitsSystemWindows="true"
                 app:elevation="0dp"
-                vlc:layout_behavior="org.videolan.vlc.gui.helpers.ExpandStateAppBarLayoutBehavior">
+                vlc:layout_behavior="com.video.offline.videoplayer.gui.helpers.ExpandStateAppBarLayoutBehavior">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:id="@+id/collapsing_toolbar"
@@ -239,7 +239,7 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <org.videolan.vlc.gui.view.SwipeRefreshLayout
+        <com.video.offline.videoplayer.gui.view.SwipeRefreshLayout
                 android:id="@+id/swipeLayout"
                     android:layout_width="match_parent"
                 vlc:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -263,14 +263,14 @@
                     android:paddingBottom="64dp"
                     tools:layout_width="match_parent" />
 
-                <org.videolan.vlc.gui.view.FastScroller
+                <com.video.offline.videoplayer.gui.view.FastScroller
                         android:id="@+id/browser_fast_scroller"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         vlc:layout_constraintTop_toTopOf="parent"
                         vlc:layout_constraintEnd_toEndOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </org.videolan.vlc.gui.view.SwipeRefreshLayout>
+        </com.video.offline.videoplayer.gui.view.SwipeRefreshLayout>
 
 
 

@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:theme="@style/Theme.VLC.TV">
 
-        <org.videolan.vlc.gui.view.EmptyLoadingStateView
+        <com.video.offline.videoplayer.gui.view.EmptyLoadingStateView
                 android:id="@+id/empty_loading"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

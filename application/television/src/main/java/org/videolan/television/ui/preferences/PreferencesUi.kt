@@ -45,9 +45,9 @@ import org.videolan.tools.SHOW_VIDEO_THUMBNAILS
 import org.videolan.tools.Settings
 import org.videolan.tools.TV_FOLDERS_FIRST
 import org.videolan.tools.putSingle
-import org.videolan.vlc.BuildConfig
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.dialogs.FeatureTouchOnlyWarningDialog
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.dialogs.FeatureTouchOnlyWarningDialog
 
 class PreferencesUi : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 

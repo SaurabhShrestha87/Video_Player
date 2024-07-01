@@ -46,8 +46,8 @@ import org.videolan.resources.*
 import org.videolan.tools.Settings
 import org.videolan.tools.dp
 import org.videolan.tools.getLocaleLanguages
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.helpers.*
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.helpers.*
 
 
 public const val FAVORITE_FLAG = 1000

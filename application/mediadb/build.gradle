@@ -58,7 +58,7 @@ android {
             matchingFallbacks = ['release']
         }
     }
-    namespace 'org.videolan.vlc.mediadb'
+    namespace 'com.video.offline.videoplayer.mediadb'
 
 }
 

@@ -50,17 +50,17 @@ import org.videolan.tools.FORCE_PLAY_ALL_VIDEO
 import org.videolan.tools.HttpImageLoader
 import org.videolan.tools.Settings
 import org.videolan.tools.getposition
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.DialogActivity
-import org.videolan.vlc.gui.helpers.AudioUtil
-import org.videolan.vlc.gui.helpers.BitmapUtil
-import org.videolan.vlc.gui.helpers.UiTools
-import org.videolan.vlc.media.MediaUtils
-import org.videolan.vlc.providers.medialibrary.MedialibraryProvider
-import org.videolan.vlc.util.ThumbnailsProvider
-import org.videolan.vlc.util.getScreenHeight
-import org.videolan.vlc.util.getScreenWidth
-import org.videolan.vlc.viewmodels.browser.BrowserModel
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.DialogActivity
+import com.video.offline.videoplayer.gui.helpers.AudioUtil
+import com.video.offline.videoplayer.gui.helpers.BitmapUtil
+import com.video.offline.videoplayer.gui.helpers.UiTools
+import com.video.offline.videoplayer.media.MediaUtils
+import com.video.offline.videoplayer.providers.medialibrary.MedialibraryProvider
+import com.video.offline.videoplayer.util.ThumbnailsProvider
+import com.video.offline.videoplayer.util.getScreenHeight
+import com.video.offline.videoplayer.util.getScreenWidth
+import com.video.offline.videoplayer.viewmodels.browser.BrowserModel
 import java.util.*
 
 object TvUtil {

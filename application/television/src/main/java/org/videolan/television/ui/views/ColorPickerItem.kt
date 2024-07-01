@@ -34,7 +34,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import org.videolan.tools.dp
-import org.videolan.vlc.R
+import com.video.offline.videoplayer.R
 
 /**
  * Custom view showing a color item. The color is drawn on the view canvas and the view i selectable

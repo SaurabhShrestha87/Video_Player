@@ -9,7 +9,7 @@
 
         <variable
                 name="fragment"
-                type="org.videolan.vlc.gui.audio.AudioPlayer" />
+                type="com.video.offline.videoplayer.gui.audio.AudioPlayer" />
 
         <variable
                 name="ab_repeat_a"
@@ -219,7 +219,7 @@
                     app:layout_constraintRight_toRightOf="parent" />
 
 
-            <org.videolan.vlc.gui.view.HeaderMediaSwitcher
+            <com.video.offline.videoplayer.gui.view.HeaderMediaSwitcher
                     android:id="@+id/audio_media_switcher"
                     android:layout_width="0dp"
                     android:layout_height="68dp"
@@ -459,7 +459,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-        <org.videolan.vlc.gui.view.CoverMediaSwitcher
+        <com.video.offline.videoplayer.gui.view.CoverMediaSwitcher
                 android:id="@+id/cover_media_switcher"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -472,7 +472,7 @@
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:visibility="visible">
 
-        </org.videolan.vlc.gui.view.CoverMediaSwitcher>
+        </com.video.offline.videoplayer.gui.view.CoverMediaSwitcher>
 
 
         <ImageView
@@ -573,7 +573,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/timeline" />
 
-        <org.videolan.vlc.gui.view.AccessibleSeekBar
+        <com.video.offline.videoplayer.gui.view.AccessibleSeekBar
                 android:id="@+id/timeline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

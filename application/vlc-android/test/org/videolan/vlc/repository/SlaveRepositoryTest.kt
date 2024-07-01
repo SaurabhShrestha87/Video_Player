@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  ******************************************************************************/
 
-package org.videolan.vlc.repository
+package com.video.offline.videoplayer.repository
 
 import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -35,13 +35,13 @@ import org.mockito.Mockito.verify
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
-import org.videolan.vlc.database.MediaDatabase
-import org.videolan.vlc.database.SlaveDao
-import org.videolan.vlc.mediadb.models.Slave
-import org.videolan.vlc.util.TestUtil
-import org.videolan.vlc.util.argumentCaptor
-import org.videolan.vlc.util.mock
-import org.videolan.vlc.util.uninitialized
+import com.video.offline.videoplayer.database.MediaDatabase
+import com.video.offline.videoplayer.database.SlaveDao
+import com.video.offline.videoplayer.mediadb.models.Slave
+import com.video.offline.videoplayer.util.TestUtil
+import com.video.offline.videoplayer.util.argumentCaptor
+import com.video.offline.videoplayer.util.mock
+import com.video.offline.videoplayer.util.uninitialized
 
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(Uri::class)
@@ -64,7 +64,7 @@ class SlaveRepositoryTest {
         val fakeSlave = TestUtil.createSubtitleSlavesForMedia("foo.mkv", 1)[0]
         slaveRepository.saveSlave(fakeSlave.mediaPath, fakeSlave.type, fakeSlave.priority, fakeSlave.uri)
 
-        val inserted = argumentCaptor<org.videolan.vlc.mediadb.models.Slave>()
+        val inserted = argumentCaptor<com.video.offline.videoplayer.mediadb.models.Slave>()
         verify(slaveDao).insert(inserted.capture() ?: uninitialized())
         assertThat(inserted.value, `is`(fakeSlave))
 

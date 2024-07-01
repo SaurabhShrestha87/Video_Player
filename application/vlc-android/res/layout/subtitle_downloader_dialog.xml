@@ -11,11 +11,11 @@
 
         <variable
                 name="viewmodel"
-                type="org.videolan.vlc.viewmodels.SubtitlesModel" />
+                type="com.video.offline.videoplayer.viewmodels.SubtitlesModel" />
 
         <variable
                 name="state"
-                type="org.videolan.vlc.gui.dialogs.SubDownloadDialogState" />
+                type="com.video.offline.videoplayer.gui.dialogs.SubDownloadDialogState" />
 
         <variable
                 name="inError"
@@ -49,7 +49,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Game of Thrones - S01e01" />
 
-            <org.videolan.vlc.gui.view.LanguageSelector
+            <com.video.offline.videoplayer.gui.view.LanguageSelector
                     android:id="@+id/language_list_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package org.videolan.vlc.viewmodels.browser
+package com.video.offline.videoplayer.viewmodels.browser
 
 import android.os.Handler
 import androidx.core.net.toUri
@@ -18,12 +18,12 @@ import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.medialibrary.media.MediaWrapperImpl
 import org.videolan.tools.CoroutineContextProvider
 import org.videolan.tools.Settings
-import org.videolan.vlc.BaseTest
-import org.videolan.vlc.database.BrowserFavDao
-import org.videolan.vlc.providers.BrowserProvider
-import org.videolan.vlc.repository.BrowserFavRepository
-import org.videolan.vlc.util.TestCoroutineContextProvider
-import org.videolan.vlc.util.applyMock
+import com.video.offline.videoplayer.BaseTest
+import com.video.offline.videoplayer.database.BrowserFavDao
+import com.video.offline.videoplayer.providers.BrowserProvider
+import com.video.offline.videoplayer.repository.BrowserFavRepository
+import com.video.offline.videoplayer.util.TestCoroutineContextProvider
+import com.video.offline.videoplayer.util.applyMock
 
 class NetworkModelTest : BaseTest() {
     @get:Rule

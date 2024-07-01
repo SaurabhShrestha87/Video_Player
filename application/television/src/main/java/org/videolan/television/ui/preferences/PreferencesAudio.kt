@@ -47,11 +47,11 @@ import org.videolan.tools.LocaleUtils
 import org.videolan.tools.RESUME_PLAYBACK
 import org.videolan.tools.Settings
 import org.videolan.tools.putSingle
-import org.videolan.vlc.BuildConfig
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.helpers.restartMediaPlayer
-import org.videolan.vlc.isVLC4
-import org.videolan.vlc.util.LocaleUtil
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.helpers.restartMediaPlayer
+import com.video.offline.videoplayer.isVLC4
+import com.video.offline.videoplayer.util.LocaleUtil
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*

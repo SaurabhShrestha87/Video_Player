@@ -30,7 +30,7 @@
 
         <variable
                 name="holder"
-                type="org.videolan.vlc.gui.audio.AudioBrowserAdapter.MediaItemCardViewHolder" />
+                type="com.video.offline.videoplayer.gui.audio.AudioBrowserAdapter.MediaItemCardViewHolder" />
 
         <variable
                 name="scaleType"
@@ -83,7 +83,7 @@
             vlc:selectedPadding="@{selected}">
 
 
-        <!-- Image loading is handled by org.videolan.vlc.gui.helpers.ImageLoader.loadImage() -->
+        <!-- Image loading is handled by com.video.offline.videoplayer.gui.helpers.ImageLoader.loadImage() -->
 
         <com.google.android.material.card.MaterialCardView
                 android:id="@+id/media_cover_container"
@@ -102,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <org.videolan.vlc.gui.view.FadableImageView
+                <com.video.offline.videoplayer.gui.view.FadableImageView
                         android:id="@+id/media_cover"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -130,7 +130,7 @@
                         vlc:layout_constraintVertical_bias="1.0" />
                 <!-- TextView must be set to singleLine
            see https://code.google.com/p/android/issues/detail?id=33868 -->
-                <org.videolan.vlc.gui.view.FadableImageView
+                <com.video.offline.videoplayer.gui.view.FadableImageView
                         android:id="@+id/mainActionButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -214,7 +214,7 @@
                         vlc:layout_constraintStart_toStartOf="parent"
                         vlc:srcCompat="@drawable/ic_emoji_favorite_white" />
 
-                <org.videolan.vlc.gui.view.MiniVisualizer
+                <com.video.offline.videoplayer.gui.view.MiniVisualizer
                         android:id="@+id/playing"
                         android:layout_width="48dp"
                         android:layout_height="48dp"

@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.videolan.vlc">
+    package="com.video.offline.videoplayer">
 
-    <uses-sdk tools:overrideLibrary="com.jraska.livedata.ktx, com.jraska.livedata, tools.fastlane.screengrab, android_libs.ub_uiautomator, androidx.car.app"/>
+    <uses-sdk tools:overrideLibrary="com.jraska.livedata.ktx, com.jraska.livedata, tools.fastlane.screengrab, android_libs.ub_uiautomator, androidx.car.app" />
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission
         android:name="android.permission.READ_LOGS"
-        android:maxSdkVersion="18"/> <!-- android:maxSdkVersion="15" -->
+        android:maxSdkVersion="18" /> <!-- android:maxSdkVersion="15" -->
     <!-- vibration on audioplayer buttons long press -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE"/> <!-- used for setting ringtone -->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/> <!-- STORAGE -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> <!-- Internet -->
-    <uses-permission android:name="android.permission.INTERNET"/> <!-- Launch recommendations service once device is booted -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/> <!-- Audio search on TV -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/> <!-- USe foreground services -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/> <!-- normal -->
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- used for setting ringtone -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" /> <!-- STORAGE -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Internet -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Launch recommendations service once device is booted -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Audio search on TV -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- USe foreground services -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- normal -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="org.videolan.vlc.permission.READ_EXTENSION_DATA"/>
-    <uses-permission android:name="com.android.providers.tv.permission.READ_EPG_DATA"/>
-    <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="com.video.offline.videoplayer.permission.READ_EXTENSION_DATA" />
+    <uses-permission android:name="com.android.providers.tv.permission.READ_EPG_DATA" />
+    <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <!-- Custom permissions for our content provider -->
@@ -43,40 +43,40 @@
 
     <uses-feature
         android:name="android.software.leanback"
-        android:required="false"/>
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.touchscreen"
-        android:required="false"/>
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.microphone"
-        android:required="false"/>
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.bluetooth"
-        android:required="false"/>
+        android:required="false" />
 
     <application>
 
         <!-- Enable VLC in Samsung multiwindow mode -->
         <meta-data
             android:name="com.samsung.android.sdk.multiwindow.enable"
-            android:value="true"/>
+            android:value="true" />
         <!-- Enable VLC in LG split window mode -->
         <meta-data
             android:name="com.lge.support.SPLIT_WINDOW"
-            android:value="true"/>
+            android:value="true" />
         <!-- Android auto -->
         <meta-data
             android:name="com.google.android.gms.car.application"
-            android:resource="@xml/automotive_app_desc"/>
+            android:resource="@xml/automotive_app_desc" />
         <meta-data
             android:name="androidx.car.app.TintableAttributionIcon"
-            android:resource="@drawable/ic_auto_notif_audio"/>
+            android:resource="@drawable/ic_auto_notif_audio" />
         <meta-data
             android:name="com.google.android.gms.car.notification.SmallIcon"
-            android:resource="@drawable/icon"/>
+            android:resource="@drawable/icon" />
         <meta-data
             android:name="android.max_aspect"
-            android:value="3.0"/>
+            android:value="3.0" />
         <meta-data
             android:name="android.allow_multiple_resumed_activities"
             android:value="true" />
@@ -86,125 +86,125 @@
 
         <activity
             android:name=".StartActivity"
-            android:theme="@style/Theme.VLC.Transparent.NoUI"
-                android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.VLC.Transparent.NoUI">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts"/>
+                android:resource="@xml/shortcuts" />
 
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
 
                 <data
                     android:host="${applicationId}"
-                    android:scheme="vlclauncher"/>
+                    android:scheme="vlclauncher" />
             </intent-filter>
 
             <!-- This filter captures protocols without type info -->
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="rtmp"/>
-                <data android:scheme="rtmpe"/>
-                <data android:scheme="rtmps"/>
-                <data android:scheme="rtp"/>
-                <data android:scheme="rtsp"/>
-                <data android:scheme="mms"/>
-                <data android:scheme="mmsh"/>
-                <data android:scheme="icyx"/>
-                <data android:scheme="httplive"/>
-                <data android:scheme="udp"/>
-                <data android:scheme="vlc"/>
+                <data android:scheme="rtmp" />
+                <data android:scheme="rtmpe" />
+                <data android:scheme="rtmps" />
+                <data android:scheme="rtp" />
+                <data android:scheme="rtsp" />
+                <data android:scheme="mms" />
+                <data android:scheme="mmsh" />
+                <data android:scheme="icyx" />
+                <data android:scheme="httplive" />
+                <data android:scheme="udp" />
+                <data android:scheme="vlc" />
             </intent-filter>
             <!-- This filter captures protocols with type info -->
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:mimeType="video/*"/>
-                <data android:mimeType="audio/*"/>
-                <data android:scheme="rtmp"/>
-                <data android:scheme="rtmpe"/>
-                <data android:scheme="rtmps"/>
-                <data android:scheme="rtp"/>
-                <data android:scheme="rtsp"/>
-                <data android:scheme="mms"/>
-                <data android:scheme="mmsh"/>
-                <data android:scheme="icyx"/>
-                <data android:scheme="httplive"/>
-                <data android:scheme="udp"/>
-                <data android:scheme="vlc"/>
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+                <data android:scheme="rtmp" />
+                <data android:scheme="rtmpe" />
+                <data android:scheme="rtmps" />
+                <data android:scheme="rtp" />
+                <data android:scheme="rtsp" />
+                <data android:scheme="mms" />
+                <data android:scheme="mmsh" />
+                <data android:scheme="icyx" />
+                <data android:scheme="httplive" />
+                <data android:scheme="udp" />
+                <data android:scheme="vlc" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="" />
-                <data android:scheme="file"/>
-                <data android:scheme="ftp"/>
-                <data android:scheme="ftps"/>
-                <data android:scheme="ftpes"/>
-                <data android:scheme="sftp"/>
-                <data android:scheme="content"/>
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:scheme="smb"/>
-                <data android:mimeType="video/*"/>
-                <data android:mimeType="audio/*"/>
-                <data android:mimeType="*/rmvb"/>
-                <data android:mimeType="*/avi"/>
-                <data android:mimeType="*/mkv"/>
-                <data android:mimeType="application/3gpp*"/>
-                <data android:mimeType="application/mp4"/>
-                <data android:mimeType="application/mpeg*"/>
-                <data android:mimeType="application/ogg"/>
-                <data android:mimeType="application/sdp"/>
-                <data android:mimeType="application/vnd.3gp*"/>
-                <data android:mimeType="application/vnd.apple.mpegurl"/>
-                <data android:mimeType="application/vnd.dvd*"/>
-                <data android:mimeType="application/vnd.dolby*"/>
-                <data android:mimeType="application/vnd.rn-realmedia*"/>
-                <data android:mimeType="application/x-iso9660-image"/>
-                <data android:mimeType="application/x-extension-mp4"/>
-                <data android:mimeType="application/x-flac"/>
-                <data android:mimeType="application/x-matroska"/>
-                <data android:mimeType="application/x-mpegURL"/>
-                <data android:mimeType="application/x-ogg"/>
-                <data android:mimeType="application/x-quicktimeplayer"/>
-                <data android:mimeType="application/x-shockwave-flash"/>
-                <data android:mimeType="application/xspf+xml"/>
-                <data android:mimeType="misc/ultravox"/>
+                <data android:scheme="file" />
+                <data android:scheme="ftp" />
+                <data android:scheme="ftps" />
+                <data android:scheme="ftpes" />
+                <data android:scheme="sftp" />
+                <data android:scheme="content" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="smb" />
+                <data android:mimeType="video/*" />
+                <data android:mimeType="audio/*" />
+                <data android:mimeType="*/rmvb" />
+                <data android:mimeType="*/avi" />
+                <data android:mimeType="*/mkv" />
+                <data android:mimeType="application/3gpp*" />
+                <data android:mimeType="application/mp4" />
+                <data android:mimeType="application/mpeg*" />
+                <data android:mimeType="application/ogg" />
+                <data android:mimeType="application/sdp" />
+                <data android:mimeType="application/vnd.3gp*" />
+                <data android:mimeType="application/vnd.apple.mpegurl" />
+                <data android:mimeType="application/vnd.dvd*" />
+                <data android:mimeType="application/vnd.dolby*" />
+                <data android:mimeType="application/vnd.rn-realmedia*" />
+                <data android:mimeType="application/x-iso9660-image" />
+                <data android:mimeType="application/x-extension-mp4" />
+                <data android:mimeType="application/x-flac" />
+                <data android:mimeType="application/x-matroska" />
+                <data android:mimeType="application/x-mpegURL" />
+                <data android:mimeType="application/x-ogg" />
+                <data android:mimeType="application/x-quicktimeplayer" />
+                <data android:mimeType="application/x-shockwave-flash" />
+                <data android:mimeType="application/xspf+xml" />
+                <data android:mimeType="misc/ultravox" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="" />
-                <data android:scheme="file"/>
-                <data android:scheme="ftp"/>
-                <data android:scheme="content"/>
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:host="*"/>
+                <data android:scheme="file" />
+                <data android:scheme="ftp" />
+                <data android:scheme="content" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="*" />
 
                 <!-- video -->
 
@@ -927,30 +927,30 @@
                 <data android:pathPattern=".*\\..*\\..*\\.XSPF" />
             </intent-filter>
             <intent-filter android:label="Play with VLC">
-                <action android:name="android.intent.action.SEND"/>
+                <action android:name="android.intent.action.SEND" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="*/*"/>
+                <data android:mimeType="*/*" />
             </intent-filter>
             <!-- Search -->
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.google.android.gms.actions.SEARCH_ACTION"/>
+                <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+                android:resource="@xml/searchable" />
 
             <intent-filter>
-                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH"/>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -962,68 +962,68 @@
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".gui.onboarding.OnboardingActivity"
-            android:theme="@style/Theme.VLC.Onboarding"/>
+            android:theme="@style/Theme.VLC.Onboarding" />
         <activity
             android:name=".gui.SecondaryActivity"
             android:theme="@style/Theme.VLC"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".gui.privacy.PrivacyActivity"
             android:theme="@style/Theme.VLC"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".gui.HeaderMediaListActivity"
-            android:theme="@style/Theme.VLC.NoStatus"/>
+            android:theme="@style/Theme.VLC.NoStatus" />
         <activity
             android:name=".gui.InfoActivity"
-            android:theme="@style/Theme.VLC.NoStatus"/>
+            android:theme="@style/Theme.VLC.NoStatus" />
         <activity
             android:name=".gui.LibrariesActivity"
-            android:theme="@style/Theme.VLC"/>
+            android:theme="@style/Theme.VLC" />
         <activity
             android:name=".gui.PinCodeActivity"
             android:theme="@style/Theme.VLC"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
-                android:name=".gui.OTPCodeActivity"
-                android:theme="@style/Theme.VLC"/>
+            android:name=".gui.OTPCodeActivity"
+            android:theme="@style/Theme.VLC" />
         <activity
             android:name=".gui.AuthorsActivity"
-            android:theme="@style/Theme.VLC"/>
+            android:theme="@style/Theme.VLC" />
         <activity
             android:name=".gui.SearchActivity"
-            android:theme="@style/Theme.VLC"/>
+            android:theme="@style/Theme.VLC" />
         <activity
             android:name=".gui.SendCrashActivity"
-            android:label="@string/vlc_reporter"
-            android:theme="@style/Theme.VLC.SendCrashDialog"
-            android:icon="@mipmap/ic_launcher_reporter"
-            android:launchMode="singleTask"
+            android:enabled="false"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:enabled="false">
+            android:icon="@mipmap/ic_launcher_reporter"
+            android:label="@string/vlc_reporter"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.VLC.SendCrashDialog">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".gui.BetaWelcomeActivity"
-            android:theme="@style/Theme.VLC.SendCrashDialog"/>
+            android:theme="@style/Theme.VLC.SendCrashDialog" />
         <activity
             android:name=".gui.browser.FilePickerActivity"
-            android:theme="@style/Theme.VLC.PickerDialog"/>
+            android:theme="@style/Theme.VLC.PickerDialog" />
         <activity
             android:name=".gui.preferences.PreferencesActivity"
-            android:theme="@style/Theme.VLC"/>
+            android:theme="@style/Theme.VLC" />
         <activity
             android:name=".gui.preferences.search.PreferenceSearchActivity"
-            android:theme="@style/Theme.VLC"/>
+            android:theme="@style/Theme.VLC" />
         <activity
             android:name=".gui.video.VideoPlayerActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|uiMode|keyboard|keyboardHidden|navigation"
@@ -1037,35 +1037,36 @@
             <intent-filter>
                 <action android:name="com.samsung.android.support.REMOTE_ACTION" />
             </intent-filter>
-            <meta-data android:name="com.samsung.android.support.REMOTE_ACTION"
-                android:resource="@xml/air_actions"/>
+            <meta-data
+                android:name="com.samsung.android.support.REMOTE_ACTION"
+                android:resource="@xml/air_actions" />
 
         </activity>
         <activity
             android:name=".gui.DialogActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/VLCTransparentTheme"
-            android:label="" />
+            android:label=""
+            android:theme="@style/VLCTransparentTheme" />
 
         <activity
-                android:name=".widget.MiniPlayerConfigureActivity"
-                android:exported="true"
-                android:theme="@style/WidgetConfiguration"
-                android:launchMode="singleTop"
-                android:noHistory="true"
-                android:excludeFromRecents="true">
+            android:name=".widget.MiniPlayerConfigureActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:theme="@style/WidgetConfiguration">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
         <service
-                android:name=".PlaybackService"
-                android:exported="true"
-                android:foregroundServiceType="mediaPlayback">
+            android:name=".PlaybackService"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback">
             <intent-filter>
-                <action android:name="android.media.browse.MediaBrowserService"/>
+                <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
 
@@ -1074,7 +1075,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="androidx.car.app.CarAppService" />
-                <category android:name="androidx.car.app.category.SETTINGS"/>
+                <category android:name="androidx.car.app.category.SETTINGS" />
             </intent-filter>
             <intent-filter>
                 <action android:name="${applicationId}.car.SETTINGS" />
@@ -1082,62 +1083,64 @@
         </service>
 
         <service
-                android:name=".MediaParsingService"
-                android:foregroundServiceType="dataSync" />
+            android:name=".MediaParsingService"
+            android:foregroundServiceType="dataSync" />
+
         <receiver
             android:name=".widget.VLCAppWidgetProviderWhite"
             android:exported="false"
             android:label="@string/widget_name_w">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="${applicationId}.widget.INIT"/>
-                <action android:name="${applicationId}.widget.UPDATE"/>
-                <action android:name="${applicationId}.widget.UPDATE_COVER"/>
-                <action android:name="${applicationId}.widget.UPDATE_POSITION"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="${applicationId}.widget.INIT" />
+                <action android:name="${applicationId}.widget.UPDATE" />
+                <action android:name="${applicationId}.widget.UPDATE_COVER" />
+                <action android:name="${applicationId}.widget.UPDATE_POSITION" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_provider_w"/>
+                android:resource="@xml/widget_provider_w" />
         </receiver>
         <receiver
             android:name=".widget.VLCAppWidgetProviderBlack"
             android:exported="false"
             android:label="@string/widget_name_b">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="${applicationId}.widget.INIT"/>
-                <action android:name="${applicationId}.widget.UPDATE"/>
-                <action android:name="${applicationId}.widget.UPDATE_COVER"/>
-                <action android:name="${applicationId}.widget.UPDATE_POSITION"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="${applicationId}.widget.INIT" />
+                <action android:name="${applicationId}.widget.UPDATE" />
+                <action android:name="${applicationId}.widget.UPDATE_COVER" />
+                <action android:name="${applicationId}.widget.UPDATE_POSITION" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_provider_b"/>
+                android:resource="@xml/widget_provider_b" />
         </receiver>
 
         <receiver
-                android:name=".widget.MiniPlayerAppWidgetProvider"
-                android:exported="true"
-                android:label="@string/widget_name_mini_player">
+            android:name=".widget.MiniPlayerAppWidgetProvider"
+            android:exported="true"
+            android:label="@string/widget_name_mini_player">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="${applicationId}.widget.mini.INIT"/>
-                <action android:name="${applicationId}.widget.mini.UPDATE"/>
-                <action android:name="${applicationId}.widget.mini.UPDATE_COVER"/>
-                <action android:name="${applicationId}.widget.mini.UPDATE_POSITION"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="${applicationId}.widget.mini.INIT" />
+                <action android:name="${applicationId}.widget.mini.UPDATE" />
+                <action android:name="${applicationId}.widget.mini.UPDATE_COVER" />
+                <action android:name="${applicationId}.widget.mini.UPDATE_POSITION" />
             </intent-filter>
 
             <meta-data
-                    android:name="android.appwidget.provider"
-                    android:resource="@xml/widget_provider_mini"/>
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider_mini" />
         </receiver>
 
-        <receiver android:name="androidx.media.session.MediaButtonReceiver"
+        <receiver
+            android:name="androidx.media.session.MediaButtonReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
 
@@ -1152,20 +1155,20 @@
 
         <service
             android:name=".RecommendationsService"
-            android:exported="false"/>
+            android:exported="false" />
 
         <receiver
             android:name=".TvReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.media.tv.action.PREVIEW_PROGRAM_ADDED_TO_WATCH_NEXT"/>
-                <action android:name="android.media.tv.ACTION_WATCH_NEXT_PROGRAM_BROWSABLE_DISABLED"/>
-                <action android:name="android.media.tv.action.PREVIEW_PROGRAM_BROWSABLE_DISABLED"/>
-                <action android:name="android.media.tv.action.INITIALIZE_PROGRAMS"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.media.tv.action.PREVIEW_PROGRAM_ADDED_TO_WATCH_NEXT" />
+                <action android:name="android.media.tv.ACTION_WATCH_NEXT_PROGRAM_BROWSABLE_DISABLED" />
+                <action android:name="android.media.tv.action.PREVIEW_PROGRAM_BROWSABLE_DISABLED" />
+                <action android:name="android.media.tv.action.INITIALIZE_PROGRAMS" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
         <receiver
@@ -1173,23 +1176,23 @@
             android:enabled="false"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
-                <action android:name="android.intent.action.MEDIA_REMOVED"/>
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.MEDIA_REMOVED" />
 
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:scheme="file"/>
+                <data android:scheme="file" />
             </intent-filter>
         </receiver>
 
         <provider
             android:name=".FileProvider"
             android:authorities="${applicationId}.thumbprovider"
-            android:exported="true"/>
+            android:exported="true" />
         <provider
             android:name=".ArtworkProvider"
             android:authorities="${applicationId}.artwork"
-            android:exported="true"/>
+            android:exported="true" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -1197,7 +1200,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
         <service
@@ -1205,20 +1208,23 @@
             android:exported="false"
             android:permission="android.permission.BIND_TV_INPUT">
             <intent-filter>
-                <action android:name="android.media.tv.TvInputService"/>
+                <action android:name="android.media.tv.TvInputService" />
             </intent-filter>
 
             <meta-data
                 android:name="android.media.tv.input"
-                android:resource="@xml/previewinputservice"/>
+                android:resource="@xml/previewinputservice" />
         </service>
 
-        <activity android:name=".gui.DebugLogActivity"
-                android:theme="@style/Theme.VLC"
-                android:launchMode="singleTop" />
-        <service android:name=".DebugLogService"
-                android:process=":logger"
-                android:foregroundServiceType="dataSync" />
+        <activity
+            android:name=".gui.DebugLogActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.VLC" />
+        <service
+            android:name=".DebugLogService"
+            android:foregroundServiceType="dataSync"
+            android:process=":logger" />
+
         <activity
             android:name=".gui.privacy.vault.GalleryDirectoryActivity"
             android:exported="false"

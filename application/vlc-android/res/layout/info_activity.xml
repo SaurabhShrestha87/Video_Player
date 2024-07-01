@@ -9,7 +9,7 @@
 
         <import type="org.videolan.medialibrary.Tools" />
 
-        <import type="org.videolan.vlc.gui.helpers.TalkbackUtil" />
+        <import type="com.video.offline.videoplayer.gui.helpers.TalkbackUtil" />
 
         <import type="org.videolan.medialibrary.media.MediaLibraryItem" />
 
@@ -392,7 +392,7 @@
                 vlc:layout_anchor="@+id/container"
                 vlc:layout_anchorGravity="bottom|end"
                 android:layout_margin="16dp"
-                vlc:layout_behavior="org.videolan.vlc.gui.helpers.FloatingActionButtonBehavior"
+                vlc:layout_behavior="com.video.offline.videoplayer.gui.helpers.FloatingActionButtonBehavior"
                 vlc:srcCompat="@drawable/ic_fab_play" />
 
         <include layout="@layout/audioplayercontainer" />

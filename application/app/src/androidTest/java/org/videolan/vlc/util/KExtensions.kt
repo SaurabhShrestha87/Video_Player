@@ -1,8 +1,8 @@
-package org.videolan.vlc.util
+package com.video.offline.videoplayer.util
 
-import org.videolan.vlc.repository.BrowserFavRepository
-import org.videolan.vlc.repository.DirectoryRepository
-import org.videolan.vlc.repository.ExternalSubRepository
+import com.video.offline.videoplayer.repository.BrowserFavRepository
+import com.video.offline.videoplayer.repository.DirectoryRepository
+import com.video.offline.videoplayer.repository.ExternalSubRepository
 
 
 // Hacky way. Don't fix it.

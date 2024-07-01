@@ -6,7 +6,7 @@
 
         <variable
                 name="handler"
-                type="org.videolan.vlc.gui.dialogs.ExtDeviceHandler" />
+                type="com.video.offline.videoplayer.gui.dialogs.ExtDeviceHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -34,7 +34,7 @@
 
         <variable
                 name="item"
-                type="org.videolan.vlc.gui.preferences.search.PreferenceItem" />
+                type="com.video.offline.videoplayer.gui.preferences.search.PreferenceItem" />
 
         <variable
                 name="title"
@@ -54,7 +54,7 @@
 
         <variable
                 name="handler"
-                type="org.videolan.vlc.gui.preferences.search.PreferenceItemAdapter.ClickHandler" />
+                type="com.video.offline.videoplayer.gui.preferences.search.PreferenceItemAdapter.ClickHandler" />
 
     </data>
 

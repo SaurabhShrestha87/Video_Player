@@ -33,13 +33,13 @@ import org.videolan.television.ui.browser.BaseTvActivity
 import org.videolan.tools.RESULT_RESCAN
 import org.videolan.tools.RESULT_RESTART
 import org.videolan.tools.RESULT_RESTART_APP
-import org.videolan.vlc.ScanProgress
-import org.videolan.vlc.StartActivity
-import org.videolan.vlc.gui.helpers.hf.StoragePermissionsDelegate
-import org.videolan.vlc.reloadLibrary
-import org.videolan.vlc.util.LifecycleAwareScheduler
-import org.videolan.vlc.util.SchedulerCallback
-import org.videolan.vlc.util.Util
+import com.video.offline.videoplayer.ScanProgress
+import com.video.offline.videoplayer.StartActivity
+import com.video.offline.videoplayer.gui.helpers.hf.StoragePermissionsDelegate
+import com.video.offline.videoplayer.reloadLibrary
+import com.video.offline.videoplayer.util.LifecycleAwareScheduler
+import com.video.offline.videoplayer.util.SchedulerCallback
+import com.video.offline.videoplayer.util.Util
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class MainTvActivity : BaseTvActivity(), StoragePermissionsDelegate.CustomActionController, SchedulerCallback {

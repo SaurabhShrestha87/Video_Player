@@ -26,7 +26,7 @@ import androidx.leanback.app.VerticalGridSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.VerticalGridPresenter
 import org.videolan.television.ui.CardPresenter
-import org.videolan.vlc.interfaces.BrowserFragmentInterface
+import com.video.offline.videoplayer.interfaces.BrowserFragmentInterface
 
 open class GridFragment : VerticalGridSupportFragment(), BrowserFragmentInterface {
 

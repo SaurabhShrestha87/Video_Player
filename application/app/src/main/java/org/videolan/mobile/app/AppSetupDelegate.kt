@@ -50,13 +50,13 @@ import org.videolan.resources.util.startRemoteAccess
 import org.videolan.tools.AppScope
 import org.videolan.tools.KEY_ENABLE_REMOTE_ACCESS
 import org.videolan.tools.Settings
-import org.videolan.vlc.BuildConfig
-import org.videolan.vlc.gui.SendCrashActivity
-import org.videolan.vlc.gui.helpers.NotificationHelper
-import org.videolan.vlc.util.DialogDelegate
-import org.videolan.vlc.util.NetworkConnectionManager
-import org.videolan.vlc.util.VersionMigration
-import org.videolan.vlc.widget.MiniPlayerAppWidgetProvider
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.gui.SendCrashActivity
+import com.video.offline.videoplayer.gui.helpers.NotificationHelper
+import com.video.offline.videoplayer.util.DialogDelegate
+import com.video.offline.videoplayer.util.NetworkConnectionManager
+import com.video.offline.videoplayer.util.VersionMigration
+import com.video.offline.videoplayer.widget.MiniPlayerAppWidgetProvider
 
 interface AppDelegate {
     val appContextProvider : AppContextProvider

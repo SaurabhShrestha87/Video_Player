@@ -22,7 +22,7 @@
 
         <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_container_view"
-                android:name="org.videolan.vlc.gui.preferences.PreferencesAudioControls"
+                android:name="com.video.offline.videoplayer.gui.preferences.PreferencesAudioControls"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:tag="my_tag"

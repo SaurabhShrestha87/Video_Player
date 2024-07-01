@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import org.videolan.medialibrary.interfaces.media.Playlist
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.resources.*
-import org.videolan.vlc.providers.medialibrary.*
-import org.videolan.vlc.viewmodels.MedialibraryViewModel
-import org.videolan.vlc.viewmodels.tv.TvBrowserModel
+import com.video.offline.videoplayer.providers.medialibrary.*
+import com.video.offline.videoplayer.viewmodels.MedialibraryViewModel
+import com.video.offline.videoplayer.viewmodels.tv.TvBrowserModel
 
 
 class MediaBrowserViewModel(context: Context, val category: Long, val parent : MediaLibraryItem?) : MedialibraryViewModel(context), TvBrowserModel<MediaLibraryItem> {

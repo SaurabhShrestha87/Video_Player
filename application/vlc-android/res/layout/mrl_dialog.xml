@@ -6,7 +6,7 @@
 
         <variable
             name="viewmodel"
-            type="org.videolan.vlc.viewmodels.StreamsModel" />
+            type="com.video.offline.videoplayer.viewmodels.StreamsModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

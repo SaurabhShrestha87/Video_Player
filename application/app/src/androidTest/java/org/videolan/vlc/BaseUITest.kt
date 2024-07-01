@@ -1,4 +1,4 @@
-package org.videolan.vlc
+package com.video.offline.videoplayer
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
@@ -8,7 +8,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.videolan.resources.util.startMedialibrary
-import org.videolan.vlc.util.TestCoroutineContextProvider
+import com.video.offline.videoplayer.util.TestCoroutineContextProvider
 
 @RunWith(AndroidJUnit4::class)
 abstract class BaseUITest {

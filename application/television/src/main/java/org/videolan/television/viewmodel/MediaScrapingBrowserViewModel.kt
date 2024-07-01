@@ -34,10 +34,10 @@ import org.videolan.moviepedia.database.models.MediaMetadataType
 import org.videolan.moviepedia.database.models.MediaMetadataWithImages
 import org.videolan.moviepedia.provider.MediaScrapingMovieProvider
 import org.videolan.resources.HEADER_TV_SHOW
-import org.videolan.vlc.viewmodels.CallBackDelegate
-import org.videolan.vlc.viewmodels.ICallBackHandler
-import org.videolan.vlc.viewmodels.SortableModel
-import org.videolan.vlc.viewmodels.tv.TvBrowserModel
+import com.video.offline.videoplayer.viewmodels.CallBackDelegate
+import com.video.offline.videoplayer.viewmodels.ICallBackHandler
+import com.video.offline.videoplayer.viewmodels.SortableModel
+import com.video.offline.videoplayer.viewmodels.tv.TvBrowserModel
 
 class MediaScrapingBrowserViewModel(context: Context, val category: Long) : SortableModel(context), TvBrowserModel<MediaMetadataWithImages>,
         ICallBackHandler by CallBackDelegate() {

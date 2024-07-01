@@ -44,9 +44,9 @@ import org.videolan.television.ui.COLOR_PICKER_TITLE
 import org.videolan.television.ui.ColorPickerActivity
 import org.videolan.tools.LocaleUtils
 import org.videolan.tools.Settings
-import org.videolan.vlc.BuildConfig
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.helpers.restartMediaPlayer
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.helpers.restartMediaPlayer
 
 private const val SUBTITLE_COLOR_RESULT = 1
 private const val SUBTITLE_BACKGROUND_COLOR_RESULT = 2

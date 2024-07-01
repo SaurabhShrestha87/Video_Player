@@ -27,15 +27,15 @@ import org.videolan.television.databinding.MediaBrowserTvItemListBinding
 import org.videolan.television.ui.browser.TvAdapterUtils
 import org.videolan.tools.Settings
 import org.videolan.tools.dp
-import org.videolan.vlc.BuildConfig
-import org.videolan.vlc.gui.helpers.SelectorViewHolder
-import org.videolan.vlc.gui.helpers.getMediaIconDrawable
-import org.videolan.vlc.gui.view.FastScroller
-import org.videolan.vlc.interfaces.IEventsHandler
-import org.videolan.vlc.util.generateResolutionClass
-import org.videolan.vlc.util.isOTG
-import org.videolan.vlc.util.isSD
-import org.videolan.vlc.util.isSchemeFile
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.gui.helpers.SelectorViewHolder
+import com.video.offline.videoplayer.gui.helpers.getMediaIconDrawable
+import com.video.offline.videoplayer.gui.view.FastScroller
+import com.video.offline.videoplayer.interfaces.IEventsHandler
+import com.video.offline.videoplayer.util.generateResolutionClass
+import com.video.offline.videoplayer.util.isOTG
+import com.video.offline.videoplayer.util.isSD
+import com.video.offline.videoplayer.util.isSchemeFile
 
 class MediaTvItemAdapter(type: Int, private val eventsHandler: IEventsHandler<MediaLibraryItem>, var itemSize: Int, private var inGrid: Boolean = true) : PagedListAdapter<MediaLibraryItem, MediaTvItemAdapter.AbstractMediaItemViewHolder<ViewDataBinding>>(DIFF_CALLBACK), FastScroller.SeparatedAdapter, TvItemAdapter {
     override var focusNext = -1

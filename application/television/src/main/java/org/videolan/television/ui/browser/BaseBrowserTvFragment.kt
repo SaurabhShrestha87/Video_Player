@@ -53,17 +53,17 @@ import org.videolan.television.databinding.SongBrowserBinding
 import org.videolan.television.ui.*
 import org.videolan.tools.Settings
 import org.videolan.tools.putSingle
-import org.videolan.vlc.BuildConfig
-import org.videolan.vlc.gui.view.EmptyLoadingState
-import org.videolan.vlc.gui.view.RecyclerSectionItemGridDecoration
-import org.videolan.vlc.interfaces.BrowserFragmentInterface
-import org.videolan.vlc.interfaces.IEventsHandler
-import org.videolan.vlc.util.RefreshModel
-import org.videolan.vlc.util.getScreenWidth
-import org.videolan.vlc.viewmodels.SortableModel
-import org.videolan.vlc.viewmodels.browser.TYPE_FILE
-import org.videolan.vlc.viewmodels.browser.TYPE_NETWORK
-import org.videolan.vlc.viewmodels.tv.TvBrowserModel
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.gui.view.EmptyLoadingState
+import com.video.offline.videoplayer.gui.view.RecyclerSectionItemGridDecoration
+import com.video.offline.videoplayer.interfaces.BrowserFragmentInterface
+import com.video.offline.videoplayer.interfaces.IEventsHandler
+import com.video.offline.videoplayer.util.RefreshModel
+import com.video.offline.videoplayer.util.getScreenWidth
+import com.video.offline.videoplayer.viewmodels.SortableModel
+import com.video.offline.videoplayer.viewmodels.browser.TYPE_FILE
+import com.video.offline.videoplayer.viewmodels.browser.TYPE_NETWORK
+import com.video.offline.videoplayer.viewmodels.tv.TvBrowserModel
 
 private const val TAG = "MediaBrowserTvFragment"
 

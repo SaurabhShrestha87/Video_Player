@@ -13,11 +13,11 @@ import org.videolan.resources.interfaces.FocusListener
 import org.videolan.television.R
 import org.videolan.television.databinding.ActivityMediaListTvItemBinding
 import org.videolan.television.ui.TvFocusableAdapter
-import org.videolan.vlc.BuildConfig
-import org.videolan.vlc.gui.DiffUtilAdapter
-import org.videolan.vlc.gui.helpers.SelectorViewHolder
-import org.videolan.vlc.interfaces.ITVEventsHandler
-import org.videolan.vlc.util.ModelsHelper.getDiscNumberString
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.gui.DiffUtilAdapter
+import com.video.offline.videoplayer.gui.helpers.SelectorViewHolder
+import com.video.offline.videoplayer.interfaces.ITVEventsHandler
+import com.video.offline.videoplayer.util.ModelsHelper.getDiscNumberString
 
 class MediaListAdapter(private val type: Int, private val listener: ITVEventsHandler) : DiffUtilAdapter<MediaWrapper, MediaListAdapter.MediaListViewHolder>(), TvFocusableAdapter {
 

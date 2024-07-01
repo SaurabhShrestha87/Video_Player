@@ -41,9 +41,9 @@ import org.videolan.moviepedia.models.resolver.ResolverMedia
 import org.videolan.moviepedia.viewmodel.MediaScrapingModel
 import org.videolan.resources.MOVIEPEDIA_MEDIA
 import org.videolan.resources.util.parcelable
-import org.videolan.vlc.gui.BaseActivity
-import org.videolan.vlc.gui.helpers.UiTools
-import org.videolan.vlc.gui.helpers.applyTheme
+import com.video.offline.videoplayer.gui.BaseActivity
+import com.video.offline.videoplayer.gui.helpers.UiTools
+import com.video.offline.videoplayer.gui.helpers.applyTheme
 
 open class MediaScrapingActivity : BaseActivity(), TextWatcher, TextView.OnEditorActionListener {
 

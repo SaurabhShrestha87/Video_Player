@@ -1,4 +1,4 @@
-package org.videolan.vlc.database
+package com.video.offline.videoplayer.database
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.CoreMatchers.hasItem
@@ -6,7 +6,7 @@ import org.hamcrest.core.Is.`is`
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.videolan.vlc.util.TestUtil
+import com.video.offline.videoplayer.util.TestUtil
 
 @RunWith(AndroidJUnit4::class)
 class CustomDirectoryDaoTest: DbTest() {

@@ -135,7 +135,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/widget_resize_text"
                     app:srcCompat="@drawable/widget_preview_mini" />
 
-            <org.videolan.vlc.gui.view.WidgetHandleView
+            <com.video.offline.videoplayer.gui.view.WidgetHandleView
                     android:id="@+id/widget_resize_handle"
                     android:layout_width="0dp"
                     android:layout_height="0dp"

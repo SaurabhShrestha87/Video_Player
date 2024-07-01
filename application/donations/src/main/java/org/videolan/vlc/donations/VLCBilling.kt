@@ -22,13 +22,13 @@
  *
  */
 
-package org.videolan.vlc.donations
+package com.video.offline.videoplayer.donations
 
 import android.app.Application
 import android.content.IntentFilter
 import android.util.Log
 import org.videolan.tools.SingletonHolder
-import org.videolan.vlc.donations.util.*
+import com.video.offline.videoplayer.donations.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 
 private const val DONATION_TIER_1 = "donation_tier_1"

@@ -7,7 +7,7 @@
 
         <variable
                 name="library"
-                type="org.videolan.vlc.gui.LibraryWithLicense" />
+                type="com.video.offline.videoplayer.gui.LibraryWithLicense" />
 
     </data>
 

@@ -1,4 +1,4 @@
-package org.videolan.vlc.gui.browser
+package com.video.offline.videoplayer.gui.browser
 
 import android.content.Intent
 import androidx.databinding.ViewDataBinding
@@ -17,11 +17,11 @@ import org.hamcrest.Matchers.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.videolan.vlc.BaseUITest
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.SecondaryActivity
-import org.videolan.vlc.*
-import org.videolan.vlc.gui.helpers.ThreeStatesCheckbox
+import com.video.offline.videoplayer.BaseUITest
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.SecondaryActivity
+import com.video.offline.videoplayer.*
+import com.video.offline.videoplayer.gui.helpers.ThreeStatesCheckbox
 
 class StorageBrowserFragmentUITest : BaseUITest() {
     @Rule

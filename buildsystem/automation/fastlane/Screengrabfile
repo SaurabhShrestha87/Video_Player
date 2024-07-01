@@ -1,10 +1,10 @@
 # remove the leading '#' to uncomment lines
 
- app_package_name("org.videolan.vlc.debug")
- use_tests_in_classes(['org.videolan.vlc.PhoneScreenhotsInstrumentedTest'])
+ app_package_name("com.video.offline.videoplayer.debug")
+ use_tests_in_classes(['com.video.offline.videoplayer.PhoneScreenhotsInstrumentedTest'])
 
 use_adb_root(true)
-test_instrumentation_runner("org.videolan.vlc.MultidexTestRunner")
+test_instrumentation_runner("com.video.offline.videoplayer.MultidexTestRunner")
 #locales(['en-US', 'fr-FR', 'it-IT', 'ko-KR', 'ja-JP'])
 locales(['en-US', 'fr-FR', 'it-IT', 'ko-KR', 'ja-JP', 'es-ES', 'hi-IN', 'de-DE', 'ru-RU', 'pt-BR'])
 

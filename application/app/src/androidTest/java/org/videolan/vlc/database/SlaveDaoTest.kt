@@ -18,14 +18,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  ******************************************************************************/
 
-package org.videolan.vlc.database
+package com.video.offline.videoplayer.database
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.videolan.vlc.util.TestUtil
+import com.video.offline.videoplayer.util.TestUtil
 
 @RunWith(AndroidJUnit4::class)
 class SlaveDaoTest: DbTest() {

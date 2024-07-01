@@ -1,4 +1,4 @@
-package org.videolan.vlc
+package com.video.offline.videoplayer
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule

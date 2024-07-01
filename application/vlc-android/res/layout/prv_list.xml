@@ -33,7 +33,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <!-- Image loading is handled by org.videolan.vlc.gui.helpers.ImageLoader.loadImage() -->
+                <!-- Image loading is handled by com.video.offline.videoplayer.gui.helpers.ImageLoader.loadImage() -->
                 <ImageView
                     android:id="@+id/ml_item_thumbnail"
                     android:layout_width="80dp"

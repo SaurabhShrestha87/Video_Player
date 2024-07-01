@@ -30,7 +30,7 @@ import org.videolan.moviepedia.models.resolver.ResolverImage
 import org.videolan.moviepedia.models.resolver.ResolverMedia
 import org.videolan.moviepedia.models.resolver.ResolverMediaType
 import org.videolan.moviepedia.models.resolver.ResolverResult
-import org.videolan.vlc.util.TextUtils
+import com.video.offline.videoplayer.util.TextUtils
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.Comparator

@@ -38,10 +38,10 @@ import org.videolan.television.databinding.TvVerticalGridBinding
 import org.videolan.television.ui.MainTvActivity
 import org.videolan.television.ui.browser.interfaces.BrowserActivityInterface
 import org.videolan.television.ui.browser.interfaces.DetailsFragment
-import org.videolan.vlc.interfaces.BrowserFragmentInterface
-import org.videolan.vlc.interfaces.Sortable
-import org.videolan.vlc.viewmodels.browser.TYPE_FILE
-import org.videolan.vlc.viewmodels.browser.TYPE_NETWORK
+import com.video.offline.videoplayer.interfaces.BrowserFragmentInterface
+import com.video.offline.videoplayer.interfaces.Sortable
+import com.video.offline.videoplayer.viewmodels.browser.TYPE_FILE
+import com.video.offline.videoplayer.viewmodels.browser.TYPE_NETWORK
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class VerticalGridActivity : BaseTvActivity(), BrowserActivityInterface {

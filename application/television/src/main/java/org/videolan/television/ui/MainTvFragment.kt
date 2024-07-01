@@ -22,8 +22,8 @@
 
 package org.videolan.television.ui
 
-//import org.videolan.vlc.donations.BillingStatus
-//import org.videolan.vlc.donations.VLCBilling
+//import com.video.offline.videoplayer.donations.BillingStatus
+//import com.video.offline.videoplayer.donations.VLCBilling
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -72,15 +72,15 @@ import org.videolan.television.ui.preferences.PreferencesActivity
 import org.videolan.television.viewmodel.MainTvModel
 import org.videolan.television.viewmodel.MainTvModel.Companion.getMainTvModel
 import org.videolan.tools.Settings
-import org.videolan.vlc.BuildConfig
-import org.videolan.vlc.R
-import org.videolan.vlc.RecommendationsService
-import org.videolan.vlc.StartActivity
-import org.videolan.vlc.gui.helpers.UiTools.showDonations
-import org.videolan.vlc.gui.helpers.hf.PinCodeDelegate
-import org.videolan.vlc.gui.video.VideoPlayerActivity
-import org.videolan.vlc.reloadLibrary
-import org.videolan.vlc.util.Permissions
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.RecommendationsService
+import com.video.offline.videoplayer.StartActivity
+import com.video.offline.videoplayer.gui.helpers.UiTools.showDonations
+import com.video.offline.videoplayer.gui.helpers.hf.PinCodeDelegate
+import com.video.offline.videoplayer.gui.video.VideoPlayerActivity
+import com.video.offline.videoplayer.reloadLibrary
+import com.video.offline.videoplayer.util.Permissions
 
 private const val TAG = "VLC/MainTvFragment"
 

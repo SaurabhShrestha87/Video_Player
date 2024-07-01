@@ -14,7 +14,7 @@
 
         <variable
                 name="handler"
-                type="org.videolan.vlc.gui.dialogs.VlcProgressDialog" />
+                type="com.video.offline.videoplayer.gui.dialogs.VlcProgressDialog" />
     </data>
 
     <ScrollView

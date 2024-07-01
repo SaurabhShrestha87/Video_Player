@@ -22,7 +22,7 @@
  *
  */
 
-package org.videolan.vlc
+package com.video.offline.videoplayer
 
 import android.app.Activity
 import android.content.Intent
@@ -45,15 +45,15 @@ import org.videolan.television.ui.MainTvActivity
 import org.videolan.television.ui.audioplayer.AudioPlayerActivity
 import org.videolan.television.ui.browser.VerticalGridActivity
 import org.videolan.tools.Settings
-import org.videolan.vlc.util.DpadHelper.pressBack
-import org.videolan.vlc.util.DpadHelper.pressDPad
-import org.videolan.vlc.util.DpadHelper.pressDPadCenter
-import org.videolan.vlc.util.DpadHelper.pressHome
-import org.videolan.vlc.util.DpadHelper.pressPip
-import org.videolan.vlc.util.ScreenshotUtil
-import org.videolan.vlc.util.UiUtils
-import org.videolan.vlc.util.UiUtils.waitForActivity
-import org.videolan.vlc.util.UiUtils.waitId
+import com.video.offline.videoplayer.util.DpadHelper.pressBack
+import com.video.offline.videoplayer.util.DpadHelper.pressDPad
+import com.video.offline.videoplayer.util.DpadHelper.pressDPadCenter
+import com.video.offline.videoplayer.util.DpadHelper.pressHome
+import com.video.offline.videoplayer.util.DpadHelper.pressPip
+import com.video.offline.videoplayer.util.ScreenshotUtil
+import com.video.offline.videoplayer.util.UiUtils
+import com.video.offline.videoplayer.util.UiUtils.waitForActivity
+import com.video.offline.videoplayer.util.UiUtils.waitId
 import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy
 import tools.fastlane.screengrab.locale.LocaleTestRule

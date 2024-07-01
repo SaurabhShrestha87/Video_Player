@@ -83,7 +83,7 @@
 
         <variable
                 name="holder"
-                type="org.videolan.vlc.gui.video.VideoListAdapter.ViewHolder" />
+                type="com.video.offline.videoplayer.gui.video.VideoListAdapter.ViewHolder" />
     </data>
 
 
@@ -324,7 +324,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Image loading is handled by org.videolan.vlc.gui.helpers.ImageLoader.loadImage() -->
+            <!-- Image loading is handled by com.video.offline.videoplayer.gui.helpers.ImageLoader.loadImage() -->
 
 
         </com.google.android.material.card.MaterialCardView>

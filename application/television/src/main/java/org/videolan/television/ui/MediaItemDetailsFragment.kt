@@ -56,20 +56,20 @@ import org.videolan.resources.util.parcelable
 import org.videolan.television.ui.browser.VerticalGridActivity
 import org.videolan.tools.HttpImageLoader
 import org.videolan.tools.retrieveParent
-import org.videolan.vlc.BuildConfig
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.DialogActivity
-import org.videolan.vlc.gui.DialogActivity.Companion.EXTRA_MEDIA
-import org.videolan.vlc.gui.helpers.AudioUtil
-import org.videolan.vlc.gui.helpers.UiTools
-import org.videolan.vlc.gui.helpers.UiTools.addToPlaylist
-import org.videolan.vlc.gui.video.VideoPlayerActivity
-import org.videolan.vlc.media.MediaUtils
-import org.videolan.vlc.repository.BrowserFavRepository
-import org.videolan.vlc.util.FileUtils
-import org.videolan.vlc.util.convertFavorites
-import org.videolan.vlc.util.getScreenWidth
-import org.videolan.vlc.util.isSchemeNetwork
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.DialogActivity
+import com.video.offline.videoplayer.gui.DialogActivity.Companion.EXTRA_MEDIA
+import com.video.offline.videoplayer.gui.helpers.AudioUtil
+import com.video.offline.videoplayer.gui.helpers.UiTools
+import com.video.offline.videoplayer.gui.helpers.UiTools.addToPlaylist
+import com.video.offline.videoplayer.gui.video.VideoPlayerActivity
+import com.video.offline.videoplayer.media.MediaUtils
+import com.video.offline.videoplayer.repository.BrowserFavRepository
+import com.video.offline.videoplayer.util.FileUtils
+import com.video.offline.videoplayer.util.convertFavorites
+import com.video.offline.videoplayer.util.getScreenWidth
+import com.video.offline.videoplayer.util.isSchemeNetwork
 
 private const val TAG = "MediaItemDetailsFragment"
 private const val ID_PLAY = 1

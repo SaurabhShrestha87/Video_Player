@@ -7,7 +7,7 @@
     android:title="@string/interface_prefs_screen">
 
     <Preference
-            android:fragment="org.videolan.vlc.gui.preferences.theme.ThemeFragment"
+            android:fragment="com.video.offline.videoplayer.gui.preferences.theme.ThemeFragment"
             android:defaultValue="-1"
             android:key="app_theme"
             android:title="@string/daynight_title"

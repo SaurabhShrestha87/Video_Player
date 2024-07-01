@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:elevation="@dimen/audio_player_elevation"
         android:visibility="gone"
-        app:layout_behavior="org.videolan.vlc.gui.helpers.PlayerBehavior"
+        app:layout_behavior="com.video.offline.videoplayer.gui.helpers.PlayerBehavior"
         tools:targetApi="lollipop">
 
     <androidx.appcompat.widget.ViewStubCompat

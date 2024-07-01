@@ -1,4 +1,4 @@
-package org.videolan.vlc.repository
+package com.video.offline.videoplayer.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import kotlinx.coroutines.runBlocking
@@ -10,13 +10,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
 import org.powermock.modules.junit4.PowerMockRunner
-import org.videolan.vlc.database.CustomDirectoryDao
-import org.videolan.vlc.database.MediaDatabase
-import org.videolan.vlc.mediadb.models.CustomDirectory
-import org.videolan.vlc.util.TestUtil
-import org.videolan.vlc.util.argumentCaptor
-import org.videolan.vlc.util.mock
-import org.videolan.vlc.util.uninitialized
+import com.video.offline.videoplayer.database.CustomDirectoryDao
+import com.video.offline.videoplayer.database.MediaDatabase
+import com.video.offline.videoplayer.mediadb.models.CustomDirectory
+import com.video.offline.videoplayer.util.TestUtil
+import com.video.offline.videoplayer.util.argumentCaptor
+import com.video.offline.videoplayer.util.mock
+import com.video.offline.videoplayer.util.uninitialized
 
 @RunWith(PowerMockRunner::class)
 class DirectoryRepositoryTest {
@@ -40,7 +40,7 @@ class DirectoryRepositoryTest {
             directoryRepository.addCustomDirectory(it.path).join()
         }
 
-        val inserted = argumentCaptor<org.videolan.vlc.mediadb.models.CustomDirectory>()
+        val inserted = argumentCaptor<com.video.offline.videoplayer.mediadb.models.CustomDirectory>()
         verify(customDirectoryDao, times(2)).insert(inserted.capture() ?: uninitialized())
         assertThat(inserted.allValues.size, `is`(2))
         assertThat(inserted.allValues[0], `is`(fakeCustomDirectories[0]))
@@ -61,7 +61,7 @@ class DirectoryRepositoryTest {
             directoryRepository.addCustomDirectory(it.path).join()
         }
 
-        val inserted = argumentCaptor<org.videolan.vlc.mediadb.models.CustomDirectory>()
+        val inserted = argumentCaptor<com.video.offline.videoplayer.mediadb.models.CustomDirectory>()
         verify(customDirectoryDao, times(2)).insert(inserted.capture() ?: uninitialized())
         assertThat(inserted.allValues.size, `is`(2))
         assertThat(inserted.allValues[0], `is`(fakeCustomDirectories[0]))
@@ -69,7 +69,7 @@ class DirectoryRepositoryTest {
 
         directoryRepository.deleteCustomDirectory(fakeCustomDirectories[0].path).join()
 
-        val deleted = argumentCaptor<org.videolan.vlc.mediadb.models.CustomDirectory>()
+        val deleted = argumentCaptor<com.video.offline.videoplayer.mediadb.models.CustomDirectory>()
         verify(customDirectoryDao).delete(deleted.capture() ?: uninitialized())
         assertThat(deleted.value, `is`(fakeCustomDirectories[0]))
     }
@@ -81,7 +81,7 @@ class DirectoryRepositoryTest {
             directoryRepository.addCustomDirectory(it.path).join()
         }
 
-        val inserted = argumentCaptor<org.videolan.vlc.mediadb.models.CustomDirectory>()
+        val inserted = argumentCaptor<com.video.offline.videoplayer.mediadb.models.CustomDirectory>()
         verify(customDirectoryDao).insert(inserted.capture() ?: uninitialized())
         assertThat(inserted.allValues.size, `is`(1))
         assertThat(inserted.allValues[0], `is`(fakeCustomDirectories[0]))
@@ -99,7 +99,7 @@ class DirectoryRepositoryTest {
             directoryRepository.addCustomDirectory(it.path).join()
         }
 
-        val inserted = argumentCaptor<org.videolan.vlc.mediadb.models.CustomDirectory>()
+        val inserted = argumentCaptor<com.video.offline.videoplayer.mediadb.models.CustomDirectory>()
         verify(customDirectoryDao).insert(inserted.capture() ?: uninitialized())
         assertThat(inserted.allValues.size, `is`(1))
         assertThat(inserted.allValues[0], `is`(fakeCustomDirectories[0]))

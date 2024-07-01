@@ -1,4 +1,4 @@
-package org.videolan.vlc.viewmodels
+package com.video.offline.videoplayer.viewmodels
 
 import androidx.core.net.toUri
 import com.jraska.livedata.test
@@ -7,9 +7,9 @@ import org.junit.Test
 import org.videolan.medialibrary.MLServiceLocator
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
-import org.videolan.vlc.BaseTest
-import org.videolan.vlc.util.TestCoroutineContextProvider
-import org.videolan.vlc.util.TestUtil
+import com.video.offline.videoplayer.BaseTest
+import com.video.offline.videoplayer.util.TestCoroutineContextProvider
+import com.video.offline.videoplayer.util.TestUtil
 
 class HistoryModelTest : BaseTest() {
     private val mediaLibrary: Medialibrary = Medialibrary.getInstance()
@@ -18,12 +18,12 @@ class HistoryModelTest : BaseTest() {
     override fun beforeTest() {
         super.beforeTest()
         mediaLibrary.clearHistory(Medialibrary.HISTORY_TYPE_GLOBAL)
-        historyModel = HistoryModel(context, org.videolan.vlc.util.TestCoroutineContextProvider())
+        historyModel = HistoryModel(context, com.video.offline.videoplayer.util.TestCoroutineContextProvider())
     }
 
     @Test
     fun whenRefreshCalled_ListIsUpdated() {
-        val fakeMediaStrings = org.videolan.vlc.util.TestUtil.createLocalUris(2)
+        val fakeMediaStrings = com.video.offline.videoplayer.util.TestUtil.createLocalUris(2)
 
         historyModel.refresh()
 
@@ -50,7 +50,7 @@ class HistoryModelTest : BaseTest() {
 
     @Test
     fun whenListHasTwoItemsAndLastIsMovedUp_ListHasUpdatedItemsOrder() {
-        val fakeMediaStrings = org.videolan.vlc.util.TestUtil.createLocalUris(2)
+        val fakeMediaStrings = com.video.offline.videoplayer.util.TestUtil.createLocalUris(2)
 
         val result = fakeMediaStrings.map {
             val media = MLServiceLocator.getAbstractMediaWrapper(it.toUri()).apply { type = MediaWrapper.TYPE_VIDEO }

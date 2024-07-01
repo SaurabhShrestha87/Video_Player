@@ -9,7 +9,7 @@
 
         <variable
                 name="progress"
-                type="androidx.lifecycle.LiveData&lt;org.videolan.vlc.media.Progress>" />
+                type="androidx.lifecycle.LiveData&lt;com.video.offline.videoplayer.media.Progress>" />
 
         <variable
                 name="ab_repeat_a"
@@ -21,7 +21,7 @@
 
         <variable
                 name="player"
-                type="org.videolan.vlc.gui.video.VideoPlayerActivity" />
+                type="com.video.offline.videoplayer.gui.video.VideoPlayerActivity" />
     </data>
 
 
@@ -195,7 +195,7 @@
                 vlc:layout_constraintTop_toTopOf="parent" />
 
 
-        <org.videolan.vlc.gui.view.FocusableTextView
+        <com.video.offline.videoplayer.gui.view.FocusableTextView
                 android:id="@+id/player_overlay_time"
                 style="@style/VLC.Player.TimeText"
                 android:layout_width="0dp"
@@ -214,7 +214,7 @@
                 vlc:layout_constraintStart_toStartOf="parent" />
 
 
-        <org.videolan.vlc.gui.view.FocusableTextView
+        <com.video.offline.videoplayer.gui.view.FocusableTextView
                 android:id="@+id/player_overlay_length"
                 style="@style/VLC.Player.TimeText"
                 android:layout_width="0dp"
@@ -234,7 +234,7 @@
                 vlc:time="@{progress.time}" />
 
 <!--           ⚠️ margin are set in code!!!-->
-        <org.videolan.vlc.gui.view.AccessibleSeekBar
+        <com.video.offline.videoplayer.gui.view.AccessibleSeekBar
                 android:id="@+id/player_overlay_seekbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -528,7 +528,7 @@
                     vlc:layout_constraintTop_toTopOf="@+id/player_overlay_play"
                     vlc:srcCompat="@drawable/ic_player_more" />
 
-            <org.videolan.vlc.gui.view.SwipeToUnlockView
+            <com.video.offline.videoplayer.gui.view.SwipeToUnlockView
                     android:id="@+id/swipe_to_unlock"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"

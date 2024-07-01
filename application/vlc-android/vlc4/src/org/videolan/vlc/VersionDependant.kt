@@ -1,9 +1,9 @@
-package org.videolan.vlc
+package com.video.offline.videoplayer
 
 import android.content.Context
 import org.videolan.libvlc.MediaPlayer
 import org.videolan.libvlc.interfaces.IMedia
-import org.videolan.vlc.gui.dialogs.adapters.VlcTrack
+import com.video.offline.videoplayer.gui.dialogs.adapters.VlcTrack
 
 /*
  * ************************************************************************

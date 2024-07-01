@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  */
 
-package org.videolan.vlc.database.helpers
+package com.video.offline.videoplayer.database.helpers
 
 import android.net.Uri
 import androidx.core.content.contentValuesOf

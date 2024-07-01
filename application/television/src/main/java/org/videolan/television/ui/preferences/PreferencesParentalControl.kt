@@ -31,9 +31,9 @@ import androidx.preference.Preference
 import org.videolan.tools.KEY_SAFE_MODE
 import org.videolan.tools.Settings
 import org.videolan.tools.Settings.isPinCodeSet
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.PinCodeActivity
-import org.videolan.vlc.gui.PinCodeReason
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.PinCodeActivity
+import com.video.offline.videoplayer.gui.PinCodeReason
 
 class PreferencesParentalControl : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {
 

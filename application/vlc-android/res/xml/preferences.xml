@@ -5,7 +5,7 @@
 
     <PreferenceCategory android:layout="@layout/preference_category_layout">
 
-        <org.videolan.vlc.gui.view.ClickablePreferenceScreen
+        <com.video.offline.videoplayer.gui.view.ClickablePreferenceScreen
             android:iconSpaceReserved="false"
             android:key="directories"
             android:summary="@string/directories_summary"
@@ -14,7 +14,7 @@
             app:iconSpaceReserved="false"
             app:pref_position="0" />
 
-        <org.videolan.vlc.gui.view.ClickableSwitchPreference
+        <com.video.offline.videoplayer.gui.view.ClickableSwitchPreference
             android:defaultValue="true"
             android:key="auto_rescan"
             android:summary="@string/auto_rescan_summary"
@@ -31,7 +31,7 @@
         android:layout="@layout/preference_video_layout"
         android:title="@string/video_prefs_category">
 
-        <org.videolan.vlc.gui.view.ClickableListPreference
+        <com.video.offline.videoplayer.gui.view.ClickableListPreference
             app:pref_position="0"
             android:defaultValue="0"
             app:allowDividerAbove="false"
@@ -43,7 +43,7 @@
             android:summary="@string/video_app_switch_summary"
             android:title="@string/video_app_switch_title"
             app:iconSpaceReserved="false" />
-        <org.videolan.vlc.gui.view.ClickableListPreference
+        <com.video.offline.videoplayer.gui.view.ClickableListPreference
             android:defaultValue="-1"
             android:entries="@array/hardware_acceleration_list"
             android:entryValues="@array/hardware_acceleration_values"
@@ -53,7 +53,7 @@
             android:title="@string/hardware_acceleration"
             app:iconSpaceReserved="false"
             app:pref_position="1" />
-        <org.videolan.vlc.gui.view.ClickableListPreference
+        <com.video.offline.videoplayer.gui.view.ClickableListPreference
             android:defaultValue="99"
             android:entries="@array/screen_orientation_list"
             android:entryValues="@array/screen_orientation_values"
@@ -69,7 +69,7 @@
 
     <PreferenceCategory android:title="@string/network">
 
-        <org.videolan.vlc.gui.view.ClickableListPreference
+        <com.video.offline.videoplayer.gui.view.ClickableListPreference
             android:defaultValue="3"
             android:entries="@array/metered_connection_list"
             android:entryValues="@array/metered_connection_values"
@@ -84,7 +84,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/history">
-        <org.videolan.vlc.gui.view.ClickableSwitchPreference
+        <com.video.offline.videoplayer.gui.view.ClickableSwitchPreference
             app:pref_position="0"
             app:allowDividerAbove="false"
             app:allowDividerBelow="false"
@@ -97,7 +97,7 @@
             app:iconSpaceReserved="false"
             app:singleLineTitle="false" />
 
-        <org.videolan.vlc.gui.view.ClickableSwitchPreference
+        <com.video.offline.videoplayer.gui.view.ClickableSwitchPreference
             app:pref_position="1"
             app:allowDividerAbove="false"
             app:allowDividerBelow="false"
@@ -109,7 +109,7 @@
             android:title="@string/video_resume_playback_title"
             app:iconSpaceReserved="false"
             app:singleLineTitle="false" />
-        <org.videolan.vlc.gui.view.ClickableSwitchPreference
+        <com.video.offline.videoplayer.gui.view.ClickableSwitchPreference
             app:pref_position="2"
             app:allowDividerAbove="false"
             app:allowDividerBelow="false"

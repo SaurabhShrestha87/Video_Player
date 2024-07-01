@@ -32,7 +32,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import org.videolan.libvlc.util.AndroidUtil
 import org.videolan.television.ui.FocusableConstraintLayout
-import org.videolan.vlc.R
+import com.video.offline.videoplayer.R
 
 object TvAdapterUtils {
 

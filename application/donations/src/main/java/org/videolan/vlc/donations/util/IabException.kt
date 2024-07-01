@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.videolan.vlc.donations.util
+package com.video.offline.videoplayer.donations.util
 
 /**
  * Exception thrown when something went wrong with in-app billing.

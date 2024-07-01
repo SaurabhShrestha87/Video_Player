@@ -13,7 +13,7 @@
 
         <variable
                 name="holder"
-                type="org.videolan.vlc.gui.audio.PlaylistAdapter.ViewHolder" />
+                type="com.video.offline.videoplayer.gui.audio.PlaylistAdapter.ViewHolder" />
 
         <variable
                 name="cover"
@@ -88,7 +88,7 @@
                 tools:src="@tools:sample/avatars[0]" />
 
 
-        <org.videolan.vlc.gui.view.MiniVisualizer
+        <com.video.offline.videoplayer.gui.view.MiniVisualizer
                 android:id="@+id/playing"
                 android:layout_width="32dp"
                 android:layout_height="32dp"

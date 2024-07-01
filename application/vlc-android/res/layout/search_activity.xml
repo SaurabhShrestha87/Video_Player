@@ -14,7 +14,7 @@
 
         <variable
                 name="handler"
-                type="org.videolan.vlc.gui.SearchActivity.ClickHandler" />
+                type="com.video.offline.videoplayer.gui.SearchActivity.ClickHandler" />
     </data>
 
     <LinearLayout

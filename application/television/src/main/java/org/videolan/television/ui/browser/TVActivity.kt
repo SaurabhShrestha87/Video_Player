@@ -3,7 +3,7 @@ package org.videolan.television.ui.browser
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import org.videolan.television.R
-import org.videolan.vlc.gui.network.MRLPanelFragment
+import com.video.offline.videoplayer.gui.network.MRLPanelFragment
 import org.videolan.television.ui.MainTvActivity
 import org.videolan.resources.HEADER_STREAM
 

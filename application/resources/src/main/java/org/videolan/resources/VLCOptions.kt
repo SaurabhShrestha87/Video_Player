@@ -38,7 +38,7 @@ import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.tools.Preferences
 import org.videolan.tools.Settings
 import org.videolan.tools.putSingle
-import org.videolan.vlc.isVLC4
+import com.video.offline.videoplayer.isVLC4
 import java.io.File
 import java.util.*
 

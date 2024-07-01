@@ -22,7 +22,7 @@
  *
  */
 
-package org.videolan.vlc
+package com.video.offline.videoplayer
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -41,14 +41,14 @@ import org.junit.Rule
 import org.junit.Test
 import org.videolan.resources.EXTRA_TARGET
 import org.videolan.tools.Settings
-import org.videolan.vlc.gui.MainActivity
-import org.videolan.vlc.gui.helpers.UiTools.isTablet
-import org.videolan.vlc.util.DpadHelper.pressHome
-import org.videolan.vlc.util.DpadHelper.pressPip
-import org.videolan.vlc.util.DpadHelper.pressStop
-import org.videolan.vlc.util.ScreenshotUtil
-import org.videolan.vlc.util.UiUtils.waitId
-import org.videolan.vlc.util.UiUtils.waitUntilLoaded
+import com.video.offline.videoplayer.gui.MainActivity
+import com.video.offline.videoplayer.gui.helpers.UiTools.isTablet
+import com.video.offline.videoplayer.util.DpadHelper.pressHome
+import com.video.offline.videoplayer.util.DpadHelper.pressPip
+import com.video.offline.videoplayer.util.DpadHelper.pressStop
+import com.video.offline.videoplayer.util.ScreenshotUtil
+import com.video.offline.videoplayer.util.UiUtils.waitId
+import com.video.offline.videoplayer.util.UiUtils.waitUntilLoaded
 import tools.fastlane.screengrab.Screengrab
 import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy
 import tools.fastlane.screengrab.locale.LocaleTestRule

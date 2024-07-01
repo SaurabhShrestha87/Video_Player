@@ -24,12 +24,12 @@ import org.videolan.television.ui.dialogs.ConfirmationTvActivity
 import org.videolan.television.ui.dialogs.ConfirmationTvActivity.Companion.CONFIRMATION_DIALOG_TEXT
 import org.videolan.television.ui.dialogs.ConfirmationTvActivity.Companion.CONFIRMATION_DIALOG_TITLE
 import org.videolan.television.ui.updateBackground
-import org.videolan.vlc.gui.dialogs.SavePlaylistDialog
-import org.videolan.vlc.gui.helpers.UiTools.addToPlaylist
-import org.videolan.vlc.gui.helpers.UiTools.showPinIfNeeded
-import org.videolan.vlc.interfaces.ITVEventsHandler
-import org.videolan.vlc.media.MediaUtils
-import org.videolan.vlc.viewmodels.mobile.PlaylistViewModel
+import com.video.offline.videoplayer.gui.dialogs.SavePlaylistDialog
+import com.video.offline.videoplayer.gui.helpers.UiTools.addToPlaylist
+import com.video.offline.videoplayer.gui.helpers.UiTools.showPinIfNeeded
+import com.video.offline.videoplayer.interfaces.ITVEventsHandler
+import com.video.offline.videoplayer.media.MediaUtils
+import com.video.offline.videoplayer.viewmodels.mobile.PlaylistViewModel
 
 class MediaListActivity : BaseTvActivity(), ITVEventsHandler {
 
