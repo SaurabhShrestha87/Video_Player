@@ -13,16 +13,16 @@
                 android:startX="54"
                 android:startY="0"
                 android:type="linear">
-                <!-- orange300 from top to orange500 54% stop -->
+                <!-- greenLight from top to green 54% stop -->
                 <item
-                    android:color="@color/orange300"
+                    android:color="@color/greenLight"
                     android:offset="0.0" />
                 <item
-                    android:color="@color/orange500"
+                    android:color="@color/green"
                     android:offset="0.54" />
-                <!-- orange700 to 72% stop -->
+                <!-- greenDark to 72% stop -->
                 <item
-                    android:color="@color/orange700"
+                    android:color="@color/greenDark"
                     android:offset="0.72" />
                 <!-- orange900 to bottom -->
                 <item

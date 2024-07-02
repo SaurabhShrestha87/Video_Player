@@ -280,11 +280,11 @@ class VideoDelayDelegate(private val player: VideoPlayerActivity) : View.OnClick
         }
         if (!::delayFirstButton.isInitialized) return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            delayFirstButton.iconTint = ColorStateList.valueOf(if (delayValues.start == -1L) ContextCompat.getColor(player, R.color.grey400transparent) else ContextCompat.getColor(player, R.color.orange500))
-            delaySecondButton.iconTint = ColorStateList.valueOf(if (delayValues.stop == -1L) ContextCompat.getColor(player, R.color.grey400transparent) else ContextCompat.getColor(player, R.color.orange500))
+            delayFirstButton.iconTint = ColorStateList.valueOf(if (delayValues.start == -1L) ContextCompat.getColor(player, R.color.grey400transparent) else ContextCompat.getColor(player, R.color.green))
+            delaySecondButton.iconTint = ColorStateList.valueOf(if (delayValues.stop == -1L) ContextCompat.getColor(player, R.color.grey400transparent) else ContextCompat.getColor(player, R.color.green))
             val viewToAnime = if (delayValues.start == -1L && delayValues.stop != -1L) delayFirstButton else if (delayValues.start != -1L && delayValues.stop == -1L) delaySecondButton else if (hasChanged) delayInfoContainer else null
             viewToAnime?.let { button ->
-                val anim = ValueAnimator.ofObject(ArgbEvaluatorCompat(), ContextCompat.getColor(player, R.color.playerbackground), ContextCompat.getColor(player, R.color.orange500focus), ContextCompat.getColor(player, R.color.playerbackground))
+                val anim = ValueAnimator.ofObject(ArgbEvaluatorCompat(), ContextCompat.getColor(player, R.color.playerbackground), ContextCompat.getColor(player, R.color.greenfocus), ContextCompat.getColor(player, R.color.playerbackground))
                 anim.addUpdateListener {
                     button.backgroundTintList = ColorStateList.valueOf(it.animatedValue as Int)
                     if (viewToAnime == delayInfoContainer) viewToAnime.background = ContextCompat.getDrawable(player, R.drawable.video_list_length_bg_opaque)

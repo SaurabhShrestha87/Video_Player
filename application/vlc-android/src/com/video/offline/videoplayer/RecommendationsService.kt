@@ -76,7 +76,7 @@ class RecommendationsService : IntentService("RecommendationService"), Coroutine
                         .setPriority(priority)
                         .setLocalOnly(true)
                         .setOngoing(true)
-                        .setColor(ContextCompat.getColor(this, R.color.orange800))
+                        .setColor(ContextCompat.getColor(this, R.color.greenDark))
                         .setCategory(Notification.CATEGORY_RECOMMENDATION)
                         .setLargeIcon(BitmapUtil.getPicture(mw))
                         .setSmallIcon(R.drawable.icon)

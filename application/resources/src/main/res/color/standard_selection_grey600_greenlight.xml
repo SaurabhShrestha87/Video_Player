@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!--
   ~ *************************************************************************
-  ~  standard_selection_orange500_orange700.xml
+  ~  standard_selection_grey600.xml
   ~ **************************************************************************
   ~ Copyright © 2020 VLC authors and VideoLAN
   ~ Author: Nicolas POMEPUY
@@ -23,8 +23,8 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true" android:color="@color/orange700" />
-    <item android:state_pressed="true" android:color="@color/orange700" />
-    <item android:state_focused="true" android:color="@color/orange700" />
-    <item android:color="@color/orange500" />
+    <item android:state_selected="true" android:color="@color/greenLight" />
+    <item android:state_pressed="true" android:color="@color/greenLight" />
+    <item android:state_focused="true" android:color="@color/greenLight" />
+    <item android:color="@color/grey600" />
 </selector>

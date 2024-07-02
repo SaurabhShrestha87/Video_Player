@@ -118,7 +118,7 @@ abstract class PickTimeFragment : VLCBottomSheetDialogFragment(), View.OnClickLi
 
     override fun onFocusChange(v: View, hasFocus: Boolean) {
         if (v is TextView) {
-            v.setTextColor(if (hasFocus) ContextCompat.getColor(requireActivity(), R.color.orange500) else mTextColor)
+            v.setTextColor(if (hasFocus) ContextCompat.getColor(requireActivity(), R.color.green) else mTextColor)
         }
     }
 

@@ -225,7 +225,7 @@ class ContextSheet : VLCBottomSheetDialogFragment() {
 
         inner class ViewHolder(val binding: ContextItemBinding) : RecyclerView.ViewHolder(binding.root) {
             private val textColor = binding.contextOptionTitle.currentTextColor
-            private val focusedColor by lazy(LazyThreadSafetyMode.NONE) { ContextCompat.getColor(itemView.context, R.color.orange500transparent) }
+            private val focusedColor by lazy(LazyThreadSafetyMode.NONE) { ContextCompat.getColor(itemView.context, R.color.greentransparent) }
 
             init {
                 itemView.setOnClickListener {

@@ -34,7 +34,7 @@
             android:layout_centerInParent="true"
             android:contentDescription="@null"
             android:src="@drawable/widget_round_white"
-            tools:tint="@color/orange200" />
+            tools:tint="@color/greenLight" />
 
     <ImageView
             android:id="@+id/cover"
@@ -64,7 +64,7 @@
             android:layout_alignStart="@+id/cover"
             android:layout_marginTop="-32dp"
             android:src="@drawable/widget_rectangle_background"
-            tools:tint="@color/orange500" />
+            tools:tint="@color/green" />
 
     <ImageView
             android:id="@+id/play_pause"

@@ -31,7 +31,7 @@
             android:pathData="M20,20m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
             android:strokeLineJoin="round"
             android:strokeWidth="12.5984"
-            android:fillColor="@color/standard_selection_orange500_orange700"
+            android:fillColor="@color/standard_selection_green_greendark"
             android:strokeColor="#00000000"
             android:fillType="nonZero"
             android:strokeLineCap="butt" />

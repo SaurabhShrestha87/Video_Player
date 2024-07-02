@@ -137,7 +137,7 @@ class VideoStatsDelegate(private val player: VideoPlayerActivity, val scrolling:
                 }
 
                 val trackTitle = TextView(player, null, R.style.TextAppearance_MaterialComponents_Headline2)
-                trackTitle.setTextColor(ContextCompat.getColor(player, R.color.orange500))
+                trackTitle.setTextColor(ContextCompat.getColor(player, R.color.green))
                 trackTitle.text = when (track.type) {
                     IMedia.Track.Type.Video -> player.getString(R.string.video)
                     IMedia.Track.Type.Audio -> player.getString(R.string.audio)

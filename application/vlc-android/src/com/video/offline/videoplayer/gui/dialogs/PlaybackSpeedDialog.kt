@@ -149,7 +149,7 @@ class PlaybackSpeedDialog : VLCBottomSheetDialogFragment() {
         val rate = playbackService!!.rate
         speedValue.text = rate.formatRateString()
         if (rate != 1.0f) {
-            speedValue.setTextColor(ContextCompat.getColor(requireActivity(), R.color.orange500))
+            speedValue.setTextColor(ContextCompat.getColor(requireActivity(), R.color.green))
         } else {
             speedValue.setTextColor(textColor)
         }

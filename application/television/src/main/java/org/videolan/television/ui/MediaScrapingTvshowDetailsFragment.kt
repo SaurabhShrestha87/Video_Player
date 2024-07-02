@@ -261,7 +261,7 @@ class MediaScrapingTvshowDetailsFragment : DetailsSupportFragment(), CoroutineSc
 
         val activity = requireActivity()
         detailsOverview = DetailsOverviewRow(tvShow)
-        rowPresenter.backgroundColor = ContextCompat.getColor(activity, R.color.orange500)
+        rowPresenter.backgroundColor = ContextCompat.getColor(activity, R.color.green)
         rowPresenter.onActionClickedListener = OnActionClickedListener { action ->
             when (action.id.toInt()) {
                 ID_RESUME -> {

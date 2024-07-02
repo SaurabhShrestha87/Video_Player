@@ -56,6 +56,7 @@ import com.video.offline.videoplayer.gui.browser.MLStorageBrowserFragment
 import com.video.offline.videoplayer.gui.browser.NetworkBrowserFragment
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.network.MRLPanelFragment
+import com.video.offline.videoplayer.gui.preferences.theme.ThemeFragment
 import com.video.offline.videoplayer.gui.video.VideoGridFragment
 import com.video.offline.videoplayer.reloadLibrary
 import com.video.offline.videoplayer.util.DialogDelegate
@@ -178,6 +179,7 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
 
     private fun fetchSecondaryFragment(id: String) {
         when (id) {
+            THEME -> fragment = ThemeFragment.newInstance()
             ALBUMS_SONGS -> {
                 fragment = AudioAlbumsSongsFragment().apply {
                     arguments = bundleOf(
@@ -228,6 +230,7 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
         const val ALBUMS_SONGS = "albumsSongs"
         const val ABOUT = "about"
         const val CLEANER = "cleaner"
+        const val THEME = "theme"
 
         const val STREAMS = "streams"
         const val HISTORY = "history"

@@ -33,9 +33,9 @@ import com.video.offline.videoplayer.R
 open class SelectorViewHolder<T : ViewDataBinding>(vdb: T) : RecyclerView.ViewHolder(vdb.root) {
 
     var binding: T = vdb
-    private val ITEM_FOCUS_ON: Int = ContextCompat.getColor(vdb.root.context, R.color.orange500transparent)
+    private val ITEM_FOCUS_ON: Int = ContextCompat.getColor(vdb.root.context, R.color.greentransparent)
     private val ITEM_FOCUS_OFF: Int = ContextCompat.getColor(vdb.root.context, R.color.transparent)
-    private val ITEM_SELECTION_ON: Int = ContextCompat.getColor(vdb.root.context, R.color.orange200transparent)
+    private val ITEM_SELECTION_ON: Int = ContextCompat.getColor(vdb.root.context, R.color.greenLighttransparent)
 
     protected open fun isSelected() = false
 

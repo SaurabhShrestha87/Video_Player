@@ -43,7 +43,7 @@ open class FocusableTextView : androidx.appcompat.widget.AppCompatTextView {
     val paint: Paint by lazy {
         Paint().apply {
             isAntiAlias = true
-            color = ContextCompat.getColor(context, R.color.orange500focus)
+            color = ContextCompat.getColor(context, R.color.greenfocus)
             style = Paint.Style.FILL
             textSize = this@FocusableTextView.textSize
             typeface = this@FocusableTextView.typeface

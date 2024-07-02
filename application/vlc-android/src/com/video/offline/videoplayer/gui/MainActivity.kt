@@ -57,6 +57,7 @@ import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.helpers.UiTools.isTablet
 import com.video.offline.videoplayer.gui.helpers.UiTools.showPinIfNeeded
 import com.video.offline.videoplayer.gui.preferences.PreferencesActivity
+import com.video.offline.videoplayer.gui.preferences.theme.ThemeFragment
 import com.video.offline.videoplayer.gui.video.VideoGridFragment
 import com.video.offline.videoplayer.interfaces.Filterable
 import com.video.offline.videoplayer.interfaces.IRefreshable
@@ -199,7 +200,10 @@ class MainActivity : ContentActivity(),
         return when (item.itemId) {
             R.id.ml_menu_theme -> {
                 lifecycleScope.launch {
-                    PreferencesActivity.launchWithPref(this@MainActivity, "app_theme")
+                    val i = Intent(this@MainActivity, SecondaryActivity::class.java)
+                    i.putExtra(SecondaryActivity.KEY_FRAGMENT, SecondaryActivity.THEME)
+                    i.flags = i.flags or Intent.FLAG_ACTIVITY_NO_HISTORY
+                    startActivity(i)
                 }
                 true
             }

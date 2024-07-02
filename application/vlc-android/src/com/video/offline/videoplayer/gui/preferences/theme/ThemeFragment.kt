@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.databinding.FragmentThemeBinding
 import com.video.offline.videoplayer.gui.BaseFragment
+import com.video.offline.videoplayer.gui.audio.EqualizerFragment
 
 
 class ThemeFragment : BaseFragment() {
@@ -54,6 +55,12 @@ class ThemeFragment : BaseFragment() {
         adapter = ThemeAdapter(arrayList, itemClickListener, requireContext())
         // set adapter
         binding.recyclerView.setAdapter(adapter)
+    }
+
+    companion object {
+        fun newInstance(): ThemeFragment {
+            return ThemeFragment()
+        }
     }
 
 }

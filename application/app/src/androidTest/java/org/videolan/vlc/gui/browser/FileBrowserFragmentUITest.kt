@@ -90,7 +90,7 @@ class FileBrowserFragmentUITest : BaseUITest() {
         onView(rvMatcher.atPosition(1)).perform(longClick())
 
         onView(rvMatcher.atPosition(1))
-                .check(matches(withBgColor(context.getColor(R.color.orange200transparent))))
+                .check(matches(withBgColor(context.getColor(R.color.greenLighttransparent))))
 
         onView(withId(R.id.action_mode_file_play))
                 .check(matches(isDisplayed()))
@@ -212,8 +212,8 @@ class FileBrowserFragmentUITest : BaseUITest() {
         onView(rvMatcher.atPosition(0)).perform(longClick())
         onView(rvMatcher.atPosition(2)).perform(longClick())
 
-        onView(rvMatcher.atPosition(0)).check(matches(withBgColor(context.getColor(R.color.orange200transparent))))
-        onView(rvMatcher.atPosition(2)).check(matches(withBgColor(context.getColor(R.color.orange200transparent))))
+        onView(rvMatcher.atPosition(0)).check(matches(withBgColor(context.getColor(R.color.greenLighttransparent))))
+        onView(rvMatcher.atPosition(2)).check(matches(withBgColor(context.getColor(R.color.greenLighttransparent))))
     }
 
     @Test
@@ -368,14 +368,14 @@ class FileBrowserFragmentUITest : BaseUITest() {
         )).perform(click())
         onView(rvMatcher.atPosition(3)).perform(click())
 
-        onView(rvMatcher.atPosition(1)).check(matches(withBgColor(context.getColor(R.color.orange200transparent))))
-        onView(rvMatcher.atPosition(3)).check(matches(withBgColor(context.getColor(R.color.orange200transparent))))
+        onView(rvMatcher.atPosition(1)).check(matches(withBgColor(context.getColor(R.color.greenLighttransparent))))
+        onView(rvMatcher.atPosition(3)).check(matches(withBgColor(context.getColor(R.color.greenLighttransparent))))
 
         onView(rvMatcher.atPosition(3)).perform(click())
         onView(rvMatcher.atPosition(1)).perform(click())
 
-        onView(rvMatcher.atPosition(1)).check(matches(not(withBgColor(context.getColor(R.color.orange200transparent)))))
-        onView(rvMatcher.atPosition(3)).check(matches(not(withBgColor(context.getColor(R.color.orange200transparent)))))
+        onView(rvMatcher.atPosition(1)).check(matches(not(withBgColor(context.getColor(R.color.greenLighttransparent)))))
+        onView(rvMatcher.atPosition(3)).check(matches(not(withBgColor(context.getColor(R.color.greenLighttransparent)))))
     }
 
     @Test

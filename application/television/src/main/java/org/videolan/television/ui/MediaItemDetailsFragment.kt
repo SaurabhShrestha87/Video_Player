@@ -310,7 +310,7 @@ class MediaItemDetailsFragment : DetailsSupportFragment(), CoroutineScope by Mai
         val actionEdit = Action(ID_FAVORITE_EDIT.toLong(), getString(R.string.favorites_edit))
         val actionDelete = Action(ID_FAVORITE_DELETE.toLong(), getString(R.string.favorites_remove))
 
-        rowPresenter.backgroundColor = ContextCompat.getColor(activity, R.color.orange500)
+        rowPresenter.backgroundColor = ContextCompat.getColor(activity, R.color.green)
         rowPresenter.onActionClickedListener = OnActionClickedListener { action ->
             when (action.id.toInt()) {
                 ID_LISTEN -> {

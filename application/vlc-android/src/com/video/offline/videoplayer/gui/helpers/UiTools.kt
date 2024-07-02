@@ -399,7 +399,7 @@ object UiTools {
 
                 }
                 konfettiView.build()
-                        .addColors(ContextCompat.getColor(activity, R.color.orange200), ContextCompat.getColor(activity, R.color.orange800), ContextCompat.getColor(activity, R.color.orange500))
+                        .addColors(ContextCompat.getColor(activity, R.color.greenLight), ContextCompat.getColor(activity, R.color.greenDark), ContextCompat.getColor(activity, R.color.green))
                         .setDirection(315.0, 360.0)
                         .setSpeed(3f, 9f)
                         .setFadeOutEnabled(true)
@@ -411,7 +411,7 @@ object UiTools {
                         .setDelay(275)
                         .burst(35)
                 konfettiView.build()
-                        .addColors(ContextCompat.getColor(activity, R.color.orange200), ContextCompat.getColor(activity, R.color.orange800), ContextCompat.getColor(activity, R.color.orange500))
+                        .addColors(ContextCompat.getColor(activity, R.color.greenDark), ContextCompat.getColor(activity, R.color.greenDark), ContextCompat.getColor(activity, R.color.green))
                         .setDirection(180.0, 225.0)
                         .setSpeed(3f, 9f)
                         .setFadeOutEnabled(true)
