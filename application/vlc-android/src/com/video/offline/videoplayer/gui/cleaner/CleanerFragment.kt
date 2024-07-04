@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  */
 
-package com.video.offline.videoplayer.gui
+package com.video.offline.videoplayer.gui.cleaner
 
 import android.net.Uri
 import android.os.Bundle
@@ -48,7 +48,6 @@ import org.videolan.tools.MultiSelectHelper
 import org.videolan.tools.setGone
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.browser.MediaBrowserFragment
-import com.video.offline.videoplayer.gui.video.cleaner.CleanerListFragment
 import com.video.offline.videoplayer.viewmodels.mobile.VideoGroupingType
 import com.video.offline.videoplayer.viewmodels.mobile.VideosViewModel
 import com.video.offline.videoplayer.viewmodels.mobile.getViewModel
@@ -151,11 +150,15 @@ class CleanerFragment : MediaBrowserFragment<VideosViewModel>() {
 
         requireView().findViewById<View>(R.id.cleanerWatchedTv).setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()
-                ?.add(R.id.fragment_placeholder, CleanerListFragment.newInstance(KEY_CLEANER_WATCHED))?.commit()
+                ?.add(R.id.fragment_placeholder, CleanerListFragment.newInstance(KEY_CLEANER_WATCHED))
+                ?.addToBackStack("cleaner_list")
+                ?.commit()
         }
         requireView().findViewById<View>(R.id.cleanerSpaceTv).setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()
-                ?.add(R.id.fragment_placeholder, CleanerListFragment.newInstance(KEY_CLEANER_BIG))?.commit()
+                ?.add(R.id.fragment_placeholder, CleanerListFragment.newInstance(KEY_CLEANER_BIG))
+                ?.addToBackStack("cleaner_list")
+                ?.commit()
         }
     }
 

@@ -38,11 +38,11 @@ import org.videolan.tools.FORCE_PLAY_ALL_VIDEO
 import org.videolan.tools.Settings
 import org.videolan.tools.isStarted
 import org.videolan.tools.retrieveParent
-import com.video.offline.videoplayer.gui.CleanerFragment
+import com.video.offline.videoplayer.gui.cleaner.CleanerFragment
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.helpers.UiTools.addToPlaylist
 import com.video.offline.videoplayer.gui.video.VideoGridFragment
-import com.video.offline.videoplayer.gui.video.cleaner.CleanerListFragment
+import com.video.offline.videoplayer.gui.cleaner.CleanerListFragment
 import com.video.offline.videoplayer.media.MediaUtils
 import com.video.offline.videoplayer.media.PlaylistManager
 import com.video.offline.videoplayer.media.getAll

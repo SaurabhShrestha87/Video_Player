@@ -755,14 +755,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.ViewStubCompat
+            <ViewStub
                     android:id="@+id/player_options_stub"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout="@layout/player_options" />
         </FrameLayout>
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/bookmarks_stub"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

@@ -272,14 +272,9 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.video.offline.videoplayer.gui.view.SwipeRefreshLayout>
 
-
-
-
-
-
         <include layout="@layout/audioplayercontainer" />
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/audio_player_tips"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

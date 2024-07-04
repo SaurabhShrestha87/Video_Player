@@ -45,7 +45,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.ViewStubCompat
+import android.view.ViewStub
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -310,7 +310,7 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
     }
 
     fun initInfoOverlay() {
-        val vsc = player.findViewById<ViewStubCompat>(R.id.player_info_stub)
+        val vsc = player.findViewById<ViewStub>(R.id.player_info_stub)
         if (vsc != null) {
             vsc.setVisible()
             // the info textView is not on the overlay
@@ -326,7 +326,7 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
      */
     fun showBrightnessBar(brightness: Int) {
         player.handler.sendEmptyMessage(VideoPlayerActivity.FADE_OUT_VOLUME_INFO)
-        player.findViewById<ViewStubCompat>(R.id.player_brightness_stub)?.setVisible()
+        player.findViewById<ViewStub>(R.id.player_brightness_stub)?.setVisible()
         playerOverlayBrightness = player.findViewById(R.id.player_overlay_brightness)
         brightnessValueText = player.findViewById(R.id.brightness_value_text)
         playerBrightnessProgress = player.findViewById(R.id.playerBrightnessProgress)
@@ -345,7 +345,7 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
      */
     fun showVolumeBar(volume: Int) {
         player.handler.sendEmptyMessage(VideoPlayerActivity.FADE_OUT_BRIGHTNESS_INFO)
-        player.findViewById<ViewStubCompat>(R.id.player_volume_stub)?.setVisible()
+        player.findViewById<ViewStub>(R.id.player_volume_stub)?.setVisible()
         playerOverlayVolume = player.findViewById(R.id.player_overlay_volume)
         volumeValueText = player.findViewById(R.id.volume_value_text)
         playerVolumeProgress = player.findViewById(R.id.playerVolumeProgress)
@@ -502,7 +502,7 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     private fun initOverlay() {
         player.service?.let { service ->
-            val vscRight = player.findViewById<ViewStubCompat>(R.id.player_hud_right_stub)
+            val vscRight = player.findViewById<ViewStub>(R.id.player_hud_right_stub)
             vscRight?.let {
                 it.setVisible()
                 hudRightBinding = DataBindingUtil.bind(player.findViewById(R.id.hud_right_overlay)) ?: return
@@ -511,7 +511,7 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
                 }
             }
 
-            val vsc = player.findViewById<ViewStubCompat>(R.id.player_hud_stub)
+            val vsc = player.findViewById<ViewStub>(R.id.player_hud_stub)
             if (vsc != null) {
                 seekButtons = player.settings.getBoolean(ENABLE_SEEK_BUTTONS, false)
                 vsc.setVisible()

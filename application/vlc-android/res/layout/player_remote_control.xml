@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="false" />
 
-    <androidx.appcompat.widget.ViewStubCompat
+    <ViewStub
             android:id="@+id/player_overlay_tips"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,7 +34,7 @@
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_renderer_background_cone" />
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/player_info_stub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
 
         </RelativeLayout>
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/player_overlay_settings_stub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                 android:layout_marginBottom="@dimen/default_margin"
                 android:layout="@layout/player_overlay_settings" />
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/player_seek_stub"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -77,7 +77,7 @@
                 android:fitsSystemWindows="false"
                 android:layout="@layout/player_overlay_seek" />
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/player_hud_right_stub"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                 android:layout_marginBottom="@dimen/overlay_margin"
                 android:layout="@layout/player_hud_right" />
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/player_hud_stub"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -98,12 +98,12 @@
                 android:layout_marginBottom="@dimen/overlay_margin"
                 android:layout="@layout/player_hud" />
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/player_resize_stub"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout="@layout/player_resize" />
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/player_orientation_stub"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -111,7 +111,7 @@
     </FrameLayout>
 
 
-    <androidx.appcompat.widget.ViewStubCompat
+    <ViewStub
             android:id="@+id/player_brightness_stub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
             android:layout_marginRight="@dimen/tv_overscan_horizontal"
             android:layout="@layout/player_overlay_brightness" />
 
-    <androidx.appcompat.widget.ViewStubCompat
+    <ViewStub
             android:id="@+id/player_volume_stub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/playlist_search_text" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.ViewStubCompat
+    <ViewStub
             android:id="@+id/player_options_stub"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

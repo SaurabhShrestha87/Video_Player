@@ -90,7 +90,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/media_title"
                 tools:text="Artist" />
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/bookmarks_stub"
                 android:layout_width="500dp"
                 android:layout_height="0dp"
@@ -358,7 +358,7 @@
                 app:srcCompat="@drawable/ic_overflow_tv_audio"
                 tools:src="@drawable/ic_overflow_tv_audio" />
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/player_options_stub"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

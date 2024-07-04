@@ -1,9 +1,8 @@
-package com.video.offline.videoplayer.gui.video.cleaner
+package com.video.offline.videoplayer.gui.cleaner
 
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,53 +22,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.InitialPagedList
 import androidx.paging.PagedList
-import androidx.paging.PagingSource
-import androidx.paging.PagingState
-import androidx.paging.PositionalDataSource.Companion.computeInitialLoadPosition
-import androidx.paging.PositionalDataSource.Companion.computeInitialLoadSize
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.videolan.medialibrary.EventTools
-import org.videolan.medialibrary.interfaces.Medialibrary
-import org.videolan.medialibrary.interfaces.media.Folder
-import org.videolan.medialibrary.interfaces.media.MediaWrapper
-import org.videolan.medialibrary.interfaces.media.VideoGroup
-import org.videolan.medialibrary.media.FolderImpl
-import org.videolan.medialibrary.media.MediaLibraryItem
-import org.videolan.resources.AppContextProvider
-import org.videolan.resources.GROUP_VIDEOS_FOLDER
-import org.videolan.resources.GROUP_VIDEOS_NAME
-import org.videolan.resources.GROUP_VIDEOS_NONE
-import org.videolan.resources.KEY_CLEANER
-import org.videolan.resources.KEY_CLEANER_BIG
-import org.videolan.resources.KEY_CLEANER_WATCHED
-import org.videolan.resources.KEY_FOLDER
-import org.videolan.resources.KEY_GROUP
-import org.videolan.resources.KEY_GROUPING
-import org.videolan.resources.KEY_GROUP_VIDEOS
-import org.videolan.resources.KEY_MEDIA_LAST_PLAYLIST
-import org.videolan.resources.KEY_VIDEOS_CARDS
-import org.videolan.resources.KEY_VIDEOS_COMPACT
-import org.videolan.resources.KEY_VIDEOS_LIST
-import org.videolan.resources.MOVIEPEDIA_ACTIVITY
-import org.videolan.resources.MOVIEPEDIA_MEDIA
-import org.videolan.resources.PLAYLIST_TYPE_VIDEO
-import org.videolan.resources.util.parcelable
-import org.videolan.resources.util.waitForML
-import org.videolan.tools.MultiSelectHelper
-import org.videolan.tools.PLAYBACK_HISTORY
-import org.videolan.tools.RESULT_RESTART
-import org.videolan.tools.Settings
-import org.videolan.tools.dp
-import org.videolan.tools.isStarted
-import org.videolan.tools.putSingle
-import org.videolan.tools.retrieveParent
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.databinding.VideoCleanerListBinding
 import com.video.offline.videoplayer.gui.SecondaryActivity
@@ -120,12 +76,51 @@ import com.video.offline.videoplayer.viewmodels.DisplaySettingsViewModel
 import com.video.offline.videoplayer.viewmodels.mobile.VideoGroupingType
 import com.video.offline.videoplayer.viewmodels.mobile.VideosViewModel
 import com.video.offline.videoplayer.viewmodels.mobile.getViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.videolan.medialibrary.EventTools
+import org.videolan.medialibrary.interfaces.Medialibrary
+import org.videolan.medialibrary.interfaces.media.Folder
+import org.videolan.medialibrary.interfaces.media.MediaWrapper
+import org.videolan.medialibrary.interfaces.media.VideoGroup
+import org.videolan.medialibrary.media.FolderImpl
+import org.videolan.medialibrary.media.MediaLibraryItem
+import org.videolan.resources.AppContextProvider
+import org.videolan.resources.GROUP_VIDEOS_FOLDER
+import org.videolan.resources.GROUP_VIDEOS_NAME
+import org.videolan.resources.GROUP_VIDEOS_NONE
+import org.videolan.resources.KEY_CLEANER
+import org.videolan.resources.KEY_CLEANER_BIG
+import org.videolan.resources.KEY_CLEANER_WATCHED
+import org.videolan.resources.KEY_FOLDER
+import org.videolan.resources.KEY_GROUP
+import org.videolan.resources.KEY_GROUPING
+import org.videolan.resources.KEY_GROUP_VIDEOS
+import org.videolan.resources.KEY_MEDIA_LAST_PLAYLIST
+import org.videolan.resources.KEY_VIDEOS_CARDS
+import org.videolan.resources.KEY_VIDEOS_COMPACT
+import org.videolan.resources.KEY_VIDEOS_LIST
+import org.videolan.resources.MOVIEPEDIA_ACTIVITY
+import org.videolan.resources.MOVIEPEDIA_MEDIA
+import org.videolan.resources.PLAYLIST_TYPE_VIDEO
+import org.videolan.resources.util.parcelable
+import org.videolan.resources.util.waitForML
+import org.videolan.tools.MultiSelectHelper
+import org.videolan.tools.PLAYBACK_HISTORY
+import org.videolan.tools.RESULT_RESTART
+import org.videolan.tools.Settings
+import org.videolan.tools.dp
+import org.videolan.tools.isStarted
+import org.videolan.tools.putSingle
+import org.videolan.tools.retrieveParent
 import java.io.File
+
 
 private const val TAG = "VLC/CleanerListFragment"
 
 private const val KEY_SELECTION = "key_selection"
-
 
 class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
     SwipeRefreshLayout.OnRefreshListener, CtxActionReceiver, IRefreshable, View.OnClickListener {
@@ -324,7 +319,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         binding = VideoCleanerListBinding.inflate(inflater, container, false)
         return binding.root
@@ -1110,4 +1105,3 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
     }
 
 }
-

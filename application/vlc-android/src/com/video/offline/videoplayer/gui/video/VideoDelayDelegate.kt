@@ -33,7 +33,7 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.ViewStubCompat
+import android.view.ViewStub
 import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import com.google.android.material.animation.ArgbEvaluatorCompat
@@ -83,7 +83,7 @@ class VideoDelayDelegate(private val player: VideoPlayerActivity) : View.OnClick
         player.touchDelegate.clearTouchAction()
         if (!player.displayManager.isPrimary) player.overlayDelegate.showOverlayTimeout(VideoPlayerActivity.OVERLAY_INFINITE)
         player.overlayDelegate.info.setInvisible()
-        val vsc = player.findViewById<ViewStubCompat>(R.id.player_overlay_settings_stub)
+        val vsc = player.findViewById<ViewStub>(R.id.player_overlay_settings_stub)
         if (vsc != null) {
             vsc.inflate()
             playbackSettingPlus = player.findViewById(R.id.player_delay_plus)

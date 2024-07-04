@@ -26,12 +26,12 @@ package com.video.offline.videoplayer.gui.audio
 
 import android.animation.Animator
 import android.view.View
+import android.view.ViewStub
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.appcompat.widget.ViewStubCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.lifecycleScope
@@ -76,7 +76,7 @@ class AudioTipsDelegate(private val activity: AudioPlayerContainerActivity) {
     }
     private val currentAnimations = ArrayList<Animator>()
 
-    fun init(vsc: ViewStubCompat?) {
+    fun init(vsc: ViewStub?) {
         vsc?.inflate()
         audioTipsBackground = activity.findViewById(R.id.audio_tips_background)
         headerPrevious = activity.findViewById(R.id.header_previous)

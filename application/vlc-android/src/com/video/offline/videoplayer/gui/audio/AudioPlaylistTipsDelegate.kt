@@ -33,7 +33,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.widget.*
 import androidx.annotation.StringRes
-import androidx.appcompat.widget.ViewStubCompat
+import android.view.ViewStub
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.animation.doOnEnd
@@ -81,7 +81,7 @@ class AudioPlaylistTipsDelegate(private val activity: AudioPlayerContainerActivi
     private var rightGuidelineEndBound = 1F
     private var middleGuidelineEndBound = 0.5F
 
-    fun init(vsc: ViewStubCompat?) {
+    fun init(vsc: ViewStub?) {
         vsc?.inflate()
         audioPlaylistTips = activity.findViewById(R.id.audioPlaylistTips)
         tracksContainer = activity.findViewById(R.id.tracksContainer)

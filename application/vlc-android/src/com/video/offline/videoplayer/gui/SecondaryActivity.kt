@@ -25,6 +25,7 @@ package com.video.offline.videoplayer.gui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -54,6 +55,7 @@ import com.video.offline.videoplayer.gui.browser.FileBrowserFragment
 import com.video.offline.videoplayer.gui.browser.KEY_MEDIA
 import com.video.offline.videoplayer.gui.browser.MLStorageBrowserFragment
 import com.video.offline.videoplayer.gui.browser.NetworkBrowserFragment
+import com.video.offline.videoplayer.gui.cleaner.CleanerFragment
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.network.MRLPanelFragment
 import com.video.offline.videoplayer.gui.preferences.theme.ThemeFragment
@@ -120,6 +122,10 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
                     lifecycleScope.launch {
                         RemoteAccessUtils.otpFlow.emit(null)
                     }
+                }
+                if(supportFragmentManager.backStackEntryCount >= 1) {
+                    supportFragmentManager.popBackStack()
+                    return
                 }
                 finish()
             }

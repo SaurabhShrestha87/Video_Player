@@ -30,7 +30,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.CheckBox
 import android.widget.FrameLayout
-import androidx.appcompat.widget.ViewStubCompat
+import android.view.ViewStub
 import androidx.core.content.edit
 import androidx.core.widget.NestedScrollView
 import androidx.leanback.widget.BrowseFrameLayout
@@ -73,7 +73,7 @@ class VideoPlayerResizeDelegate(private val player: VideoPlayerActivity) {
      * Show the resize overlay. Inflate it if it's not yet
      */
     fun showResizeOverlay() {
-        player.findViewById<ViewStubCompat?>(R.id.player_resize_stub)?.let {
+        player.findViewById<ViewStub?>(R.id.player_resize_stub)?.let {
             it.setVisible()
         }
         player.findViewById<FrameLayout>(R.id.resize_background)?.let {

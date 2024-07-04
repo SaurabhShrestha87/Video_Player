@@ -1,35 +1,77 @@
-<!--
-  ~ *************************************************************************
-  ~  ic_cone_o.xml
-  ~ **************************************************************************
-  ~ Copyright © 2020 VLC authors and VideoLAN
-  ~ Author: Nicolas POMEPUY
-  ~ This program is free software; you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation; either version 2 of the License, or
-  ~ (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program; if not, write to the Free Software
-  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
-  ~ ***************************************************************************
-  ~
-  ~
-  -->
-
-<vector android:height="46dp"
-        android:viewportHeight="130"
-        android:viewportWidth="130"
-        android:width="46dp"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    <path
-            android:fillAlpha="1"
-            android:fillColor="#ff8800"
-            android:pathData="m65,8.759c-1.511,0 -3.023,0.368 -4.219,1.107 -2.675,1.653 -4.219,8.437 -4.219,8.437l-2.531,7.594c7.312,4.599 14.625,4.647 21.937,0l-2.531,-7.594c0,0 -1.544,-6.784 -4.219,-8.437 -1.196,-0.739 -2.707,-1.107 -4.219,-1.107zM47.281,46.148 L38.844,71.46c17.304,11.159 34.739,11.376 52.312,0l-8.438,-25.313c-11.912,8.861 -23.725,8.889 -35.437,0zM22.812,81.585 L11,121.241l108,0 -11.813,-39.656 -12.656,0 1.687,5.063c0,0 1.402,4.523 0,5.906 -14.817,14.618 -47.819,13.973 -62.437,-0.844 -1.185,-1.201 0,-5.063 0,-5.063l1.687,-5.063 -12.656,0z"
-            android:strokeColor="#00000000" />
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="310dp"
+    android:height="330dp"
+    android:viewportWidth="310"
+    android:viewportHeight="330">
+  <path
+      android:pathData="M0,165.04V96.35C0,11.06 60.6,-23.86 134.74,18.78L194.57,53.12L254.39,87.47C328.54,130.11 328.54,199.96 254.39,242.6L194.57,276.95L134.74,311.3C60.6,353.94 0,319.01 0,233.73V165.04Z">
+    <aapt:attr name="android:fillColor">
+      <gradient
+          android:startX="85.64"
+          android:startY="170.18"
+          android:endX="198.67"
+          android:endY="170.18"
+          android:type="linear">
+        <item android:offset="0" android:color="#FFFF7C00"/>
+        <item android:offset="1" android:color="#FFFF440E"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M85.64,209.31V102.91C85.64,75.8 115.06,58.92 138.46,72.6L231.37,126.9C254.8,140.59 254.5,174.56 230.82,187.83L137.92,239.93C114.52,253.06 85.64,236.15 85.64,209.31Z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="96.77"
+          android:startY="75.98"
+          android:endX="166.56"
+          android:endY="118.36"
+          android:type="linear">
+        <item android:offset="0" android:color="#80FFFFFF"/>
+        <item android:offset="1" android:color="#00FFFFFF"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M58.23,242.71V136.31C58.23,109.2 87.65,92.31 111.06,106L203.96,160.29C227.4,173.99 227.09,207.96 203.42,221.23L110.52,273.33C87.11,286.46 58.23,269.54 58.23,242.71Z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="219.23"
+          android:startY="185.59"
+          android:endX="144.3"
+          android:endY="224.13"
+          android:type="linear">
+        <item android:offset="0" android:color="#80FFFFFF"/>
+        <item android:offset="1" android:color="#00FFFFFF"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M43.67,203.32V96.92C43.67,69.8 73.09,52.92 96.5,66.6L189.41,120.9C212.84,134.6 212.54,168.56 188.86,181.84L95.96,233.94C72.55,247.07 43.67,230.15 43.67,203.32Z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="72.79"
+          android:startY="238.68"
+          android:endX="72.79"
+          android:endY="149.62"
+          android:type="linear">
+        <item android:offset="0" android:color="#80FFFFFF"/>
+        <item android:offset="1" android:color="#00FFFFFF"/>
+      </gradient>
+    </aapt:attr>
+  </path>
+  <path
+      android:pathData="M86.06,210.19V120.28C86.06,107.58 99.84,99.68 110.79,106.08L189.31,151.97C200.27,158.38 200.13,174.28 189.05,180.5L110.54,224.53C99.58,230.67 86.06,222.76 86.06,210.19Z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startX="85.64"
+          android:startY="170.18"
+          android:endX="198.67"
+          android:endY="170.18"
+          android:type="linear">
+        <item android:offset="0" android:color="#fff"/>
+        <item android:offset="1" android:color="#fff"/>
+      </gradient>
+    </aapt:attr>
+  </path>
 </vector>

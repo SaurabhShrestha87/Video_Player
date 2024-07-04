@@ -35,7 +35,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.appcompat.widget.ViewStubCompat
+import android.view.ViewStub
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.animation.doOnEnd
@@ -90,7 +90,7 @@ class VideoTipsDelegate(private val player: VideoPlayerActivity) : OnClickListen
      * - Start the tips
      */
     fun init() {
-        (player.findViewById<View>(R.id.player_overlay_tips) as? ViewStubCompat)?.inflate()
+        (player.findViewById<View>(R.id.player_overlay_tips) as? ViewStub)?.inflate()
 
         tipsBrightnessProgress = player.findViewById(R.id.tipsBrightnessProgress)
         tipsVolumeProgress = player.findViewById(R.id.tipsVolumeProgress)

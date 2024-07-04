@@ -28,7 +28,7 @@ import android.graphics.Bitmap
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.appcompat.widget.ViewStubCompat
+import android.view.ViewStub
 import org.videolan.tools.dp
 import org.videolan.tools.setGone
 import org.videolan.tools.setVisible
@@ -53,7 +53,7 @@ class VideoPlayerScreenshotDelegate(private val player: VideoPlayerActivity) {
      *
      */
     private fun initScreenshot() {
-        val vsc = player.findViewById<ViewStubCompat>(R.id.player_screenshot_stub)
+        val vsc = player.findViewById<ViewStub>(R.id.player_screenshot_stub)
         if (vsc != null) {
             vsc.setVisible()
             screenshotImageView = player.findViewById(R.id.screenshot_bitmap)

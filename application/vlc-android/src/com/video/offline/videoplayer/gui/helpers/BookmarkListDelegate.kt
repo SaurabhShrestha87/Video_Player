@@ -28,7 +28,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.PopupMenu
-import androidx.appcompat.widget.ViewStubCompat
+import android.view.ViewStub
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -61,7 +61,7 @@ class BookmarkListDelegate(val activity: FragmentActivity, val service: Playback
         get() = rootView.visibility != View.GONE
 
     fun show() {
-        activity.findViewById<ViewStubCompat>(R.id.bookmarks_stub)?.let {
+        activity.findViewById<ViewStub>(R.id.bookmarks_stub)?.let {
             rootView = it.inflate() as ConstraintLayout
             bookmarkList = rootView.findViewById(R.id.bookmark_list)
             rootView.findViewById<ImageView>(R.id.close).setOnClickListener { hide() }
