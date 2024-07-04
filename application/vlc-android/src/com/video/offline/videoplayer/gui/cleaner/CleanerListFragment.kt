@@ -57,7 +57,10 @@ import com.video.offline.videoplayer.gui.video.VideoCtxClick
 import com.video.offline.videoplayer.gui.video.VideoImageClick
 import com.video.offline.videoplayer.gui.video.VideoListAdapter
 import com.video.offline.videoplayer.gui.video.VideoLongClick
-import com.video.offline.videoplayer.gui.view.EmptyLoadingState
+import com.video.offline.videoplayer.gui.view.EmptyLoadingState.EMPTY_CLEANER
+import com.video.offline.videoplayer.gui.view.EmptyLoadingState.LOADING
+import com.video.offline.videoplayer.gui.view.EmptyLoadingState.MISSING_PERMISSION
+import com.video.offline.videoplayer.gui.view.EmptyLoadingState.NONE
 import com.video.offline.videoplayer.interfaces.IRefreshable
 import com.video.offline.videoplayer.media.MediaUtils
 import com.video.offline.videoplayer.media.PlaylistManager
@@ -151,10 +154,9 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (savedInstanceState?.getString(KEY_CLEANER))?.let { cleanerType = it }
-        Log.d(TAG, "onCreate: $cleanerType")
-
-        (savedInstanceState?.getIntegerArrayList(KEY_SELECTION))?.let { savedSelection = it }
+        (savedInstanceState?.getIntegerArrayList(KEY_SELECTION))?.let {
+            savedSelection = it
+        }
         if (!::settings.isInitialized) settings = Settings.getInstance(requireContext())
         if (!::videoListAdapter.isInitialized) {
             val seenMarkVisible = settings.getBoolean("media_seen", true)
@@ -178,6 +180,19 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
             val parentGroup =
                 if (savedInstanceState != null) savedInstanceState.parcelable<VideoGroup>(KEY_GROUP)
                 else arguments?.parcelable(KEY_GROUP)
+            Log.w(TAG, "onCreate: ${savedInstanceState?.getString(KEY_CLEANER)}")
+            cleanerType = when {
+                savedInstanceState?.getString(KEY_CLEANER) != null -> savedInstanceState.getString(
+                    KEY_CLEANER
+                )!!
+
+                arguments?.getString(KEY_CLEANER) != null -> arguments?.getString(KEY_CLEANER)!!
+                else -> KEY_CLEANER_WATCHED
+            }
+
+            Log.d(TAG, "onCreate: $cleanerType")
+
+
             val grouping =
                 if (parentGroup != null || folder != null) VideoGroupingType.NONE else when (Settings.getInstance(
                     requireContext()
@@ -328,8 +343,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val empty = viewModel.isEmpty()
-        binding.emptyLoading.state =
-            if (empty) EmptyLoadingState.LOADING else EmptyLoadingState.NONE
+        binding.emptyLoading.state = if (empty) LOADING else NONE
         binding.empty = empty
         binding.emptyLoading.setOnNoMediaClickListener {
             requireActivity().setResult(RESULT_RESTART)
@@ -543,16 +557,12 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
         if (!isAdded) return
         val empty = viewModel.isEmpty() && videoListAdapter.currentList.isNullOrEmpty()
         val working = viewModel.provider.loading.value != false
-        binding.emptyLoading.emptyText =
-            viewModel.filterQuery?.let { getString(R.string.empty_search, it) }
-                ?: if (viewModel.provider.onlyFavorites) getString(R.string.nofav) else getString(R.string.nomedia)
+        binding.emptyLoading.emptyText = getString(R.string.nomediatoclean)
         binding.emptyLoading.state = when {
-            !Permissions.canReadStorage(AppContextProvider.appContext) && empty -> EmptyLoadingState.MISSING_PERMISSION
-            empty && working -> EmptyLoadingState.LOADING
-            empty && !working && viewModel.provider.onlyFavorites -> EmptyLoadingState.EMPTY_FAVORITES
-            empty && !working && viewModel.filterQuery == null -> EmptyLoadingState.EMPTY
-            empty && !working && viewModel.filterQuery != null -> EmptyLoadingState.EMPTY_SEARCH
-            else -> EmptyLoadingState.NONE
+            !Permissions.canReadStorage(AppContextProvider.appContext) && empty -> MISSING_PERMISSION
+            empty && working -> LOADING
+            empty && !working -> EMPTY_CLEANER
+            else -> NONE
         }
         binding.empty = empty && !working
         when (viewModel.groupingType) {
@@ -576,6 +586,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
 
 
         }
+        setFabPlayVisibility(!empty)
     }
 
     override fun onRefresh() {
