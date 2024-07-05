@@ -42,111 +42,61 @@ class OnboardingPermissionFragment : OnboardingFragment(), View.OnClickListener 
 
     private val viewModel: OnboardingViewModel by activityViewModels()
     private lateinit var permissionTitle: TextView
-    private lateinit var permDescription: TextView
-    private lateinit var permNone: FrameLayout
     private lateinit var permMedia: FrameLayout
-    private lateinit var permAll: FrameLayout
-    private lateinit var permNoneImage: ImageView
-    private lateinit var permMediaImage: ImageView
     private lateinit var permAllImage: ImageView
 
-    private lateinit var oldSelected: ImageView
-    private lateinit var currentlySelected: ImageView
+    private var allFileSelected: Boolean = true
     override fun getDefaultViewForTalkback() = permissionTitle
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
         return inflater.inflate(R.layout.onboarding_permission, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         permissionTitle = view.findViewById(R.id.permission_title)
-        permNone = view.findViewById(R.id.permNone)
         permMedia = view.findViewById(R.id.permMedia)
-        permAll = view.findViewById(R.id.permAll)
-        permNoneImage = view.findViewById(R.id.permNoneImage)
-        permMediaImage = view.findViewById(R.id.permMediaImage)
         permAllImage = view.findViewById(R.id.permAllImage)
-        permDescription = view.findViewById(R.id.permDescription)
-        permNone.setOnClickListener(this)
         permMedia.setOnClickListener(this)
-        permAll.setOnClickListener(this)
-        currentlySelected = permAllImage
-
-        currentlySelected.setColorFilter(ContextCompat.getColor(requireActivity(), R.color.green))
     }
 
     override fun onResume() {
         super.onResume()
-        when(viewModel.permissionType) {
-            PermissionType.NONE -> permNone
-            PermissionType.ALL -> permAll
-            PermissionType.MEDIA -> permMedia
-        }.performClick()
+        when (viewModel.permissionType) {
+            PermissionType.ALL -> checkAll()
+            PermissionType.MEDIA -> uncheckAll()
+            PermissionType.NONE -> uncheckAll()
+        }
+    }
 
+    private fun uncheckAll() {
+        permAllImage.setBackgroundResource(R.drawable.uncheck_circle)
+    }
+
+    private fun checkAll() {
+        permAllImage.setBackgroundResource(R.drawable.check_circle)
     }
 
     override fun onClick(view: View) {
-        view.background = ContextCompat.getDrawable(requireActivity(), R.drawable.theme_selection_rounded)
         view.animate().scaleX(1F).scaleY(1F)
-        oldSelected = currentlySelected
         when (view) {
-            permNone -> {
-                permMedia.background = null
-                permAll.background = null
-                permMedia.animate().scaleX(0.8F).scaleY(0.8F)
-                permAll.animate().scaleX(0.8F).scaleY(0.8F)
-                permDescription.setText(R.string.permission_onboarding_no_perm)
-                currentlySelected = permNoneImage
-                viewModel.permissionType = PermissionType.NONE
-            }
             permMedia -> {
-                permDescription.setText(R.string.permission_onboarding_perm_media)
-                permNone.background = null
-                permAll.background = null
-                permNone.animate().scaleX(0.8F).scaleY(0.8F)
-                permAll.animate().scaleX(0.8F).scaleY(0.8F)
-                currentlySelected = permMediaImage
-                viewModel.permissionType = PermissionType.MEDIA
-            }
-            permAll -> {
-                permDescription.setText(R.string.permission_onboarding_perm_all)
-                permNone.background = null
-                permMedia.background = null
-                permNone.animate().scaleX(0.8F).scaleY(0.8F)
-                permMedia.animate().scaleX(0.8F).scaleY(0.8F)
-                currentlySelected = permAllImage
-                viewModel.permissionType = PermissionType.ALL
+                allFileSelected = !allFileSelected
+                if (allFileSelected) {
+                    viewModel.permissionType = PermissionType.ALL
+                    checkAll()
+                } else {
+                    viewModel.permissionType = PermissionType.MEDIA
+                    uncheckAll()
+                }
             }
         }
-        animateColor()
     }
 
-    private fun animateColor() {
-
-        val colorFrom = ContextCompat.getColor(requireActivity(), R.color.green)
-        val colorTo = ContextCompat.getColor(requireActivity(), R.color.white)
-        val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo)
-        colorAnimation.duration = 250 // milliseconds
-
-        colorAnimation.addUpdateListener { animator ->
-
-            oldSelected.setColorFilter(animator.animatedValue as Int)
-        }
-        colorAnimation.start()
-
-        val colorFrom2 = ContextCompat.getColor(requireActivity(), R.color.white)
-        val colorTo2 = ContextCompat.getColor(requireActivity(), R.color.green)
-        val colorAnimation2 = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom2, colorTo2)
-        colorAnimation2.duration = 250 // milliseconds
-
-        colorAnimation2.addUpdateListener { animator ->
-
-            currentlySelected.setColorFilter(animator.animatedValue as Int)
-        }
-        colorAnimation2.start()
-    }
 
     companion object {
         fun newInstance(): OnboardingPermissionFragment {

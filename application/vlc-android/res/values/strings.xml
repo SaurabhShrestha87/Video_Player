@@ -74,4 +74,5 @@
     <string name="confirm_lock_several_media">Delete these %1$d media?</string>
     <string name="export">Export</string>
     <string name="use">Use</string>
+    <string name="allow_permissions">Allow Permissions</string>
 </resources>
