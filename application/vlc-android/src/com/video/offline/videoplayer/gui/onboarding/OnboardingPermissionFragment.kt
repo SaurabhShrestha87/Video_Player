@@ -32,6 +32,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -42,7 +43,7 @@ class OnboardingPermissionFragment : OnboardingFragment(), View.OnClickListener 
 
     private val viewModel: OnboardingViewModel by activityViewModels()
     private lateinit var permissionTitle: TextView
-    private lateinit var permMedia: FrameLayout
+    private lateinit var permMedia: RelativeLayout
     private lateinit var permAllImage: ImageView
 
     private var allFileSelected: Boolean = true
@@ -74,11 +75,11 @@ class OnboardingPermissionFragment : OnboardingFragment(), View.OnClickListener 
     }
 
     private fun uncheckAll() {
-        permAllImage.setBackgroundResource(R.drawable.uncheck_circle)
+        permAllImage.setImageResource(R.drawable.uncheck_circle)
     }
 
     private fun checkAll() {
-        permAllImage.setBackgroundResource(R.drawable.check_circle)
+        permAllImage.setImageResource(R.drawable.check_circle)
     }
 
     override fun onClick(view: View) {

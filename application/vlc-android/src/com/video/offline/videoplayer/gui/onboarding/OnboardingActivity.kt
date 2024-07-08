@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.video.offline.videoplayer.BuildConfig
 import com.video.offline.videoplayer.MediaParsingService
 import com.video.offline.videoplayer.R
@@ -65,6 +66,7 @@ class OnboardingActivity : AppCompatActivity(), OnboardingFragmentListener {
                 FragmentName.NO_PERMISSION -> OnboardingNoPermissionFragment.newInstance()
                 FragmentName.NOTIFICATION_PERMISSION -> OnboardingNotificationPermissionFragment.newInstance()
                 FragmentName.THEME -> OnboardingThemeFragment.newInstance()
+                FragmentName.PRIVACY -> OnboardingPrivacyFragment.newInstance()
             }
         (fragment as OnboardingFragment).onboardingFragmentListener = this
         supportFragmentManager.commit {
@@ -150,18 +152,26 @@ class OnboardingActivity : AppCompatActivity(), OnboardingFragmentListener {
                 if (Permissions.canReadStorage(
                         applicationContext
                     )
-                ) FragmentName.SCAN else FragmentName.THEME
+                ) FragmentName.SCAN else FragmentName.PRIVACY
             )
 
             FragmentName.NOTIFICATION_PERMISSION -> if (!Permissions.canSendNotifications(
                     applicationContext
                 ) && !viewModel.notificationPermissionAlreadyAsked
-            ) askNotificationPermission() else showFragment(FragmentName.THEME)
+            ) askNotificationPermission() else showFragment(FragmentName.PRIVACY)
 
             FragmentName.SCAN -> if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S && !Permissions.canSendNotifications(
                     applicationContext
                 )
-            ) showFragment(FragmentName.NOTIFICATION_PERMISSION) else showFragment(FragmentName.THEME)
+            ) showFragment(FragmentName.NOTIFICATION_PERMISSION) else showFragment(FragmentName.PRIVACY)
+
+            FragmentName.PRIVACY -> {
+                if(viewModel.privacyAccepted) {
+                    showFragment(FragmentName.THEME)
+                } else {
+                    Snackbar.make(this.findViewById(android.R.id.content), "Accept Privacy policy", Snackbar.LENGTH_LONG).show()
+                }
+            }
 
             else -> onDone()
         }
@@ -175,7 +185,7 @@ class OnboardingActivity : AppCompatActivity(), OnboardingFragmentListener {
 }
 
 enum class FragmentName {
-    WELCOME, ASK_PERMISSION, SCAN, NO_PERMISSION, NOTIFICATION_PERMISSION, THEME
+    WELCOME, ASK_PERMISSION, SCAN, NO_PERMISSION, NOTIFICATION_PERMISSION, PRIVACY, THEME
 }
 
 fun Activity.startOnboarding() = startActivityForResult(

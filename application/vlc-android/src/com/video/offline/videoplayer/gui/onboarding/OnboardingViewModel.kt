@@ -12,6 +12,7 @@ class OnboardingViewModel : ViewModel() {
 
     var theme = if (AndroidDevices.canUseSystemNightMode()) AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM else AppCompatDelegate.MODE_NIGHT_AUTO
     var currentFragment = FragmentName.WELCOME
+    var privacyAccepted = false
 }
 
 enum class PermissionType {
