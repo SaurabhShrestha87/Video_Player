@@ -22,7 +22,7 @@
  *
  */
 
-package org.videolan.vlc.mediadb
+package com.video.offline.videoplayer.mediadb
 
 import org.junit.Test
 

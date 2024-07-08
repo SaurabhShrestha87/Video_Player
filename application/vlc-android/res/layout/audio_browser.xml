@@ -22,7 +22,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <org.videolan.vlc.gui.view.SwipeRefreshLayout
+        <com.video.offline.videoplayer.gui.view.SwipeRefreshLayout
                 android:id="@+id/swipeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -50,9 +50,9 @@
 
                 <include layout="@layout/audio_recyclerview" />
             </androidx.viewpager.widget.ViewPager>
-        </org.videolan.vlc.gui.view.SwipeRefreshLayout>
+        </com.video.offline.videoplayer.gui.view.SwipeRefreshLayout>
 
-        <org.videolan.vlc.gui.view.FastScroller
+        <com.video.offline.videoplayer.gui.view.FastScroller
                 android:id="@+id/songs_fast_scroller"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -60,7 +60,7 @@
                 app:layout_constraintEnd_toEndOf="@id/swipeLayout"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <org.videolan.vlc.gui.view.EmptyLoadingStateView
+        <com.video.offline.videoplayer.gui.view.EmptyLoadingStateView
                 android:id="@+id/audio_empty_loading"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

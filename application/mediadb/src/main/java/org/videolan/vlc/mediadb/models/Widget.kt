@@ -22,7 +22,7 @@
  *
  */
 
-package org.videolan.vlc.mediadb.models
+package com.video.offline.videoplayer.mediadb.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

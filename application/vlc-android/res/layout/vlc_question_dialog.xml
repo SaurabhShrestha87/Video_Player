@@ -13,7 +13,7 @@
 
         <variable
                 name="handler"
-                type="org.videolan.vlc.gui.dialogs.VlcQuestionDialog" />
+                type="com.video.offline.videoplayer.gui.dialogs.VlcQuestionDialog" />
     </data>
 
     <ScrollView

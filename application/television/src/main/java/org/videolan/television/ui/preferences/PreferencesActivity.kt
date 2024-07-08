@@ -35,9 +35,9 @@ import org.videolan.tools.KEY_RESTRICT_SETTINGS
 import org.videolan.tools.RESULT_RESTART
 import org.videolan.tools.RESULT_RESTART_APP
 import org.videolan.tools.Settings
-import org.videolan.vlc.PlaybackService
-import org.videolan.vlc.gui.PinCodeActivity
-import org.videolan.vlc.gui.PinCodeReason
+import com.video.offline.videoplayer.PlaybackService
+import com.video.offline.videoplayer.gui.PinCodeActivity
+import com.video.offline.videoplayer.gui.PinCodeReason
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PreferencesActivity : BaseTvActivity() {

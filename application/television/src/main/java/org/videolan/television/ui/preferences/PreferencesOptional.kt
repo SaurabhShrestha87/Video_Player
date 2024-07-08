@@ -32,11 +32,11 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import kotlinx.coroutines.*
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.dialogs.FeatureFlagWarningDialog
-import org.videolan.vlc.gui.dialogs.RenameDialog
-import org.videolan.vlc.util.FeatureFlag
-import org.videolan.vlc.util.FeatureFlagManager
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.dialogs.FeatureFlagWarningDialog
+import com.video.offline.videoplayer.gui.dialogs.RenameDialog
+import com.video.offline.videoplayer.util.FeatureFlag
+import com.video.offline.videoplayer.util.FeatureFlagManager
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PreferencesOptional : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener, CoroutineScope by MainScope() {

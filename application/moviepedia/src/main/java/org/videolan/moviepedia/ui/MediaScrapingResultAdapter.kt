@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.videolan.moviepedia.databinding.MoviepediaItemBinding
 import org.videolan.moviepedia.models.resolver.ResolverMedia
 import org.videolan.tools.getLocaleLanguages
-import org.videolan.vlc.gui.helpers.SelectorViewHolder
+import com.video.offline.videoplayer.gui.helpers.SelectorViewHolder
 
 class MediaScrapingResultAdapter internal constructor(private val layoutInflater: LayoutInflater) : RecyclerView.Adapter<MediaScrapingResultAdapter.ViewHolder>() {
 

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.videolan.vlc.donations.util
+package com.video.offline.videoplayer.donations.util
 
 import android.app.Activity
 import android.app.PendingIntent
@@ -26,8 +26,8 @@ import android.text.TextUtils
 import android.util.Log
 import com.android.vending.billing.IInAppBillingService
 import org.json.JSONException
-import org.videolan.vlc.donations.util.IabException
-import org.videolan.vlc.donations.util.Security.verifyPurchase
+import com.video.offline.videoplayer.donations.util.IabException
+import com.video.offline.videoplayer.donations.util.Security.verifyPurchase
 import java.util.*
 
 /**

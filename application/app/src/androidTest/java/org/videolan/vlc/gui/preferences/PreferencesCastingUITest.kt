@@ -1,4 +1,4 @@
-package org.videolan.vlc.gui.preferences
+package com.video.offline.videoplayer.gui.preferences
 
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -7,10 +7,10 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
-import org.videolan.vlc.PreferenceMatchers.isEnabled
-import org.videolan.vlc.PreferenceMatchers.withKey
-import org.videolan.vlc.R
-import org.videolan.vlc.onPreferenceRow
+import com.video.offline.videoplayer.PreferenceMatchers.isEnabled
+import com.video.offline.videoplayer.PreferenceMatchers.withKey
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.onPreferenceRow
 
 class PreferencesCastingUITest: BasePreferenceUITest() {
     @get:Rule

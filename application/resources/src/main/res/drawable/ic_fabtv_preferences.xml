@@ -7,7 +7,7 @@
       android:pathData="M28,28m-28,0a28,28 0,1 1,56 0a28,28 0,1 1,-56 0"
       android:strokeLineJoin="round"
       android:strokeWidth="17.63779449"
-      android:fillColor="@color/standard_selection_orange500_orange700"
+      android:fillColor="@color/standard_selection_green_greendark"
       android:strokeColor="#00000000"
       android:fillType="nonZero"
       android:strokeLineCap="butt"/>

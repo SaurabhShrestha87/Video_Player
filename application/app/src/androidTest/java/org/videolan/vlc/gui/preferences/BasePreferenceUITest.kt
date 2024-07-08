@@ -1,4 +1,4 @@
-package org.videolan.vlc.gui.preferences
+package com.video.offline.videoplayer.gui.preferences
 
 import android.content.SharedPreferences
 import androidx.annotation.StringRes
@@ -10,10 +10,10 @@ import androidx.test.espresso.matcher.ViewMatchers
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
 import org.videolan.tools.Settings
-import org.videolan.vlc.BaseUITest
-import org.videolan.vlc.PreferenceMatchers
-import org.videolan.vlc.R
-import org.videolan.vlc.onPreferenceRow
+import com.video.offline.videoplayer.BaseUITest
+import com.video.offline.videoplayer.PreferenceMatchers
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.onPreferenceRow
 
 abstract class BasePreferenceUITest : BaseUITest() {
     val settings: SharedPreferences = Settings.getInstance(context)

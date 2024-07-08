@@ -31,7 +31,7 @@
         android:background="?attr/colorAccent"
         android:orientation="vertical">
 
-    <org.videolan.vlc.gui.view.TopCropImageView
+    <com.video.offline.videoplayer.gui.view.TopCropImageView
             android:id="@+id/nav_header_background"
             android:layout_width="0dp"
             android:layout_height="0dp"

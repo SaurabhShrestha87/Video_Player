@@ -1,4 +1,4 @@
-package org.videolan.vlc.gui
+package com.video.offline.videoplayer.gui
 
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
@@ -16,15 +16,15 @@ import org.hamcrest.Matchers.equalTo
 import org.junit.Rule
 import org.junit.Test
 import org.videolan.medialibrary.interfaces.Medialibrary
-import org.videolan.vlc.BaseUITest
-import org.videolan.vlc.R
-import org.videolan.vlc.databinding.AudioBrowserItemBinding
-import org.videolan.vlc.findFirstPosition
-import org.videolan.vlc.gui.audio.AudioBrowserAdapter
-import org.videolan.vlc.gui.audio.AudioBrowserFragment
-import org.videolan.vlc.sizeOfAtLeast
-import org.videolan.vlc.withMediaItem
-import org.videolan.vlc.withRecyclerView
+import com.video.offline.videoplayer.BaseUITest
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.databinding.AudioBrowserItemBinding
+import com.video.offline.videoplayer.findFirstPosition
+import com.video.offline.videoplayer.gui.audio.AudioBrowserAdapter
+import com.video.offline.videoplayer.gui.audio.AudioBrowserFragment
+import com.video.offline.videoplayer.sizeOfAtLeast
+import com.video.offline.videoplayer.withMediaItem
+import com.video.offline.videoplayer.withRecyclerView
 
 class HeaderMediaListActivityUITest: BaseUITest() {
     @Rule

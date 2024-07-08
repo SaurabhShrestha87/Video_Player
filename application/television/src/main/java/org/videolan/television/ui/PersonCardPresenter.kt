@@ -60,7 +60,7 @@ import androidx.leanback.widget.Presenter
 import org.videolan.moviepedia.database.models.Person
 import org.videolan.television.R
 import org.videolan.tools.dp
-import org.videolan.vlc.gui.helpers.downloadIcon
+import com.video.offline.videoplayer.gui.helpers.downloadIcon
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PersonCardPresenter(private val context: Activity) : Presenter() {

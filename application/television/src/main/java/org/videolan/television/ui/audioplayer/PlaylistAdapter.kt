@@ -29,11 +29,11 @@ import androidx.recyclerview.widget.RecyclerView
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.television.R
 import org.videolan.television.databinding.TvPlaylistItemBinding
-import org.videolan.vlc.gui.DiffUtilAdapter
-import org.videolan.vlc.gui.helpers.SelectorViewHolder
-import org.videolan.vlc.gui.helpers.getBitmapFromDrawable
-import org.videolan.vlc.gui.view.MiniVisualizer
-import org.videolan.vlc.viewmodels.PlaylistModel
+import com.video.offline.videoplayer.gui.DiffUtilAdapter
+import com.video.offline.videoplayer.gui.helpers.SelectorViewHolder
+import com.video.offline.videoplayer.gui.helpers.getBitmapFromDrawable
+import com.video.offline.videoplayer.gui.view.MiniVisualizer
+import com.video.offline.videoplayer.viewmodels.PlaylistModel
 
 class PlaylistAdapter
 internal constructor(private val audioPlayerActivity: AudioPlayerActivity, val model: PlaylistModel) : DiffUtilAdapter<MediaWrapper, PlaylistAdapter.ViewHolder>() {

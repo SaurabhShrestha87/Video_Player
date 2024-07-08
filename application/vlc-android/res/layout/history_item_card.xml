@@ -36,7 +36,7 @@
 
         <variable
                 name="holder"
-                type="org.videolan.vlc.gui.HistoryAdapter.ViewHolder" />
+                type="com.video.offline.videoplayer.gui.HistoryAdapter.ViewHolder" />
 
         <variable
                 name="media"

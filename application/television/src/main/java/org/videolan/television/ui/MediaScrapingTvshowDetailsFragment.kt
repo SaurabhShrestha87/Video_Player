@@ -59,10 +59,10 @@ import org.videolan.moviepedia.viewmodel.MediaMetadataFull
 import org.videolan.moviepedia.viewmodel.MediaMetadataModel
 import org.videolan.resources.util.getFromMl
 import org.videolan.tools.HttpImageLoader
-import org.videolan.vlc.R
-import org.videolan.vlc.media.MediaUtils
-import org.videolan.vlc.repository.BrowserFavRepository
-import org.videolan.vlc.util.getScreenWidth
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.media.MediaUtils
+import com.video.offline.videoplayer.repository.BrowserFavRepository
+import com.video.offline.videoplayer.util.getScreenWidth
 
 private const val ID_RESUME = 1
 private const val ID_START_OVER = 2
@@ -261,7 +261,7 @@ class MediaScrapingTvshowDetailsFragment : DetailsSupportFragment(), CoroutineSc
 
         val activity = requireActivity()
         detailsOverview = DetailsOverviewRow(tvShow)
-        rowPresenter.backgroundColor = ContextCompat.getColor(activity, R.color.orange500)
+        rowPresenter.backgroundColor = ContextCompat.getColor(activity, R.color.green)
         rowPresenter.onActionClickedListener = OnActionClickedListener { action ->
             when (action.id.toInt()) {
                 ID_RESUME -> {

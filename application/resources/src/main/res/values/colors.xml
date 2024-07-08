@@ -9,24 +9,30 @@
     Material color swatches
     The main color is always xxx500
 -->
-    <color name="orange50">#fff3e0</color>
-    <color name="orange100">#ffdfae</color>
-    <color name="orange200">#ffca7d</color>
-    <color name="orange300">#ffb54c</color>
-    <color name="orange400">#ffa11a</color>
-    <color name="orange500">#FF8800</color>
-    <color name="orange600">#ff7d00</color>
-    <color name="orange700">#ff7200</color>
-    <color name="orange800">#ff610a</color>
-    <color name="orange900">#ff5014</color>
+<!--    <color name="orange50">#fff3e0</color>-->
+<!--    <color name="orange100">#ffdfae</color>-->
+<!--    <color name="greenLight">#ffca7d</color>-->
+<!--    <color name="orange300">#ffb54c</color>-->
+<!--    <color name="orange400">#ffa11a</color>-->
+<!--    <color name="orange500">#FF8800</color>-->
+<!--    <color name="orange600">#ff7d00</color>-->
+<!--    <color name="orange700">#ff7200</color>-->
+<!--    <color name="orange800">#ff610a</color>-->
+<!--    <color name="orange900">#ff5014</color>-->
 
-    <color name="red500transparent">#b4ff0000</color>
-    <color name="orange500transparent">#b4ff8800</color>
-    <color name="orange500focus">#86ff8800</color>
-    <color name="orange200transparent">#64ffca7d</color>
+<!--    <color name="red500transparent">#b4ff0000</color>-->
+<!--    <color name="orange500transparent">#b4ff8800</color>-->
+<!--    <color name="orange500focus">#86ff8800</color>-->
+<!--    <color name="orange200transparent">#64ffca7d</color>-->
 
     <color name="green">#017343</color>
     <color name="greenLight">#019355</color>
+    <color name="greenDark">#005F37</color>
+    <color name="greenDark900">#003E24</color>
+    <color name="greentransparent">#B5017343</color>
+    <color name="greenLighttransparent">#B5019355</color>
+    <color name="greenfocus">#86017343</color>
+    <color name="green_transparent_20">#32017343</color>
     <color name="green50">#bdeadd</color>
     <color name="green100">#a7e3d1</color>
     <color name="green200">#91dcc5</color>
@@ -39,6 +45,7 @@
     <color name="green900">#2b8a81</color>
 
     <color name="grey">#F7F7F7</color>
+    <color name="grey_transparent">#26F7F7F7</color>
     <color name="grey50">#fafafa</color>
     <color name="grey100">#f5f5f5</color>
     <color name="grey200">#eeeeee</color>

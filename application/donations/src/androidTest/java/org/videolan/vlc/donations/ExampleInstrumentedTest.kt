@@ -22,7 +22,7 @@
  *
  */
 
-package org.videolan.vlc.donations
+package com.video.offline.videoplayer.donations
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -43,6 +43,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("org.videolan.vlc.donations", appContext.packageName)
+        assertEquals("com.video.offline.videoplayer.donations", appContext.packageName)
     }
 }

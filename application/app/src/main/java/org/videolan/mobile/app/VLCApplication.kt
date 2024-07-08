@@ -27,8 +27,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDexApplication
 import org.videolan.libvlc.Dialog
 import org.videolan.tools.BitmapCache
-import org.videolan.vlc.ArtworkProvider
-import org.videolan.vlc.util.DialogDelegate
+import com.video.offline.videoplayer.ArtworkProvider
+import com.video.offline.videoplayer.util.DialogDelegate
 
 private const val TAG = "VLC/VLCApplication"
 

@@ -1,4 +1,4 @@
-package org.videolan.vlc.gui
+package com.video.offline.videoplayer.gui
 
 import android.content.Intent
 import android.widget.EditText
@@ -30,13 +30,13 @@ import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.interfaces.media.Playlist
 import org.videolan.resources.EXTRA_TARGET
 import org.videolan.tools.CoroutineContextProvider
-import org.videolan.vlc.BaseUITest
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.dialogs.SavePlaylistDialog
-import org.videolan.vlc.sizeOfAtLeast
-import org.videolan.vlc.util.TestCoroutineContextProvider
-import org.videolan.vlc.withCount
-import org.videolan.vlc.withRecyclerView
+import com.video.offline.videoplayer.BaseUITest
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.dialogs.SavePlaylistDialog
+import com.video.offline.videoplayer.sizeOfAtLeast
+import com.video.offline.videoplayer.util.TestCoroutineContextProvider
+import com.video.offline.videoplayer.withCount
+import com.video.offline.videoplayer.withRecyclerView
 
 class PlaylistFragmentUITest: BaseUITest() {
     @Rule

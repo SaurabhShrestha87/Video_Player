@@ -38,11 +38,11 @@ import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.resources.*
 import org.videolan.tools.*
 import org.videolan.tools.Settings.isPinCodeSet
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.PinCodeActivity
-import org.videolan.vlc.gui.PinCodeReason
-import org.videolan.vlc.gui.SecondaryActivity
-import org.videolan.vlc.gui.dialogs.ConfirmAudioPlayQueueDialog
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.PinCodeActivity
+import com.video.offline.videoplayer.gui.PinCodeReason
+import com.video.offline.videoplayer.gui.SecondaryActivity
+import com.video.offline.videoplayer.gui.dialogs.ConfirmAudioPlayQueueDialog
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PreferencesFragment : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener {

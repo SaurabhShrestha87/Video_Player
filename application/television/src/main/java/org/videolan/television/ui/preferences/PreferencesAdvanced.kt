@@ -45,16 +45,16 @@ import org.videolan.resources.*
 import org.videolan.tools.BitmapCache
 import org.videolan.tools.Settings
 import org.videolan.tools.putSingle
-import org.videolan.vlc.MediaParsingService
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.DebugLogActivity
-import org.videolan.vlc.gui.dialogs.ConfirmDeleteDialog
-import org.videolan.vlc.gui.dialogs.RenameDialog
-import org.videolan.vlc.gui.helpers.hf.StoragePermissionsDelegate.Companion.getWritePermission
-import org.videolan.vlc.gui.helpers.restartMediaPlayer
-import org.videolan.vlc.util.FeatureFlag
-import org.videolan.vlc.util.FileUtils
-import org.videolan.vlc.util.deleteAllWatchNext
+import com.video.offline.videoplayer.MediaParsingService
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.DebugLogActivity
+import com.video.offline.videoplayer.gui.dialogs.ConfirmDeleteDialog
+import com.video.offline.videoplayer.gui.dialogs.RenameDialog
+import com.video.offline.videoplayer.gui.helpers.hf.StoragePermissionsDelegate.Companion.getWritePermission
+import com.video.offline.videoplayer.gui.helpers.restartMediaPlayer
+import com.video.offline.videoplayer.util.FeatureFlag
+import com.video.offline.videoplayer.util.FileUtils
+import com.video.offline.videoplayer.util.deleteAllWatchNext
 import java.io.File
 import java.io.IOException
 

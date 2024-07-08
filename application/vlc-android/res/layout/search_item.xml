@@ -21,7 +21,7 @@
 
         <variable
                 name="holder"
-                type="org.videolan.vlc.gui.SearchResultAdapter.ViewHolder" />
+                type="com.video.offline.videoplayer.gui.SearchResultAdapter.ViewHolder" />
 
         <variable
                 name="coverWidth"
@@ -33,7 +33,7 @@
 
         <variable
                 name="handler"
-                type="org.videolan.vlc.gui.SearchActivity.ClickHandler" />
+                type="com.video.offline.videoplayer.gui.SearchActivity.ClickHandler" />
 
     </data>
 

@@ -22,12 +22,12 @@ import org.videolan.television.databinding.MediaBrowserTvItemBinding
 import org.videolan.television.databinding.MediaBrowserTvItemListBinding
 import org.videolan.television.ui.browser.TvAdapterUtils
 import org.videolan.tools.Settings
-import org.videolan.vlc.gui.DiffUtilAdapter
-import org.videolan.vlc.gui.helpers.getBitmapFromDrawable
-import org.videolan.vlc.gui.helpers.getMediaIconDrawable
-import org.videolan.vlc.gui.view.FastScroller
-import org.videolan.vlc.interfaces.IEventsHandler
-import org.videolan.vlc.util.generateResolutionClass
+import com.video.offline.videoplayer.gui.DiffUtilAdapter
+import com.video.offline.videoplayer.gui.helpers.getBitmapFromDrawable
+import com.video.offline.videoplayer.gui.helpers.getMediaIconDrawable
+import com.video.offline.videoplayer.gui.view.FastScroller
+import com.video.offline.videoplayer.interfaces.IEventsHandler
+import com.video.offline.videoplayer.util.generateResolutionClass
 
 class FileTvItemAdapter(private val eventsHandler: IEventsHandler<MediaLibraryItem>, var itemSize: Int, private val showProtocol: Boolean, private var inGrid: Boolean = true) : DiffUtilAdapter<MediaWrapper, MediaTvItemAdapter.AbstractMediaItemViewHolder<ViewDataBinding>>(), FastScroller.SeparatedAdapter, TvItemAdapter {
 

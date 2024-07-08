@@ -22,11 +22,11 @@
  *
  */
 
-package org.videolan.vlc.database
+package com.video.offline.videoplayer.database
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import org.videolan.vlc.mediadb.models.Widget
+import com.video.offline.videoplayer.mediadb.models.Widget
 
 @Dao
 interface WidgetDao {

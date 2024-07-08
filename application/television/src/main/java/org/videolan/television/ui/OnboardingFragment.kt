@@ -38,7 +38,7 @@ import org.videolan.television.R
 import org.videolan.tools.KEY_TV_ONBOARDING_DONE
 import org.videolan.tools.Settings
 import org.videolan.tools.putSingle
-import org.videolan.vlc.util.Permissions
+import com.video.offline.videoplayer.util.Permissions
 
 class OnboardingFragment : OnboardingSupportFragment() {
     override fun getPageCount() = 3

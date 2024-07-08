@@ -31,7 +31,7 @@ android {
         buildConfigField 'String[]', 'TRANSLATION_ARRAY', generateTranslation()
         buildConfigField 'int', 'VLC_MAJOR_VERSION', "${rootProject.ext.vlcMajorVersion}"
 
-        testInstrumentationRunner "org.videolan.vlc.MultidexTestRunner"
+        testInstrumentationRunner "com.video.offline.videoplayer.MultidexTestRunner"
         // The following argument makes the Android Test Orchestrator run its
         // "pm clear" command after each test invocation. This command ensures
         // that the app's state is completely cleared between tests.
@@ -64,11 +64,11 @@ android {
         release {
             proguardFile 'proguard.cfg'
             buildConfigField "boolean", "BETA", isBeta()
-            resValue 'string', 'benchmark_package_name', 'org.videolan.vlcbenchmark'
+            resValue 'string', 'benchmark_package_name', 'com.video.offline.videoplayerbenchmark'
         }
         debug {
             buildConfigField "boolean", "BETA", "false"
-            resValue 'string', 'benchmark_package_name', 'org.videolan.vlcbenchmark.debug'
+            resValue 'string', 'benchmark_package_name', 'com.video.offline.videoplayerbenchmark.debug'
             buildConfigField "String", "APP_ID", "\"${rootProject.ext.appId}.debug\""
             resValue 'string', 'tv_provider_authority', "${rootProject.ext.appId}.debug.tv"
             buildConfigField "boolean", "NO_TV", "false"
@@ -115,7 +115,7 @@ android {
         assets.srcDirs = ['flavors/debug/assets']
         assets.srcDirs += files("$projectDir/assets/schemas".toString())
     }
-    namespace 'org.videolan.vlc'
+    namespace 'com.video.offline.videoplayer'
     buildFeatures {
         renderScript true
         aidl true

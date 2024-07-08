@@ -1,4 +1,4 @@
-package org.videolan.vlc.viewmodels.browser
+package com.video.offline.videoplayer.viewmodels.browser
 
 import android.os.Environment
 import android.os.Handler
@@ -17,14 +17,14 @@ import org.videolan.libvlc.stubs.StubMedia
 import org.videolan.libvlc.util.MediaBrowser
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.stubs.StubMediaWrapper
-import org.videolan.vlc.BaseTest
-import org.videolan.vlc.R
-import org.videolan.vlc.database.CustomDirectoryDao
-import org.videolan.vlc.providers.BrowserProvider
-import org.videolan.vlc.repository.DirectoryRepository
+import com.video.offline.videoplayer.BaseTest
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.database.CustomDirectoryDao
+import com.video.offline.videoplayer.providers.BrowserProvider
+import com.video.offline.videoplayer.repository.DirectoryRepository
 import org.videolan.tools.CoroutineContextProvider
-import org.videolan.vlc.util.TestCoroutineContextProvider
-import org.videolan.vlc.util.applyMock
+import com.video.offline.videoplayer.util.TestCoroutineContextProvider
+import com.video.offline.videoplayer.util.applyMock
 import java.io.File
 
 class StorageModelTest : BaseTest() {
@@ -110,10 +110,10 @@ class StorageModelTest : BaseTest() {
 
     @Test
     fun whenAtRootAndTwoCustomDirectoriesWithOneChildOfInternalStorage_checkTwoResultsAreObtained() {
-        val customDir = org.videolan.vlc.mediadb.models.CustomDirectory(temporaryFolder.newFile("custom1").path)
+        val customDir = com.video.offline.videoplayer.mediadb.models.CustomDirectory(temporaryFolder.newFile("custom1").path)
         val newDirInsideInternalStorage = File("${Environment.getExternalStorageDirectory().path}/custom2")
         newDirInsideInternalStorage.mkdir()
-        val customDirInsideInternalStorage = org.videolan.vlc.mediadb.models.CustomDirectory(newDirInsideInternalStorage.path)
+        val customDirInsideInternalStorage = com.video.offline.videoplayer.mediadb.models.CustomDirectory(newDirInsideInternalStorage.path)
         coEvery { mockedDirectoryRepo.getCustomDirectories() } returns listOf(customDir, customDirInsideInternalStorage)
         initBrowserModel(false, null)
 
@@ -128,7 +128,7 @@ class StorageModelTest : BaseTest() {
 
     @Test
     fun whenAtCustomDirAndHiddenDirectoryPresentWithHideHiddenFiles_checkResultHasCorrectDirectoriesAndFlagIsNotShowHiddenFiles() {
-        val customDir = org.videolan.vlc.mediadb.models.CustomDirectory(temporaryFolder.root.path)
+        val customDir = com.video.offline.videoplayer.mediadb.models.CustomDirectory(temporaryFolder.root.path)
         coEvery { mockedDirectoryRepo.getCustomDirectories() } returns listOf(customDir)
 
         initBrowserModel(false, customDir.path)
@@ -143,7 +143,7 @@ class StorageModelTest : BaseTest() {
 
     @Test
     fun whenAtCustomDirAndHiddenDirectoryPresentWithShowHiddenFiles_checkResultHasHiddenDirectoriesAndFlagIsShowHiddenFiles() {
-        val customDir = org.videolan.vlc.mediadb.models.CustomDirectory(temporaryFolder.root.path)
+        val customDir = com.video.offline.videoplayer.mediadb.models.CustomDirectory(temporaryFolder.root.path)
         coEvery { mockedDirectoryRepo.getCustomDirectories() } returns listOf(customDir)
 
         initBrowserModel(true, customDir.path)

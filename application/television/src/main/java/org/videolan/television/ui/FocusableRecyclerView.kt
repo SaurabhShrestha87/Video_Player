@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.recyclerview.widget.RecyclerView
 import org.videolan.resources.interfaces.FocusListener
-import org.videolan.vlc.util.getScreenHeight
+import com.video.offline.videoplayer.util.getScreenHeight
 
 /**
  * Recyclerview that scrolls the right amount in order to have the focused item always in the middle of the screen

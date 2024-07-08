@@ -10,8 +10,8 @@
             android:shortcutLongLabel="@string/resume_playback_long_title">
         <intent
             android:action="vlc.shortcut.resume"
-            android:targetPackage="org.videolan.vlc"
-            android:targetClass="org.videolan.vlc.StartActivity" />
+            android:targetPackage="com.video.offline.videoplayer"
+            android:targetClass="com.video.offline.videoplayer.StartActivity" />
         <categories android:name="vlc.shortcut.category" />
     </shortcut>
     <shortcut
@@ -22,8 +22,8 @@
         android:shortcutLongLabel="@string/directories" >
         <intent
             android:action="vlc.shortcut.browser"
-            android:targetPackage="org.videolan.vlc"
-            android:targetClass="org.videolan.vlc.StartActivity" />
+            android:targetPackage="com.video.offline.videoplayer"
+            android:targetClass="com.video.offline.videoplayer.StartActivity" />
         <categories android:name="vlc.shortcut.category" />
     </shortcut>
     <shortcut
@@ -35,8 +35,8 @@
         tools:targetApi="n_mr1">
         <intent
             android:action="vlc.shortcut.video"
-            android:targetPackage="org.videolan.vlc"
-            android:targetClass="org.videolan.vlc.StartActivity" />
+            android:targetPackage="com.video.offline.videoplayer"
+            android:targetClass="com.video.offline.videoplayer.StartActivity" />
         <categories android:name="vlc.shortcut.category" />
     </shortcut>
     <shortcut
@@ -47,8 +47,8 @@
         android:shortcutLongLabel="@string/audio">
         <intent
             android:action="vlc.shortcut.audio"
-            android:targetPackage="org.videolan.vlc"
-            android:targetClass="org.videolan.vlc.StartActivity" />
+            android:targetPackage="com.video.offline.videoplayer"
+            android:targetClass="com.video.offline.videoplayer.StartActivity" />
         <categories android:name="vlc.shortcut.category" />
     </shortcut>
 </shortcuts>

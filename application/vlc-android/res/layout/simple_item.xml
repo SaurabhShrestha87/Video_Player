@@ -19,7 +19,7 @@
 
         <variable
                 name="handler"
-                type="org.videolan.vlc.gui.SimpleAdapter.ClickHandler" />
+                type="com.video.offline.videoplayer.gui.SimpleAdapter.ClickHandler" />
 
         <variable
             name="imageWidth"

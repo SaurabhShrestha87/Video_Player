@@ -1,4 +1,4 @@
-package org.videolan.vlc
+package com.video.offline.videoplayer
 /*
  * ************************************************************************
  *  VlcTrack.kt
@@ -23,7 +23,7 @@ package org.videolan.vlc
  *
  */
 import org.videolan.libvlc.interfaces.IMedia
-import org.videolan.vlc.gui.dialogs.adapters.VlcTrack
+import com.video.offline.videoplayer.gui.dialogs.adapters.VlcTrack
 
 class VlcTrackImpl : VlcTrack {
     lateinit var mediaTrack: IMedia.Track

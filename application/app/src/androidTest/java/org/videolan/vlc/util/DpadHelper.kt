@@ -22,7 +22,7 @@
  *
  */
 
-package org.videolan.vlc.util
+package com.video.offline.videoplayer.util
 
 import android.os.SystemClock
 import android.view.KeyEvent

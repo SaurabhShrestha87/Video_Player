@@ -379,7 +379,7 @@ else
         GRADLE_VLC_SRC_DIRS="$GRADLE_VLC_SRC_DIRS" CLI="" GRADLE_ABI=$GRADLE_ABI ./gradlew ${gradle_prop} -Dmaven.repo.local=$M2_REPO $TARGET
 
         echo -e "\n===================================\nRun following for UI tests:"
-        echo "adb shell am instrument -w -m -e clearPackageData true   -e package org.videolan.vlc -e debug false org.videolan.vlc.debug.test/org.videolan.vlc.MultidexTestRunner 1> result_UI_test.txt"
+        echo "adb shell am instrument -w -m -e clearPackageData true   -e package com.video.offline.videoplayer -e debug false com.video.offline.videoplayer.debug.test/com.video.offline.videoplayer.MultidexTestRunner 1> result_UI_test.txt"
     fi
 fi
 
@@ -398,8 +398,8 @@ if [ "$RUN" = 1 ]; then
     fi
     adb wait-for-device
     if [ "$RELEASE" = 1 ]; then
-        adb shell am start -n org.videolan.vlc/org.videolan.vlc.StartActivity $EXTRA
+        adb shell am start -n com.video.offline.videoplayer/com.video.offline.videoplayer.StartActivity $EXTRA
     else
-        adb shell am start -n org.videolan.vlc.debug/org.videolan.vlc.StartActivity $EXTRA
+        adb shell am start -n com.video.offline.videoplayer.debug/com.video.offline.videoplayer.StartActivity $EXTRA
     fi
 fi

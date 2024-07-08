@@ -1,4 +1,4 @@
-package org.videolan.vlc.gui.preferences
+package com.video.offline.videoplayer.gui.preferences
 
 import android.content.ComponentName
 import androidx.test.espresso.action.ViewActions.click
@@ -12,10 +12,10 @@ import org.hamcrest.Matchers.allOf
 import org.junit.Rule
 import org.junit.Test
 import org.videolan.tools.KEY_MEDIALIBRARY_AUTO_RESCAN
-import org.videolan.vlc.PreferenceMatchers.withKey
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.SecondaryActivity
-import org.videolan.vlc.onPreferenceRow
+import com.video.offline.videoplayer.PreferenceMatchers.withKey
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.SecondaryActivity
+import com.video.offline.videoplayer.onPreferenceRow
 import org.videolan.tools.KEY_VIDEO_APP_SWITCH
 import org.videolan.tools.PLAYBACK_HISTORY
 import org.videolan.tools.SCREEN_ORIENTATION

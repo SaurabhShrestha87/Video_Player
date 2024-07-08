@@ -36,7 +36,7 @@ import androidx.transition.TransitionManager
 import org.videolan.television.R
 import org.videolan.television.databinding.SongBrowserBinding
 import org.videolan.television.ui.browser.BaseBrowserTvFragment
-import org.videolan.vlc.BuildConfig
+import com.video.offline.videoplayer.BuildConfig
 
 internal class MediaBrowserAnimatorDelegate(val binding: SongBrowserBinding, private val cl: ConstraintLayout) : RecyclerView.OnScrollListener(), View.OnFocusChangeListener {
 

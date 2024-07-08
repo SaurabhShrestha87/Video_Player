@@ -22,7 +22,7 @@
  *
  */
 
-package org.videolan.vlc.donations
+package com.video.offline.videoplayer.donations
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package org.videolan.vlc
+package com.video.offline.videoplayer
 
 import android.content.Context
 import android.content.res.Resources
@@ -26,8 +26,8 @@ import org.hamcrest.BaseMatcher
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
-import org.videolan.vlc.gui.helpers.SelectorViewHolder
-import org.videolan.vlc.gui.helpers.ThreeStatesCheckbox
+import com.video.offline.videoplayer.gui.helpers.SelectorViewHolder
+import com.video.offline.videoplayer.gui.helpers.ThreeStatesCheckbox
 
 class RecyclerViewMatcher(@IdRes private val recyclerViewId: Int) {
     var recyclerView: RecyclerView? = null

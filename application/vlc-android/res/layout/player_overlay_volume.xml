@@ -45,7 +45,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="42%" />
 
-    <org.videolan.vlc.gui.view.PlayerProgress
+    <com.video.offline.videoplayer.gui.view.PlayerProgress
             android:id="@+id/playerVolumeProgress"
             android:layout_width="16dp"
             android:layout_height="120dp"

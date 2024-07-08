@@ -43,10 +43,10 @@ import org.videolan.moviepedia.repository.MediaMetadataRepository
 import org.videolan.resources.CONTENT_EPISODE
 import org.videolan.resources.CONTENT_RESUME
 import org.videolan.tools.Settings
-import org.videolan.vlc.BuildConfig
-import org.videolan.vlc.R
-import org.videolan.vlc.getFileUri
-import org.videolan.vlc.util.ThumbnailsProvider
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.getFileUri
+import com.video.offline.videoplayer.util.ThumbnailsProvider
 import java.util.Locale
 
 class TVSearchProvider : ContentProvider() {

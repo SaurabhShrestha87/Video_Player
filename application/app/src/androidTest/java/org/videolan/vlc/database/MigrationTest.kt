@@ -42,7 +42,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  ******************************************************************************/
 
-package org.videolan.vlc.database
+package com.video.offline.videoplayer.database
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.content.edit
@@ -63,9 +63,9 @@ import org.videolan.libvlc.interfaces.IMedia
 import org.videolan.resources.AppContextProvider
 import org.videolan.resources.TYPE_NETWORK_FAV
 import org.videolan.tools.Settings
-import org.videolan.vlc.database.helpers.*
-import org.videolan.vlc.util.TestUtil
-import org.videolan.vlc.util.getValue
+import com.video.offline.videoplayer.database.helpers.*
+import com.video.offline.videoplayer.util.TestUtil
+import com.video.offline.videoplayer.util.getValue
 
 private const val TEST_DB_NAME = "test-db"
 
@@ -82,14 +82,14 @@ class MigrationTest {
 
     @Test fun migrateFrom26() {
         // Slave
-        val slaveMedia1Path = "/storage/emulated/0/Android/data/org.videolan.vlc.debug/files/subs/file1.mkv"
-        val slaveMedia1UriFa = "file:///storage/emulated/0/Android/data/org.videolan.vlc.debug/files/subs/file1.fa.srt"
+        val slaveMedia1Path = "/storage/emulated/0/Android/data/com.video.offline.videoplayer.debug/files/subs/file1.mkv"
+        val slaveMedia1UriFa = "file:///storage/emulated/0/Android/data/com.video.offline.videoplayer.debug/files/subs/file1.fa.srt"
         // External Sub
         val exSubMedia1Name = "file1.mkv"
-        val exSubMedisubsFolder = "/storage/emulated/0/Android/data/org.videolan.vlc.debug/files/subs/"
+        val exSubMedisubsFolder = "/storage/emulated/0/Android/data/com.video.offline.videoplayer.debug/files/subs/"
         val exSubfile1Sub1 = "${exSubMedisubsFolder}file1.eng.srt"
         // Favs
-        val favUri = "/storage/emulated/0/Android/data/org.videolan.vlc.debug/files/subs/file1.mkv".toUri()
+        val favUri = "/storage/emulated/0/Android/data/com.video.offline.videoplayer.debug/files/subs/file1.mkv".toUri()
         val favTitle = "test1"
 
         val sqliteTestDbOpenHelper = SqliteTestDbOpenHelper(InstrumentationRegistry.getTargetContext(), TEST_DB_NAME, 26)
@@ -106,9 +106,9 @@ class MigrationTest {
 
         val migratedDb = getMigratedRoomDatabase(migration_26_27, migration_27_28, migration_28_29)
 
-        val slave: org.videolan.vlc.mediadb.models.Slave = migratedDb.slaveDao().get(slaveMedia1Path)[0]
-        val exSub: List<org.videolan.vlc.mediadb.models.ExternalSub> = getValue(migratedDb.externalSubDao().get(exSubMedia1Name))
-        val fav: org.videolan.vlc.mediadb.models.BrowserFav = migratedDb.browserFavDao().get(favUri)[0]
+        val slave: com.video.offline.videoplayer.mediadb.models.Slave = migratedDb.slaveDao().get(slaveMedia1Path)[0]
+        val exSub: List<com.video.offline.videoplayer.mediadb.models.ExternalSub> = getValue(migratedDb.externalSubDao().get(exSubMedia1Name))
+        val fav: com.video.offline.videoplayer.mediadb.models.BrowserFav = migratedDb.browserFavDao().get(favUri)[0]
 
         assertEquals(slave.mediaPath, slaveMedia1Path)
         assertEquals(slave.type, IMedia.Slave.Type.Subtitle)

@@ -765,7 +765,7 @@
     <string name="video_remote_disable">Duplicate screen</string>
     <string name="removed_from_playlist_anonymous">Item(s) removed from playlist</string>
     <string name="welcome_title">Welcome to Video Player!</string>
-    <string name="welcome_subtitle">The free and open source multimedia player</string>
+    <string name="welcome_subtitle">The free and fast source multimedia player</string>
     <string name="permission_media">Video Player needs your permission to access media on your device</string>
     <string name="medialibrary_scan_explanation">Video Player can automatically scan your device to organise your media collection.</string>
     <string name="onboarding_theme_title">Make yourself at home</string>

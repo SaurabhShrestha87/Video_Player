@@ -1,4 +1,4 @@
-package org.videolan.vlc.gui.browser
+package com.video.offline.videoplayer.gui.browser
 
 import android.content.Intent
 import android.widget.AutoCompleteTextView
@@ -20,10 +20,10 @@ import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.resources.EXTRA_TARGET
 import org.videolan.tools.Settings
-import org.videolan.vlc.*
-import org.videolan.vlc.gui.DiffUtilAdapter
-import org.videolan.vlc.gui.MainActivity
-import org.videolan.vlc.gui.helpers.SelectorViewHolder
+import com.video.offline.videoplayer.*
+import com.video.offline.videoplayer.gui.DiffUtilAdapter
+import com.video.offline.videoplayer.gui.MainActivity
+import com.video.offline.videoplayer.gui.helpers.SelectorViewHolder
 
 class FileBrowserFragmentUITest : BaseUITest() {
     @Rule
@@ -90,7 +90,7 @@ class FileBrowserFragmentUITest : BaseUITest() {
         onView(rvMatcher.atPosition(1)).perform(longClick())
 
         onView(rvMatcher.atPosition(1))
-                .check(matches(withBgColor(context.getColor(R.color.orange200transparent))))
+                .check(matches(withBgColor(context.getColor(R.color.greenLighttransparent))))
 
         onView(withId(R.id.action_mode_file_play))
                 .check(matches(isDisplayed()))
@@ -212,8 +212,8 @@ class FileBrowserFragmentUITest : BaseUITest() {
         onView(rvMatcher.atPosition(0)).perform(longClick())
         onView(rvMatcher.atPosition(2)).perform(longClick())
 
-        onView(rvMatcher.atPosition(0)).check(matches(withBgColor(context.getColor(R.color.orange200transparent))))
-        onView(rvMatcher.atPosition(2)).check(matches(withBgColor(context.getColor(R.color.orange200transparent))))
+        onView(rvMatcher.atPosition(0)).check(matches(withBgColor(context.getColor(R.color.greenLighttransparent))))
+        onView(rvMatcher.atPosition(2)).check(matches(withBgColor(context.getColor(R.color.greenLighttransparent))))
     }
 
     @Test
@@ -368,14 +368,14 @@ class FileBrowserFragmentUITest : BaseUITest() {
         )).perform(click())
         onView(rvMatcher.atPosition(3)).perform(click())
 
-        onView(rvMatcher.atPosition(1)).check(matches(withBgColor(context.getColor(R.color.orange200transparent))))
-        onView(rvMatcher.atPosition(3)).check(matches(withBgColor(context.getColor(R.color.orange200transparent))))
+        onView(rvMatcher.atPosition(1)).check(matches(withBgColor(context.getColor(R.color.greenLighttransparent))))
+        onView(rvMatcher.atPosition(3)).check(matches(withBgColor(context.getColor(R.color.greenLighttransparent))))
 
         onView(rvMatcher.atPosition(3)).perform(click())
         onView(rvMatcher.atPosition(1)).perform(click())
 
-        onView(rvMatcher.atPosition(1)).check(matches(not(withBgColor(context.getColor(R.color.orange200transparent)))))
-        onView(rvMatcher.atPosition(3)).check(matches(not(withBgColor(context.getColor(R.color.orange200transparent)))))
+        onView(rvMatcher.atPosition(1)).check(matches(not(withBgColor(context.getColor(R.color.greenLighttransparent)))))
+        onView(rvMatcher.atPosition(3)).check(matches(not(withBgColor(context.getColor(R.color.greenLighttransparent)))))
     }
 
     @Test

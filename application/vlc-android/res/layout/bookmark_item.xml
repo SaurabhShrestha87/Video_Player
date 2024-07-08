@@ -9,11 +9,11 @@
         <import type="android.text.TextUtils" />
 
         <import type="org.videolan.medialibrary.Tools" />
-        <import type="org.videolan.vlc.gui.helpers.TalkbackUtil" />
+        <import type="com.video.offline.videoplayer.gui.helpers.TalkbackUtil" />
 
         <variable
                 name="holder"
-                type="org.videolan.vlc.gui.helpers.BookmarkAdapter.ViewHolder" />
+                type="com.video.offline.videoplayer.gui.helpers.BookmarkAdapter.ViewHolder" />
 
         <variable
                 name="bookmark"

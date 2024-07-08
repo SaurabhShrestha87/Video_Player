@@ -10,7 +10,7 @@ import org.videolan.resources.ACTION_OPEN_CONTENT
 import org.videolan.resources.EXTRA_CONTENT_ID
 import org.videolan.tools.AppScope
 import org.videolan.tools.localBroadcastManager
-import org.videolan.vlc.media.MediaUtils
+import com.video.offline.videoplayer.media.MediaUtils
 
 
 internal interface IMediaContentDelegate {

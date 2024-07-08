@@ -1,4 +1,4 @@
-package org.videolan.vlc.viewmodels.browser
+package com.video.offline.videoplayer.viewmodels.browser
 
 import android.os.Handler
 import com.jraska.livedata.test
@@ -13,10 +13,10 @@ import org.videolan.libvlc.interfaces.IMedia
 import org.videolan.libvlc.stubs.StubMedia
 import org.videolan.libvlc.util.MediaBrowser
 import org.videolan.medialibrary.stubs.StubMediaWrapper
-import org.videolan.vlc.BaseTest
-import org.videolan.vlc.providers.BrowserProvider
+import com.video.offline.videoplayer.BaseTest
+import com.video.offline.videoplayer.providers.BrowserProvider
 import org.videolan.tools.CoroutineContextProvider
-import org.videolan.vlc.util.TestCoroutineContextProvider
+import com.video.offline.videoplayer.util.TestCoroutineContextProvider
 import java.io.File
 
 class FilePickerModelTest : BaseTest() {
@@ -42,14 +42,14 @@ class FilePickerModelTest : BaseTest() {
             mediaBrowser = spyk(MediaBrowser(mockedLibVlc, null, handler))
             mediaBrowser
         }
-        BrowserProvider.registerCreator(clazz = CoroutineContextProvider::class.java) { org.videolan.vlc.util.TestCoroutineContextProvider() }
+        BrowserProvider.registerCreator(clazz = CoroutineContextProvider::class.java) { com.video.offline.videoplayer.util.TestCoroutineContextProvider() }
     }
 
     override fun beforeTest() {
         super.beforeTest()
         dummyUrl = temporaryFolder.root.absolutePath
 
-        browserModel = BrowserModel(application, dummyUrl, TYPE_PICKER, false, true, org.videolan.vlc.util.TestCoroutineContextProvider())
+        browserModel = BrowserModel(application, dummyUrl, TYPE_PICKER, false, true, com.video.offline.videoplayer.util.TestCoroutineContextProvider())
         browserProvider = browserModel.provider
 
         setupTestFiles()

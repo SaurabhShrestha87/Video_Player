@@ -28,7 +28,7 @@
 
     <FrameLayout
             android:id="@+id/fragment_placeholder"
-            android:name="org.videolan.vlc.gui.tv.NextTvFragment"
+            android:name="com.video.offline.videoplayer.gui.tv.NextTvFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

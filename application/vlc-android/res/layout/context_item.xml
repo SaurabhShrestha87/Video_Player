@@ -9,7 +9,7 @@
 
         <variable
             name="menuItem"
-            type="org.videolan.vlc.gui.dialogs.CtxMenuItem" />
+            type="com.video.offline.videoplayer.gui.dialogs.CtxMenuItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

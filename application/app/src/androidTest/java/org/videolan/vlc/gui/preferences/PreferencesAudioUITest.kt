@@ -1,4 +1,4 @@
-package org.videolan.vlc.gui.preferences
+package com.video.offline.videoplayer.gui.preferences
 
 import android.os.Build
 import androidx.test.espresso.action.ViewActions.click
@@ -6,9 +6,9 @@ import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.filters.SdkSuppress
 import org.junit.Rule
 import org.junit.Test
-import org.videolan.vlc.PreferenceMatchers.withKey
-import org.videolan.vlc.R
-import org.videolan.vlc.onPreferenceRow
+import com.video.offline.videoplayer.PreferenceMatchers.withKey
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.onPreferenceRow
 import org.videolan.tools.KEY_PLAYBACK_SPEED_PERSIST
 import org.videolan.tools.RESUME_PLAYBACK
 

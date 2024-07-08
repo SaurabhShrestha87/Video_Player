@@ -1,4 +1,4 @@
-package org.videolan.vlc
+package com.video.offline.videoplayer
 
 import android.os.Bundle
 import androidx.multidex.MultiDex

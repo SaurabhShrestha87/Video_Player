@@ -48,17 +48,17 @@ import org.videolan.tools.Settings
 import org.videolan.tools.formatRateString
 import org.videolan.tools.setGone
 import org.videolan.tools.setVisible
-import org.videolan.vlc.PlaybackService
-import org.videolan.vlc.gui.audio.EqualizerFragment
-import org.videolan.vlc.gui.dialogs.PlaybackSpeedDialog
-import org.videolan.vlc.gui.dialogs.SleepTimerDialog
-import org.videolan.vlc.gui.helpers.*
-import org.videolan.vlc.gui.helpers.UiTools.showPinIfNeeded
-import org.videolan.vlc.media.MediaUtils
-import org.videolan.vlc.util.getScreenWidth
-import org.videolan.vlc.viewmodels.BookmarkModel
-import org.videolan.vlc.viewmodels.PlayerState
-import org.videolan.vlc.viewmodels.PlaylistModel
+import com.video.offline.videoplayer.PlaybackService
+import com.video.offline.videoplayer.gui.audio.EqualizerFragment
+import com.video.offline.videoplayer.gui.dialogs.PlaybackSpeedDialog
+import com.video.offline.videoplayer.gui.dialogs.SleepTimerDialog
+import com.video.offline.videoplayer.gui.helpers.*
+import com.video.offline.videoplayer.gui.helpers.UiTools.showPinIfNeeded
+import com.video.offline.videoplayer.media.MediaUtils
+import com.video.offline.videoplayer.util.getScreenWidth
+import com.video.offline.videoplayer.viewmodels.BookmarkModel
+import com.video.offline.videoplayer.viewmodels.PlayerState
+import com.video.offline.videoplayer.viewmodels.PlaylistModel
 import kotlin.math.abs
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -187,7 +187,7 @@ class AudioPlayerActivity : BaseTvActivity(),KeycodeListener  {
         }
 
         wasPlaying = state.playing
-        binding.buttonPlay.contentDescription = getString(if (state.playing) org.videolan.vlc.R.string.pause else org.videolan.vlc.R.string.play)
+        binding.buttonPlay.contentDescription = getString(if (state.playing) com.video.offline.videoplayer.R.string.pause else com.video.offline.videoplayer.R.string.play)
 
         val mw = model.currentMediaWrapper
         lifecycleScope.launch {
@@ -201,7 +201,7 @@ class AudioPlayerActivity : BaseTvActivity(),KeycodeListener  {
                 R.drawable.ic_shuffle_on
             else
                 R.drawable.ic_shuffle_audio)
-            binding.buttonShuffle.contentDescription = getString(if (shuffling) org.videolan.vlc.R.string.shuffle_on else org.videolan.vlc.R.string.shuffle)
+            binding.buttonShuffle.contentDescription = getString(if (shuffling) com.video.offline.videoplayer.R.string.shuffle_on else com.video.offline.videoplayer.R.string.shuffle)
             if (mw == null || currentCoverArt == mw.artworkMrl) return@launch
             currentCoverArt = mw.artworkMrl
             updateBackground()
@@ -273,7 +273,7 @@ class AudioPlayerActivity : BaseTvActivity(),KeycodeListener  {
 
     override fun bookmark() {
         bookmarkModel.addBookmark(this)
-        UiTools.snackerConfirm(this, getString(org.videolan.vlc.R.string.bookmark_added), confirmMessage = org.videolan.vlc.R.string.show) {
+        UiTools.snackerConfirm(this, getString(com.video.offline.videoplayer.R.string.bookmark_added), confirmMessage = com.video.offline.videoplayer.R.string.show) {
             showBookmarks()
         }
     }

@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  ******************************************************************************/
 
-package org.videolan.vlc.database
+package com.video.offline.videoplayer.database
 
 import android.content.Context
 import androidx.room.Database
@@ -28,8 +28,8 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.videolan.resources.AndroidDevices
 import org.videolan.tools.SingletonHolder
-import org.videolan.vlc.mediadb.Converters
-import org.videolan.vlc.mediadb.models.*
+import com.video.offline.videoplayer.mediadb.Converters
+import com.video.offline.videoplayer.mediadb.models.*
 
 private const val DB_NAME = "vlc_database"
 

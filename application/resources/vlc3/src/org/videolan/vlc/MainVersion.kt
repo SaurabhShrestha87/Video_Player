@@ -1,4 +1,4 @@
-package org.videolan.vlc
+package com.video.offline.videoplayer
 
 /*
  * ************************************************************************

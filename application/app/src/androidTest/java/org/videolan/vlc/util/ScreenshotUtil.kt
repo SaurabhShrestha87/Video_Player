@@ -22,7 +22,7 @@
  *
  */
 
-package org.videolan.vlc.util
+package com.video.offline.videoplayer.util
 
 import tools.fastlane.screengrab.Screengrab
 

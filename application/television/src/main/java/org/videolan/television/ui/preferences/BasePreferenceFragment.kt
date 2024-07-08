@@ -30,7 +30,7 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceDialogFragment
 
-import org.videolan.vlc.R
+import com.video.offline.videoplayer.R
 
 abstract class BasePreferenceFragment : LeanbackPreferenceFragment() {
 

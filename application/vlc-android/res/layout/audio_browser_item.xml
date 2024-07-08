@@ -26,7 +26,7 @@
 
         <variable
                 name="holder"
-                type="org.videolan.vlc.gui.audio.AudioBrowserAdapter.MediaItemViewHolder" />
+                type="com.video.offline.videoplayer.gui.audio.AudioBrowserAdapter.MediaItemViewHolder" />
 
         <variable
                 name="isNetwork"
@@ -71,7 +71,7 @@
             android:onLongClick="@{holder::onLongClick}"
             vlc:mediaContentDescription="@{item}">
 
-        <!-- Image loading is handled by org.videolan.vlc.gui.helpers.ImageLoader.loadImage() -->
+        <!-- Image loading is handled by com.video.offline.videoplayer.gui.helpers.ImageLoader.loadImage() -->
         <ImageView
                 android:id="@+id/item_move"
                 android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
                 vlc:onTouchListener="@{holder.onTouchListener}"
                 vlc:srcCompat="@drawable/ic_move_media" />
 
-        <org.videolan.vlc.gui.view.FadableImageView
+        <com.video.offline.videoplayer.gui.view.FadableImageView
                 android:id="@+id/media_cover"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/audio_browser_item_size"
@@ -106,7 +106,7 @@
                 vlc:media="@{item}" />
 
 
-        <org.videolan.vlc.gui.view.MiniVisualizer
+        <com.video.offline.videoplayer.gui.view.MiniVisualizer
                 android:id="@+id/playing"
                 android:layout_width="32dp"
                 android:layout_height="32dp"

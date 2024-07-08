@@ -1,4 +1,4 @@
-package org.videolan.vlc.viewmodels
+package com.video.offline.videoplayer.viewmodels
 
 import androidx.core.net.toUri
 import com.jraska.livedata.test
@@ -9,9 +9,9 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.media.MediaWrapperImpl
-import org.videolan.vlc.BaseTest
-import org.videolan.vlc.util.TestCoroutineContextProvider
-import org.videolan.vlc.util.TestUtil
+import com.video.offline.videoplayer.BaseTest
+import com.video.offline.videoplayer.util.TestCoroutineContextProvider
+import com.video.offline.videoplayer.util.TestUtil
 
 
 class StreamsModelTest : BaseTest() {

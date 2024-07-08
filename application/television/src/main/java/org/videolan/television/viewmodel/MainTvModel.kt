@@ -51,19 +51,19 @@ import org.videolan.tools.NetworkMonitor
 import org.videolan.tools.PLAYBACK_HISTORY
 import org.videolan.tools.Settings
 import org.videolan.tools.getContextWithLocale
-import org.videolan.vlc.ExternalMonitor
-import org.videolan.vlc.PlaybackService
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.DialogActivity
-import org.videolan.vlc.gui.helpers.hf.StoragePermissionsDelegate.Companion.askStoragePermission
-import org.videolan.vlc.media.MediaUtils
-import org.videolan.vlc.media.PlaylistManager
-import org.videolan.vlc.mediadb.models.BrowserFav
-import org.videolan.vlc.repository.BrowserFavRepository
-import org.videolan.vlc.repository.DirectoryRepository
-import org.videolan.vlc.util.Permissions
-import org.videolan.vlc.util.convertFavorites
-import org.videolan.vlc.util.scanAllowed
+import com.video.offline.videoplayer.ExternalMonitor
+import com.video.offline.videoplayer.PlaybackService
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.DialogActivity
+import com.video.offline.videoplayer.gui.helpers.hf.StoragePermissionsDelegate.Companion.askStoragePermission
+import com.video.offline.videoplayer.media.MediaUtils
+import com.video.offline.videoplayer.media.PlaylistManager
+import com.video.offline.videoplayer.mediadb.models.BrowserFav
+import com.video.offline.videoplayer.repository.BrowserFavRepository
+import com.video.offline.videoplayer.repository.DirectoryRepository
+import com.video.offline.videoplayer.util.Permissions
+import com.video.offline.videoplayer.util.convertFavorites
+import com.video.offline.videoplayer.util.scanAllowed
 
 private const val NUM_ITEMS_PREVIEW = 5
 private const val TAG = "MainTvModel"

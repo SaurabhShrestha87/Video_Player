@@ -63,8 +63,8 @@ import org.videolan.moviepedia.database.models.Person
 import org.videolan.moviepedia.database.models.tvEpisodeSubtitle
 import org.videolan.television.R
 import org.videolan.tools.dp
-import org.videolan.vlc.gui.helpers.downloadIcon
-import org.videolan.vlc.util.generateResolutionClass
+import com.video.offline.videoplayer.gui.helpers.downloadIcon
+import com.video.offline.videoplayer.util.generateResolutionClass
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class MetadataCardPresenter(private val context: Activity) : Presenter() {

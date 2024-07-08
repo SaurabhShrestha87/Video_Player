@@ -37,8 +37,8 @@ import org.videolan.tools.LOCK_USE_SENSOR
 import org.videolan.tools.POPUP_FORCE_LEGACY
 import org.videolan.tools.SAVE_BRIGHTNESS
 import org.videolan.tools.putSingle
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.helpers.restartMediaPlayer
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.helpers.restartMediaPlayer
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PreferencesVideo : BasePreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener, CoroutineScope by MainScope() {

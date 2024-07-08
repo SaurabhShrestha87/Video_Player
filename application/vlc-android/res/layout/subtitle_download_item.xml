@@ -7,11 +7,11 @@
 
         <import type="android.view.View" />
 
-        <import type="org.videolan.vlc.gui.dialogs.State" />
+        <import type="com.video.offline.videoplayer.gui.dialogs.State" />
 
         <variable
                 name="subtitleItem"
-                type="org.videolan.vlc.gui.dialogs.SubtitleItem" />
+                type="com.video.offline.videoplayer.gui.dialogs.SubtitleItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

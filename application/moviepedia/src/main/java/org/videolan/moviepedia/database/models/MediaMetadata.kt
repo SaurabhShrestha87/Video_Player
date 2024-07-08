@@ -26,7 +26,7 @@ package org.videolan.moviepedia.database.models
 
 import androidx.room.*
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
-import org.videolan.vlc.util.TextUtils
+import com.video.offline.videoplayer.util.TextUtils
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-    <import type="org.videolan.vlc.gui.helpers.TalkbackUtil" />
+    <import type="com.video.offline.videoplayer.gui.helpers.TalkbackUtil" />
         <import type="org.videolan.medialibrary.interfaces.media.MediaWrapper" />
         <variable
                 name="item"

@@ -7,15 +7,15 @@
         android:layout_height="match_parent"
         android:elevation="@dimen/audio_player_elevation"
         android:visibility="gone"
-        app:layout_behavior="org.videolan.vlc.gui.helpers.PlayerBehavior"
+        app:layout_behavior="com.video.offline.videoplayer.gui.helpers.PlayerBehavior"
         tools:targetApi="lollipop">
 
-    <androidx.appcompat.widget.ViewStubCompat
+    <ViewStub
             android:id="@+id/audio_player_stub"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout="@layout/audioplayer" />
-    <androidx.appcompat.widget.ViewStubCompat
+    <ViewStub
             android:id="@+id/audio_playlist_tips"
             android:layout="@layout/audio_playlist_tips"
             android:layout_height="match_parent"

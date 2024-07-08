@@ -1,4 +1,4 @@
-package org.videolan.vlc.util
+package com.video.offline.videoplayer.util
 
 import kotlinx.coroutines.Dispatchers
 import org.videolan.tools.CoroutineContextProvider

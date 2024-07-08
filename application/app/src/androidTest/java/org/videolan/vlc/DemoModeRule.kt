@@ -22,7 +22,7 @@
  *
  */
 
-package org.videolan.vlc
+package com.video.offline.videoplayer
 
 import org.junit.rules.TestRule
 import org.junit.runner.Description

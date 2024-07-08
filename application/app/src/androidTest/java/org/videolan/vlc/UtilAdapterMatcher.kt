@@ -1,4 +1,4 @@
-package org.videolan.vlc
+package com.video.offline.videoplayer
 
 import androidx.annotation.IdRes
 import androidx.paging.PagedListAdapter
@@ -17,7 +17,7 @@ import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.media.MediaLibraryItem
-import org.videolan.vlc.gui.DiffUtilAdapter
+import com.video.offline.videoplayer.gui.DiffUtilAdapter
 import kotlin.math.min
 
 

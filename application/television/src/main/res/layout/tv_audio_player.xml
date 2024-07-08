@@ -7,7 +7,7 @@
 
         <variable
                 name="progress"
-                type="androidx.lifecycle.LiveData&lt;org.videolan.vlc.viewmodels.PlaybackProgress>" />
+                type="androidx.lifecycle.LiveData&lt;com.video.offline.videoplayer.viewmodels.PlaybackProgress>" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,7 +90,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/media_title"
                 tools:text="Artist" />
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/bookmarks_stub"
                 android:layout_width="500dp"
                 android:layout_height="0dp"
@@ -204,7 +204,7 @@
                 app:layout_constraintStart_toStartOf="@+id/media_progress"
                 tools:text="0:30" />
 
-        <org.videolan.vlc.gui.view.AccessibleSeekBar
+        <com.video.offline.videoplayer.gui.view.AccessibleSeekBar
                 android:id="@+id/media_progress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -358,7 +358,7 @@
                 app:srcCompat="@drawable/ic_overflow_tv_audio"
                 tools:src="@drawable/ic_overflow_tv_audio" />
 
-        <androidx.appcompat.widget.ViewStubCompat
+        <ViewStub
                 android:id="@+id/player_options_stub"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

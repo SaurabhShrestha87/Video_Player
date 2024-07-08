@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  ******************************************************************************/
 
-package org.videolan.vlc.repository
+package com.video.offline.videoplayer.repository
 
 import android.net.Uri
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -38,9 +38,9 @@ import org.mockito.Mockito.*
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
-import org.videolan.vlc.database.ExternalSubDao
-import org.videolan.vlc.database.MediaDatabase
-import org.videolan.vlc.util.*
+import com.video.offline.videoplayer.database.ExternalSubDao
+import com.video.offline.videoplayer.database.MediaDatabase
+import com.video.offline.videoplayer.util.*
 
 
 @RunWith(PowerMockRunner::class)
@@ -82,7 +82,7 @@ class ExternalSubRepositoryTest {
         PowerMockito.mockStatic(Uri::class.java)
         PowerMockito.`when`<Any>(Uri::class.java, "decode", anyString()).thenAnswer { it.arguments[0] as String }
 
-        val inserted = argumentCaptor<org.videolan.vlc.mediadb.models.ExternalSub>()
+        val inserted = argumentCaptor<com.video.offline.videoplayer.mediadb.models.ExternalSub>()
         verify(externalSubDao, times(4)).insert(inserted.capture() ?: uninitialized())
         assertThat(inserted.allValues.size, `is`(4))
         assertThat(inserted.allValues, hasItem(fakeFooSubtitles[0]))
@@ -90,8 +90,8 @@ class ExternalSubRepositoryTest {
         assertThat(inserted.allValues, hasItem(fakeBarSubtitles[0]))
         assertThat(inserted.allValues, hasItem(fakeBarSubtitles[1]))
 
-        val fakeFooLiveDataSubtitles = MutableLiveData<List<org.videolan.vlc.mediadb.models.ExternalSub>>()
-        val fakeBarLiveDataSubtitles = MutableLiveData<List<org.videolan.vlc.mediadb.models.ExternalSub>>()
+        val fakeFooLiveDataSubtitles = MutableLiveData<List<com.video.offline.videoplayer.mediadb.models.ExternalSub>>()
+        val fakeBarLiveDataSubtitles = MutableLiveData<List<com.video.offline.videoplayer.mediadb.models.ExternalSub>>()
         fakeFooLiveDataSubtitles.value = fakeFooSubtitles
         fakeBarLiveDataSubtitles.value = fakeBarSubtitles
         `when`(externalSubDao.get(foo)).thenReturn(fakeFooLiveDataSubtitles)
@@ -122,7 +122,7 @@ class ExternalSubRepositoryTest {
         PowerMockito.mockStatic(Uri::class.java)
         PowerMockito.`when`<Any>(Uri::class.java, "decode", anyString()).thenAnswer { it.arguments[0] as String }
 
-        val inserted = argumentCaptor<org.videolan.vlc.mediadb.models.ExternalSub>()
+        val inserted = argumentCaptor<com.video.offline.videoplayer.mediadb.models.ExternalSub>()
         verify(externalSubDao, times(4)).insert(inserted.capture() ?: uninitialized())
         assertThat(inserted.allValues.size, `is`(4))
         assertThat(inserted.allValues, hasItem(fakeFooSubtitles[0]))
@@ -130,8 +130,8 @@ class ExternalSubRepositoryTest {
         assertThat(inserted.allValues, hasItem(fakeBarSubtitles[0]))
         assertThat(inserted.allValues, hasItem(fakeBarSubtitles[1]))
 
-        val fakeFooLiveDataSubtitles = MutableLiveData<List<org.videolan.vlc.mediadb.models.ExternalSub>>()
-        val fakeBarLiveDataSubtitles = MutableLiveData<List<org.videolan.vlc.mediadb.models.ExternalSub>>()
+        val fakeFooLiveDataSubtitles = MutableLiveData<List<com.video.offline.videoplayer.mediadb.models.ExternalSub>>()
+        val fakeBarLiveDataSubtitles = MutableLiveData<List<com.video.offline.videoplayer.mediadb.models.ExternalSub>>()
         fakeFooLiveDataSubtitles.value = fakeFooSubtitles
         fakeBarLiveDataSubtitles.value = fakeBarSubtitles
 

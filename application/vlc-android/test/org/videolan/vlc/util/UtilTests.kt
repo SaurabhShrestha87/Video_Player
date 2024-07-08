@@ -1,4 +1,4 @@
-package org.videolan.vlc.util
+package com.video.offline.videoplayer.util
 
 import org.junit.Assert
 import org.junit.Test

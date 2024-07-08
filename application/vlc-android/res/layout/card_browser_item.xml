@@ -32,11 +32,11 @@
         <import type="android.view.View" />
         <import type="android.text.TextUtils" />
         <import type="org.videolan.medialibrary.media.MediaLibraryItem" />
-        <import type="org.videolan.vlc.gui.helpers.TalkbackUtil" />
+        <import type="com.video.offline.videoplayer.gui.helpers.TalkbackUtil" />
 
         <variable
                 name="holder"
-                type="org.videolan.vlc.gui.browser.BaseBrowserAdapter.ViewHolder" />
+                type="com.video.offline.videoplayer.gui.browser.BaseBrowserAdapter.ViewHolder" />
 
         <variable
                 name="item"
@@ -106,7 +106,7 @@
                 android:minWidth="120dp"
                 android:padding="2dp">
 
-            <org.videolan.vlc.gui.helpers.ThreeStatesCheckbox
+            <com.video.offline.videoplayer.gui.helpers.ThreeStatesCheckbox
                     android:id="@+id/browser_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:visibility="visible" />
 
-            <!-- Image downloading is handled by org.videolan.vlc.gui.helpers.ImageLoader.loadImage() -->
+            <!-- Image downloading is handled by com.video.offline.videoplayer.gui.helpers.ImageLoader.loadImage() -->
             <ImageView
                     android:id="@+id/item_icon"
                     android:layout_width="64dp"
@@ -144,7 +144,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:media="@{item}" />
 
-            <org.videolan.vlc.gui.view.MiniVisualizer
+            <com.video.offline.videoplayer.gui.view.MiniVisualizer
                     android:id="@+id/playing"
                     android:layout_width="32dp"
                     android:layout_height="32dp"

@@ -37,7 +37,7 @@ import org.videolan.libvlc.util.VLCUtil;
 import org.videolan.medialibrary.MLServiceLocator;
 import org.videolan.medialibrary.Tools;
 import org.videolan.medialibrary.media.MediaLibraryItem;
-import org.videolan.vlc.VlcMigrationHelper;
+import com.video.offline.videoplayer.VlcMigrationHelper;
 
 import java.util.List;
 import java.util.Locale;

@@ -11,7 +11,7 @@
 
         <variable
                 name="clicHandler"
-                type="org.videolan.vlc.gui.dialogs.RenderersDialog.RendererClickhandler" />
+                type="com.video.offline.videoplayer.gui.dialogs.RenderersDialog.RendererClickhandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

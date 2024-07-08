@@ -17,10 +17,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  ******************************************************************************/
-package org.videolan.vlc.database
+package com.video.offline.videoplayer.database
 
 import androidx.room.*
-import org.videolan.vlc.mediadb.models.CustomDirectory
+import com.video.offline.videoplayer.mediadb.models.CustomDirectory
 
 @Dao
 interface CustomDirectoryDao {

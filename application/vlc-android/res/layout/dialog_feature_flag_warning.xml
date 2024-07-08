@@ -80,7 +80,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView3"
             tools:text="This is a beta feature\nBla bla bla\n" />
 
-    <org.videolan.vlc.gui.view.SwipeToUnlockView
+    <com.video.offline.videoplayer.gui.view.SwipeToUnlockView
             android:id="@+id/swipe_to_enable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

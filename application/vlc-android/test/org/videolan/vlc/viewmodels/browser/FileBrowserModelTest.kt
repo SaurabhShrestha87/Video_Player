@@ -1,4 +1,4 @@
-package org.videolan.vlc.viewmodels.browser
+package com.video.offline.videoplayer.viewmodels.browser
 
 import android.os.Handler
 import androidx.core.net.toUri
@@ -18,12 +18,12 @@ import org.videolan.libvlc.util.MediaBrowser
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.stubs.StubMediaWrapper
 import org.videolan.tools.CoroutineContextProvider
-import org.videolan.vlc.BaseTest
-import org.videolan.vlc.database.BrowserFavDao
-import org.videolan.vlc.providers.BrowserProvider
-import org.videolan.vlc.repository.BrowserFavRepository
-import org.videolan.vlc.util.TestCoroutineContextProvider
-import org.videolan.vlc.util.applyMock
+import com.video.offline.videoplayer.BaseTest
+import com.video.offline.videoplayer.database.BrowserFavDao
+import com.video.offline.videoplayer.providers.BrowserProvider
+import com.video.offline.videoplayer.repository.BrowserFavRepository
+import com.video.offline.videoplayer.util.TestCoroutineContextProvider
+import com.video.offline.videoplayer.util.applyMock
 import java.io.File
 
 
@@ -83,9 +83,9 @@ class FileBrowserModelTest : BaseTest() {
         file.listFiles().sorted().mapIndexed(this::addFileToProvider)
     }
 
-    private fun getFakeBrowserFav(index: Int): org.videolan.vlc.mediadb.models.BrowserFav {
+    private fun getFakeBrowserFav(index: Int): com.video.offline.videoplayer.mediadb.models.BrowserFav {
         val t = temporaryFolder.newFile("fake_media$index")
-        return org.videolan.vlc.mediadb.models.BrowserFav(t.path.toUri(), 0, "vid_$index", null)
+        return com.video.offline.videoplayer.mediadb.models.BrowserFav(t.path.toUri(), 0, "vid_$index", null)
     }
 
     @Test
@@ -141,7 +141,7 @@ class FileBrowserModelTest : BaseTest() {
 
     @Test
     fun whenAtRootAndHasLocalFavorite_checkDataSetContainsIt() {
-        val liveFavorites: MutableLiveData<List<org.videolan.vlc.mediadb.models.BrowserFav>> = MutableLiveData()
+        val liveFavorites: MutableLiveData<List<com.video.offline.videoplayer.mediadb.models.BrowserFav>> = MutableLiveData()
         every { mockedFavoritesRepo.localFavorites } returns liveFavorites
 
         initBrowserModel(null, showHiddenFiles = false)

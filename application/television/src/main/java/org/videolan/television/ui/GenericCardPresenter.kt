@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.leanback.widget.ImageCardView
 import androidx.leanback.widget.Presenter
-import org.videolan.vlc.R
-import org.videolan.vlc.gui.helpers.getBitmapFromDrawable
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.helpers.getBitmapFromDrawable
 
 class GenericCardPresenter @JvmOverloads constructor(context: Context, cardThemeResId: Int = R.style.VLCGenericCardView) : Presenter() {
 
     val context: ContextThemeWrapper = ContextThemeWrapper(context, cardThemeResId)
-    val padding = context.resources.getDimension(org.videolan.vlc.R.dimen.tv_card_padding).toInt()
+    val padding = context.resources.getDimension(com.video.offline.videoplayer.R.dimen.tv_card_padding).toInt()
 
 
     init {

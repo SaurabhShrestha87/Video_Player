@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type="org.videolan.vlc.media.MediaUtils" />
+        <import type="com.video.offline.videoplayer.media.MediaUtils" />
         <variable
             name="media"
             type="org.videolan.medialibrary.interfaces.media.MediaWrapper" />
@@ -78,7 +78,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/title"
                 tools:text="Beethoven" />
 
-        <org.videolan.vlc.gui.view.MiniVisualizer
+        <com.video.offline.videoplayer.gui.view.MiniVisualizer
                 android:id="@+id/playing"
                 android:layout_width="32dp"
                 android:layout_height="32dp"

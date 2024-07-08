@@ -32,24 +32,24 @@ import org.videolan.television.ui.FileTvItemAdapter
 import org.videolan.television.ui.TvItemAdapter
 import org.videolan.television.ui.TvUtil
 import org.videolan.tools.isStarted
-import org.videolan.vlc.gui.DialogActivity
-import org.videolan.vlc.gui.browser.PathAdapter
-import org.videolan.vlc.gui.browser.PathAdapterListener
-import org.videolan.vlc.gui.view.EmptyLoadingState
-import org.videolan.vlc.gui.view.VLCDividerItemDecoration
-import org.videolan.vlc.interfaces.IEventsHandler
-import org.videolan.vlc.providers.BrowserProvider
-import org.videolan.vlc.repository.BrowserFavRepository
-import org.videolan.vlc.util.DialogDelegate
-import org.videolan.vlc.util.FileUtils
-import org.videolan.vlc.util.IDialogManager
-import org.videolan.vlc.util.isSchemeSupported
-import org.videolan.vlc.util.onAnyChange
-import org.videolan.vlc.viewmodels.browser.BrowserModel
-import org.videolan.vlc.viewmodels.browser.IPathOperationDelegate
-import org.videolan.vlc.viewmodels.browser.TYPE_FILE
-import org.videolan.vlc.viewmodels.browser.TYPE_NETWORK
-import org.videolan.vlc.viewmodels.browser.getBrowserModel
+import com.video.offline.videoplayer.gui.DialogActivity
+import com.video.offline.videoplayer.gui.browser.PathAdapter
+import com.video.offline.videoplayer.gui.browser.PathAdapterListener
+import com.video.offline.videoplayer.gui.view.EmptyLoadingState
+import com.video.offline.videoplayer.gui.view.VLCDividerItemDecoration
+import com.video.offline.videoplayer.interfaces.IEventsHandler
+import com.video.offline.videoplayer.providers.BrowserProvider
+import com.video.offline.videoplayer.repository.BrowserFavRepository
+import com.video.offline.videoplayer.util.DialogDelegate
+import com.video.offline.videoplayer.util.FileUtils
+import com.video.offline.videoplayer.util.IDialogManager
+import com.video.offline.videoplayer.util.isSchemeSupported
+import com.video.offline.videoplayer.util.onAnyChange
+import com.video.offline.videoplayer.viewmodels.browser.BrowserModel
+import com.video.offline.videoplayer.viewmodels.browser.IPathOperationDelegate
+import com.video.offline.videoplayer.viewmodels.browser.TYPE_FILE
+import com.video.offline.videoplayer.viewmodels.browser.TYPE_NETWORK
+import com.video.offline.videoplayer.viewmodels.browser.getBrowserModel
 
 private const val TAG = "FileBrowserTvFragment"
 

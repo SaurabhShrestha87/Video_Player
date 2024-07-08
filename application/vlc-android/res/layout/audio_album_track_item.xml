@@ -9,7 +9,7 @@
         <import type="android.text.TextUtils" />
         <import type="org.videolan.medialibrary.Tools" />
         <import type="org.videolan.medialibrary.interfaces.media.MediaWrapper" />
-        <import type="org.videolan.vlc.gui.helpers.TalkbackUtil" />
+        <import type="com.video.offline.videoplayer.gui.helpers.TalkbackUtil" />
 
 
         <variable
@@ -26,7 +26,7 @@
 
         <variable
                 name="holder"
-                type="org.videolan.vlc.gui.audio.AudioAlbumTracksAdapter.TrackItemViewHolder" />
+                type="com.video.offline.videoplayer.gui.audio.AudioAlbumTracksAdapter.TrackItemViewHolder" />
 
         <variable
                 name="isNetwork"
@@ -82,7 +82,7 @@
                 vlc:layout_constraintStart_toStartOf="parent"
                 vlc:layout_constraintTop_toTopOf="@id/title" />
 
-        <org.videolan.vlc.gui.view.MiniVisualizer
+        <com.video.offline.videoplayer.gui.view.MiniVisualizer
                 android:id="@+id/playing"
                 android:layout_width="32dp"
                 android:layout_height="32dp"

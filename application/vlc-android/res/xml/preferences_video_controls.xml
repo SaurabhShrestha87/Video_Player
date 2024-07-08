@@ -56,7 +56,7 @@
                 android:title="@string/enable_swipe_seek_title"
                 app:iconSpaceReserved="false"
                 app:singleLineTitle="false" />
-        <org.videolan.vlc.gui.view.NumberPickerPreference
+        <com.video.offline.videoplayer.gui.view.NumberPickerPreference
                 android:defaultValue="10"
                 android:dependency="enable_double_tap_seek"
                 app:iconSpaceReserved="false"
@@ -83,14 +83,14 @@
                 app:iconSpaceReserved="false"
                 app:singleLineTitle="false" />
 
-        <org.videolan.vlc.gui.view.NumberPickerPreference
+        <com.video.offline.videoplayer.gui.view.NumberPickerPreference
                 android:defaultValue="10"
                 android:dependency="enable_seek_buttons"
                 app:iconSpaceReserved="false"
                 app:key="video_jump_delay"
                 app:title="@string/jump_delay" />
 
-        <org.videolan.vlc.gui.view.NumberPickerPreference
+        <com.video.offline.videoplayer.gui.view.NumberPickerPreference
                 android:defaultValue="20"
                 android:dependency="enable_seek_buttons"
                 app:iconSpaceReserved="false"

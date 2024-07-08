@@ -1,4 +1,4 @@
-package org.videolan.vlc.viewmodels
+package com.video.offline.videoplayer.viewmodels
 
 import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
@@ -13,14 +13,14 @@ import org.junit.rules.TemporaryFolder
 import org.videolan.resources.opensubtitles.OpenSubtitleRepository
 import org.videolan.resources.util.NoConnectivityException
 import org.videolan.tools.FileUtils
-import org.videolan.vlc.BaseTest
-import org.videolan.vlc.R
-import org.videolan.vlc.database.ExternalSubDao
-import org.videolan.vlc.gui.dialogs.State
-import org.videolan.vlc.repository.ExternalSubRepository
-import org.videolan.vlc.util.TestCoroutineContextProvider
-import org.videolan.vlc.util.TestUtil
-import org.videolan.vlc.util.applyMock
+import com.video.offline.videoplayer.BaseTest
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.database.ExternalSubDao
+import com.video.offline.videoplayer.gui.dialogs.State
+import com.video.offline.videoplayer.repository.ExternalSubRepository
+import com.video.offline.videoplayer.util.TestCoroutineContextProvider
+import com.video.offline.videoplayer.util.TestUtil
+import com.video.offline.videoplayer.util.applyMock
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -33,7 +33,7 @@ class SubtitlesModelTest : BaseTest() {
 
     private val mockedDao: ExternalSubDao = mockk()
     private lateinit var mediaPath: String
-    private val downloadedLiveData = MutableLiveData<List<org.videolan.vlc.mediadb.models.ExternalSub>>()
+    private val downloadedLiveData = MutableLiveData<List<com.video.offline.videoplayer.mediadb.models.ExternalSub>>()
 
     private lateinit var subtitlesModel: SubtitlesModel
 

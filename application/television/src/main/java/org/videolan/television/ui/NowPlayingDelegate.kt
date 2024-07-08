@@ -30,9 +30,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.videolan.libvlc.MediaPlayer
 import org.videolan.television.viewmodel.MainTvModel
-import org.videolan.vlc.PlaybackService
-import org.videolan.vlc.media.PlaylistManager
-import org.videolan.vlc.util.EmptyPBSCallback
+import com.video.offline.videoplayer.PlaybackService
+import com.video.offline.videoplayer.media.PlaylistManager
+import com.video.offline.videoplayer.util.EmptyPBSCallback
 
 class NowPlayingDelegate(private val model: MainTvModel): PlaybackService.Callback by EmptyPBSCallback {
     private var service: PlaybackService? = null
