@@ -47,10 +47,12 @@ class OnboardingActivity : AppCompatActivity(), OnboardingFragmentListener {
 
     fun showFragment(fragmentName: FragmentName, backward: Boolean = false) {
         if (fragmentName == FragmentName.WELCOME) {
-            if (Permissions.canReadStorage(this)) showFragment(FragmentName.SCAN) else showFragment(
-                FragmentName.ASK_PERMISSION
-            )
+            if (Permissions.canReadStorage(this))
+                showFragment(FragmentName.SCAN)
+            else
+                showFragment(FragmentName.ASK_PERMISSION)
         }
+
         val fragment =
             supportFragmentManager.getFragment(Bundle(), fragmentName.name) ?: when (fragmentName) {
                 FragmentName.WELCOME -> {

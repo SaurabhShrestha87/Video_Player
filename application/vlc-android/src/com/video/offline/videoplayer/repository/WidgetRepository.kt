@@ -1,27 +1,3 @@
-/*
- * ************************************************************************
- *  WidgetRepository.kt
- * *************************************************************************
- * Copyright © 2022 VLC authors and VideoLAN
- * Author: Nicolas POMEPUY
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
- * **************************************************************************
- *
- *
- */
-
 package com.video.offline.videoplayer.repository
 
 import android.content.Context
@@ -33,7 +9,7 @@ import org.videolan.tools.SingletonHolder
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.database.MediaDatabase
 import com.video.offline.videoplayer.database.WidgetDao
-import com.video.offline.videoplayer.mediadb.models.Widget
+import org.videolan.vlc.mediadb.models.Widget
 import com.video.offline.videoplayer.widget.utils.WidgetCache
 
 
@@ -51,11 +27,11 @@ class WidgetRepository(private val widgetDao: WidgetDao) {
         return widgetDao.getFlow(id)
     }
 
-    suspend fun addWidget(widget:Widget) = withContext(Dispatchers.IO) {
+    suspend fun addWidget(widget: Widget) = withContext(Dispatchers.IO) {
         widgetDao.insert(widget)
     }
 
-    suspend fun updateWidget(widget:Widget, preventCacheClear:Boolean = false) {
+    suspend fun updateWidget(widget: Widget, preventCacheClear:Boolean = false) {
         if (!preventCacheClear) WidgetCache.clear(widget)
         withContext(Dispatchers.IO) {
             widgetDao.update(widget)
