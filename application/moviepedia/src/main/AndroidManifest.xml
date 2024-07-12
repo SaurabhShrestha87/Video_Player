@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 <application>
     <activity
-            android:name="org.videolan.moviepedia.ui.MediaScrapingActivity"
+            android:name="com.video.offline.videoplayer.moviepedia.ui.MediaScrapingActivity"
         android:theme="@style/Theme.VLC" />
 </application>
 </manifest>

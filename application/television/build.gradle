@@ -38,7 +38,7 @@ android {
             matchingFallbacks = ['release']
         }
     }
-    namespace 'org.videolan.television'
+    namespace 'com.video.offline.videoplayer.television'
 
 }
 

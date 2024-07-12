@@ -14,7 +14,7 @@
 
         <variable
             name="holder"
-            type="org.videolan.television.ui.MediaHeaderAdapter.ViewHolder" />
+            type="com.video.offline.videoplayer.television.ui.MediaHeaderAdapter.ViewHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

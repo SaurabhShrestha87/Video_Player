@@ -2,67 +2,67 @@
     xmlns:tools="http://schemas.android.com/tools">
     <application>
         <activity
-            android:name="org.videolan.television.ui.MainTvActivity"
+            android:name="com.video.offline.videoplayer.television.ui.MainTvActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.TV"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name="org.videolan.television.ui.OnboardingActivity"
+            android:name="com.video.offline.videoplayer.television.ui.OnboardingActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.TV.Onboarding"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name="org.videolan.television.ui.dialogs.ConfirmationTvActivity"
+            android:name="com.video.offline.videoplayer.television.ui.dialogs.ConfirmationTvActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.TV"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name="org.videolan.television.ui.DetailsActivity"
+            android:name="com.video.offline.videoplayer.television.ui.DetailsActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Leanback.Details"
             tools:ignore="LockedOrientationActivity" />
         <activity
-                android:name="org.videolan.television.ui.MediaScrapingTvshowDetailsActivity"
+                android:name="com.video.offline.videoplayer.television.ui.MediaScrapingTvshowDetailsActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Leanback.Details"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="org.videolan.television.ui.browser.VerticalGridActivity"
+            android:name="com.video.offline.videoplayer.television.ui.browser.VerticalGridActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.TV"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="org.videolan.television.ui.details.MediaListActivity"
+            android:name="com.video.offline.videoplayer.television.ui.details.MediaListActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.TV"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="org.videolan.television.ui.browser.TVActivity"
+            android:name="com.video.offline.videoplayer.television.ui.browser.TVActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.Black"
             tools:ignore="LockedOrientationActivity" />
         <activity
-                android:name="org.videolan.television.ui.MediaScrapingTvActivity"
+                android:name="com.video.offline.videoplayer.television.ui.MediaScrapingTvActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.TV"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="org.videolan.television.ui.SearchActivity"
+            android:name="com.video.offline.videoplayer.television.ui.SearchActivity"
             android:exported="true"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.TV"
             tools:ignore="LockedOrientationActivity"/>
         <activity
-            android:name="org.videolan.television.ui.audioplayer.AudioPlayerActivity"
+            android:name="com.video.offline.videoplayer.television.ui.audioplayer.AudioPlayerActivity"
             android:allowTaskReparenting="true"
             android:exported="true"
             android:launchMode="singleTask"
@@ -70,24 +70,24 @@
             android:theme="@style/Theme.VLC.TV.Audio"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="org.videolan.television.ui.preferences.PreferencesActivity"
+            android:name="com.video.offline.videoplayer.television.ui.preferences.PreferencesActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.Leanback.Preferences"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name="org.videolan.television.ui.AboutActivity"
+            android:name="com.video.offline.videoplayer.television.ui.AboutActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.Black"
             tools:ignore="LockedOrientationActivity" />
 
         <activity
-            android:name="org.videolan.television.ui.ColorPickerActivity"
+            android:name="com.video.offline.videoplayer.television.ui.ColorPickerActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.VLC.Material.TV"
             tools:ignore="LockedOrientationActivity" />
         <!-- Provides search suggestions for keywords against video meta data. -->
         <provider
-            android:name="org.videolan.television.util.TVSearchProvider"
+            android:name="com.video.offline.videoplayer.television.util.TVSearchProvider"
             android:authorities="@string/tv_provider_authority"
             android:exported="true">
             <path-permission

@@ -1,4 +1,4 @@
-package org.videolan.moviepedia
+package com.video.offline.videoplayer.moviepedia
 
 import org.junit.Test
 

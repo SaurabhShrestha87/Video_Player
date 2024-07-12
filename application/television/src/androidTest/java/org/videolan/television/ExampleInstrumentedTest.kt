@@ -1,4 +1,4 @@
-package org.videolan.television
+package com.video.offline.videoplayer.television
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("org.videolan.television.test", appContext.packageName)
+        assertEquals("com.video.offline.videoplayer.television.test", appContext.packageName)
     }
 }

@@ -1,0 +1,162 @@
+package com.video.offline.videoplayer.moviepedia.viewmodel
+
+import android.content.Context
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.actor
+import com.video.offline.videoplayer.moviepedia.MediaScraper
+import com.video.offline.videoplayer.moviepedia.database.models.*
+import com.video.offline.videoplayer.moviepedia.provider.MediaScrapingTvshowProvider
+import com.video.offline.videoplayer.moviepedia.repository.MediaMetadataRepository
+import com.video.offline.videoplayer.moviepedia.repository.MediaPersonRepository
+import org.videolan.resources.util.getFromMl
+
+class MediaMetadataModel(private val context: Context, mlId: Long? = null, moviepediaId: String? = null) : ViewModel(), CoroutineScope by MainScope() {
+
+    val updateLiveData: MediatorLiveData<MediaMetadataFull> = MediatorLiveData()
+    val nextEpisode: MutableLiveData<MediaMetadataWithImages> = MutableLiveData()
+    val provider = MediaScrapingTvshowProvider(context)
+
+    @OptIn(ObsoleteCoroutinesApi::class)
+    private val updateActor = actor<MediaMetadataFull>(capacity = Channel.CONFLATED) {
+        for (entry in channel) {
+            updateLiveData.value = entry
+            delay(100L)
+        }
+    }
+
+    init {
+        //searching by ML id
+        val mediaMetadataFull = MediaMetadataFull()
+        mlId?.let { medialibId ->
+            val metadata = MediaMetadataRepository.getInstance(context).getMetadataLiveByML(medialibId)
+            updateLiveData.addSource(metadata) { mediaMetadataWithImages ->
+                mediaMetadataFull.metadata = mediaMetadataWithImages
+                updateActor.trySend(mediaMetadataFull)
+                if (mediaMetadataFull.metadata?.metadata?.type == MediaMetadataType.TV_EPISODE) {
+                    //look for a next episode
+                    mediaMetadataFull.metadata?.show?.let {
+                        if (mediaMetadataFull.metadata!!.metadata.showId != null && mediaMetadataFull.metadata!!.metadata.season != null && mediaMetadataFull.metadata!!.metadata.episode != null) {
+                            launch {
+                                val metadataWithImages = withContext(Dispatchers.IO) { MediaMetadataRepository.getInstance(context).findNextEpisode(mediaMetadataFull.metadata!!.metadata.showId!!, mediaMetadataFull.metadata!!.metadata.season!!, mediaMetadataFull.metadata!!.metadata.episode!!) }
+                                metadataWithImages?.metadata?.mlId?.let {
+
+                                    val fromMl = context.getFromMl { getMedia(it) }
+                                    metadataWithImages.media = fromMl
+                                    nextEpisode.postValue(metadataWithImages)
+                                }
+                            }
+                        }
+                    }
+                }
+                mediaMetadataWithImages?.metadata?.let {
+                    launch {
+                        if (!it.hasCast && it.mlId != null) {
+                            withContext(Dispatchers.IO) { MediaScraper.retrieveCasting(context, it) }
+                        }
+                        updateLiveData.addSource(MediaPersonRepository.getInstance(context).getPersonsByType(it.moviepediaId, PersonType.ACTOR)) { persons ->
+                            mediaMetadataFull.actors = persons
+                            updateActor.trySend(mediaMetadataFull)
+                        }
+                        updateLiveData.addSource(MediaPersonRepository.getInstance(context).getPersonsByType(it.moviepediaId, PersonType.WRITER)) { persons ->
+                            mediaMetadataFull.writers = persons
+                            updateActor.trySend(mediaMetadataFull)
+                        }
+                        updateLiveData.addSource(MediaPersonRepository.getInstance(context).getPersonsByType(it.moviepediaId, PersonType.PRODUCER)) { persons ->
+                            mediaMetadataFull.producers = persons
+                            updateActor.trySend(mediaMetadataFull)
+                        }
+                        updateLiveData.addSource(MediaPersonRepository.getInstance(context).getPersonsByType(it.moviepediaId, PersonType.MUSICIAN)) { persons ->
+                            mediaMetadataFull.musicians = persons
+                            updateActor.trySend(mediaMetadataFull)
+                        }
+                        updateLiveData.addSource(MediaPersonRepository.getInstance(context).getPersonsByType(it.moviepediaId, PersonType.DIRECTOR)) { persons ->
+                            mediaMetadataFull.directors = persons
+                            updateActor.trySend(mediaMetadataFull)
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        //searching by moviepedia id
+        moviepediaId?.let { mId ->
+            val metadata = MediaMetadataRepository.getInstance(context).getMetadataLive(mId)
+            updateLiveData.addSource(metadata) {
+                mediaMetadataFull.metadata = it
+                updateActor.trySend(mediaMetadataFull)
+                if (it?.metadata?.type == MediaMetadataType.TV_SHOW) {
+                    val episodes = MediaMetadataRepository.getInstance(context).getEpisodesLive(mId)
+                    updateLiveData.addSource(episodes) {
+                        launch {
+                            val seasons = withContext(Dispatchers.IO) { provider.getAllSeasons(mediaMetadataFull.metadata!!) }
+                            mediaMetadataFull.seasons = seasons.sortedBy { season -> season.seasonNumber }
+                            updateActor.trySend(mediaMetadataFull)
+                        }
+                    }
+                }
+            }
+            updateLiveData.addSource(MediaPersonRepository.getInstance(context).getPersonsByType(mId, PersonType.ACTOR)) {
+                mediaMetadataFull.actors = it
+                updateActor.trySend(mediaMetadataFull)
+            }
+            updateLiveData.addSource(MediaPersonRepository.getInstance(context).getPersonsByType(mId, PersonType.WRITER)) {
+                mediaMetadataFull.writers = it
+                updateActor.trySend(mediaMetadataFull)
+            }
+            updateLiveData.addSource(MediaPersonRepository.getInstance(context).getPersonsByType(mId, PersonType.PRODUCER)) {
+                mediaMetadataFull.producers = it
+                updateActor.trySend(mediaMetadataFull)
+            }
+            updateLiveData.addSource(MediaPersonRepository.getInstance(context).getPersonsByType(mId, PersonType.MUSICIAN)) {
+                mediaMetadataFull.musicians = it
+                updateActor.trySend(mediaMetadataFull)
+            }
+            updateLiveData.addSource(MediaPersonRepository.getInstance(context).getPersonsByType(mId, PersonType.DIRECTOR)) {
+                mediaMetadataFull.directors = it
+                updateActor.trySend(mediaMetadataFull)
+            }
+        }
+    }
+
+    fun updateMetadataImage(item: MediaImage) {
+        val metadata = updateLiveData.value?.metadata?.metadata ?: return
+        when (item.imageType) {
+            MediaImageType.POSTER -> metadata.currentPoster = item.url
+            MediaImageType.BACKDROP -> metadata.currentBackdrop = item.url
+        }
+        launch {
+            withContext(Dispatchers.IO) {
+                MediaMetadataRepository.getInstance(context).addMetadataImmediate(metadata)
+            }
+        }
+    }
+
+    class Factory(private val context: Context, private val mlId: Long? = null, private val showId: String? = null) : ViewModelProvider.NewInstanceFactory() {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            @Suppress("UNCHECKED_CAST")
+            return MediaMetadataModel(context.applicationContext, mlId, showId) as T
+        }
+    }
+}
+
+class MediaMetadataFull {
+    var metadata: MediaMetadataWithImages? = null
+    var seasons: List<Season>? = null
+    var actors: List<Person>? = null
+    var writers: List<Person>? = null
+    var producers: List<Person>? = null
+    var musicians: List<Person>? = null
+    var directors: List<Person>? = null
+}
+
+data class Season(
+        var seasonNumber: Int = 0,
+        var episodes: ArrayList<MediaMetadataWithImages> = ArrayList()
+)

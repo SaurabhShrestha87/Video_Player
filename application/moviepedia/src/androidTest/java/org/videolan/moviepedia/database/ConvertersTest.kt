@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  ******************************************************************************/
 
-package org.videolan.moviepedia.database
+package com.video.offline.videoplayer.moviepedia.database
 
 import androidx.core.net.toUri
 import androidx.test.ext.junit.runners.AndroidJUnit4

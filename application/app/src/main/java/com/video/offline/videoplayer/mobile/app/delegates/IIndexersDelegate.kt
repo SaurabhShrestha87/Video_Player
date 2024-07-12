@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import kotlinx.coroutines.launch
-import org.videolan.moviepedia.MediaScraper
+import com.video.offline.videoplayer.moviepedia.MediaScraper
 import org.videolan.resources.ACTION_CONTENT_INDEXING
 import org.videolan.resources.util.registerReceiverCompat
 import org.videolan.tools.AppScope

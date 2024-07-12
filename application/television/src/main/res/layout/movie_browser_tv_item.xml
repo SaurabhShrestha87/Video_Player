@@ -11,7 +11,7 @@
 
         <import type="android.text.TextUtils" />
 
-        <import type="org.videolan.moviepedia.database.models.MediaMetadataWithImages" />
+        <import type="com.video.offline.videoplayer.moviepedia.database.models.MediaMetadataWithImages" />
 
 
         <variable
@@ -56,11 +56,11 @@
 
         <variable
                 name="holder"
-                type="org.videolan.television.ui.MediaScrapingTvItemAdapter.MovieItemTVViewHolder" />
+                type="com.video.offline.videoplayer.television.ui.MediaScrapingTvItemAdapter.MovieItemTVViewHolder" />
 
     </data>
 
-    <org.videolan.television.ui.FocusableConstraintLayout
+    <com.video.offline.videoplayer.television.ui.FocusableConstraintLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -193,5 +193,5 @@
                 vlc:layout_constraintHorizontal_bias="0.5" />
 
 
-    </org.videolan.television.ui.FocusableConstraintLayout>
+    </com.video.offline.videoplayer.television.ui.FocusableConstraintLayout>
 </layout>

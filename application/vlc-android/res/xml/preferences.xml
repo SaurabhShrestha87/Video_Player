@@ -125,19 +125,19 @@
 
     <PreferenceCategory android:title="@string/extra_prefs_category">
         <Preference
-            android:fragment="org.videolan.television.ui.preferences.PreferencesUi"
+            android:fragment="com.video.offline.videoplayer.television.ui.preferences.PreferencesUi"
             android:key="ui_category"
             android:title="@string/interface_prefs_screen" />
         <Preference
-            android:fragment="org.videolan.television.ui.preferences.PreferencesVideo"
+            android:fragment="com.video.offline.videoplayer.television.ui.preferences.PreferencesVideo"
             android:key="video_category"
             android:title="@string/video_prefs_category" />
         <Preference
-            android:fragment="org.videolan.television.ui.preferences.PreferencesSubtitles"
+            android:fragment="com.video.offline.videoplayer.television.ui.preferences.PreferencesSubtitles"
             android:key="subtitles_category"
             android:title="@string/subtitles_prefs_category" />
         <Preference
-            android:fragment="org.videolan.television.ui.preferences.PreferencesAudio"
+            android:fragment="com.video.offline.videoplayer.television.ui.preferences.PreferencesAudio"
             android:key="audio_category"
             android:title="@string/audio_prefs_category" />
         <Preference
@@ -145,18 +145,18 @@
             android:title="@string/casting_category" />
 
         <PreferenceScreen
-            android:fragment="org.videolan.television.ui.preferences.PreferencesParentalControl"
+            android:fragment="com.video.offline.videoplayer.television.ui.preferences.PreferencesParentalControl"
             android:key="parental_control"
             android:singleLine="false"
             android:shouldDisableView="true"
             android:title="@string/parental_control" />
         <Preference
-            android:fragment="org.videolan.television.ui.preferences.PreferencesRemoteAccess"
+            android:fragment="com.video.offline.videoplayer.television.ui.preferences.PreferencesRemoteAccess"
             android:key="remote_access_category"
             android:shouldDisableView="true"
             android:title="@string/remote_access" />
         <Preference
-            android:fragment="org.videolan.television.ui.preferences.PreferencesAdvanced"
+            android:fragment="com.video.offline.videoplayer.television.ui.preferences.PreferencesAdvanced"
             android:key="adv_category"
             android:title="@string/advanced_prefs_category" />
 

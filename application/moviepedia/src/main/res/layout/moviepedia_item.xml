@@ -10,11 +10,11 @@
 
         <variable
                 name="item"
-                type="org.videolan.moviepedia.models.resolver.ResolverMedia" />
+                type="com.video.offline.videoplayer.moviepedia.models.resolver.ResolverMedia" />
 
         <variable
                 name="handler"
-                type="org.videolan.moviepedia.ui.MediaScrapingActivity.ClickHandler" />
+                type="com.video.offline.videoplayer.moviepedia.ui.MediaScrapingActivity.ClickHandler" />
 
         <variable
                 name="bgColor"

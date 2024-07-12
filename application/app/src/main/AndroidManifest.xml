@@ -3,7 +3,7 @@
         android:installLocation="auto">
 
     <application
-        android:name=".VLCApplication"
+        android:name="com.video.offline.videoplayer.mobile.app.VLCApplication"
         android:allowBackup="true"
         android:appCategory="audio"
         android:banner="@drawable/banner"

@@ -26,7 +26,7 @@
                     android:offset="0.72" />
                 <!-- orange900 to bottom -->
                 <item
-                    android:color="@color/orange900"
+                    android:color="@color/greenDark900"
                     android:offset="1.0" />
             </gradient>
 

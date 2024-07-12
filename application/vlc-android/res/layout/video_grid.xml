@@ -55,25 +55,23 @@
                     android:text="9 Folders"
                     android:textSize="16sp" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/view_mode_iv"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="10dp"
-                    android:background="@drawable/seekbar_round"
-                    android:backgroundTint="@color/grey"
+                    android:background="@drawable/button_circle_white_selector_visible"
                     android:clickable="true"
                     android:focusable="true"
                     android:padding="10dp"
                     android:src="@drawable/view_mode_list" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/sort_iv"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="10dp"
-                    android:background="@drawable/seekbar_round"
-                    android:backgroundTint="@color/grey"
+                    android:background="@drawable/button_circle_white_selector_visible"
                     android:clickable="true"
                     android:focusable="true"
                     android:padding="10dp"

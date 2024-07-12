@@ -36,7 +36,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/old_color" />
 
-            <org.videolan.television.ui.views.ColorPickerItem
+            <com.video.offline.videoplayer.television.ui.views.ColorPickerItem
                     android:id="@+id/old_color"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -47,9 +47,9 @@
                     app:layout_constraintStart_toEndOf="@+id/previous_color_text"
                     app:layout_constraintTop_toBottomOf="@+id/color_grid">
 
-            </org.videolan.television.ui.views.ColorPickerItem>
+            </com.video.offline.videoplayer.television.ui.views.ColorPickerItem>
 
-            <org.videolan.television.ui.views.ColorPickerItem
+            <com.video.offline.videoplayer.television.ui.views.ColorPickerItem
                     android:id="@+id/new_color"
                     android:layout_width="48dp"
                     android:layout_height="48dp"

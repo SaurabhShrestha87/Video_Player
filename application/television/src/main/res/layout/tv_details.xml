@@ -3,7 +3,7 @@
     android:layout_height="match_parent" >
     <fragment
         android:id="@+id/details_fragment"
-        android:name="org.videolan.television.ui.MediaItemDetailsFragment"
+        android:name="com.video.offline.videoplayer.television.ui.MediaItemDetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

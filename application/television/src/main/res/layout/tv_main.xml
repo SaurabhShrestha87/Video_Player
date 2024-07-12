@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/transparent">
     <fragment
-          android:name="org.videolan.television.ui.MainTvFragment"
+          android:name="com.video.offline.videoplayer.television.ui.MainTvFragment"
           android:id="@+id/browse_fragment"
           android:layout_width="match_parent"
           android:layout_height="match_parent" />

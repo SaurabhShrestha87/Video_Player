@@ -199,7 +199,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">@color/grey875</item>
         <item name="background_default">@color/dark_background</item>
-        <item name="tab_unselected_color">@color/grey</item>
+        <item name="tab_unselected_color">@color/grey875</item>
         <item name="bottom_navigation_background">@drawable/bottom_navigation_background_dark</item>
         <item name="audio_header_background">@color/mini_player_dark</item>
         <item name="audio_header_divider">@color/black</item>

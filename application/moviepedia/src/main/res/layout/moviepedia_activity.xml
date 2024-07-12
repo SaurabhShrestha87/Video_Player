@@ -10,7 +10,7 @@
 
         <variable
                 name="handler"
-                type="org.videolan.moviepedia.ui.MediaScrapingActivity.ClickHandler" />
+                type="com.video.offline.videoplayer.moviepedia.ui.MediaScrapingActivity.ClickHandler" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

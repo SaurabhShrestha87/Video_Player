@@ -9,7 +9,7 @@
             android:summary="@string/optional_features_summary"
             app:isPreferenceVisible="false"
             android:key="optional_features"
-            android:fragment="org.videolan.television.ui.preferences.PreferencesOptional"/>
+            android:fragment="com.video.offline.videoplayer.television.ui.preferences.PreferencesOptional"/>
 
     <EditTextPreference
             android:defaultValue="0"

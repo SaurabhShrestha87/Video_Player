@@ -18,9 +18,9 @@ import org.junit.ClassRule
 import org.junit.Rule
 import org.junit.Test
 import org.videolan.resources.EXTRA_TARGET
-import org.videolan.television.ui.MainTvActivity
-import org.videolan.television.ui.audioplayer.AudioPlayerActivity
-import org.videolan.television.ui.browser.VerticalGridActivity
+import com.video.offline.videoplayer.television.ui.MainTvActivity
+import com.video.offline.videoplayer.television.ui.audioplayer.AudioPlayerActivity
+import com.video.offline.videoplayer.television.ui.browser.VerticalGridActivity
 import org.videolan.tools.Settings
 import com.video.offline.videoplayer.util.DpadHelper.pressBack
 import com.video.offline.videoplayer.util.DpadHelper.pressDPad
@@ -82,7 +82,7 @@ class TvScreenhotsInstrumentedTest : BaseUITest() {
         waitForActivity(VerticalGridActivity::class.java)
 
         getCurrentActivity()?.let { activity ->
-            UiUtils.waitUntilLoaded { activity.findViewById(org.videolan.television.R.id.list) }
+            UiUtils.waitUntilLoaded { activity.findViewById(com.video.offline.videoplayer.television.R.id.list) }
         } ?: throw IllegalStateException("Cannot find activity")
 
         ScreenshotUtil.takeScreenshot(4,"tv_audio_list")
@@ -90,7 +90,7 @@ class TvScreenhotsInstrumentedTest : BaseUITest() {
         pressDPadCenter()
         waitForActivity(AudioPlayerActivity::class.java)
 
-        waitId(org.videolan.television.R.id.album_cover, 5000)
+        waitId(com.video.offline.videoplayer.television.R.id.album_cover, 5000)
         ScreenshotUtil.takeScreenshot(6,"tv_audio_player")
         pressBack()
         pressBack()
@@ -99,7 +99,7 @@ class TvScreenhotsInstrumentedTest : BaseUITest() {
 
         waitForActivity(VerticalGridActivity::class.java)
         getCurrentActivity()?.let { activity ->
-            UiUtils.waitUntilLoaded { activity.findViewById(org.videolan.television.R.id.list) }
+            UiUtils.waitUntilLoaded { activity.findViewById(com.video.offline.videoplayer.television.R.id.list) }
         }
         ScreenshotUtil.takeScreenshot(5,"tv_files")
         pressBack()
@@ -109,7 +109,7 @@ class TvScreenhotsInstrumentedTest : BaseUITest() {
         pressDPadCenter()
         waitForActivity(VerticalGridActivity::class.java)
         getCurrentActivity()?.let { activity ->
-            UiUtils.waitUntilLoaded { activity.findViewById(org.videolan.television.R.id.list) }
+            UiUtils.waitUntilLoaded { activity.findViewById(com.video.offline.videoplayer.television.R.id.list) }
         }
         ScreenshotUtil.takeScreenshot(2,"tv_video_list")
         pressDPad(Direction.DOWN, 1)

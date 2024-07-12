@@ -35,7 +35,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="org.videolan.television.ui.details.MediaListActivity"
+            tools:context="com.video.offline.videoplayer.television.ui.details.MediaListActivity"
             tools:theme="@style/Theme.VLC.TV">
 
         <Space
@@ -170,7 +170,7 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <org.videolan.television.ui.FocusableRecyclerView
+        <com.video.offline.videoplayer.television.ui.FocusableRecyclerView
                 android:id="@+id/media_list"
                 android:layout_width="800dp"
                 android:layout_height="0dp"

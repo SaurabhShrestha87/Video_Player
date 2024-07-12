@@ -1,4 +1,4 @@
-package org.videolan.television
+package com.video.offline.videoplayer.television
 
 import org.junit.Test
 

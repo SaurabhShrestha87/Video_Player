@@ -8,7 +8,7 @@
 
         <variable
                 name="item"
-                type="org.videolan.moviepedia.database.models.MediaMetadata" />
+                type="com.video.offline.videoplayer.moviepedia.database.models.MediaMetadata" />
 
 
     </data>

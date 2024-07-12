@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  */
-package org.videolan.mobile.app
+package com.video.offline.videoplayer.mobile.app
 
 import android.annotation.TargetApi
 import android.content.res.Configuration
@@ -29,6 +29,8 @@ import org.videolan.libvlc.Dialog
 import org.videolan.tools.BitmapCache
 import com.video.offline.videoplayer.ArtworkProvider
 import com.video.offline.videoplayer.util.DialogDelegate
+import org.videolan.mobile.app.AppDelegate
+import org.videolan.mobile.app.AppSetupDelegate
 
 private const val TAG = "VLC/VLCApplication"
 

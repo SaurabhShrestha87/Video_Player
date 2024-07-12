@@ -125,7 +125,7 @@
                 android:visibility="visible"
                 app:constraint_referenced_ids="sortButton,title,headerButton" />
 
-        <org.videolan.television.ui.FocusableRecyclerView
+        <com.video.offline.videoplayer.television.ui.FocusableRecyclerView
                 android:id="@+id/list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -142,7 +142,7 @@
                 android:nextFocusRight="@+id/imageButtonSettings"
                 tools:listitem="@layout/media_browser_tv_item">
 
-        </org.videolan.television.ui.FocusableRecyclerView>
+        </com.video.offline.videoplayer.television.ui.FocusableRecyclerView>
 
     <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/imageButtonDisplay"
