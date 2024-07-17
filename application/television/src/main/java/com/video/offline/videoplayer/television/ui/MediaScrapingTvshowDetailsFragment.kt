@@ -28,7 +28,7 @@ class MediaScrapingTvshowDetailsFragment : DetailsSupportFragment(), CoroutineSc
 
     private lateinit var actionsAdapter: SparseArrayObjectAdapter
     private lateinit var showId: String
-    private lateinit var detailsDescriptionPresenter: com.video.offline.videoplayer.television.ui.TvShowDescriptionPresenter
+    private lateinit var detailsDescriptionPresenter: TvShowDescriptionPresenter
     private lateinit var backgroundManager: BackgroundManager
     private lateinit var rowsAdapter: ArrayObjectAdapter
     private lateinit var browserFavRepository: BrowserFavRepository
@@ -55,11 +55,11 @@ class MediaScrapingTvshowDetailsFragment : DetailsSupportFragment(), CoroutineSc
         backgroundManager = BackgroundManager.getInstance(requireActivity())
         backgroundManager.isAutoReleaseOnStop = false
         browserFavRepository = BrowserFavRepository.getInstance(requireContext())
-        detailsDescriptionPresenter = com.video.offline.videoplayer.television.ui.TvShowDescriptionPresenter()
-        arrayObjectAdapterPosters = ArrayObjectAdapter(com.video.offline.videoplayer.television.ui.MediaImageCardPresenter(requireActivity(), MediaImageType.POSTER))
+        detailsDescriptionPresenter = TvShowDescriptionPresenter()
+        arrayObjectAdapterPosters = ArrayObjectAdapter(MediaImageCardPresenter(requireActivity(), MediaImageType.POSTER))
 
         val extras = requireActivity().intent.extras ?: savedInstanceState ?: return
-        showId = extras.getString(com.video.offline.videoplayer.television.ui.TV_SHOW_ID) ?: return
+        showId = extras.getString(TV_SHOW_ID) ?: return
         viewModel = ViewModelProvider(this, MediaMetadataModel.Factory(requireActivity(), showId = showId)).get(showId, MediaMetadataModel::class.java)
 
 
@@ -81,7 +81,7 @@ class MediaScrapingTvshowDetailsFragment : DetailsSupportFragment(), CoroutineSc
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(com.video.offline.videoplayer.television.ui.TV_SHOW_ID, showId)
+        outState.putString(TV_SHOW_ID, showId)
         super.onSaveInstanceState(outState)
     }
 
@@ -185,7 +185,7 @@ class MediaScrapingTvshowDetailsFragment : DetailsSupportFragment(), CoroutineSc
                 }
 
                 if (metadata.images.any { it.imageType == MediaImageType.BACKDROP }) {
-                    val arrayObjectAdapterBackdrops = ArrayObjectAdapter(com.video.offline.videoplayer.television.ui.MediaImageCardPresenter(requireActivity(), MediaImageType.BACKDROP))
+                    val arrayObjectAdapterBackdrops = ArrayObjectAdapter(MediaImageCardPresenter(requireActivity(), MediaImageType.BACKDROP))
                     arrayObjectAdapterBackdrops.setItems(metadata.images.filter { it.imageType == MediaImageType.BACKDROP }, imageDiffCallback)
                     val headerBackdrops = HeaderItem(tvShow.metadata?.metadata?.moviepediaId?.toLong(36)
                             ?: 0, getString(R.string.backdrops))
@@ -213,7 +213,7 @@ class MediaScrapingTvshowDetailsFragment : DetailsSupportFragment(), CoroutineSc
 
         // Attach your media item details presenter to the row presenter:
         val rowPresenter = FullWidthDetailsOverviewRowPresenter(detailsDescriptionPresenter)
-        val videoPresenter = com.video.offline.videoplayer.television.ui.VideoDetailsPresenter(requireActivity(), requireActivity().getScreenWidth())
+        val videoPresenter = VideoDetailsPresenter(requireActivity(), requireActivity().getScreenWidth())
 
         val activity = requireActivity()
         detailsOverview = DetailsOverviewRow(tvShow)
@@ -224,12 +224,12 @@ class MediaScrapingTvshowDetailsFragment : DetailsSupportFragment(), CoroutineSc
                     MediaUtils.openList(activity, viewModel.provider.getResumeMedias(viewModel.updateLiveData.value?.seasons), 0)
                 }
                 ID_START_OVER -> {
-                    com.video.offline.videoplayer.television.ui.TvUtil.playMedia(activity, viewModel.provider.getAllMedias(viewModel.updateLiveData.value?.seasons))
+                    TvUtil.playMedia(activity, viewModel.provider.getAllMedias(viewModel.updateLiveData.value?.seasons))
                 }
             }
         }
         selector.addClassPresenter(DetailsOverviewRow::class.java, rowPresenter)
-        selector.addClassPresenter(com.video.offline.videoplayer.television.ui.VideoDetailsOverviewRow::class.java, videoPresenter)
+        selector.addClassPresenter(VideoDetailsOverviewRow::class.java, videoPresenter)
         selector.addClassPresenter(ListRow::class.java,
                 ListRowPresenter())
         rowsAdapter = ArrayObjectAdapter(selector)
