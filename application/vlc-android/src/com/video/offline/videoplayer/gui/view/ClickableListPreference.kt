@@ -5,10 +5,8 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.appcompat.widget.SwitchCompat
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceViewHolder
-import androidx.preference.TwoStatePreference
 import androidx.recyclerview.widget.RecyclerView
 import com.video.offline.videoplayer.R
 
@@ -18,11 +16,11 @@ class ClickableListPreference(context: Context, val attrs: AttributeSet) :
     private var switchView: View? = null
     private var rootView: View? = null
     private var switchClickListener: View.OnClickListener? = null
-    private var position: Int = 1
+    private var position: Int = 3
 
     init {
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.prefView, 0, 0)
-        position = typedArray.getInt(R.styleable.prefView_pref_position, 1)
+        position = typedArray.getInt(R.styleable.prefView_pref_position, 3)
         typedArray.recycle()
     }
 
@@ -32,11 +30,17 @@ class ClickableListPreference(context: Context, val attrs: AttributeSet) :
             0 -> {
                 setBackground(R.drawable.pref_top_card_background)
             }
+
             1 -> {
                 setBackground(R.drawable.pref_middle_card_background)
             }
-            else -> { //2
+
+            2 -> { //2
                 setBackground(R.drawable.pref_bottom_card_background)
+            }
+
+            else -> { //3
+                setBackground(R.drawable.pref_single_card_background)
             }
         }
         setMargins(20, 0, 20, 0)

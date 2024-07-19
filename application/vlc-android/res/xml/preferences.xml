@@ -70,6 +70,7 @@
     <PreferenceCategory android:title="@string/network">
 
         <com.video.offline.videoplayer.gui.view.ClickableListPreference
+            app:pref_position="3"
             android:defaultValue="3"
             android:entries="@array/metered_connection_list"
             android:entryValues="@array/metered_connection_values"
@@ -79,8 +80,7 @@
             android:title="@string/metered_connection"
             app:allowDividerAbove="false"
             app:allowDividerBelow="false"
-            app:iconSpaceReserved="false"
-            app:pref_position="3" />
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/history">

@@ -38,6 +38,10 @@ class ClickablePreferenceScreen(context: Context, val attrs: AttributeSet) :
                 setBackground(R.drawable.pref_middle_card_background)
             }
 
+            3 -> {
+                setBackground(R.drawable.pref_single_card_background)
+            }
+
             else -> { //3
                 setBackground(R.drawable.pref_single_card_background)
             }

@@ -28,6 +28,7 @@
     <attr name="ariane_text_color" format="reference|color"/>
     <attr name="ariane_text_size" format="dimension" />
     <attr name="card_background" format="color"/>
+    <attr name="pref_card_background" format="color"/>
     <attr name="empty_button" format="reference" />
     <attr name="default_separator" format="color" />
     <attr name="card_border" format="color" />

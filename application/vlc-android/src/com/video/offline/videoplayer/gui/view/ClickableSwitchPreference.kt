@@ -34,8 +34,13 @@ class ClickableSwitchPreference(context: Context, val attrs: AttributeSet) :
             1 -> {
                 setBackground(R.drawable.pref_middle_card_background)
             }
-            else -> { //2
+
+            2 -> { //2
                 setBackground(R.drawable.pref_bottom_card_background)
+            }
+
+            else -> { //3
+                setBackground(R.drawable.pref_single_card_background)
             }
         }
         setMargins(20, 0, 20, 0)
