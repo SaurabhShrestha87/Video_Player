@@ -10,6 +10,7 @@ import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewStub
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.animation.AnimationUtils
@@ -18,10 +19,8 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
-import android.view.ViewStub
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -35,27 +34,51 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import androidx.window.layout.FoldingFeature
 import com.google.android.material.textfield.TextInputLayout
-import org.videolan.libvlc.util.AndroidUtil
-import org.videolan.medialibrary.interfaces.media.MediaWrapper
-import org.videolan.medialibrary.media.MediaWrapperImpl
-import org.videolan.resources.AndroidDevices
-import org.videolan.tools.*
-import com.video.offline.videoplayer.*
+import com.video.offline.videoplayer.PlaybackService
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.RendererDelegate
 import com.video.offline.videoplayer.databinding.PlayerHudBinding
 import com.video.offline.videoplayer.databinding.PlayerHudRightBinding
 import com.video.offline.videoplayer.gui.audio.PlaylistAdapter
 import com.video.offline.videoplayer.gui.browser.FilePickerActivity
 import com.video.offline.videoplayer.gui.browser.KEY_MEDIA
 import com.video.offline.videoplayer.gui.dialogs.VideoTracksDialog
-import com.video.offline.videoplayer.gui.helpers.*
+import com.video.offline.videoplayer.gui.helpers.BookmarkListDelegate
+import com.video.offline.videoplayer.gui.helpers.OnRepeatListenerKey
+import com.video.offline.videoplayer.gui.helpers.SwipeDragItemTouchHelperCallback
+import com.video.offline.videoplayer.gui.helpers.TalkbackUtil
+import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.helpers.UiTools.showVideoTrack
 import com.video.offline.videoplayer.gui.view.PlayerProgress
+import com.video.offline.videoplayer.isVLC4
+import com.video.offline.videoplayer.manageAbRepeatStep
 import com.video.offline.videoplayer.media.MediaUtils
-import com.video.offline.videoplayer.util.*
 import com.video.offline.videoplayer.util.FileUtils
+import com.video.offline.videoplayer.util.getScreenWidth
+import com.video.offline.videoplayer.util.isSchemeFile
+import com.video.offline.videoplayer.util.isSchemeNetwork
+import com.video.offline.videoplayer.util.isTalkbackIsEnabled
 import com.video.offline.videoplayer.viewmodels.PlaylistModel
+import org.videolan.libvlc.util.AndroidUtil
+import org.videolan.medialibrary.interfaces.media.MediaWrapper
+import org.videolan.medialibrary.media.MediaWrapperImpl
+import org.videolan.resources.AndroidDevices
+import org.videolan.resources.VLCOptions
+import org.videolan.tools.ALLOW_FOLD_AUTO_LAYOUT
+import org.videolan.tools.ENABLE_SEEK_BUTTONS
+import org.videolan.tools.HINGE_ON_RIGHT
+import org.videolan.tools.SCREENSHOT_MODE
+import org.videolan.tools.Settings
+import org.videolan.tools.VIDEO_TRANSITION_SHOW
+import org.videolan.tools.dp
+import org.videolan.tools.formatRateString
+import org.videolan.tools.putSingle
+import org.videolan.tools.runIO
+import org.videolan.tools.setGone
+import org.videolan.tools.setInvisible
+import org.videolan.tools.setVisible
 import java.text.DateFormat
-import java.util.*
+import java.util.Locale
 
 class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
 
@@ -334,6 +357,12 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
         dimStatusBar(true)
     }
 
+    fun toggleMuteIcon(isMute: Boolean) {
+        player.findViewById<ImageButton>(R.id.volumeSetButton).visibility =
+            if (isMute) View.GONE else View.VISIBLE
+        player.findViewById<ImageButton>(R.id.muteButton).visibility =
+            if (isMute) View.VISIBLE else View.GONE
+    }
     /**
      * Dim the status bar and/or navigation icons when needed on Android 3.x.
      * Hide it on Android 4.0 and later
@@ -583,18 +612,30 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
             abRepeatAddMarker.setOnClickListener(player)
 
 
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.moonButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.repeatButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.popupButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.equalizerButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.sliderButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.volumeSetButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.muteButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.cameraButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.rotateButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.musicPlayButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<TextView>(R.id.speedButton).setOnClickListener(player)
-            hudBinding.advFunctionMain.findViewById<ImageButton>(R.id.lockButton).setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.moonButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.repeatButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.popupButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.equalizerButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.sliderButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.volumeSetButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.muteButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.cameraButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.rotateButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.musicPlayButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<TextView>(R.id.speedButton)
+                .setOnClickListener(player)
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.lockButton)
+                .setOnClickListener(player)
 
 
             hudBinding.orientationToggle.setOnClickListener(if (enabled) player else null)
@@ -835,7 +876,9 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
             }
             hudBinding.orientationToggle.visibility = if (player.isTv || AndroidDevices.isChromeBook) View.INVISIBLE else if (show) View.VISIBLE else View.INVISIBLE
             if (!show) hudBinding.playerOverlaySeekbar.disableAccessibilityEvents() else hudBinding.playerOverlaySeekbar.enableAccessibilityEvents()
+            hudRightBinding.advFunctionMain.visibility = if (!show) View.GONE else View.VISIBLE
         }
+
         if (::hudRightBinding.isInitialized) {
             val secondary = player.displayManager.isSecondary
             if (secondary) hudRightBinding.videoSecondaryDisplay.setImageResource(R.drawable.ic_player_screenshare_stop)
@@ -861,6 +904,41 @@ class VideoPlayerOverlayDelegate (private val player: VideoPlayerActivity) {
             hudRightBinding.spuDelayQuickAction.text = "${(player.service?.spuDelay ?: 0L) / 1000L} ms"
             hudRightBinding.audioDelayQuickAction.text = "${(player.service?.audioDelay ?: 0L) / 1000L} ms"
 
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.moonButton).background =
+                if (show && PlaybackService.playerSleepTime.value != null) {
+                    ContextCompat.getDrawable(player, R.drawable.circle_green)
+                } else {
+                    ContextCompat.getDrawable(player, R.drawable.circle)
+                }
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.repeatButton)// TODO: FIX REPEAT!!
+            // hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.popupButton) NOTHING
+            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.equalizerButton).background =
+                if (VLCOptions.getEqualizerEnabledState(player.application)) {
+                    ContextCompat.getDrawable(player, R.drawable.circle_green)
+                } else {
+                    ContextCompat.getDrawable(player, R.drawable.circle)
+                }
+
+//            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.sliderButton) // TODO: NO IDEA WHAT TO DO WITH THIS!!
+            player.service?.volume?.let {
+                hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.volumeSetButton).visibility =
+                    if (it <= 0) View.GONE else View.VISIBLE
+                hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.muteButton).visibility =
+                    if (it <= 0) View.VISIBLE else View.GONE
+            }
+//            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.cameraButton) // NO NEED TO UPDATE
+//            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.rotateButton) // NO NEED TO UPDATE
+//            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.musicPlayButton) // NO NEED TO UPDATE
+            hudRightBinding.advFunctionMain.findViewById<TextView>(R.id.speedButton).apply {
+                this.text = player.service?.rate?.formatRateString()
+                this.background = if ((player.service?.rate ?: 1.0F) != 1.0F) {
+                    ContextCompat.getDrawable(player, R.drawable.circle_green)
+                } else {
+                    ContextCompat.getDrawable(player, R.drawable.circle)
+                }
+            }
+
+//            hudRightBinding.advFunctionMain.findViewById<ImageButton>(R.id.lockButton) // NO NEED TO UPDATE
         }
 
     }

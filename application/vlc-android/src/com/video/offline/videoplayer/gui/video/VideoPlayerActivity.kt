@@ -1800,6 +1800,7 @@ open class VideoPlayerActivity : AppCompatActivity(), PlaybackService.Callback, 
             isMute = mute
             if (isMute) volSave = service.volume
             service.setVolume(if (isMute) 0 else volSave)
+            overlayDelegate.toggleMuteIcon(isMute)
         }
     }
 
@@ -1927,10 +1928,9 @@ open class VideoPlayerActivity : AppCompatActivity(), PlaybackService.Callback, 
             R.id.sliderButton -> {
                 Toast.makeText(this@VideoPlayerActivity, "TODO: SLIDER?!!", Toast.LENGTH_SHORT).show()
             }
-            R.id.volumeSetButton -> {
-                Toast.makeText(this@VideoPlayerActivity, "TODO: VOLUME POPUP!!", Toast.LENGTH_SHORT).show()
+            R.id.volumeSetButton, R.id.muteButton -> {
+                updateMute()
             }
-            R.id.muteButton -> {mute(true)}
             R.id.rotateButton -> {orientationDelegate.displayOrientation()}
             R.id.musicPlayButton -> {switchToAudioMode(true)}
             R.id.lockButton -> {

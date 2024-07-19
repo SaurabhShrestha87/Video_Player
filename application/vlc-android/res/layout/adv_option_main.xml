@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        android:scrollbars="none"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -62,14 +63,7 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/circle"
                 android:src="@drawable/ic_slider_horizontal" />
-
-            <ImageButton
-                android:id="@+id/volumeSetButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_margin="4dp"
-                android:background="@drawable/circle"
-                android:src="@drawable/ic_volume_high" />
+>
 
             <ImageButton
                 android:id="@+id/cameraButton"
@@ -86,6 +80,14 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/circle"
                 android:src="@drawable/ic_rotate_right" />
+
+            <ImageButton
+                android:id="@+id/volumeSetButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_volume_high" />
 
             <ImageButton
                 android:id="@+id/muteButton"
