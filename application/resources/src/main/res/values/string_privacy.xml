@@ -17,6 +17,7 @@
     <string name="launcher_help_title">Help</string>
     <string name="launcher_help_message">Enter a password to use as decryption and encryption key. At least eight characters is recommended.\n\nTip: use different passwords to manage different vaults</string>
 
+    <string name="reset_password">Reset Password</string>
     <string name="menu_gallery_edit_included_folders">Edit included folders</string>
     <string name="menu_gallery_import">Import files</string>
     <string name="menu_lock_vault">Lock vault</string>

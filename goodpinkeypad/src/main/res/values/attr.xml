@@ -6,6 +6,8 @@
 
         <attr name="textColor" format="reference|color" />
 
+        <attr name="selected_dot_color" format="color" />
+
         <attr name="textSize" format="dimension"/>
 
         <attr name="backPressIcon" format="reference"/>

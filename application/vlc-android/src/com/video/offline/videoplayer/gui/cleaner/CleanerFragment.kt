@@ -36,6 +36,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.InitialPagedList
 import androidx.paging.PagedList
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.browser.MediaBrowserFragment
+import com.video.offline.videoplayer.viewmodels.mobile.VideoGroupingType
+import com.video.offline.videoplayer.viewmodels.mobile.VideosViewModel
+import com.video.offline.videoplayer.viewmodels.mobile.getViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -46,11 +51,6 @@ import org.videolan.resources.KEY_CLEANER_WATCHED
 import org.videolan.resources.util.waitForML
 import org.videolan.tools.MultiSelectHelper
 import org.videolan.tools.setGone
-import com.video.offline.videoplayer.R
-import com.video.offline.videoplayer.gui.browser.MediaBrowserFragment
-import com.video.offline.videoplayer.viewmodels.mobile.VideoGroupingType
-import com.video.offline.videoplayer.viewmodels.mobile.VideosViewModel
-import com.video.offline.videoplayer.viewmodels.mobile.getViewModel
 import java.io.File
 
 class CleanerFragment : MediaBrowserFragment<VideosViewModel>() {
@@ -70,6 +70,7 @@ class CleanerFragment : MediaBrowserFragment<VideosViewModel>() {
     override fun onDestroyActionMode(mode: ActionMode?) {}
 
     override fun getTitle() = "Cleaner"
+
     override fun getMultiHelper(): MultiSelectHelper<VideosViewModel>? {
         return null
     }
@@ -78,11 +79,21 @@ class CleanerFragment : MediaBrowserFragment<VideosViewModel>() {
 
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = getViewModel(VideoGroupingType.NONE, null, null)
         setDataObservers()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.ml_menu_last_playlist).isVisible = false
+        menu.findItem(R.id.ml_menu_select).isVisible = false
+        menu.findItem(R.id.ml_menu_network_stream).isVisible = false
+        menu.findItem(R.id.ml_menu_refresh).isVisible = false
+        menu.findItem(R.id.ml_menu_filter).isVisible = false
+        menu.findItem(R.id.ml_menu_last_playlist).isVisible = false
+        menu.findItem(R.id.ml_menu_sortby).isVisible = false
     }
 
     private fun setDataObservers() {

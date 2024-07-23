@@ -21,11 +21,12 @@
             android:visibility="gone">
 
             <TextView
+                android:id="@+id/set_pin_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Set PIN"
+                android:text="Set New PIN"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -69,12 +70,11 @@
                 android:layout_marginTop="12dp"
                 android:gravity="center"
                 android:text="Forgot"
-                android:textColor="@color/prussian_blue"/>
+                android:textColor="?attr/font_default" />
 
             <android.inputmethodservice.KeyboardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
 
         </LinearLayout>
 

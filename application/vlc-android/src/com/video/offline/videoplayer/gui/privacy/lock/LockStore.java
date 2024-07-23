@@ -32,7 +32,7 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
     private static final String KEY_AUTO_LOCK = "auto_lock";
     private static final String KEY_BIOMETRIC_UNLOCK = "biometric_unlock";
     private static final boolean DEFAULT_LOCK_VALUE = false;
-    private static final boolean DEFAULT_AUTO_LOCK_VALUE = false;
+    private static final boolean DEFAULT_AUTO_LOCK_VALUE = true;
 
     private static final String HASH_ALGORITHM = "SHA-256";
 
@@ -102,11 +102,11 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
         }
     }
 
-    public synchronized boolean setPassword(String password) {
-        return hashString(password).map(hashedPwd -> {
+    public synchronized void setPassword(String password) {
+        hashString(password).map(hashedPwd -> {
             preferences.edit().putString(KEY_PASSWORD, hashedPwd).apply();
             return hashedPwd;
-        }).isPresent();
+        });
     }
 
     public synchronized boolean passwordMatch(String password) {
@@ -119,29 +119,11 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
         return preferences.getString(KEY_PASSWORD, null) != null;
     }
 
-    public synchronized void removePassword() {
-        preferences.edit().remove(KEY_PASSWORD).apply();
-    }
-
     public synchronized boolean isAutoLockEnabled() {
         return preferences.getBoolean(KEY_AUTO_LOCK, DEFAULT_AUTO_LOCK_VALUE);
     }
 
-    public synchronized void setAutoLockEnabled(boolean enabled) {
-        preferences.edit().putBoolean(KEY_AUTO_LOCK, enabled).apply();
-
-        if (!isLocked()) {
-            if (enabled) {
-                // If auto-lock is enabled while the storage is unlocked, schedule the job
-                scheduleAutoLock();
-            } else {
-                // If auto-lock is disabled while the storage is unlocked, cancel the job
-                cancelAutoLock();
-            }
-        }
-    }
-
-    public boolean canAuthenticateBiometric() {
+     public boolean canAuthenticateBiometric() {
         return Build.VERSION.SDK_INT >= 29 && biometricManager != null
                 && biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS;
     }

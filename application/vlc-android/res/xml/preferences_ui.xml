@@ -78,7 +78,7 @@
                 android:title="@string/media_seen"/>
         <CheckBoxPreference
                 app:singleLineTitle="false"
-                android:defaultValue="false"
+                android:defaultValue="true"
                 android:key="force_play_all_video"
                 android:summary="@string/force_play_all_summary"
                 android:title="@string/force_play_all_title"/>

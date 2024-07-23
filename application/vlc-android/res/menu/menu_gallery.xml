@@ -5,4 +5,9 @@
         android:id="@+id/edit_included_folders"
         android:title="@string/menu_gallery_edit_included_folders"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/reset_password"
+        android:title="@string/reset_password"
+        app:showAsAction="never" />
 </menu>

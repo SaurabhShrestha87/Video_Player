@@ -76,7 +76,6 @@ class GoodPinKeyPad : LinearLayout {
     private var errorTextView: TextView? = null
     private var font: Typeface? = null
 
-
     constructor(context: Context) : super(context) {
         initViews(context)
     }

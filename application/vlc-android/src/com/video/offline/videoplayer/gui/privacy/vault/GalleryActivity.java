@@ -435,6 +435,11 @@ public class GalleryActivity extends BaseActivity {
                 Toaster.getInstance(this).showLong(getResources().getQuantityString(R.plurals.edit_included_removed, selectedToRemove.size(), selectedToRemove.size()));
                 findFolders();
             });
+        } else if (id == R.id.reset_password) {
+            Intent intent = new Intent(this, LaunchActivity.class);
+            intent.putExtra("reset", true);
+            startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
