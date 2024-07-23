@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
@@ -16,11 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.launch
-import org.videolan.resources.GROUP_VIDEOS_NAME
-import org.videolan.resources.KEY_GROUP_VIDEOS
-import org.videolan.tools.Settings
-import org.videolan.tools.isStarted
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.BaseFragment
 import com.video.offline.videoplayer.gui.ContentActivity
@@ -33,6 +27,11 @@ import com.video.offline.videoplayer.gui.privacy.vault.LaunchActivity
 import com.video.offline.videoplayer.interfaces.Filterable
 import com.video.offline.videoplayer.util.findCurrentFragment
 import com.video.offline.videoplayer.viewmodels.DisplaySettingsViewModel
+import kotlinx.coroutines.launch
+import org.videolan.resources.GROUP_VIDEOS_NAME
+import org.videolan.resources.KEY_GROUP_VIDEOS
+import org.videolan.tools.Settings
+import org.videolan.tools.isStarted
 
 
 /**
@@ -183,10 +182,12 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
         if (tabLayout == null || !::viewPager.isInitialized) return
         tabLayout?.addOnTabSelectedListener(this)
         tabLayout?.let {
-            it.addTab(tabLayout!!.newTab())
-            it.addTab(tabLayout!!.newTab())
-            it.addTab(tabLayout!!.newTab())
-            it.addTab(tabLayout!!.newTab())
+            if (it.tabCount == 0) {
+                it.addTab(tabLayout!!.newTab())
+                it.addTab(tabLayout!!.newTab())
+                it.addTab(tabLayout!!.newTab())
+                it.addTab(tabLayout!!.newTab())
+            }
         }
         updateTabs()
     }

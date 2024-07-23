@@ -3,7 +3,7 @@
 <resources>
 
     <attr name="background_default" format="reference|color" />
-    <attr name="tab_unselected_color" format="reference|color" />
+    <attr name="tab_unselected_color" format="color" />
     <attr name="header_background" format="reference|color" />
     <attr name="bottom_navigation_background" format="reference|color" />
     <attr name="audio_header_background" format="reference|color" />
