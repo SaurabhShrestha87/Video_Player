@@ -1,31 +1,8 @@
-/*
- * *************************************************************************
- *  SecondaryActivity.java
- * **************************************************************************
- *  Copyright © 2015 VLC authors and VideoLAN
- *  Author: Geoffrey Métais
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
- *  ***************************************************************************
- */
 
 package com.video.offline.videoplayer.gui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -196,7 +173,6 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
                     )
                 }
             }
-            ABOUT -> fragment = AboutFragment()
             CLEANER -> fragment = CleanerFragment()
             STREAMS -> fragment = MRLPanelFragment()
             HISTORY -> fragment = HistoryFragment()
@@ -234,7 +210,6 @@ class SecondaryActivity : ContentActivity(), IDialogManager {
         const val KEY_FRAGMENT = "fragment"
 
         const val ALBUMS_SONGS = "albumsSongs"
-        const val ABOUT = "about"
         const val CLEANER = "cleaner"
         const val THEME = "theme"
 

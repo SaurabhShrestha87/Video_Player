@@ -33,6 +33,7 @@
 
         <com.video.offline.videoplayer.gui.view.AutofitButton
                 android:id="@+id/aboutButton"
+            android:visibility="gone"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2021 2bllw8
- * SPDX-License-Identifier: GPL-3.0-only
- */
 package com.video.offline.videoplayer.gui.privacy.lock;
 
 import android.app.job.JobInfo;

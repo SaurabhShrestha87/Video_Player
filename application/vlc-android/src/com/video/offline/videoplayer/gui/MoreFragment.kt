@@ -48,7 +48,6 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
     private lateinit var historyEntry: TitleListView
     private lateinit var streamsEntry: TitleListView
     private lateinit var settingsButton: Button
-    private lateinit var aboutButton: Button
     private lateinit var donationsButton: CardView
     private lateinit var historyViewModel: HistoryModel
     private lateinit var streamsViewModel: StreamsModel
@@ -78,7 +77,6 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
         super.onViewCreated(view, savedInstanceState)
         historyEntry = view.findViewById(R.id.history_entry)
         settingsButton = view.findViewById(R.id.settingsButton)
-        aboutButton = view.findViewById(R.id.aboutButton)
         donationsButton = view.findViewById(R.id.donationsButton)
         if (!Settings.getInstance(requireActivity()).getBoolean(PLAYBACK_HISTORY, true)) historyEntry.setGone()
         historyViewModel.dataset.observe(viewLifecycleOwner) { list ->
@@ -133,11 +131,6 @@ class MoreFragment : BaseFragment(), IRefreshable, IHistory, IDialogManager,
 
         settingsButton.setOnClickListener {
             requireActivity().startActivityForResult(Intent(requireActivity(), PreferencesActivity::class.java), ACTIVITY_RESULT_PREFERENCES)
-        }
-        aboutButton.setOnClickListener {
-            val i = Intent(requireActivity(), SecondaryActivity::class.java)
-            i.putExtra("fragment", SecondaryActivity.ABOUT)
-            requireActivity().startActivityForResult(i, SecondaryActivity.ACTIVITY_RESULT_SECONDARY)
         }
 //        VLCBilling.getInstance(requireActivity().application).addStatusListener {
 //            manageDonationVisibility()

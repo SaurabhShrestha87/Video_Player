@@ -18,6 +18,7 @@ import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.MainActivity
 import com.video.offline.videoplayer.gui.helpers.hf.NotificationDelegate.Companion.getNotificationPermission
 import com.video.offline.videoplayer.gui.helpers.hf.StoragePermissionsDelegate.Companion.getStoragePermission
+import com.video.offline.videoplayer.gui.language.LanguageActivity
 import com.video.offline.videoplayer.util.Permissions
 import kotlinx.coroutines.launch
 import org.videolan.resources.ACTIVITY_RESULT_PREFERENCES
@@ -109,7 +110,7 @@ class OnboardingActivity : AppCompatActivity(), OnboardingFragmentListener {
         }
         if (!viewModel.scanStorages) MediaParsingService.preselectedStorages.clear()
         startMedialibrary(firstRun = true, upgrade = true, parse = viewModel.scanStorages)
-        val intent = Intent(this@OnboardingActivity, MainActivity::class.java).putExtra(
+        val intent = Intent(this@OnboardingActivity, LanguageActivity::class.java).putExtra(
             EXTRA_FIRST_RUN, true
         ).putExtra(EXTRA_UPGRADE, true)
         startActivity(intent)
