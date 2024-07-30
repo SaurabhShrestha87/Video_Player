@@ -2,7 +2,7 @@
 
 ### Build Application
 
-VLC-Android build relies on gradle build modes :
+Video Player - Android build relies on gradle build modes :
 
 - `Release` & `Debug` will get LibVLC and Medialibrary from Bintray, and build application source code only.
 - `SignedRelease` also, but it will allow you to sign application apk with a local keystore.
