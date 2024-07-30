@@ -3,6 +3,7 @@ package com.video.offline.videoplayer.gui.browser
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.view.ActionMode
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel

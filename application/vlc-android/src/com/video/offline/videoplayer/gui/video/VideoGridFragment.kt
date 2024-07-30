@@ -39,7 +39,6 @@ import org.videolan.medialibrary.media.FolderImpl
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.resources.AppContextProvider
 import org.videolan.resources.GROUP_VIDEOS_FOLDER
-import org.videolan.resources.GROUP_VIDEOS_NAME
 import org.videolan.resources.GROUP_VIDEOS_NONE
 import org.videolan.resources.KEY_FOLDER
 import org.videolan.resources.KEY_GROUP
@@ -206,7 +205,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
             else arguments?.parcelable(KEY_FOLDER)
             val parentGroup = if (savedInstanceState != null) savedInstanceState.parcelable<VideoGroup>(KEY_GROUP)
                     else arguments?.parcelable(KEY_GROUP)
-            val grouping = if (parentGroup != null || folder != null) VideoGroupingType.NONE else when (Settings.getInstance(requireContext()).getString(KEY_GROUP_VIDEOS, null) ?: GROUP_VIDEOS_NAME) {
+            val grouping = if (parentGroup != null || folder != null) VideoGroupingType.NONE else when (Settings.getInstance(requireContext()).getString(KEY_GROUP_VIDEOS, null) ?: GROUP_VIDEOS_NONE) {
                 GROUP_VIDEOS_NONE -> VideoGroupingType.NONE
                 GROUP_VIDEOS_FOLDER -> VideoGroupingType.FOLDER
                 else -> VideoGroupingType.NAME
@@ -343,7 +342,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                     sorts = sorts,
                     currentSort = viewModel.provider.sort,
                     currentSortDesc = viewModel.provider.desc,
-                    videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NAME)
+                    videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NONE)
                 ).show(requireActivity().supportFragmentManager, "DisplaySettingsDialog")
             }
 
@@ -584,7 +583,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 SettingSortsDialog.newInstance(
                     currentSort = viewModel.provider.sort,
                     currentSortDesc = viewModel.provider.desc,
-                    videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NAME)?: GROUP_VIDEOS_NAME
+                    videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NONE)?: GROUP_VIDEOS_NONE
                 ).show(requireActivity().supportFragmentManager, "DisplaySettingsDialog")
             }
 

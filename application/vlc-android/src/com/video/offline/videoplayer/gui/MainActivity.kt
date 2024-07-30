@@ -83,11 +83,13 @@ class MainActivity : ContentActivity(),
         scanNeeded = savedInstanceState == null && settings.getBoolean(KEY_MEDIALIBRARY_AUTO_RESCAN, true)
         mediaLibrary = Medialibrary.getInstance()
 
-        if (!NotificationPermissionManager.launchIfNeeded(this)) {
-            if (!WidgetMigration.launchIfNeeded(this)) {
-               if (!Settings.firstRun)  WhatsNewManager.launchIfNeeded(this) else WhatsNewManager.markAsShown(settings)
-            }
-        }
+//        Hiding What's new dialog
+
+//        if (!NotificationPermissionManager.launchIfNeeded(this)) {
+//            if (!WidgetMigration.launchIfNeeded(this)) {
+//               if (!Settings.firstRun)  WhatsNewManager.launchIfNeeded(this) else WhatsNewManager.markAsShown(settings)
+//            }
+//        }
     }
 
     override fun onResume() {

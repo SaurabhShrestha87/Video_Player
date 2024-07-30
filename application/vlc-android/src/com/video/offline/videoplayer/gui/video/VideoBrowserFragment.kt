@@ -28,7 +28,7 @@ import com.video.offline.videoplayer.interfaces.Filterable
 import com.video.offline.videoplayer.util.findCurrentFragment
 import com.video.offline.videoplayer.viewmodels.DisplaySettingsViewModel
 import kotlinx.coroutines.launch
-import org.videolan.resources.GROUP_VIDEOS_NAME
+import org.videolan.resources.GROUP_VIDEOS_NONE
 import org.videolan.resources.KEY_GROUP_VIDEOS
 import org.videolan.tools.Settings
 import org.videolan.tools.isStarted
@@ -141,7 +141,7 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
                     tabTitle.text = getString(R.string.all_videos)
                     lifecycleScope.launch {
                         displaySettingsViewModel.send(
-                            VIDEO_GROUPING, DisplaySettingsDialog.VideoGroup.GROUP_BY_NAME
+                            VIDEO_GROUPING, DisplaySettingsDialog.VideoGroup.NO_GROUP
                         )
                     }
                 }
@@ -193,9 +193,9 @@ class VideoBrowserFragment : BaseFragment(), TabLayout.OnTabSelectedListener, Fi
     }
 
     private fun getPageTitle(position: Int): String {
-        val videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NAME)
+        val videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NONE)
         return when (position) {
-            0 -> if (videoGroup == GROUP_VIDEOS_NAME) getString(R.string.all_videos) else getString(
+            0 -> if (videoGroup == GROUP_VIDEOS_NONE) getString(R.string.all_videos) else getString(
                 R.string.all_folder
             )
 

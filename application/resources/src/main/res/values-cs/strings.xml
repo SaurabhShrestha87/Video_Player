@@ -125,7 +125,7 @@
     </plurals>
 
     <string name="internal_memory">Vnitřní paměť</string>
-    <string name="audio">AUDIO</string>
+    <string name="audio">MUSIC</string>
     <string name="video">VIDEO</string>
     <string name="bookmarks">Záložky</string>
     <string name="equalizer">Ekvalizér</string>

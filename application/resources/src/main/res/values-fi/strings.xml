@@ -118,7 +118,7 @@
     </plurals>
 
     <string name="internal_memory">Sisäinen muisti</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Music</string>
     <string name="video">Video</string>
     <string name="bookmarks">Kirjanmerkit</string>
     <string name="equalizer">Taajuuskorjain</string>

@@ -74,6 +74,9 @@ class CleanerFragment : MediaBrowserFragment<VideosViewModel>() {
         menu.findItem(R.id.ml_menu_filter).isVisible = false
         menu.findItem(R.id.ml_menu_last_playlist).isVisible = false
         menu.findItem(R.id.ml_menu_sortby).isVisible = false
+        menu.findItem(R.id.ml_menu_theme).isVisible = false
+        menu.findItem(R.id.ml_menu_equalizer).isVisible = false
+        menu.findItem(R.id.ml_menu_settings).isVisible = false
     }
 
     private fun setDataObservers() {

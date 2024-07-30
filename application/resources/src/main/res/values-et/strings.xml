@@ -106,7 +106,7 @@
     </plurals>
 
     <string name="internal_memory">Sisemälu</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Music</string>
     <string name="video">Video</string>
     <string name="bookmarks">Lemmikud</string>
     <string name="equalizer">Ekvalaiser</string>

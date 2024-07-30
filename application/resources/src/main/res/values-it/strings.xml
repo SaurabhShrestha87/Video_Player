@@ -127,7 +127,7 @@
     </plurals>
 
     <string name="internal_memory">Memoria interna</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Music</string>
     <string name="video">Video</string>
     <string name="bookmarks">Segnalibri</string>
     <string name="equalizer">Equalizzatore</string>

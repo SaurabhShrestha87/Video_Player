@@ -89,7 +89,7 @@
         <item quantity="other">%d video</item>
     </plurals>
     <string name="internal_memory">iekšējā atmiņa</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Music</string>
     <string name="video">Video</string>
     <string name="bookmarks">Grāmatzīmes</string>
     <string name="equalizer">Ekvalaizers</string>
