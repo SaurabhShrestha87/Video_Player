@@ -337,7 +337,7 @@ class DisplaySettingsDialog : VLCBottomSheetDialogFragment() {
      * @property type the [VideosViewModel] type for this grouping
      */
     enum class VideoGroup(val value: String, val title: Int, val type: VideoGroupingType) {
-        GROUP_BY_NAME(GROUP_VIDEOS_NONE, R.string.video_min_group_length_name, VideoGroupingType.NAME),
+//        GROUP_BY_NAME(GROUP_VIDEOS_NONE, R.string.video_min_group_length_name, VideoGroupingType.NAME),
         GROUP_BY_FOLDER(GROUP_VIDEOS_FOLDER, R.string.video_min_group_length_folder, VideoGroupingType.FOLDER),
         NO_GROUP(GROUP_VIDEOS_NONE, R.string.video_min_group_length_disable, VideoGroupingType.NONE);
 

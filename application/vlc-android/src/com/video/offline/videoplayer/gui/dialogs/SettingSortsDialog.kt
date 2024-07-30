@@ -82,6 +82,10 @@ class SettingSortsDialog : DialogFragment() {
      */
     private fun initSortOptions() {
         Log.d(TAG, "updateSorts: $currentSort")
+        Log.d(TAG, "currentSortDesc: $currentSortDesc")
+        Log.d(TAG, "selectedSort: $selectedSort")
+        Log.d(TAG, "currentVideoGrouping: $currentVideoGrouping")
+
         binding.sortRg.setOnCheckedChangeListener { group: RadioGroup?, checkedId: Int ->
             when (checkedId) {
                 R.id.sort_name -> {
