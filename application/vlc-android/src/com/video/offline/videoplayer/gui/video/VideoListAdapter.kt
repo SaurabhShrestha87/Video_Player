@@ -1,8 +1,6 @@
 package com.video.offline.videoplayer.gui.video
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
-import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -89,6 +87,7 @@ class VideoListAdapter(private var isSeenMediaMarkerVisible: Boolean, private va
             }
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<ViewDataBinding>(

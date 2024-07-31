@@ -822,6 +822,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 menu.findItem(R.id.action_video_append).isVisible = PlaylistManager.hasMedia()
                 menu.findItem(R.id.action_video_info).isVisible = count == 1
                 menu.findItem(R.id.action_remove_from_group).isVisible = viewModel.group != null
+                menu.findItem(R.id.action_video_lock).isVisible = true
                 menu.findItem(R.id.action_add_to_group).isVisible =
                     viewModel.group != null && count > 1
                 menu.findItem(R.id.action_mode_go_to_folder).isVisible = checkFolderToParent(count)
@@ -861,6 +862,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 val list = multiSelectHelper.getSelection().map { it as MediaWrapper }
                 if (list.isNotEmpty()) {
                     when (item.itemId) {
+                        R.id.action_video_lock -> makePrivateItem(ArrayList(multiSelectHelper.getSelection()))
                         R.id.action_video_play -> MediaUtils.openList(activity, list, 0)
                         R.id.action_video_append -> appendMedia(activity, list)
                         R.id.action_video_share -> requireActivity().share(list)

@@ -198,7 +198,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                 ).getString(KEY_GROUP_VIDEOS, null) ?: GROUP_VIDEOS_NONE) {
                     GROUP_VIDEOS_NONE -> VideoGroupingType.NONE
                     GROUP_VIDEOS_FOLDER -> VideoGroupingType.FOLDER
-                    else -> VideoGroupingType.NAME
+                    else -> VideoGroupingType.NONE
                 }
             viewModel = getViewModel(grouping, folder, parentGroup)
             setDataObservers()

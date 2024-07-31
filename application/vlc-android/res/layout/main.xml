@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".gui.MainActivity">
 
-
     <com.google.android.material.navigationrail.NavigationRailView
         android:id="@+id/navigation_rail"
         android:layout_width="wrap_content"
@@ -32,8 +31,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="@dimen/navigation_margin"
         android:keyboardNavigationCluster="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:targetApi="o" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <ViewStub
         android:id="@+id/scan_viewstub"
@@ -77,7 +75,6 @@
         app:layout_behavior="com.video.offline.videoplayer.gui.helpers.BottomNavigationBehavior"
         app:layout_insetEdge="bottom"
         app:menu="@menu/bottom_navigation" />
-
 
     <ViewStub
         android:id="@+id/audio_player_tips"
