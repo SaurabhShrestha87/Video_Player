@@ -1,10 +1,8 @@
 package com.video.offline.videoplayer.gui
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
@@ -15,14 +13,6 @@ import androidx.appcompat.view.ActionMode
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import org.videolan.libvlc.util.AndroidUtil
-import org.videolan.medialibrary.interfaces.Medialibrary
-import org.videolan.resources.ACTIVITY_RESULT_OPEN
-import org.videolan.resources.ACTIVITY_RESULT_PREFERENCES
-import org.videolan.resources.ACTIVITY_RESULT_SECONDARY
-import org.videolan.resources.EXTRA_TARGET
-import org.videolan.tools.*
 import com.video.offline.videoplayer.BuildConfig
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.StartActivity
@@ -30,14 +20,12 @@ import com.video.offline.videoplayer.gui.audio.AudioBrowserFragment
 import com.video.offline.videoplayer.gui.audio.EqualizerFragment
 import com.video.offline.videoplayer.gui.browser.BaseBrowserFragment
 import com.video.offline.videoplayer.gui.dialogs.AllAccessPermissionDialog
-import com.video.offline.videoplayer.gui.dialogs.NotificationPermissionManager
 import com.video.offline.videoplayer.gui.helpers.INavigator
 import com.video.offline.videoplayer.gui.helpers.Navigator
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.helpers.UiTools.isTablet
 import com.video.offline.videoplayer.gui.helpers.UiTools.showPinIfNeeded
 import com.video.offline.videoplayer.gui.preferences.PreferencesActivity
-import com.video.offline.videoplayer.gui.preferences.theme.ThemeFragment
 import com.video.offline.videoplayer.gui.video.VideoGridFragment
 import com.video.offline.videoplayer.interfaces.Filterable
 import com.video.offline.videoplayer.interfaces.IRefreshable
@@ -45,27 +33,40 @@ import com.video.offline.videoplayer.media.MediaUtils
 import com.video.offline.videoplayer.reloadLibrary
 import com.video.offline.videoplayer.util.Permissions
 import com.video.offline.videoplayer.util.Util
-import com.video.offline.videoplayer.util.WhatsNewManager
-import com.video.offline.videoplayer.util.WidgetMigration
 import com.video.offline.videoplayer.util.getScreenWidth
+import kotlinx.coroutines.launch
+import org.videolan.libvlc.util.AndroidUtil
+import org.videolan.medialibrary.interfaces.Medialibrary
+import org.videolan.resources.ACTIVITY_RESULT_OPEN
+import org.videolan.resources.ACTIVITY_RESULT_PREFERENCES
+import org.videolan.resources.ACTIVITY_RESULT_SECONDARY
+import org.videolan.resources.EXTRA_TARGET
+import org.videolan.tools.KEY_INCOGNITO
+import org.videolan.tools.KEY_MEDIALIBRARY_AUTO_RESCAN
+import org.videolan.tools.PERMISSION_NEVER_ASK
+import org.videolan.tools.PERMISSION_NEXT_ASK
+import org.videolan.tools.RESULT_RESCAN
+import org.videolan.tools.RESULT_RESTART
+import org.videolan.tools.RESULT_RESTART_APP
+import org.videolan.tools.RESULT_UPDATE_ARTISTS
+import org.videolan.tools.RESULT_UPDATE_SEEN_MEDIA
+import org.videolan.tools.Settings
+import org.videolan.tools.putSingle
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "VLC/MainActivity"
 
-class MainActivity : ContentActivity(),
-        INavigator by Navigator()
-{
+class MainActivity : ContentActivity(), INavigator by Navigator() {
     var refreshing: Boolean = false
-        set(value) {
-            field = value
-        }
     private lateinit var mediaLibrary: Medialibrary
     private var scanNeeded = false
     private lateinit var toolbarIcon: ImageView
 
-    override fun getSnackAnchorView(overAudioPlayer:Boolean): View? {
+    override fun getSnackAnchorView(overAudioPlayer: Boolean): View? {
         val view = super.getSnackAnchorView(overAudioPlayer)
-        return if (view?.id == android.R.id.content && !isTablet()) {if(overAudioPlayer) findViewById(android.R.id.content) else findViewById(R.id.appbar)} else view
+        return if (view?.id == android.R.id.content && !isTablet()) {
+            if (overAudioPlayer) findViewById(android.R.id.content) else findViewById(R.id.appbar)
+        } else view
     }
 
     @SuppressLint("SetTextI18n")
@@ -78,9 +79,9 @@ class MainActivity : ContentActivity(),
         setupNavigation(savedInstanceState)
 
         /* Set up the action bar */
-        prepareActionBar()
-        /* Reload the latest preferences */
-        scanNeeded = savedInstanceState == null && settings.getBoolean(KEY_MEDIALIBRARY_AUTO_RESCAN, true)
+        prepareActionBar()/* Reload the latest preferences */
+        scanNeeded =
+            savedInstanceState == null && settings.getBoolean(KEY_MEDIALIBRARY_AUTO_RESCAN, true)
         mediaLibrary = Medialibrary.getInstance()
 
 //        Hiding What's new dialog
@@ -95,11 +96,22 @@ class MainActivity : ContentActivity(),
     override fun onResume() {
         super.onResume()
         //Only the partial permission is granted for Android 11+
-        if (!settings.getBoolean(PERMISSION_NEVER_ASK, false) && settings.getLong(PERMISSION_NEXT_ASK, 0L) < System.currentTimeMillis() && Permissions.canReadStorage(this) && !Permissions.hasAllAccess(this)) {
-            UiTools.snackerMessageInfinite(this, getString(R.string.partial_content))?.setAction(R.string.more) {
-                AllAccessPermissionDialog.newInstance().show(supportFragmentManager, AllAccessPermissionDialog::class.simpleName)
-            }?.show()
-            settings.putSingle(PERMISSION_NEXT_ASK, System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2))
+        if (!settings.getBoolean(PERMISSION_NEVER_ASK, false) && settings.getLong(
+                PERMISSION_NEXT_ASK,
+                0L
+            ) < System.currentTimeMillis() && Permissions.canReadStorage(this) && !Permissions.hasAllAccess(
+                this
+            )
+        ) {
+            UiTools.snackerMessageInfinite(this, getString(R.string.partial_content))
+                ?.setAction(R.string.more) {
+                    AllAccessPermissionDialog.newInstance()
+                        .show(supportFragmentManager, AllAccessPermissionDialog::class.simpleName)
+                }?.show()
+            settings.putSingle(
+                PERMISSION_NEXT_ASK,
+                System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2)
+            )
         }
         configurationChanged(getScreenWidth())
     }
@@ -117,16 +129,14 @@ class MainActivity : ContentActivity(),
 
     override fun onStart() {
         super.onStart()
-        if (mediaLibrary.isInitiated) {
-            /* Load media items from database and storage */
+        if (mediaLibrary.isInitiated) {/* Load media items from database and storage */
             if (scanNeeded && Permissions.canReadStorage(this) && !mediaLibrary.isWorking) this.reloadLibrary()
         }
     }
 
     override fun onStop() {
         super.onStop()
-        if (changingConfigurations == 0) {
-            /* Check for an ongoing scan that needs to be resumed during onResume */
+        if (changingConfigurations == 0) {/* Check for an ongoing scan that needs to be resumed during onResume */
             scanNeeded = mediaLibrary.isWorking
         }
     }
@@ -139,15 +149,12 @@ class MainActivity : ContentActivity(),
     }
 
     override fun onRestart() {
-        super.onRestart()
-        /* Reload the latest preferences */
+        super.onRestart()/* Reload the latest preferences */
         reloadPreferences()
     }
 
-    override fun onBackPressed() {
-        /* Close playlist search if open or Slide down the audio player if it is shown entirely. */
-        if (isAudioPlayerReady && (audioPlayer.backPressed() || slideDownAudioPlayer()))
-            return
+    override fun onBackPressed() {/* Close playlist search if open or Slide down the audio player if it is shown entirely. */
+        if (isAudioPlayerReady && (audioPlayer.backPressed() || slideDownAudioPlayer())) return
 
         // If it's the directory view, a "backpressed" action shows a parent.
         val fragment = currentFragment
@@ -168,7 +175,8 @@ class MainActivity : ContentActivity(),
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.findItem(R.id.ml_menu_refresh)?.isVisible = Permissions.canReadStorage(this)
-        menu?.findItem(R.id.incognito_mode)?.isChecked = Settings.getInstance(this).getBoolean(KEY_INCOGNITO, false)
+        menu?.findItem(R.id.incognito_mode)?.isChecked =
+            Settings.getInstance(this).getBoolean(KEY_INCOGNITO, false)
         return super.onPrepareOptionsMenu(menu)
     }
 
@@ -189,12 +197,17 @@ class MainActivity : ContentActivity(),
                 }
                 true
             }
+
             R.id.ml_menu_equalizer -> {
                 EqualizerFragment.newInstance().show(supportFragmentManager, "equalizer")
                 true
             }
+
             R.id.ml_menu_settings -> {
-                startActivityForResult(Intent(this@MainActivity, PreferencesActivity::class.java), ACTIVITY_RESULT_PREFERENCES)
+                startActivityForResult(
+                    Intent(this@MainActivity, PreferencesActivity::class.java),
+                    ACTIVITY_RESULT_PREFERENCES
+                )
                 true
             }
             // Refresh
@@ -202,25 +215,36 @@ class MainActivity : ContentActivity(),
                 if (Permissions.canReadStorage(this)) forceRefresh()
                 true
             }
+
             R.id.incognito_mode -> {
                 lifecycleScope.launch {
                     if (showPinIfNeeded()) return@launch
-                    Settings.getInstance (this@MainActivity).putSingle(KEY_INCOGNITO, !Settings.getInstance(this@MainActivity).getBoolean(KEY_INCOGNITO, false))
+                    Settings.getInstance(this@MainActivity).putSingle(
+                        KEY_INCOGNITO,
+                        !Settings.getInstance(this@MainActivity).getBoolean(KEY_INCOGNITO, false)
+                    )
                     item.isChecked = !item.isChecked
                     updateIncognitoModeIcon()
                 }
                 true
             }
+
             android.R.id.home ->
                 // Slide down the audio player or toggle the sidebar
                 slideDownAudioPlayer()
+
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun updateIncognitoModeIcon() {
-        val incognito = Settings.getInstance (this).getBoolean(KEY_INCOGNITO, false)
-        toolbarIcon.setImageDrawable(ContextCompat.getDrawable(this, if (incognito) R.drawable.ic_incognito else if (BuildConfig.DEBUG && BuildConfig.VLC_MAJOR_VERSION == 4) R.drawable.ic_icon_vlc4 else R.drawable.ic_icon))
+        val incognito = Settings.getInstance(this).getBoolean(KEY_INCOGNITO, false)
+        toolbarIcon.setImageDrawable(
+            ContextCompat.getDrawable(
+                this,
+                if (incognito) R.drawable.ic_incognito else if (BuildConfig.DEBUG && BuildConfig.VLC_MAJOR_VERSION == 4) R.drawable.ic_icon_vlc4 else R.drawable.ic_icon
+            )
+        )
 
     }
 
@@ -236,10 +260,8 @@ class MainActivity : ContentActivity(),
 
     private fun forceRefresh(current: Fragment?) {
         if (!mediaLibrary.isWorking) {
-            if (current != null && current is IRefreshable)
-                (current as IRefreshable).refresh()
-            else
-                reloadLibrary()
+            if (current != null && current is IRefreshable) (current as IRefreshable).refresh()
+            else reloadLibrary()
         }
     }
 
@@ -250,13 +272,15 @@ class MainActivity : ContentActivity(),
             when (resultCode) {
                 RESULT_RESCAN -> this.reloadLibrary()
                 RESULT_RESTART, RESULT_RESTART_APP -> {
-                    val intent = Intent(this@MainActivity, if (resultCode == RESULT_RESTART_APP) StartActivity::class.java else MainActivity::class.java)
+                    val intent = Intent(
+                        this@MainActivity,
+                        if (resultCode == RESULT_RESTART_APP) StartActivity::class.java else MainActivity::class.java
+                    )
                     finish()
                     startActivity(intent)
                 }
-                RESULT_UPDATE_SEEN_MEDIA -> for (fragment in supportFragmentManager.fragments)
-                    if (fragment is VideoGridFragment)
-                        fragment.updateSeenMediaMarker()
+
+                RESULT_UPDATE_SEEN_MEDIA -> for (fragment in supportFragmentManager.fragments) if (fragment is VideoGridFragment) fragment.updateSeenMediaMarker()
                 RESULT_UPDATE_ARTISTS -> {
                     val fragment = currentFragment
                     if (fragment is AudioBrowserFragment) fragment.viewModel.refresh()
