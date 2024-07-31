@@ -11,7 +11,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ViewDataBinding
-import androidx.paging.PagingDataAdapter
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.video.offline.videoplayer.BR
 import com.video.offline.videoplayer.R
@@ -51,7 +51,7 @@ private const val TAG = "VLC/VideoListAdapter"
 
 class VideoListAdapter(
     private var isSeenMediaMarkerVisible: Boolean, private var hideProgress: Boolean,
-) : PagingDataAdapter<MediaLibraryItem, VideoListAdapter.ViewHolder>(VideoItemDiffCallback),
+) : PagedListAdapter<MediaLibraryItem, VideoListAdapter.ViewHolder>(VideoItemDiffCallback),
     FastScroller.SeparatedAdapter, MultiSelectAdapter<MediaLibraryItem>,
     IEventsSource<VideoAction> by EventsSource() {
 
@@ -127,8 +127,7 @@ class VideoListAdapter(
                     UPDATE_VIDEO_GROUP -> fillView(holder, media!!)
                     UPDATE_FAVORITE_STATE -> getItem(position)?.let {
                         holder.binding.setVariable(
-                            BR.isFavorite,
-                            it.isFavorite
+                            BR.isFavorite, it.isFavorite
                         )
                     }
                 }
@@ -138,8 +137,7 @@ class VideoListAdapter(
 
     override fun onViewRecycled(holder: ViewHolder) {
         holder.binding.setVariable(
-            BR.cover,
-            UiTools.getDefaultVideoDrawable(holder.itemView.context)
+            BR.cover, UiTools.getDefaultVideoDrawable(holder.itemView.context)
         )
     }
 
@@ -157,11 +155,8 @@ class VideoListAdapter(
                 holder.binding.setVariable(BR.max, 0)
                 val count = item.mediaCount(Folder.TYPE_FOLDER_VIDEO)
                 holder.binding.setVariable(
-                    BR.time,
-                    holder.itemView.context.resources.getQuantityString(
-                        R.plurals.videos_quantity,
-                        count,
-                        count
+                    BR.time, holder.itemView.context.resources.getQuantityString(
+                        R.plurals.videos_quantity, count, count
                     )
                 )
                 holder.binding.setVariable(BR.isNetwork, false)
@@ -175,9 +170,7 @@ class VideoListAdapter(
                 holder.binding.setVariable(
                     BR.time,
                     if (count < 2) null else if (item.presentCount == item.mediaCount()) holder.itemView.context.resources.getQuantityString(
-                        R.plurals.videos_quantity,
-                        count,
-                        count
+                        R.plurals.videos_quantity, count, count
                     ) else if (item.presentCount == 0) holder.itemView.context.resources.getString(R.string.no_video) else item.getPresenceDescription()
                 )
                 holder.title.text = item.title
@@ -260,8 +253,7 @@ class VideoListAdapter(
             if (isPositionValid(position)) getItem(position)?.let {
                 eventsChannel.trySend(
                     VideoClick(
-                        layoutPosition,
-                        it
+                        layoutPosition, it
                     )
                 )
             }

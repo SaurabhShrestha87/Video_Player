@@ -1,11 +1,13 @@
 package com.video.offline.videoplayer.util
 
+import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Environment
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.content.getSystemService
 import androidx.core.net.toUri
@@ -13,6 +15,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.dialogs.SubtitleItem
+import com.video.offline.videoplayer.gui.helpers.hf.getExtWritePermission
+import com.video.offline.videoplayer.repository.ExternalSubRepository
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,10 +27,6 @@ import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.resources.AppContextProvider
 import org.videolan.resources.util.registerReceiverCompat
 import org.videolan.tools.isStarted
-import com.video.offline.videoplayer.R
-import com.video.offline.videoplayer.gui.dialogs.SubtitleItem
-import com.video.offline.videoplayer.gui.helpers.hf.getExtWritePermission
-import com.video.offline.videoplayer.repository.ExternalSubRepository
 
 
 object VLCDownloadManager : BroadcastReceiver(), DefaultLifecycleObserver {
@@ -32,6 +34,7 @@ object VLCDownloadManager : BroadcastReceiver(), DefaultLifecycleObserver {
         AppContextProvider.appContext.getSystemService<DownloadManager>()!!
     private var dlDeferred: CompletableDeferred<SubDlResult>? = null
     private lateinit var defaultSubsDirectory: String
+    private var downloadId = 0L
 
     override fun onReceive(context: Context, intent: Intent?) {
         intent?.run {
@@ -73,14 +76,23 @@ object VLCDownloadManager : BroadcastReceiver(), DefaultLifecycleObserver {
         AppContextProvider.appContext.applicationContext.unregisterReceiver(this)
     }
 
+    @SuppressLint("Range")
     fun download(context: FragmentActivity, videoUrl: MediaWrapper) {
         val request = DownloadManager.Request(videoUrl.uri)
-        request.setDescription(videoUrl.title)
-        request.setTitle("Downloading ${videoUrl.title}")
-        request.setDestinationInExternalFilesDir(
-            context, Environment.DIRECTORY_DOWNLOADS, ""
+        request.setDescription("Downloading ${videoUrl.title}")
+        request.setTitle(videoUrl.title)
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        request.setMimeType(getMimeFromFileName(videoUrl.fileName))
+        request.setDestinationInExternalPublicDir(
+            Environment.DIRECTORY_DOWNLOADS, videoUrl.fileName
         )
         downloadManager.enqueue(request)
+    }
+
+    private fun getMimeFromFileName(fileName: String?): String? {
+        val map = MimeTypeMap.getSingleton()
+        val ext = MimeTypeMap.getFileExtensionFromUrl(fileName)
+        return map.getMimeTypeFromExtension(ext)
     }
 
     suspend fun download(context: FragmentActivity, subtitleItem: SubtitleItem) {
@@ -101,7 +113,7 @@ object VLCDownloadManager : BroadcastReceiver(), DefaultLifecycleObserver {
     }
 
     private suspend fun downloadSuccessful(
-        id: Long, subtitleItem: SubtitleItem, localUri: String, context: FragmentActivity
+        id: Long, subtitleItem: SubtitleItem, localUri: String, context: FragmentActivity,
     ) {
         val extractDirectory = getFinalDirectory(context, subtitleItem) ?: return
         val downloadedPaths = FileUtils.unpackZip(localUri, extractDirectory)
@@ -121,7 +133,7 @@ object VLCDownloadManager : BroadcastReceiver(), DefaultLifecycleObserver {
     }
 
     private suspend fun getFinalDirectory(
-        context: FragmentActivity, subtitleItem: SubtitleItem
+        context: FragmentActivity, subtitleItem: SubtitleItem,
     ): String? {
         if (!this::defaultSubsDirectory.isInitialized) defaultSubsDirectory =
             "${context.applicationContext.getExternalFilesDir(null)!!.absolutePath}/subtitles"
