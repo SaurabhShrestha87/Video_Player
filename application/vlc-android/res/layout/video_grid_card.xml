@@ -54,6 +54,10 @@
             type="long" />
 
         <variable
+            name="size"
+            type="String" />
+
+        <variable
             name="time"
             type="String" />
 
@@ -350,7 +354,7 @@
             vlc:layout_constraintTop_toBottomOf="@+id/container" />
 
         <TextView
-            android:id="@+id/ml_item_time"
+            android:id="@+id/ml_item_size"
             style="@style/VLC.TextViewDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -359,10 +363,28 @@
             android:enabled="@{isPresent}"
             android:gravity="start"
             android:textSize="12sp"
+            android:visibility="@{TextUtils.isEmpty(size) ? View.GONE : View.VISIBLE}"
+            tools:text="7.5 MB"
+            vlc:layout_constraintBottom_toBottomOf="parent"
+            vlc:layout_constraintStart_toStartOf="parent"
+            vlc:layout_constraintTop_toBottomOf="@+id/ml_item_title"
+            vlc:presenceDescription="@{size}" />
+
+        <TextView
+            android:id="@+id/ml_item_time"
+            style="@style/VLC.TextViewDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginHorizontal="4dp"
+            android:ellipsize="end"
+            android:enabled="@{isPresent}"
+            android:gravity="start"
+            android:textSize="12sp"
             android:visibility="@{TextUtils.isEmpty(time) ? View.GONE : View.VISIBLE}"
             tools:text="32:55"
             vlc:layout_constraintBottom_toBottomOf="parent"
-            vlc:layout_constraintStart_toStartOf="parent"
+            vlc:layout_constraintStart_toEndOf="@+id/ml_item_size"
             vlc:layout_constraintTop_toBottomOf="@+id/ml_item_title"
             vlc:presenceDescription="@{time}" />
 

@@ -1,6 +1,8 @@
 package com.video.offline.videoplayer.gui.video
 
 import android.annotation.SuppressLint
+import android.net.Uri
+import android.text.format.Formatter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +30,9 @@ import com.video.offline.videoplayer.util.isSD
 import com.video.offline.videoplayer.util.isSchemeSMB
 import com.video.offline.videoplayer.util.scope
 import com.video.offline.videoplayer.viewmodels.mobile.VideoGroupingType
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.videolan.libvlc.util.AndroidUtil
 import org.videolan.medialibrary.Tools
 import org.videolan.medialibrary.interfaces.media.Folder
@@ -46,6 +50,7 @@ import org.videolan.resources.UPDATE_TIME
 import org.videolan.resources.UPDATE_VIDEO_GROUP
 import org.videolan.tools.MultiSelectAdapter
 import org.videolan.tools.MultiSelectHelper
+import java.io.File
 
 private const val TAG = "VLC/VideoListAdapter"
 
@@ -159,6 +164,7 @@ class VideoListAdapter(
                         R.plurals.videos_quantity, count, count
                     )
                 )
+                holder.binding.setVariable(BR.size, null)
                 holder.binding.setVariable(BR.isNetwork, false)
                 holder.binding.setVariable(BR.isPresent, true)
                 holder.binding.setVariable(BR.isFavorite, item.isFavorite)
@@ -190,14 +196,11 @@ class VideoListAdapter(
                 val resolution = generateResolutionClass(item.width, item.height)
                 var max = 0
                 var progress = 0
-                var seen = 0L
                 holder.binding.setVariable(BR.isNetwork, item.uri.scheme.isSchemeSMB())
                 holder.binding.setVariable(BR.isOTG, item.uri.isOTG())
                 holder.binding.setVariable(BR.isSD, item.uri.isSD())
                 holder.binding.setVariable(BR.isPresent, item.isPresent)
-
-
-                seen = if (isSeenMediaMarkerVisible) item.seen else 0L/* Time / Duration */
+                val seen: Long = if (isSeenMediaMarkerVisible) item.seen else 0L/* Time / Duration */
                 text = if (item.length > 0) {
                     val lastTime = item.displayTime
                     if (lastTime > 0) {
@@ -208,7 +211,10 @@ class VideoListAdapter(
                         "${Tools.millisToString(item.length)}  •  $resolution"
                     } else Tools.millisToString(item.length)
                 } else null
+                val itemFileLength = File(Uri.decode(item.location.substring(5))).length()
+                val fileSize = Formatter.formatFileSize(holder.itemView.context, itemFileLength)
                 holder.binding.setVariable(BR.time, text)
+                holder.binding.setVariable(BR.size, fileSize)
                 holder.binding.setVariable(BR.max, max)
                 holder.binding.setVariable(BR.progress, progress)
                 holder.binding.setVariable(BR.seen, seen)

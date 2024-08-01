@@ -55,6 +55,10 @@
             type="long" />
 
         <variable
+            name="size"
+            type="String" />
+
+        <variable
             name="time"
             type="String" />
 
@@ -297,13 +301,28 @@
             vlc:srcCompat="@drawable/ic_more" />
 
         <TextView
+            android:id="@+id/ml_item_size"
+            style="@style/VLC.TextViewDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_marginStart="16dp"
+            android:enabled="@{!isNetwork || isPresent}"
+            android:gravity="start"
+            android:textSize="12sp"
+            android:visibility="@{TextUtils.isEmpty(size) ? View.GONE : View.VISIBLE}"
+            tools:text="7.5 MB"
+            vlc:layout_constraintTop_toBottomOf="@+id/ml_item_title"
+            vlc:layout_constraintStart_toEndOf="@+id/container"
+            vlc:presenceDescription="@{size}" />
+
+        <TextView
             android:id="@+id/ml_item_time"
             style="@style/VLC.TextViewDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignWithParentIfMissing="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginHorizontal="4dp"
             android:enabled="@{!isNetwork || isPresent}"
             android:gravity="start"
             android:textSize="12sp"
@@ -311,8 +330,8 @@
             tools:text="32:55"
             vlc:layout_constraintBottom_toBottomOf="parent"
             vlc:layout_constraintEnd_toStartOf="@+id/media_favorite"
-            vlc:layout_constraintStart_toEndOf="@+id/container"
             vlc:layout_constraintTop_toBottomOf="@+id/ml_item_title"
+            vlc:layout_constraintStart_toEndOf="@+id/ml_item_size"
             vlc:presenceDescription="@{time}" />
 
         <ImageView

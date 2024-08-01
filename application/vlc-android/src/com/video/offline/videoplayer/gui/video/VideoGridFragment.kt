@@ -763,7 +763,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
             when (viewModel.groupingType) {
                 VideoGroupingType.NAME, VideoGroupingType.NONE -> {
                     append(" Videos | ")
-                    var bigItemFileLength = 0L
+                    var itemFileLengthTotal = 0L
                     pagedList.forEach {
                         if (it is MediaWrapper) {
                             val itemFileLength = withContext(Dispatchers.IO) {
@@ -773,10 +773,10 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                                     )
                                 )
                             }.length()
-                            bigItemFileLength += itemFileLength
+                            itemFileLengthTotal += itemFileLength
                         }
                     }
-                    val filesSize = Formatter.formatFileSize(requireContext(), bigItemFileLength)
+                    val filesSize = Formatter.formatFileSize(requireContext(), itemFileLengthTotal)
                     append(filesSize)
                 }
 
