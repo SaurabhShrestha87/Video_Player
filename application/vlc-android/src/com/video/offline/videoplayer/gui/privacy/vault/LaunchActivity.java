@@ -5,6 +5,8 @@ import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,11 +30,11 @@ public class LaunchActivity extends BaseActivity {
     private static final String TAG = "LaunchActivity";
     public static long GLIDE_KEY = System.currentTimeMillis();
     public static String EXTRA_ONLY_UNLOCK = "u";
+    Boolean isReset = false;
     private ActivityLaunchBinding binding;
     private Settings settings;
     private AtomicBoolean isStarting;
     private LockStore lockStore;
-    Boolean isReset = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,32 @@ public class LaunchActivity extends BaseActivity {
         isReset = getIntent().getBooleanExtra("reset", false);
         setContentView(binding.getRoot());
         init();
+        initEmail();
+    }
+
+    private void initEmail() {
+        binding.searchEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    binding.clearBtn.setVisibility(View.VISIBLE);
+                    binding.clearBtn.setOnClickListener(v -> {
+                        binding.searchEt.getText().clear();
+                        binding.clearBtn.setVisibility(View.GONE);
+                    });
+                }
+            }
+        });
     }
 
     private void init() {
@@ -50,7 +78,7 @@ public class LaunchActivity extends BaseActivity {
         lockStore = LockStore.getInstance(this);
         Password.lock(this, settings);
         lockStore.lock();
-        if(lockStore.hasPassword() && isReset) {
+        if (lockStore.hasPassword() && isReset) {
             binding.setPin.setVisibility(View.VISIBLE);
             binding.enterPin.setVisibility(View.GONE);
         } else if (lockStore.hasPassword()) {
@@ -103,6 +131,7 @@ public class LaunchActivity extends BaseActivity {
             }
         });
     }
+
     private void setListeners() {
         binding.forgot.setOnClickListener(v -> {
             Toast.makeText(this, "API/OTP?! NEW PASS: 1234", Toast.LENGTH_SHORT).show();
