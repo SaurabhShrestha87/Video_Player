@@ -10,6 +10,8 @@
         <item name="colorControlNormal">@color/grey400</item>
         <item name="popupMenuBackground">@color/grey875</item>
         <item name="tab_unselected_color">@color/grey875</item>
+        <item name="play_circle_color">@color/grey875</item>
+        <item name="play_circle_color_selected">@color/grey875</item>
         <item name="list_subtitle">@color/grey400</item>
         <item name="list_title">@color/white</item>
     </style>

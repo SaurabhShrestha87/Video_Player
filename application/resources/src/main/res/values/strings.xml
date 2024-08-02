@@ -39,6 +39,7 @@
     </plurals>
 
     <string name="play">Play</string>
+    <string name="queue">queue</string>
     <string name="playback">Playback</string>
     <string name="playback_controls">Playback controls</string>
     <string name="medialibrary_scan">Media library scan</string>
@@ -266,7 +267,7 @@
     <string name="seek_tap">+/- 10 sec.</string>
     <string name="seek_tap_description">Double tap to go 10 sec forward or backward</string>
     <string name="close">Close</string>
-
+    <string name="close_playback">Close Playback</string>
     <string name="playlist_tips">Playlist tips</string>
     <string name="remove_song">Remove song</string>
     <string name="remove_playlist_item">%1$s has been dismissed from playlist</string>

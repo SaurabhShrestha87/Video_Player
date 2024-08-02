@@ -59,6 +59,11 @@
     <color name="grey875">#2a2a2a</color>
     <color name="grey900">#212121</color>
 
+    <color name="greyPlayBg">#9f9f9f</color>
+    <color name="greyPlayBgPressed">@color/grey600</color>
+
+    <color name="greyPlayBgDark">@color/grey700</color>
+    <color name="greyPlayBgPressedDark">#9f9f9f</color>
 
     <color name="dark_background">#131313</color>
 

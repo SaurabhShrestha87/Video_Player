@@ -234,16 +234,31 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent" />
 
+            <ImageView
+                android:id="@+id/close_playback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/close_playback"
+                android:focusable="true"
+                android:onClick="@{fragment::onStopSingleClick}"
+                android:padding="8dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_close_up" />
 
             <com.video.offline.videoplayer.gui.view.HeaderMediaSwitcher
-                    android:id="@+id/audio_media_switcher"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:background="#00000000"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/playback_chips"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/audio_media_switcher"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#00000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/playback_chips"
+                app:layout_constraintStart_toEndOf="@+id/close_playback"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.chip.ChipGroup
                     android:id="@+id/playback_chips"
@@ -395,6 +410,19 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/header_queue"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:contentDescription="@string/queue"
+                android:focusable="true"
+                android:onClick="@{fragment::showQueueBottomSheet}"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
                     android:id="@+id/header_play_pause"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
@@ -405,7 +433,7 @@
                     android:onLongClick="@{fragment::onStopClick}"
                     android:scaleType="fitXY"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/header_queue"
                     app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Barrier

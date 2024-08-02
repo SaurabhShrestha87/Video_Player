@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.Toast
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -592,11 +593,19 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
         playlistModel.togglePlayPause()
     }
 
+    fun onStopSingleClick(@Suppress("UNUSED_PARAMETER") view: View?) {
+        onStopClick(null)
+    }
+
     fun onStopClick(@Suppress("UNUSED_PARAMETER") view: View?): Boolean {
         playlistModel.stop()
         if (activity is AudioPlayerContainerActivity)
             (activity as AudioPlayerContainerActivity).closeMiniPlayer()
         return true
+    }
+    
+    fun showQueueBottomSheet(@Suppress("UNUSED_PARAMETER") view: View?) {
+        Toast.makeText(activity, "TODO: QUEUE!", Toast.LENGTH_SHORT).show()
     }
 
     fun onNextClick(@Suppress("UNUSED_PARAMETER") view: View?) {
