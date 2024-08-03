@@ -32,6 +32,7 @@ import com.video.offline.videoplayer.databinding.ActivityGalleryDirectoryBinding
 import com.video.offline.videoplayer.gui.privacy.lock.LockStore;
 import com.video.offline.videoplayer.gui.privacy.vault.adapters.GalleryGridAdapter;
 import com.video.offline.videoplayer.gui.privacy.vault.adapters.GalleryPagerAdapter;
+import com.video.offline.videoplayer.gui.privacy.vault.data.FileType;
 import com.video.offline.videoplayer.gui.privacy.vault.data.GalleryFile;
 import com.video.offline.videoplayer.gui.privacy.vault.encryption.Encryption;
 import com.video.offline.videoplayer.gui.privacy.vault.encryption.Password;
@@ -41,9 +42,11 @@ import com.video.offline.videoplayer.gui.privacy.vault.interfaces.IOnProgress;
 import com.video.offline.videoplayer.gui.privacy.vault.utils.Dialogs;
 import com.video.offline.videoplayer.gui.privacy.vault.utils.FileStuff;
 import com.video.offline.videoplayer.gui.privacy.vault.utils.Settings;
+import com.video.offline.videoplayer.gui.privacy.vault.utils.StringStuff;
 import com.video.offline.videoplayer.gui.privacy.vault.utils.Toaster;
 import com.video.offline.videoplayer.gui.privacy.vault.viewmodel.GalleryDirectoryViewModel;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -171,8 +174,8 @@ public class GalleryDirectoryActivity extends BaseActivity {
         if (isAllFolder || (documentFile != null && documentFile.isDirectory() && documentFile.exists())) {
             setupViewpager();
             setupRecycler();
+            setupObservers();
             setClickListeners();
-
             if (!directoryViewModel.isInitialised()) {
                 if (isAllFolder) {
                     findAllFiles();
@@ -184,6 +187,25 @@ public class GalleryDirectoryActivity extends BaseActivity {
             Toaster.getInstance(this).showLong(getString(R.string.directory_does_not_exist));
             finish();
         }
+    }
+
+    private void setupObservers() {
+
+    }
+
+    private void setupFileCount() {
+        int videosCount = 0;
+        int imagesCount = 0;
+        long totalSize = 0L;
+        for (GalleryFile galleryFile : directoryViewModel.getGalleryFiles()) {
+            if (galleryFile.isVideo()) {
+                videosCount++;
+            } else if (galleryFile.getFileType() == FileType.GIF || galleryFile.getFileType() == FileType.IMAGE) {
+                imagesCount++;
+            }
+            totalSize = totalSize + galleryFile.getSize();
+        }
+        binding.videoCountTextView.setText(MessageFormat.format("{0} Videos | {1} Image/Gif | {2}", videosCount, imagesCount, StringStuff.bytesToReadableString(totalSize)));
     }
 
     private void setClickListeners() {
@@ -198,6 +220,16 @@ public class GalleryDirectoryActivity extends BaseActivity {
             showImportOverlay(false);
         });
         binding.importChooseOverlay.setOnClickListener(v -> showImportOverlay(false));
+        binding.sortIv.setOnClickListener(v -> sortView());
+        binding.viewModeIv.setOnClickListener(v -> changeViewMode());
+    }
+
+    private void sortView() {
+        Toast.makeText(this, "TODO: sort view!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void changeViewMode() {
+        Toast.makeText(this, "TODO: Change view MODE!", Toast.LENGTH_SHORT).show();
     }
 
     private void onImportImagesOrVideos(@Nullable Intent data) {
@@ -210,7 +242,7 @@ public class GalleryDirectoryActivity extends BaseActivity {
     }
 
     private void importFiles(List<DocumentFile> documentFiles) {
-        Dialogs.showImportGalleryChooseDestinationDialog(this, settings, documentFiles.size(), new Dialogs.IOnDirectorySelected() {
+        Dialogs.doNotShowImportGalleryChooseDestinationDialog(this, settings, documentFiles.size(), new Dialogs.IOnDirectorySelected() {
             @Override
             public void onDirectorySelected(@NonNull DocumentFile directory, boolean deleteOriginal) {
                 importToDirectory(documentFiles, directory, deleteOriginal);
@@ -455,6 +487,7 @@ public class GalleryDirectoryActivity extends BaseActivity {
                     directoryViewModel.setInitialised(galleryFiles);
                     galleryGridAdapter.notifyItemRangeInserted(0, galleryFiles.size());
                     galleryPagerAdapter.notifyItemRangeInserted(0, galleryFiles.size());
+                    setupFileCount();
                 }
             });
 

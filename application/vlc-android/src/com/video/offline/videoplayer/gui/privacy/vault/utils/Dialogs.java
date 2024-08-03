@@ -1,9 +1,9 @@
-
 package com.video.offline.videoplayer.gui.privacy.vault.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.mikepenz.aboutlibraries.LibsBuilder;
-
 import com.video.offline.videoplayer.R;
 import com.video.offline.videoplayer.databinding.DialogEditTextBinding;
 import com.video.offline.videoplayer.databinding.DialogImportBinding;
@@ -62,6 +61,25 @@ public class Dialogs {
         binding.recycler.setAdapter(adapter);
     }
 
+    public static void doNotShowImportGalleryChooseDestinationDialog (FragmentActivity context, Settings settings, int fileCount, IOnDirectorySelected onDirectorySelected) {
+        List<Uri> directories = settings.getGalleryDirectoriesAsUri(true);
+        if (directories.isEmpty()) {
+            Toast.makeText(context, "No Private Folder!!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int pos = 0;
+        Uri uri = directories.get(pos);
+
+        DocumentFile directory = DocumentFile.fromTreeUri(context, uri);
+        if (directory == null || !directory.isDirectory() || !directory.exists()) {
+            settings.removeGalleryDirectory(uri);
+            Toaster.getInstance(context).showLong(context.getString(R.string.directory_does_not_exist));
+            showImportGalleryChooseDestinationDialog(context, settings, fileCount, onDirectorySelected);
+        } else {
+            onDirectorySelected.onDirectorySelected(directory, false);
+        }
+    }
+
     public static void showCopyMoveChooseDestinationDialog(FragmentActivity context, Settings settings, int fileCount, IOnDirectorySelected onDirectorySelected) {
         List<Uri> directories = settings.getGalleryDirectoriesAsUri(false);
         String[] names = new String[directories.size()];
@@ -69,22 +87,59 @@ public class Dialogs {
             names[i] = FileStuff.getFilenameWithPathFromUri(directories.get(i));
         }
 
-        new MaterialAlertDialogBuilder(context)
-                .setTitle(context.getString(R.string.dialog_import_to_title))
-                .setItems(names, (dialog, which) -> {
-                    Uri uri = directories.get(which);
-                    DocumentFile directory = DocumentFile.fromTreeUri(context, uri);
-                    if (directory == null || !directory.isDirectory() || !directory.exists()) {
-                        settings.removeGalleryDirectory(uri);
-                        Toaster.getInstance(context).showLong(context.getString(R.string.directory_does_not_exist));
-                        showCopyMoveChooseDestinationDialog(context, settings, fileCount, onDirectorySelected);
-                    } else {
-                        onDirectorySelected.onDirectorySelected(directory, false);
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .setNeutralButton(R.string.dialog_import_to_button_neutral, (dialog, which) -> onDirectorySelected.onOtherDirectory())
-                .show();
+        new MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.dialog_import_to_title)).setItems(names, (dialog, which) -> {
+            Uri uri = directories.get(which);
+            DocumentFile directory = DocumentFile.fromTreeUri(context, uri);
+            if (directory == null || !directory.isDirectory() || !directory.exists()) {
+                settings.removeGalleryDirectory(uri);
+                Toaster.getInstance(context).showLong(context.getString(R.string.directory_does_not_exist));
+                showCopyMoveChooseDestinationDialog(context, settings, fileCount, onDirectorySelected);
+            } else {
+                onDirectorySelected.onDirectorySelected(directory, false);
+            }
+        }).setNegativeButton(android.R.string.cancel, null).setNeutralButton(R.string.dialog_import_to_button_neutral, (dialog, which) -> onDirectorySelected.onOtherDirectory()).show();
+    }
+
+    public static void showTextDialog(Context context, String title, String message) {
+        new MaterialAlertDialogBuilder(context).setTitle(title).setMessage(message).setPositiveButton(android.R.string.ok, null).show();
+    }
+
+    public static void showAboutDialog(Context context) {
+        new MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.dialog_about_title)).setMessage(context.getString(R.string.dialog_about_message, BuildConfig.BUILD_TYPE, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)).setPositiveButton(android.R.string.ok, null).setNeutralButton(context.getString(R.string.licenses), (dialogInterface, i) -> {
+            new LibsBuilder().withActivityTitle(context.getString(R.string.licenses)).start(context);
+        }).show();
+    }
+
+    public static void showConfirmationDialog(Context context, String title, String message, DialogInterface.OnClickListener onConfirm) {
+        new MaterialAlertDialogBuilder(context).setTitle(title).setMessage(message).setPositiveButton(android.R.string.ok, onConfirm).setNegativeButton(android.R.string.cancel, null).show();
+    }
+
+    public static void showEditTextDialog(FragmentActivity context, @Nullable String title, @Nullable String editTextBody, IOnEdited onEdited) {
+        DialogEditTextBinding binding = DialogEditTextBinding.inflate(context.getLayoutInflater(), null, false);
+        if (editTextBody != null) {
+            binding.text.setText(editTextBody);
+        }
+
+        new MaterialAlertDialogBuilder(context).setTitle(title).setView(binding.getRoot()).setPositiveButton(R.string.gallery_note_save, (dialog, which) -> onEdited.onEdited(binding.text.getText().toString())).setNegativeButton(android.R.string.cancel, null).setNeutralButton(R.string.gallery_note_delete, (dialog, which) -> onEdited.onEdited(null)).show();
+    }
+
+    public static void showEditIncludedFolders(Context context, @NonNull Settings settings, @NonNull IOnEditedIncludedFolders onEditedIncludedFolders) {
+        List<Uri> directories = settings.getGalleryDirectoriesAsUri(false);
+        String[] names = new String[directories.size()];
+        boolean[] checked = new boolean[directories.size()];
+        for (int i = 0; i < names.length; i++) {
+            names[i] = FileStuff.getFilenameWithPathFromUri(directories.get(i));
+            checked[i] = true;
+        }
+        List<Uri> selectedToRemove = new LinkedList<>();
+
+        new MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.dialog_edit_included_title)).setMultiChoiceItems(names, checked, (dialog, which, isChecked) -> {
+            if (isChecked) {
+                selectedToRemove.add(directories.get(which));
+            } else {
+                selectedToRemove.remove(directories.get(which));
+            }
+        }).setPositiveButton(context.getString(R.string.remove), (dialog, which) -> onEditedIncludedFolders.onRemoved(selectedToRemove)).setNegativeButton(android.R.string.cancel, null).show();
     }
 
     public interface IOnDirectorySelected {
@@ -99,75 +154,6 @@ public class Dialogs {
 
     public interface IOnEditedIncludedFolders {
         void onRemoved(@NonNull List<Uri> selectedToRemove);
-    }
-
-    public static void showTextDialog(Context context, String title, String message) {
-        new MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
-    }
-
-    public static void showAboutDialog(Context context) {
-        new MaterialAlertDialogBuilder(context)
-                .setTitle(context.getString(R.string.dialog_about_title))
-                .setMessage(context.getString(R.string.dialog_about_message, BuildConfig.BUILD_TYPE, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
-                .setPositiveButton(android.R.string.ok, null)
-                .setNeutralButton(context.getString(R.string.licenses), (dialogInterface, i) -> {
-                    new LibsBuilder()
-                            .withActivityTitle(context.getString(R.string.licenses))
-                            .start(context);
-                })
-                .show();
-    }
-
-    public static void showConfirmationDialog(Context context, String title, String message, DialogInterface.OnClickListener onConfirm) {
-        new MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, onConfirm)
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
-    }
-
-    public static void showEditTextDialog(FragmentActivity context, @Nullable String title, @Nullable String editTextBody, IOnEdited onEdited) {
-        DialogEditTextBinding binding = DialogEditTextBinding.inflate(context.getLayoutInflater(), null, false);
-        if (editTextBody != null) {
-            binding.text.setText(editTextBody);
-        }
-
-        new MaterialAlertDialogBuilder(context)
-                .setTitle(title)
-                .setView(binding.getRoot())
-                .setPositiveButton(R.string.gallery_note_save, (dialog, which) -> onEdited.onEdited(binding.text.getText().toString()))
-                .setNegativeButton(android.R.string.cancel, null)
-                .setNeutralButton(R.string.gallery_note_delete, (dialog, which) -> onEdited.onEdited(null))
-                .show();
-    }
-
-    public static void showEditIncludedFolders(Context context, @NonNull Settings settings, @NonNull IOnEditedIncludedFolders onEditedIncludedFolders) {
-        List<Uri> directories = settings.getGalleryDirectoriesAsUri(false);
-        String[] names = new String[directories.size()];
-        boolean[] checked = new boolean[directories.size()];
-        for (int i = 0; i < names.length; i++) {
-            names[i] = FileStuff.getFilenameWithPathFromUri(directories.get(i));
-            checked[i] = true;
-        }
-        List<Uri> selectedToRemove = new LinkedList<>();
-
-        new MaterialAlertDialogBuilder(context)
-                .setTitle(context.getString(R.string.dialog_edit_included_title))
-                .setMultiChoiceItems(names, checked, (dialog, which, isChecked) -> {
-                    if (isChecked) {
-                        selectedToRemove.add(directories.get(which));
-                    } else {
-                        selectedToRemove.remove(directories.get(which));
-                    }
-                })
-                .setPositiveButton(context.getString(R.string.remove), (dialog, which) -> onEditedIncludedFolders.onRemoved(selectedToRemove))
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
     }
 
 }

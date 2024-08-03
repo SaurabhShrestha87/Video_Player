@@ -18,10 +18,59 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/sort_view_mode_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <TextView
+                android:id="@+id/video_count_text_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="9 Folders"
+                android:textSize="16sp" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/view_mode_iv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/button_circle_white_selector_visible"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/view_mode_list" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/sort_iv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/button_circle_white_selector_visible"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/sort_icon" />
+
+        </LinearLayout>
+
         <com.video.offline.videoplayer.gui.privacy.vault.fastscroll.views.FastScrollRecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="16dp"
             app:fastScrollAutoHide="true"
             app:fastScrollAutoHideDelay="800"
             app:fastScrollPopupBackgroundSize="42dp"
@@ -30,7 +79,7 @@
             app:fastScrollPopupTextSize="14sp"
             app:fastScrollThumbColor="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/sort_view_mode_layout" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
