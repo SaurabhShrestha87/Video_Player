@@ -124,5 +124,22 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
+        <TextView
+            android:id="@+id/cleanBtn"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginBottom="56dp"
+            android:background="@drawable/button_oval"
+            android:fontFamily="@font/urbanist_bold"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:text="@string/cleaner_clean_up_size"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

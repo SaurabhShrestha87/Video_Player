@@ -81,4 +81,5 @@
     <string name="privacy_text">By starting, you accept our <a href="https://go.test.com" style="color:#017343"> Privacy Statement</a> and <a href="https://go.test.com" style="color:#017343">Privacy Policy.</a></string>
     <string name="view_mode">View Mode</string>
     <string name="your_pin_is_s">Your PIN is %s</string>
+    <string name="cleaner_clean_up_size">Clean up %s</string>
 </resources>
