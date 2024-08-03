@@ -1,6 +1,7 @@
 package com.video.offline.videoplayer.gui.privacy.vault;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.icu.text.DecimalFormat;
@@ -23,7 +24,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
-
 import com.video.offline.videoplayer.R;
 import com.video.offline.videoplayer.databinding.ActivityGalleryBinding;
 import com.video.offline.videoplayer.gui.privacy.vault.adapters.GalleryGridAdapter;
@@ -44,7 +44,6 @@ import java.util.List;
 
 public class GalleryActivity extends BaseActivity {
     private static final String TAG = "GalleryActivity";
-
     private static final Object LOCK = new Object();
 
     private GalleryViewModel viewModel;
@@ -400,9 +399,37 @@ public class GalleryActivity extends BaseActivity {
                     this.galleryFiles.add(0, GalleryFile.asAllFolder(getString(R.string.gallery_all)));
                     galleryGridAdapter.notifyItemInserted(0);
                 }
+            } else {
+                showAddFolderDialog();
             }
             setLoading(false);
         });
+    }
+
+    private void showAddFolderDialog() {
+        // Create the object of AlertDialog Builder class
+        AlertDialog.Builder builder = new AlertDialog.Builder(GalleryActivity.this);
+        // Set the message show for the Alert time
+        builder.setMessage("Please select a folder to store private files!");
+        // Set Alert Title
+        builder.setTitle("Select Folder!");
+        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+        builder.setCancelable(false);
+        // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+        builder.setPositiveButton("Okay", (dialog, which) -> {
+            binding.btnAddFolder.performClick();
+            dialog.cancel();
+        });
+
+        // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+        builder.setNegativeButton("No", (dialog, which) -> {
+            dialog.cancel();
+            finish();
+        });
+        // Create the Alert dialog
+        AlertDialog alertDialog = builder.create();
+        // Show the Alert Dialog box
+        alertDialog.show();
     }
 
     @Override

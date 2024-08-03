@@ -3,66 +3,81 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    tools:context=".GalleryDirectoryActivity">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:fitsSystemWindows="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.video.offline.videoplayer.gui.privacy.vault.fastscroll.views.FastScrollRecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:fastScrollAutoHide="true"
-        app:fastScrollAutoHideDelay="800"
-        app:fastScrollPopupBackgroundSize="42dp"
-        app:fastScrollPopupBgColor="?attr/colorPrimary"
-        app:fastScrollPopupTextColor="?attr/colorOnPrimary"
-        app:fastScrollPopupTextSize="14sp"
-        app:fastScrollThumbColor="?attr/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="gone" />
+        android:animateLayoutChanges="true"
+        tools:context=".GalleryDirectoryActivity">
 
-    <LinearLayout
-        android:id="@+id/lLSelectionButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:fitsSystemWindows="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDeleteFiles"
+        <com.video.offline.videoplayer.gui.privacy.vault.fastscroll.views.FastScrollRecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:fastScrollAutoHide="true"
+            app:fastScrollAutoHideDelay="800"
+            app:fastScrollPopupBackgroundSize="42dp"
+            app:fastScrollPopupBgColor="?attr/colorPrimary"
+            app:fastScrollPopupTextColor="?attr/colorOnPrimary"
+            app:fastScrollPopupTextSize="14sp"
+            app:fastScrollThumbColor="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnImportFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:contentDescription="@string/gallery_import_files"
+            android:tint="@color/grey50"
+            app:layout_behavior="com.video.offline.videoplayer.gui.helpers.FloatingActionButtonBehavior"
+            app:layout_constraintBottom_toTopOf="@id/lLSelectionButtons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="@color/green50"
+            app:srcCompat="@drawable/ic_add"
+            app:useCompatPadding="true" />
+
+        <LinearLayout
+            android:id="@+id/lLSelectionButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:elevation="3dp"
-            android:stateListAnimator="@null"
-            android:text="@string/gallery_delete_selected_files"
-            app:icon="@drawable/ic_outline_delete_forever_24" />
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteFiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:elevation="3dp"
+                android:stateListAnimator="@null"
+                android:text="@string/gallery_delete_selected_files"
+                app:icon="@drawable/ic_outline_delete_forever_24" />
 
-    <include
-        android:id="@+id/cLLoading"
-        layout="@layout/loading_item" />
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/cLLoading"
+            layout="@layout/loading_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
