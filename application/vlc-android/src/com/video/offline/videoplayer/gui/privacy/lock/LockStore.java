@@ -25,6 +25,7 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
     private static final String LOCK_PREFERENCES = "lock_store";
     private static final String KEY_LOCK = "is_locked";
     private static final String KEY_PASSWORD = "password_hash";
+    private static final String KEY_EMAIL = "password_email";
     private static final String KEY_AUTO_LOCK = "auto_lock";
     private static final String KEY_BIOMETRIC_UNLOCK = "biometric_unlock";
     private static final boolean DEFAULT_LOCK_VALUE = false;
@@ -103,6 +104,10 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
             preferences.edit().putString(KEY_PASSWORD, hashedPwd).apply();
             return hashedPwd;
         });
+    }
+
+    public synchronized void setEmail(String email) {
+        preferences.edit().putString(KEY_EMAIL, email).apply();
     }
 
     public synchronized boolean passwordMatch(String password) {
