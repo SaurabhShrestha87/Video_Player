@@ -6,8 +6,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -53,6 +55,7 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void initEmail(String password) {
+        binding.title.setText("Set Email");
         binding.close.setImageDrawable(getDrawable(R.drawable.ic_arrow_back));
         binding.emailPassPreviewTv.setText(String.format(getString(R.string.your_pin_is_s), password));
         if (!lockStore.getEmail().isBlank()) {
@@ -85,18 +88,25 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void initPin() {
+        SpannableString forgotString = new SpannableString("Forgot");
+        forgotString.setSpan(new UnderlineSpan(), 0, forgotString.length(), 0);
+        binding.forgot.setText(forgotString);
+
         binding.close.setImageDrawable(getDrawable(R.drawable.ic_close_up));
+
         settings = Settings.getInstance(this);
         isStarting = new AtomicBoolean(false);
         lockStore = LockStore.getInstance(this);
         Password.lock(this, settings);
         lockStore.lock();
         if (lockStore.hasPassword() && isReset) { // RESET
+            binding.title.setText("Modify PIN");
             binding.pinLytMain.setVisibility(View.VISIBLE);
             binding.setPin.setVisibility(View.VISIBLE);
             binding.enterPin.setVisibility(View.GONE);
             binding.emailLytMain.setVisibility(View.GONE);
         } else if (lockStore.hasPassword()) { // UNLOCK WITH PASSWORD
+            binding.title.setText("Enter PIN");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && lockStore.isBiometricUnlockEnabled()) {
                 unlockViaBiometricAuthentication();
             }
@@ -105,6 +115,7 @@ public class LaunchActivity extends BaseActivity {
             binding.enterPin.setVisibility(View.VISIBLE);
             binding.emailLytMain.setVisibility(View.GONE);
         } else { // First LAUNCH
+            binding.title.setText("Set PIN");
             binding.pinLytMain.setVisibility(View.VISIBLE);
             binding.setPin.setVisibility(View.VISIBLE);
             binding.enterPin.setVisibility(View.GONE);
@@ -202,9 +213,7 @@ public class LaunchActivity extends BaseActivity {
                 binding.emailEt.setError("Invalid Email");
                 return;
             }
-            if (isBiometricUnlockEnabled) {
-                lockStore.setBiometricUnlockEnabled(true);
-            }
+            lockStore.setBiometricUnlockEnabled(isBiometricUnlockEnabled);
             lockStore.setPassword(password);
             lockStore.setEmail(email);
             doUnlock(password);

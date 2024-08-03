@@ -26,7 +26,10 @@
                 android:src="@drawable/ic_close_up" />
 
             <TextView
-                style="@style/VLC.Onboarding.Title"
+                android:id="@+id/title"
+                android:textSize="22sp"
+                android:textColor="?attr/font_default"
+                android:fontFamily="@font/urbanist_regular"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -114,8 +117,10 @@
                     android:layout_marginTop="12dp"
                     android:background="@drawable/lb_selectable_item_rounded_rect"
                     android:gravity="center"
-                    android:text="Forgot"
-                    android:textColor="?attr/font_default" />
+                    android:text="forgot"
+                    android:textStyle="italic"
+                    android:textColor="?attr/font_default"
+                    />
 
                 <android.inputmethodservice.KeyboardView
                     android:layout_width="wrap_content"
