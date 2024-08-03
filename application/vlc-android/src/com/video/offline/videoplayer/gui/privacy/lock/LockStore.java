@@ -110,6 +110,9 @@ public final class LockStore implements SharedPreferences.OnSharedPreferenceChan
         preferences.edit().putString(KEY_EMAIL, email).apply();
     }
 
+    public synchronized String getEmail() {
+        return preferences.getString(KEY_EMAIL, "");
+    }
     public synchronized boolean passwordMatch(String password) {
         return hashString(password)
                 .map(hashedPwd -> hashedPwd.equals(preferences.getString(KEY_PASSWORD, null)))

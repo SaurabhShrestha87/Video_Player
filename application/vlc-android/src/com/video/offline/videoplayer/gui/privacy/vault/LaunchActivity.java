@@ -49,10 +49,15 @@ public class LaunchActivity extends BaseActivity {
         binding = ActivityLaunchBinding.inflate(getLayoutInflater());
         isReset = getIntent().getBooleanExtra("reset", false);
         setContentView(binding.getRoot());
-        init();
+        initPin();
     }
 
-    private void initEmail() {
+    private void initEmail(String password) {
+        binding.close.setImageDrawable(getDrawable(R.drawable.ic_arrow_back));
+        binding.emailPassPreviewTv.setText(String.format(getString(R.string.your_pin_is_s), password));
+        if (!lockStore.getEmail().isBlank()) {
+            binding.emailEt.setText(lockStore.getEmail());
+        }
         binding.pinLytMain.setVisibility(View.GONE);
         binding.emailLytMain.setVisibility(View.VISIBLE);
         binding.emailEt.addTextChangedListener(new TextWatcher() {
@@ -79,28 +84,33 @@ public class LaunchActivity extends BaseActivity {
         });
     }
 
-    private void init() {
+    private void initPin() {
+        binding.close.setImageDrawable(getDrawable(R.drawable.ic_close_up));
         settings = Settings.getInstance(this);
         isStarting = new AtomicBoolean(false);
         lockStore = LockStore.getInstance(this);
         Password.lock(this, settings);
         lockStore.lock();
-        if (lockStore.hasPassword() && isReset) {
+        if (lockStore.hasPassword() && isReset) { // RESET
+            binding.pinLytMain.setVisibility(View.VISIBLE);
             binding.setPin.setVisibility(View.VISIBLE);
             binding.enterPin.setVisibility(View.GONE);
             binding.emailLytMain.setVisibility(View.GONE);
-        } else if (lockStore.hasPassword()) {
+        } else if (lockStore.hasPassword()) { // UNLOCK WITH PASSWORD
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && lockStore.isBiometricUnlockEnabled()) {
                 unlockViaBiometricAuthentication();
             }
+            binding.pinLytMain.setVisibility(View.VISIBLE);
             binding.setPin.setVisibility(View.GONE);
             binding.enterPin.setVisibility(View.VISIBLE);
             binding.emailLytMain.setVisibility(View.GONE);
-        } else {
+        } else { // First LAUNCH
+            binding.pinLytMain.setVisibility(View.VISIBLE);
             binding.setPin.setVisibility(View.VISIBLE);
             binding.enterPin.setVisibility(View.GONE);
+            binding.emailLytMain.setVisibility(View.GONE);
         }
-        setListeners();
+        setPinListeners();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -141,7 +151,7 @@ public class LaunchActivity extends BaseActivity {
         });
     }
 
-    private void setListeners() {
+    private void setPinListeners() {
         binding.forgot.setOnClickListener(v -> {
             Toast.makeText(this, "TODO: Send email to reset password?", Toast.LENGTH_SHORT).show();
         });
@@ -150,11 +160,7 @@ public class LaunchActivity extends BaseActivity {
             public void onKeyPadPressed(@Nullable String value) {
                 if (value != null && value.length() == 4) {
                     if (lockStore.hasPassword() && isReset) {
-                        if (binding.biometricCb.isChecked()) {
-                            lockStore.setBiometricUnlockEnabled(true);
-                        }
-                        lockStore.setPassword(value);
-                        doUnlock(value);
+                        getEmail(value, binding.biometricCb.isChecked());
                     } else if (lockStore.hasPassword()) {
                         if (lockStore.passwordMatch(value)) {
                             doUnlock(value);
@@ -180,14 +186,15 @@ public class LaunchActivity extends BaseActivity {
 
             }
         });
+        binding.close.setOnClickListener(v -> {
+            Password.lock(LaunchActivity.this, settings);
+            finish();
+        });
     }
 
     private void getEmail(String password, boolean isBiometricUnlockEnabled) {
-        initEmail();
-        binding.close.setOnClickListener(v -> {
-            binding.pinLytMain.setVisibility(View.VISIBLE);
-            binding.emailLytMain.setVisibility(View.GONE);
-        });
+        initEmail(password);
+        binding.close.setOnClickListener(v -> initPin());
         binding.next.setOnClickListener(v -> {
             //check for email formatting.
             String email = binding.emailEt.getText().toString();

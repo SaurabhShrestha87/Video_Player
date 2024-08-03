@@ -18,9 +18,11 @@
 
             <ImageView
                 android:id="@+id/close"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/default_margin"
+                android:layout_marginHorizontal="@dimen/half_default_margin"
+                android:background="@drawable/lb_selectable_item_rounded_rect"
+                android:scaleType="center"
                 android:src="@drawable/ic_close_up" />
 
             <TextView
@@ -35,9 +37,11 @@
 
             <ImageView
                 android:id="@+id/next"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/default_margin"
+                android:layout_marginHorizontal="@dimen/half_default_margin"
+                android:background="@drawable/lb_selectable_item_rounded_rect"
+                android:scaleType="center"
                 android:src="@drawable/ic_check_large"
                 android:tint="?attr/colorControlNormal"
                 app:tint="?attr/colorControlNormal" />
@@ -48,8 +52,7 @@
             android:id="@+id/pin_lyt_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/set_pin"
@@ -109,6 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:background="@drawable/lb_selectable_item_rounded_rect"
                     android:gravity="center"
                     android:text="Forgot"
                     android:textColor="?attr/font_default" />
@@ -140,35 +144,35 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:id="@+id/email_lyt_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
+                android:id="@+id/email_pass_preview_tv"
                 style="@style/VLC.TextViewDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Your PIN is 1111"
-                android:textAlignment="center"
                 android:layout_margin="20dp"
-                android:textColor="@color/grey50"
-                />
+                android:gravity="center"
+                android:text="@string/your_pin_is_s"
+                android:textAlignment="center"
+                android:textColor="@color/grey50" />
 
             <TextView
-                android:textColor="?attr/colorControlNormal"
-                android:layout_marginBottom="20dp"
-                android:maxLines="2"
-                android:layout_marginHorizontal="50dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginBottom="20dp"
                 android:gravity="center"
+                android:maxLines="2"
                 android:text="Add an email to prevent you forgetting the PIN"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="?attr/colorControlNormal"
+                android:textSize="18sp" />
 
 
             <RelativeLayout
@@ -194,20 +198,22 @@
                 <ImageView
                     android:id="@+id/clear_btn"
                     android:layout_width="20dp"
-                    android:elevation="2"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
                     android:layout_marginEnd="15dp"
-                    android:src="@drawable/ic_close_up"/>
+                    android:src="@drawable/ic_close_up"
+                    android:visibility="gone" />
 
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/email_input_auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_margin="20dp"
+                android:background="@drawable/lb_selectable_item_rounded_rect"
+                android:gravity="center"
                 android:src="@drawable/ic_close_up"
                 android:text="Input email automatically"
                 android:textColor="?attr/colorPrimary"
