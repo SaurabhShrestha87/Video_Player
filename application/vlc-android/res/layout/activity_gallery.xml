@@ -9,21 +9,12 @@
         android:animateLayoutChanges="true"
         tools:context=".GalleryActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <TextView
+            style="@style/VLC.TextViewTitle"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:fitsSystemWindows="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="LOADING..." />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnImportFiles"
@@ -32,6 +23,7 @@
             android:layout_gravity="top|end"
             android:contentDescription="@string/gallery_import_files"
             android:tint="@color/grey50"
+            android:visibility="gone"
             app:layout_behavior="com.video.offline.videoplayer.gui.helpers.FloatingActionButtonBehavior"
             app:layout_constraintBottom_toTopOf="@+id/btnAddFolder"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +37,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/gallery_add_folder"
             android:tint="@color/grey50"
+            android:visibility="gone"
             app:layout_behavior="com.video.offline.videoplayer.gui.helpers.FloatingActionButtonBehavior"
             app:layout_constraintBottom_toTopOf="@+id/lLSelectionButtons"
             app:layout_constraintEnd_toEndOf="parent"

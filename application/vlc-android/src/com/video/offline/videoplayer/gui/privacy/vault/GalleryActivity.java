@@ -3,13 +3,10 @@ package com.video.offline.videoplayer.gui.privacy.vault;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.icu.text.DecimalFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -17,11 +14,8 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.video.offline.videoplayer.R;
@@ -38,12 +32,14 @@ import com.video.offline.videoplayer.gui.privacy.vault.utils.Settings;
 import com.video.offline.videoplayer.gui.privacy.vault.utils.Toaster;
 import com.video.offline.videoplayer.gui.privacy.vault.viewmodel.GalleryViewModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GalleryActivity extends BaseActivity {
     private static final String TAG = "GalleryActivity";
+
     private static final Object LOCK = new Object();
 
     private GalleryViewModel viewModel;
@@ -64,12 +60,6 @@ public class GalleryActivity extends BaseActivity {
         binding = ActivityGalleryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-            ab.setTitle(R.string.gallery_title);
-        }
         init();
 
         Intent intent = getIntent();
@@ -100,12 +90,7 @@ public class GalleryActivity extends BaseActivity {
         settings = Settings.getInstance(this);
 
         galleryFiles = new ArrayList<>();
-        RecyclerView recyclerView = binding.recyclerView;
-        int spanCount = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 6 : 3;
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, spanCount, RecyclerView.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
         galleryGridAdapter = new GalleryGridAdapter(this, galleryFiles, true, true);
-        recyclerView.setAdapter(galleryGridAdapter);
         galleryGridAdapter.setOnSelectionModeChanged(this::onSelectionModeChanged);
     }
 
@@ -208,7 +193,9 @@ public class GalleryActivity extends BaseActivity {
                     @Override
                     public void onAddedAsRoot() {
                         Toaster.getInstance(GalleryActivity.this).showLong(getString(R.string.gallery_added_folder, FileStuff.getFilenameWithPathFromUri(uri)));
-                        addDirectory(documentFile.getUri());
+//                        addDirectory(documentFile.getUri());
+                        GalleryFile galleryFile1 = GalleryFile.asDirectory(documentFile.getUri(), null);
+                        goNext(galleryFile1, false, null);
                     }
 
                     @Override
@@ -274,7 +261,19 @@ public class GalleryActivity extends BaseActivity {
                     settings.removeGalleryDirectory(uri);
                 }
             }
-            addDirectories(uriFiles);
+//            addDirectories(uriFiles);
+
+            runOnUiThread(() -> {
+                synchronized (LOCK) {
+
+                    if (!uriFiles.isEmpty()) {
+                        goNextWithDirectory(uriFiles);
+                    } else {
+                        showAddFolderDialog();
+                    }
+                    setLoading(false);
+                }
+            });
         }).start();
     }
 
@@ -360,27 +359,25 @@ public class GalleryActivity extends BaseActivity {
     }
 
     private void addDirectory(Uri directoryUri) {
-        List<GalleryFile> galleryFiles = FileStuff.getFilesInFolder(this, directoryUri);
-
         synchronized (LOCK) {
             this.galleryFiles.add(0, GalleryFile.asDirectory(directoryUri, galleryFiles));
             galleryGridAdapter.notifyItemInserted(0);
         }
     }
 
-    private void refreshDirectory(GalleryFile dir) {
-        List<GalleryFile> found = FileStuff.getFilesInFolder(this, dir.getUri());
-        int pos = galleryFiles.indexOf(dir);
-        if (pos >= 0) {
-            dir.setFilesInDirectory(found);
-            galleryGridAdapter.notifyItemChanged(pos);
-        }
+    private void goNextWithDirectory(@NonNull List<Uri> directories) {
+        GalleryFile galleryFile1 = GalleryFile.asDirectory(directories.get(0), null);
+        goNext(galleryFile1, false, null);
     }
 
     private void addDirectories(@NonNull List<Uri> directories) {
+        GalleryFile galleryFile1 = GalleryFile.asDirectory(directories.get(0), null);
+        goNext(galleryFile1, false, null);
         for (int i = 0; i < directories.size(); i++) {
             Uri uri = directories.get(i);
             GalleryFile galleryFile = GalleryFile.asDirectory(uri, null);
+            goNext(galleryFile, false, null);
+
             runOnUiThread(() -> {
                 synchronized (LOCK) {
                     this.galleryFiles.add(galleryFile);
@@ -404,6 +401,19 @@ public class GalleryActivity extends BaseActivity {
             }
             setLoading(false);
         });
+    }
+
+    private void goNext(GalleryFile galleryFile, boolean isRootDir, String nestedPath) {
+        Intent intent = new Intent(this, GalleryDirectoryActivity.class);
+        if (isRootDir) {
+            intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, DocumentFile.fromTreeUri(this, galleryFile.getUri()).getUri().toString());
+        } else if (nestedPath != null) {
+            intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString()).putExtra(GalleryDirectoryActivity.EXTRA_NESTED_PATH, nestedPath + "/" + new File(galleryFile.getUri().getPath()).getName());
+        } else {
+            intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString());
+        }
+        this.startActivity(intent);
+        finish();
     }
 
     private void showAddFolderDialog() {
@@ -432,27 +442,6 @@ public class GalleryActivity extends BaseActivity {
         alertDialog.show();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
-        } else if (id == R.id.edit_included_folders) {
-            Dialogs.showEditIncludedFolders(this, settings, selectedToRemove -> {
-                settings.removeGalleryDirectories(selectedToRemove);
-                Toaster.getInstance(this).showLong(getResources().getQuantityString(R.plurals.edit_included_removed, selectedToRemove.size(), selectedToRemove.size()));
-                findFolders();
-            });
-        } else if (id == R.id.reset_password) {
-            Intent intent = new Intent(this, LaunchActivity.class);
-            intent.putExtra("reset", true);
-            startActivity(intent);
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void lock() {
         Password.lock(this, settings);
         finish();
@@ -470,29 +459,6 @@ public class GalleryActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (galleryFiles != null && galleryGridAdapter != null && !galleryFiles.isEmpty()) {
-            synchronized (LOCK) {
-                GridLayoutManager lm = (GridLayoutManager) binding.recyclerView.getLayoutManager();
-                if (lm != null) {
-                    int firstVisiblePosition = lm.findFirstVisibleItemPosition();
-                    int lastVisibleItemPosition = lm.findLastVisibleItemPosition();
-                    if (firstVisiblePosition != RecyclerView.NO_POSITION && lastVisibleItemPosition != RecyclerView.NO_POSITION) {
-                        for (int i = firstVisiblePosition; i <= lastVisibleItemPosition; i++) {
-                            if (i >= 0 && i < galleryFiles.size()) {
-                                GalleryFile galleryFile = galleryFiles.get(i);
-                                if (!galleryFile.isAllFolder() && galleryFile.isDirectory()) {
-                                    refreshDirectory(galleryFile);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -512,11 +478,5 @@ public class GalleryActivity extends BaseActivity {
             }
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_gallery, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 }

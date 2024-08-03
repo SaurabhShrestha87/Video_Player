@@ -3,9 +3,11 @@ package com.video.offline.videoplayer.gui.privacy.vault;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.icu.text.DecimalFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +16,10 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,6 +29,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.video.offline.videoplayer.R;
 import com.video.offline.videoplayer.databinding.ActivityGalleryDirectoryBinding;
+import com.video.offline.videoplayer.gui.privacy.lock.LockStore;
 import com.video.offline.videoplayer.gui.privacy.vault.adapters.GalleryGridAdapter;
 import com.video.offline.videoplayer.gui.privacy.vault.adapters.GalleryPagerAdapter;
 import com.video.offline.videoplayer.gui.privacy.vault.data.GalleryFile;
@@ -32,6 +37,7 @@ import com.video.offline.videoplayer.gui.privacy.vault.encryption.Encryption;
 import com.video.offline.videoplayer.gui.privacy.vault.encryption.Password;
 import com.video.offline.videoplayer.gui.privacy.vault.exception.InvalidPasswordException;
 import com.video.offline.videoplayer.gui.privacy.vault.interfaces.IOnDirectoryAdded;
+import com.video.offline.videoplayer.gui.privacy.vault.interfaces.IOnProgress;
 import com.video.offline.videoplayer.gui.privacy.vault.utils.Dialogs;
 import com.video.offline.videoplayer.gui.privacy.vault.utils.FileStuff;
 import com.video.offline.videoplayer.gui.privacy.vault.utils.Settings;
@@ -52,9 +58,9 @@ public class GalleryDirectoryActivity extends BaseActivity {
     private static final String TAG = "GalleryDirectoryActivity";
     private static final Object LOCK = new Object();
     private static final int MIN_FILES_FOR_FAST_SCROLL = 60;
-
+    private LockStore lockStore;
     private ActivityGalleryDirectoryBinding binding;
-    private GalleryDirectoryViewModel viewModel;
+    private GalleryDirectoryViewModel directoryViewModel;
 
     private GalleryGridAdapter galleryGridAdapter;
     private GalleryPagerAdapter galleryPagerAdapter;
@@ -69,13 +75,15 @@ public class GalleryDirectoryActivity extends BaseActivity {
 
     private int foundFiles = 0, foundFolders = 0;
 
+    private boolean cancelTask = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         binding = ActivityGalleryDirectoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        lockStore = LockStore.getInstance(this);
         Bundle extras = getIntent().getExtras();
         currentDirectory = null;
         currentDocumentDirectory = null;
@@ -114,10 +122,10 @@ public class GalleryDirectoryActivity extends BaseActivity {
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
-            ab.setTitle(isAllFolder ? getString(R.string.gallery_all) : FileStuff.getFilenameFromUri(currentDirectory, false));
+            ab.setTitle(getString(R.string.gallery_title));
         }
 
-        viewModel = new ViewModelProvider(this).get(GalleryDirectoryViewModel.class);
+        directoryViewModel = new ViewModelProvider(this).get(GalleryDirectoryViewModel.class);
 
         init();
     }
@@ -125,6 +133,16 @@ public class GalleryDirectoryActivity extends BaseActivity {
     private void setLoading(boolean loading) {
         binding.cLLoading.findViewById(R.id.cLLoading).setVisibility(loading ? View.VISIBLE : View.GONE);
         binding.cLLoading.findViewById(R.id.txt_progress).setVisibility(View.GONE);
+    }
+
+    private void setLoadingProgress(int progress, int total, String doneMB, String totalMB, int percentageDone) {
+        binding.cLLoading.findViewById(R.id.cLLoading).setVisibility(View.VISIBLE);
+        if (total > 0) {
+            ((TextView) binding.cLLoading.findViewById(R.id.txt_progress)).setText(getString(R.string.gallery_importing_progress, progress, total, doneMB, totalMB, percentageDone));
+            binding.cLLoading.findViewById(R.id.txt_progress).setVisibility(View.VISIBLE);
+        } else {
+            binding.cLLoading.findViewById(R.id.txt_progress).setVisibility(View.GONE);
+        }
     }
 
     private void setLoadingWithProgress(int progress, int failed, int total, int stringId) {
@@ -155,7 +173,7 @@ public class GalleryDirectoryActivity extends BaseActivity {
             setupRecycler();
             setClickListeners();
 
-            if (!viewModel.isInitialised()) {
+            if (!directoryViewModel.isInitialised()) {
                 if (isAllFolder) {
                     findAllFiles();
                 } else {
@@ -170,6 +188,108 @@ public class GalleryDirectoryActivity extends BaseActivity {
 
     private void setClickListeners() {
         binding.btnDeleteFiles.setOnClickListener(v -> Dialogs.showConfirmationDialog(this, getString(R.string.dialog_delete_files_title), getResources().getQuantityString(R.plurals.dialog_delete_files_message, galleryGridAdapter.getSelectedFiles().size()), (dialog, which) -> deleteSelectedFiles()));
+        binding.btnImportFiles.setOnClickListener(v -> showImportOverlay(true));
+        binding.btnImportImages.setOnClickListener(v -> {
+            FileStuff.pickImageFiles(activityLauncher, result -> onImportImagesOrVideos(result.getData()));
+            showImportOverlay(false);
+        });
+        binding.btnImportVideos.setOnClickListener(v -> {
+            FileStuff.pickVideoFiles(activityLauncher, result -> onImportImagesOrVideos(result.getData()));
+            showImportOverlay(false);
+        });
+        binding.importChooseOverlay.setOnClickListener(v -> showImportOverlay(false));
+    }
+
+    private void onImportImagesOrVideos(@Nullable Intent data) {
+        if (data != null) {
+            List<DocumentFile> documentFiles = FileStuff.getDocumentsFromDirectoryResult(this, data);
+            if (!documentFiles.isEmpty()) {
+                importFiles(documentFiles);
+            }
+        }
+    }
+
+    private void importFiles(List<DocumentFile> documentFiles) {
+        Dialogs.showImportGalleryChooseDestinationDialog(this, settings, documentFiles.size(), new Dialogs.IOnDirectorySelected() {
+            @Override
+            public void onDirectorySelected(@NonNull DocumentFile directory, boolean deleteOriginal) {
+                importToDirectory(documentFiles, directory, deleteOriginal);
+            }
+
+            @Override
+            public void onOtherDirectory() {
+                Toast.makeText(GalleryDirectoryActivity.this, "CANNOT CREATE ADDITIONAL DIRECTORY!", Toast.LENGTH_SHORT).show();
+//                viewModel.setFilesToAdd(documentFiles);
+//                binding.btnAddFolder.performClick();
+            }
+        });
+    }
+
+    private void importToDirectory(@NonNull List<DocumentFile> documentFiles, @NonNull DocumentFile directory, boolean deleteOriginal) {
+        new Thread(() -> {
+            double totalBytes = 0;
+            for (DocumentFile file : documentFiles) {
+                totalBytes += file.length();
+            }
+            final DecimalFormat decimalFormat = new DecimalFormat("0.00");
+            final String totalMB = decimalFormat.format(totalBytes / 1000000.0);
+            final int[] progress = new int[]{1};
+            final double[] bytesDone = new double[]{0};
+            final long[] lastPublish = {0};
+            double finalTotalSize = totalBytes;
+            final IOnProgress onProgress = progress1 -> {
+                if (System.currentTimeMillis() - lastPublish[0] > 20) {
+                    lastPublish[0] = System.currentTimeMillis();
+                    runOnUiThread(() -> setLoadingProgress(progress[0], documentFiles.size(), decimalFormat.format((bytesDone[0] + progress1) / 1000000.0), totalMB, (int) Math.round((bytesDone[0] + progress1) / finalTotalSize * 100.0)));
+                }
+            };
+            for (DocumentFile file : documentFiles) {
+                if (cancelTask) {
+                    cancelTask = false;
+                    break;
+                }
+                Pair<Boolean, Boolean> imported = new Pair<>(false, false);
+                try {
+                    imported = Encryption.importFileToDirectory(this, file, directory, settings, onProgress);
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                }
+                progress[0]++;
+                bytesDone[0] += file.length();
+                if (!imported.first) {
+                    progress[0]--;
+                    runOnUiThread(() -> Toaster.getInstance(this).showLong(getString(R.string.gallery_importing_error, file.getName())));
+                } else if (!imported.second) {
+                    runOnUiThread(() -> Toaster.getInstance(this).showLong(getString(R.string.gallery_importing_error_no_thumb, file.getName())));
+                }
+                if (deleteOriginal && imported.first) {
+                    file.delete();
+                }
+            }
+            runOnUiThread(() -> {
+                Toaster.getInstance(GalleryDirectoryActivity.this).showLong(getString(R.string.gallery_importing_done, progress[0] - 1));
+                setLoading(false);
+            });
+            settings.addGalleryDirectory(directory.getUri(), null);
+            synchronized (LOCK) {
+                for (int i = 0; i < directoryViewModel.getGalleryFiles().size(); i++) {
+                    GalleryFile g = directoryViewModel.getGalleryFiles().get(i);
+                    if (g.getUri() != null && g.getUri().equals(directory.getUri())) {
+                        List<GalleryFile> galleryFiles = directoryViewModel.getGalleryFiles();
+                        FileStuff.getFilesInFolder(this, directory.getUri());
+                        g.setFilesInDirectory(galleryFiles);
+                        int finalI = i;
+                        GalleryFile removed = galleryFiles.remove(finalI);
+                        galleryFiles.add(0, removed);
+                        runOnUiThread(() -> {
+                            galleryGridAdapter.notifyItemMoved(finalI, 0);
+                            galleryGridAdapter.notifyItemChanged(0);
+                        });
+                        break;
+                    }
+                }
+            }
+        }).start();
     }
 
     public void onSelectionChanged(int selected) {
@@ -221,7 +341,7 @@ public class GalleryDirectoryActivity extends BaseActivity {
                 runOnUiThread(() -> {
                     while (!positionsDeleted.isEmpty()) {
                         int pos = positionsDeleted.remove(positionsDeleted.size() - 1);
-                        viewModel.getGalleryFiles().remove(pos);
+                        directoryViewModel.getGalleryFiles().remove(pos);
                         galleryGridAdapter.notifyItemRemoved(pos);
                         galleryPagerAdapter.notifyItemRemoved(pos);
                     }
@@ -241,7 +361,7 @@ public class GalleryDirectoryActivity extends BaseActivity {
         FileStuff.deleteFile(this, file.getNoteUri());
         if (deleted) {
             deletedCount.addAndGet(1);
-            int i = viewModel.getGalleryFiles().indexOf(file);
+            int i = directoryViewModel.getGalleryFiles().indexOf(file);
             if (i >= 0) {
                 positionsDeleted.add(i);
             }
@@ -252,15 +372,15 @@ public class GalleryDirectoryActivity extends BaseActivity {
     }
 
     private void setupRecycler() {
-        if (viewModel.isInitialised()) {
-            binding.recyclerView.setFastScrollEnabled(viewModel.getGalleryFiles().size() > MIN_FILES_FOR_FAST_SCROLL);
+        if (directoryViewModel.isInitialised()) {
+            binding.recyclerView.setFastScrollEnabled(directoryViewModel.getGalleryFiles().size() > MIN_FILES_FOR_FAST_SCROLL);
         } else {
             binding.recyclerView.setFastScrollEnabled(false);
         }
         int spanCount = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ? 6 : 3;
         RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(spanCount, RecyclerView.VERTICAL);
         binding.recyclerView.setLayoutManager(layoutManager);
-        galleryGridAdapter = new GalleryGridAdapter(this, viewModel.getGalleryFiles(), settings.showFilenames(), false);
+        galleryGridAdapter = new GalleryGridAdapter(this, directoryViewModel.getGalleryFiles(), settings.showFilenames(), false);
         galleryGridAdapter.setNestedPath(nestedPath);
         galleryGridAdapter.setOnFileDeleted(pos -> galleryPagerAdapter.notifyItemRemoved(pos));
         binding.recyclerView.setAdapter(galleryGridAdapter);
@@ -279,7 +399,7 @@ public class GalleryDirectoryActivity extends BaseActivity {
     }
 
     private void setupViewpager() {
-        galleryPagerAdapter = new GalleryPagerAdapter(this, viewModel.getGalleryFiles(), pos -> galleryGridAdapter.notifyItemRemoved(pos), currentDocumentDirectory, isAllFolder, nestedPath);
+        galleryPagerAdapter = new GalleryPagerAdapter(this, directoryViewModel.getGalleryFiles(), pos -> galleryGridAdapter.notifyItemRemoved(pos), currentDocumentDirectory, isAllFolder, nestedPath);
         binding.viewPager.setAdapter(galleryPagerAdapter);
         //Log.e(TAG, "setupViewpager: " + viewModel.getCurrentPosition() + " " + viewModel.isFullscreen());
         binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -287,18 +407,18 @@ public class GalleryDirectoryActivity extends BaseActivity {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 binding.recyclerView.scrollToPosition(position);
-                viewModel.setCurrentPosition(position);
+                directoryViewModel.setCurrentPosition(position);
             }
         });
         binding.viewPager.postDelayed(() -> {
-            binding.viewPager.setCurrentItem(viewModel.getCurrentPosition(), false);
-            showViewpager(viewModel.isViewpagerVisible(), viewModel.getCurrentPosition(), false);
+            binding.viewPager.setCurrentItem(directoryViewModel.getCurrentPosition(), false);
+            showViewpager(directoryViewModel.isViewpagerVisible(), directoryViewModel.getCurrentPosition(), false);
         }, 200);
     }
 
     private void showViewpager(boolean show, int pos, boolean animate) {
         //Log.e(TAG, "showViewpager: " + show + " " + pos);
-        viewModel.setViewpagerVisible(show);
+        directoryViewModel.setViewpagerVisible(show);
         galleryPagerAdapter.showPager(show);
         if (show) {
             binding.viewPager.setVisibility(View.VISIBLE);
@@ -329,10 +449,10 @@ public class GalleryDirectoryActivity extends BaseActivity {
                     binding.recyclerView.setFastScrollEnabled(true);
                 }
                 synchronized (LOCK) {
-                    if (viewModel.isInitialised()) {
+                    if (directoryViewModel.isInitialised()) {
                         return;
                     }
-                    viewModel.setInitialised(galleryFiles);
+                    directoryViewModel.setInitialised(galleryFiles);
                     galleryGridAdapter.notifyItemRangeInserted(0, galleryFiles.size());
                     galleryPagerAdapter.notifyItemRangeInserted(0, galleryFiles.size());
                 }
@@ -347,9 +467,9 @@ public class GalleryDirectoryActivity extends BaseActivity {
                         if (found.isEmpty()) {
                             runOnUiThread(() -> {
                                 synchronized (LOCK) {
-                                    int i1 = viewModel.getGalleryFiles().indexOf(g);
+                                    int i1 = directoryViewModel.getGalleryFiles().indexOf(g);
                                     if (i1 >= 0) {
-                                        viewModel.getGalleryFiles().remove(i1);
+                                        directoryViewModel.getGalleryFiles().remove(i1);
                                         galleryGridAdapter.notifyItemRemoved(i1);
                                         galleryPagerAdapter.notifyItemRemoved(i1);
                                     }
@@ -472,10 +592,10 @@ public class GalleryDirectoryActivity extends BaseActivity {
                 if (files.size() > MIN_FILES_FOR_FAST_SCROLL) {
                     binding.recyclerView.setFastScrollEnabled(true);
                 }
-                if (viewModel.isInitialised()) {
+                if (directoryViewModel.isInitialised()) {
                     return;
                 }
-                viewModel.setInitialised(files);
+                directoryViewModel.setInitialised(files);
                 galleryGridAdapter.notifyItemRangeInserted(0, files.size());
                 galleryPagerAdapter.notifyItemRangeInserted(0, files.size());
             });
@@ -521,34 +641,6 @@ public class GalleryDirectoryActivity extends BaseActivity {
             galleryPagerAdapter.releasePlayers();
         }
         super.onDestroy();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
-        } else if (id == R.id.lock) {
-            lock();
-            return true;
-        } else if (id == R.id.toggle_filename) {
-            settings.setShowFilenames(galleryGridAdapter.toggleFilenames());
-            return true;
-        } else if (id == R.id.select_all) {
-            galleryGridAdapter.selectAll();
-            return true;
-        } else if (id == R.id.export_selected) {
-            exportSelected();
-            return true;
-        } else if (id == R.id.copy_selected) {
-            copySelected();
-            return true;
-        } else if (id == R.id.move_selected) {
-            moveSelected();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void lock() {
@@ -698,9 +790,9 @@ public class GalleryDirectoryActivity extends BaseActivity {
                         }
                         synchronized (LOCK) {
                             for (GalleryFile galleryFile : removed) {
-                                int index = viewModel.getGalleryFiles().indexOf(galleryFile);
+                                int index = directoryViewModel.getGalleryFiles().indexOf(galleryFile);
                                 if (index >= 0) {
-                                    viewModel.getGalleryFiles().remove(index);
+                                    directoryViewModel.getGalleryFiles().remove(index);
                                     galleryGridAdapter.notifyItemRemoved(index);
                                     galleryPagerAdapter.notifyItemRemoved(index);
                                 }
@@ -752,16 +844,64 @@ public class GalleryDirectoryActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.menu_gallery_directory, menu);
+        menu.findItem(R.id.unlock_with_fingerprint).setChecked(lockStore.isBiometricUnlockEnabled());
         menu.findItem(R.id.toggle_filename).setVisible(!inSelectionMode);
         menu.findItem(R.id.select_all).setVisible(inSelectionMode);
         menu.findItem(R.id.export_selected).setVisible(inSelectionMode);
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void showImportOverlay(boolean show) {
+        binding.cLImportChoose.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        } else if (id == R.id.lock) {
+            lock();
+            return true;
+        } else if (id == R.id.toggle_filename) {
+            settings.setShowFilenames(galleryGridAdapter.toggleFilenames());
+            return true;
+        } else if (id == R.id.select_all) {
+            galleryGridAdapter.selectAll();
+            return true;
+        } else if (id == R.id.export_selected) {
+            exportSelected();
+            return true;
+        } else if (id == R.id.copy_selected) {
+            copySelected();
+            return true;
+        } else if (id == R.id.move_selected) {
+            moveSelected();
+            return true;
+        } else if (id == R.id.edit_included_folders) {
+            Dialogs.showEditIncludedFolders(this, settings, selectedToRemove -> {
+                settings.removeGalleryDirectories(selectedToRemove);
+                // TODO
+                Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+                Toaster.getInstance(this).showLong(getResources().getQuantityString(R.plurals.edit_included_removed, selectedToRemove.size(), selectedToRemove.size()));
+            });
+        } else if (id == R.id.reset_password) {
+            Intent intent = new Intent(this, LaunchActivity.class);
+            intent.putExtra("reset", true);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.unlock_with_fingerprint) {
+            lockStore.setBiometricUnlockEnabled(!lockStore.isBiometricUnlockEnabled());
+            item.setChecked(lockStore.isBiometricUnlockEnabled());
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onBackPressed() {
-        if (viewModel.isViewpagerVisible()) {
-            showViewpager(false, viewModel.getCurrentPosition(), true);
+        if (directoryViewModel.isViewpagerVisible()) {
+            showViewpager(false, directoryViewModel.getCurrentPosition(), true);
         } else if (isExporting) {
             isExporting = false;
         } else if (binding.cLLoading.findViewById(R.id.cLLoading).getVisibility() == View.VISIBLE) {

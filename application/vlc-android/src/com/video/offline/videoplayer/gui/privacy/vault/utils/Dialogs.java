@@ -149,13 +149,16 @@ public class Dialogs {
     public static void showEditIncludedFolders(Context context, @NonNull Settings settings, @NonNull IOnEditedIncludedFolders onEditedIncludedFolders) {
         List<Uri> directories = settings.getGalleryDirectoriesAsUri(false);
         String[] names = new String[directories.size()];
+        boolean[] checked = new boolean[directories.size()];
         for (int i = 0; i < names.length; i++) {
             names[i] = FileStuff.getFilenameWithPathFromUri(directories.get(i));
+            checked[i] = true;
         }
         List<Uri> selectedToRemove = new LinkedList<>();
+
         new MaterialAlertDialogBuilder(context)
                 .setTitle(context.getString(R.string.dialog_edit_included_title))
-                .setMultiChoiceItems(names, null, (dialog, which, isChecked) -> {
+                .setMultiChoiceItems(names, checked, (dialog, which, isChecked) -> {
                     if (isChecked) {
                         selectedToRemove.add(directories.get(which));
                     } else {
