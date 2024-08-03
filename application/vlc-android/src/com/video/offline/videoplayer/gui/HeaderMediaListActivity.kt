@@ -242,12 +242,14 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.playlist_option, menu)
         if (!isPlaylist) {
-            menu.findItem(R.id.ml_menu_sortby).isVisible = true
+//            menu.findItem(R.id.ml_menu_sortby).isVisible = true
+            menu.findItem(R.id.ml_menu_sortby).isVisible = false
             val showTrackNumber = menu.findItem(R.id.ml_menu_albums_show_track_numbers)
             showTrackNumber.isVisible = true
             showTrackNumber.isChecked = Settings.showTrackNumber
         }
-        menu.findItem(R.id.ml_menu_sortby).isVisible = viewModel.canSortByName()
+//        menu.findItem(R.id.ml_menu_sortby).isVisible = viewModel.canSortByName()
+        menu.findItem(R.id.ml_menu_sortby).isVisible = false
         menu.findItem(R.id.ml_menu_sortby_filename).isVisible = viewModel.canSortByFileNameName()
         menu.findItem(R.id.ml_menu_sortby_artist_name).isVisible = viewModel.canSortByArtist()
         menu.findItem(R.id.ml_menu_sortby_length).isVisible = viewModel.canSortByDuration()
