@@ -549,7 +549,7 @@
     <string name="removed_from_playlist_anonymous">Tynnwyd yr eitem(au) o\'r rhestr chwarae</string>
     <string name="welcome_title">Croeso i VLC!</string>
     <string name="welcome_subtitle">Y chwaraeydd aml-gyfrwng cod agored ac am ddim</string>
-    <string name="permission_media">Mae ar VLC angen dy ganiatâd i gael at gyfryngau ar dy ddyfais.</string>
+    <string name="permission_media">Mae ar Video Player angen dy ganiatâd i gael at gyfryngau ar dy ddyfais.</string>
     <string name="medialibrary_scan_explanation">Gall VLC sganio dy ddyfais yn awtomatig i drefnu dy gasgliad o gyfryngau.</string>
     <string name="onboarding_theme_title">Gwna dy hun yn gartrefol</string>
     <string name="done">Iawn</string>

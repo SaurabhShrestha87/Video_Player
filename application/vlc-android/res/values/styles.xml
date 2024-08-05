@@ -278,7 +278,9 @@
         <item name="widget_preview_rounded_bg">@drawable/rounded_top_corners_left_background_dark</item>
     </style>
 
+<!--    TODO: Don't need black on onboarding theme! -->
     <style name="Theme.VLC.Onboarding" parent="Theme.VLC.Onboarding.7"/>
+
     <style name="Theme.VLC.Onboarding.7" parent="Theme.VLC.Black">
         <item name="background_default">@color/onboarding_grey</item>
         <item name="tab_unselected_color">@color/grey</item>
@@ -566,7 +568,6 @@
     <style name="VLC.Onboarding.Title" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/urbanist_regular</item>
-        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="KeyboardButton">
@@ -581,7 +582,6 @@
     <style name="VLC.Onboarding.Text" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/urbanist_regular</item>
-        <item name="android:textColor">@color/white_transparent_80</item>
     </style>
 
     <style name="VLC.Onboarding.Button.Next" parent="Widget.MaterialComponents.Button.OutlinedButton">

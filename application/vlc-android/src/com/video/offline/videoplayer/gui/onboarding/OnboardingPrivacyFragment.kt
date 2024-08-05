@@ -49,11 +49,11 @@ class OnboardingPrivacyFragment : OnboardingFragment(), View.OnClickListener {
     }
 
     private fun uncheckAll() {
-        privacyCheckImage.setImageResource(R.drawable.uncheck_circle)
+        privacyCheckImage.setImageResource(R.drawable.circle_uncheck)
     }
 
     private fun checkAll() {
-        privacyCheckImage.setImageResource(R.drawable.check_circle)
+        privacyCheckImage.setImageResource(R.drawable.circle_check)
     }
 
     companion object {

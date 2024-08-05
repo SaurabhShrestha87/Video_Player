@@ -795,7 +795,7 @@
     <string name="removed_from_playlist_anonymous">Item(s) removed from playlist</string>
     <string name="welcome_title">Welcome to Video Player!</string>
     <string name="welcome_subtitle">The free and fast multimedia player</string>
-    <string name="permission_media">Video Player needs your permission to access media on your device</string>
+    <string name="permission_media">Please grant Video player media files access to play Videos.</string>
     <string name="medialibrary_scan_explanation">Video Player can automatically scan your device to organize your media collection.</string>
     <string name="onboarding_theme_title">Make yourself at home</string>
     <string name="done">Done</string>

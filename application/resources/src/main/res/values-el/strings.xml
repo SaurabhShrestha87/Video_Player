@@ -713,7 +713,7 @@
     <string name="removed_from_playlist_anonymous">Το(α) στοιχείο(α) αφαιρέθηκε(αν) από τη λίστα αναπαραγωγής</string>
     <string name="welcome_title">Καλωσήρθατε στον VLC!</string>
     <string name="welcome_subtitle">Τον δωρεάν και ανοιχτού κώδικα αναπαραγωγό πολυμέσων</string>
-    <string name="permission_media">Ο VLC χρειάζεται άδεια για πρόσβαση στα πολυμέσα της συσκευής σας</string>
+    <string name="permission_media">Ο Video Player χρειάζεται άδεια για πρόσβαση στα πολυμέσα της συσκευής σας</string>
     <string name="medialibrary_scan_explanation">Ο VLC μπορεί να σαρώνει την συσκευή σας αυτόματα για να οργανώσει τη συλλογή πολυμέσων σας.</string>
     <string name="onboarding_theme_title">Σαν στο σπίτι σας</string>
     <string name="done">Έτοιμο</string>

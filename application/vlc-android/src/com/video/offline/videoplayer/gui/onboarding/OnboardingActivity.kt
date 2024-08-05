@@ -2,10 +2,9 @@ package com.video.offline.videoplayer.gui.onboarding
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -15,7 +14,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.video.offline.videoplayer.BuildConfig
 import com.video.offline.videoplayer.MediaParsingService
 import com.video.offline.videoplayer.R
-import com.video.offline.videoplayer.gui.MainActivity
 import com.video.offline.videoplayer.gui.helpers.hf.NotificationDelegate.Companion.getNotificationPermission
 import com.video.offline.videoplayer.gui.helpers.hf.StoragePermissionsDelegate.Companion.getStoragePermission
 import com.video.offline.videoplayer.gui.language.LanguageActivity
@@ -33,12 +31,15 @@ import org.videolan.tools.ML_SCAN_ON
 import org.videolan.tools.NOTIFICATION_PERMISSION_ASKED
 import org.videolan.tools.RESULT_RESTART
 import org.videolan.tools.Settings
+import org.videolan.tools.putSingle
 
 const val ONBOARDING_DONE_KEY = "app_onboarding_done"
 
 class OnboardingActivity : AppCompatActivity(), OnboardingFragmentListener {
-    private lateinit var nextButton: Button
+    private lateinit var nextButton: TextView
     private val viewModel: OnboardingViewModel by viewModels()
+    private val preferences by lazy(LazyThreadSafetyMode.NONE) { Settings.getInstance(this) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        viewModel.permissionGranted = Permissions.canReadStorage(applicationContext)
@@ -47,28 +48,17 @@ class OnboardingActivity : AppCompatActivity(), OnboardingFragmentListener {
     }
 
     fun showFragment(fragmentName: FragmentName, backward: Boolean = false) {
-        if (fragmentName == FragmentName.WELCOME) {
-            if (Permissions.canReadStorage(this))
-                showFragment(FragmentName.SCAN)
-            else
-                showFragment(FragmentName.ASK_PERMISSION)
+        if (fragmentName == FragmentName.ASK_PERMISSION) {
+            if (Permissions.canReadStorage(this)) {
+                showFragment(FragmentName.PRIVACY)
+                return
+            }
         }
-
         val fragment =
             supportFragmentManager.getFragment(Bundle(), fragmentName.name) ?: when (fragmentName) {
-                FragmentName.WELCOME -> {
-                    if (Permissions.canReadStorage(this)) {
-                        OnboardingScanningFragment.newInstance()
-                    } else {
-                        OnboardingNoPermissionFragment.newInstance()
-                    }
-                }
-
                 FragmentName.ASK_PERMISSION -> OnboardingPermissionFragment.newInstance()
-                FragmentName.SCAN -> OnboardingScanningFragment.newInstance()
                 FragmentName.NO_PERMISSION -> OnboardingNoPermissionFragment.newInstance()
                 FragmentName.NOTIFICATION_PERMISSION -> OnboardingNotificationPermissionFragment.newInstance()
-                FragmentName.THEME -> OnboardingThemeFragment.newInstance()
                 FragmentName.PRIVACY -> OnboardingPrivacyFragment.newInstance()
             }
         (fragment as OnboardingFragment).onboardingFragmentListener = this
@@ -90,6 +80,12 @@ class OnboardingActivity : AppCompatActivity(), OnboardingFragmentListener {
         findViewById<View>(R.id.skip_button).setOnClickListener { onDone() }
         nextButton = findViewById(R.id.next_button)
         nextButton.setOnClickListener { onNext() }
+        when (fragmentName) {
+            FragmentName.ASK_PERMISSION, FragmentName.NO_PERMISSION, FragmentName.NOTIFICATION_PERMISSION -> nextButton.text =
+                "ALLOW PERMISSION"
+
+            FragmentName.PRIVACY -> nextButton.text = "GET STARTED"
+        }
     }
 
     override fun onDestroy() {
@@ -139,56 +135,51 @@ class OnboardingActivity : AppCompatActivity(), OnboardingFragmentListener {
 
     override fun onNext() {
         when (viewModel.currentFragment) {
-            FragmentName.WELCOME -> if (Permissions.canReadStorage(this)) showFragment(FragmentName.SCAN) else showFragment(
-                FragmentName.ASK_PERMISSION
-            )
-
             FragmentName.ASK_PERMISSION -> if (viewModel.permissionType != PermissionType.NONE && !viewModel.permissionAlreadyAsked) {
                 askPermission()
             } else {
                 showFragment(
-                    if (Permissions.canReadStorage(applicationContext)) FragmentName.SCAN else FragmentName.NO_PERMISSION
+                    if (Permissions.canReadStorage(applicationContext)) {
+                        preferences.putSingle(KEY_MEDIALIBRARY_SCAN, ML_SCAN_ON)
+                        viewModel.scanStorages = true
+                        FragmentName.PRIVACY
+                    } else {
+                        FragmentName.NO_PERMISSION
+                    }
                 )
             }
 
             FragmentName.NO_PERMISSION -> showFragment(
-                if (Permissions.canReadStorage(
-                        applicationContext
-                    )
-                ) FragmentName.SCAN else FragmentName.PRIVACY
+                FragmentName.PRIVACY
             )
 
             FragmentName.NOTIFICATION_PERMISSION -> if (!Permissions.canSendNotifications(
                     applicationContext
                 ) && !viewModel.notificationPermissionAlreadyAsked
-            ) askNotificationPermission() else showFragment(FragmentName.PRIVACY)
-
-            FragmentName.SCAN -> if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S && !Permissions.canSendNotifications(
-                    applicationContext
-                )
-            ) showFragment(FragmentName.NOTIFICATION_PERMISSION) else showFragment(FragmentName.PRIVACY)
+            ) askNotificationPermission() else onDone()
 
             FragmentName.PRIVACY -> {
-                if(viewModel.privacyAccepted) {
-                    showFragment(FragmentName.THEME)
+                if (viewModel.privacyAccepted) {
+                    showFragment(FragmentName.NOTIFICATION_PERMISSION)
                 } else {
-                    Snackbar.make(this.findViewById(android.R.id.content), "Accept Privacy policy", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(
+                        this.findViewById(android.R.id.content),
+                        "Accept Privacy policy",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             }
-
-            else -> onDone()
         }
-        if (viewModel.currentFragment == FragmentName.THEME) nextButton.text =
-            getString(R.string.done)
-    }
-
-    fun manageNextVisibility(visible: Boolean) {
-        nextButton.visibility = if (visible) View.VISIBLE else View.GONE
     }
 }
 
 enum class FragmentName {
-    WELCOME, ASK_PERMISSION, SCAN, NO_PERMISSION, NOTIFICATION_PERMISSION, PRIVACY, THEME
+    //    WELCOME,
+    ASK_PERMISSION,
+
+    //    SCAN,
+    NO_PERMISSION, NOTIFICATION_PERMISSION, PRIVACY,
+//    THEME
 }
 
 fun Activity.startOnboarding() = startActivityForResult(

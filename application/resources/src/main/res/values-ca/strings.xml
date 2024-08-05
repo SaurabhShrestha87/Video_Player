@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
         tools:ignore="MissingTranslation">
 
-    <!-- Main VLC Interface -->
+    <!-- Main Video Player Interface -->
     <string name="ok">D\'acord</string>
     <string name="cancel">Cancel·la</string>
     <string name="other">Altres</string>
@@ -47,7 +47,7 @@
     <string name="play_as_video">Reprodueix com a vídeo</string>
     <string name="return_to_video">Feu un toc llarg a la portada per recuperar el vídeo</string>
     <string name="video_app_switch_title">Mode en segon pla/pantalla sobreposada</string>
-    <string name="video_app_switch_summary">Seleccioneu el comportament del VLC en canviar a una altra aplicació, quan s\'està reproduint un vídeo.</string>
+    <string name="video_app_switch_summary">Seleccioneu el comportament del Video Player en canviar a una altra aplicació, quan s\'està reproduint un vídeo.</string>
     <string name="play_pip_title">Reprodueix vídeos en mode PiP</string>
     <string name="play_as_audio_background">Reprodueix vídeos al fons</string>
     <string name="append">Afegeix a la cua de reproducció</string>
@@ -210,7 +210,7 @@
     <string name="streams">Fluxos de dades</string>
     <string name="open_mrl_dialog_msg">Introdueix l\'adreça de xarxa: p. ex. http://, mms:// o rtsp://</string>
     <string name="encountered_error_title">Error de reproducció</string>
-    <string name="encountered_error_message">VLC ha trobat un error en aquest suport.\nActualitzeu la llibreria multimèdia.</string>
+    <string name="encountered_error_message">Video Player ha trobat un error en aquest suport.\nActualitzeu la llibreria multimèdia.</string>
     <string name="invalid_location">No es pot reproduir la ruta %1$s.</string>
     <string name="missing_location">Aquest element multimèdia no es pot reproduir perquè s\'ubica en un dispositiu no disponible.</string>
 
@@ -271,12 +271,12 @@
     <string name="hold_to_stop">Mantingueu premut per aturar</string>
 
     <!-- About -->
-    <string name="app_name_full">VLC per a l\'Android</string>
+    <string name="app_name_full">Video Player per a l\'Android</string>
     <string name="revision">Revisió</string>
     <string name="about">En quant a</string>
-    <string name="about_vlc_text">VLC per a l\'Android™ és una versió portada del reproductor multimèdia VLC, el popular reproductor de codi obert. La versió per l\'Android™ permet llegir tota mena de fitxers i fluxos de xarxa.</string>
+    <string name="about_vlc_text">Video Player per a l\'Android™ és una versió portada del reproductor multimèdia Video Player, el popular reproductor de codi obert. La versió per l\'Android™ permet llegir tota mena de fitxers i fluxos de xarxa.</string>
     <string name="authors">Autors</string>
-    <string name="vlc_authors">i autors del VLC</string>
+    <string name="vlc_authors">i autors del Video Player</string>
     <string name="is_compiled_by">Compilat per</string>
     <string name="sources">Codi font</string>
     <string name="libraries">Biblioteques</string>
@@ -432,8 +432,8 @@
     <string name="replaygain_track">Pista</string>
     <string name="replaygain_album">Àlbum</string>
     <string name="aout">Sortida d\'àudio</string>
-    <string name="aout_summary">Canvia el mètode que VLC usa per l\'àudio de sortida</string>
-    <string name="audio_ducking_title">Baixa el volum del VLC a les notificacions</string>
+    <string name="aout_summary">Canvia el mètode que Video Player usa per l\'àudio de sortida</string>
+    <string name="audio_ducking_title">Baixa el volum del Video Player a les notificacions</string>
     <string name="audio_ducking_summary">Ajuda a sentir les notificacions d\'àudio, instruccions de navegació o la veu de l\'assistent</string>
     <string name="casting_category">Difusió</string>
     <string name="remote_access">Accés remot</string>
@@ -766,7 +766,7 @@
     <string name="removed_from_playlist_anonymous">Ítem(s) eliminats de la llista de reproducció</string>
     <string name="welcome_title">Us donem la benvinguda al VLC!</string>
     <string name="welcome_subtitle">El reproductor multimèdia gratuït i de codi lliure</string>
-    <string name="permission_media">VLC necessita el vostre permís per accedir als arxius multimèdia en aquest dispositiu.</string>
+    <string name="permission_media">Video Player necessita el vostre permís per accedir als arxius multimèdia en aquest dispositiu.</string>
     <string name="medialibrary_scan_explanation">VLC pot cercar automàticament el vostre dispositiu per organitzar la col·lecció de medis</string>
     <string name="onboarding_theme_title">Sentiu-vos com a casa</string>
     <string name="done">Fet</string>

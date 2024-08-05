@@ -728,7 +728,7 @@
     <string name="removed_from_playlist_anonymous">Elementua(k) zerrendatik kenduta</string>
     <string name="welcome_title">Ongi etorri VLC-ra!</string>
     <string name="welcome_subtitle">Multimedia-erreproduzigailu libre eta doakoa</string>
-    <string name="permission_media">VLC-k zure baimena behar du zure gailuko multimedia atzitzeko</string>
+    <string name="permission_media">Video Player-k zure baimena behar du zure gailuko multimedia atzitzeko</string>
     <string name="medialibrary_scan_explanation">VLC-k automatikoki eskaneatu dezake zure gailua zure multimedia bilduma antolatzeko</string>
     <string name="onboarding_theme_title">Jarri zaitez eroso</string>
     <string name="done">Egina</string>

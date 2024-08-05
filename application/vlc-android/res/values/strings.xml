@@ -78,7 +78,7 @@
     <string name="allow_permissions">Allow Permissions</string>
     <string name="welcome_to">Welcome to</string>
     <string name="privacy_welcome_onboarding_desc">Open your video player app and start playing the video you want to watch</string>
-    <string name="privacy_text">By starting, you accept our <a href="https://go.test.com" style="color:#017343"> Privacy Statement</a> and <a href="https://go.test.com" style="color:#017343">Privacy Policy.</a></string>
+    <string name="privacy_text">By starting, you accept our <a href="https://go.test.com" style="color:#017343">Term of Use</a> and <a href="https://go.test.com" style="color:#017343">Privacy Policy.</a></string>
     <string name="view_mode">View Mode</string>
     <string name="your_pin_is_s">Your PIN is %s</string>
     <string name="cleaner_clean_up_size">Clean up %s</string>

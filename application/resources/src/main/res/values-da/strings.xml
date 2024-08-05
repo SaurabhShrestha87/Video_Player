@@ -702,7 +702,7 @@
     <string name="removed_from_playlist_anonymous">Emne(r) fjernet fra spilleliste</string>
     <string name="welcome_title">Velkommen til VLC!</string>
     <string name="welcome_subtitle">Den frie og open source multimedieafspiller</string>
-    <string name="permission_media">VLC har brug for din tilladelse til at tilgå medier på din enhed</string>
+    <string name="permission_media">Video Player har brug for din tilladelse til at tilgå medier på din enhed</string>
     <string name="medialibrary_scan_explanation">VLC kan automatisk skanne din enhed for at organisere din mediesamling.</string>
     <string name="onboarding_theme_title">Gør dit selv tilrette</string>
     <string name="done">Færdig</string>

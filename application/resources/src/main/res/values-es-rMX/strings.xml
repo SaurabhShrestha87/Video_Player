@@ -622,7 +622,7 @@
     <string name="removed_from_playlist_anonymous">Elemento(s) borrados de la lista</string>
     <string name="welcome_title">¡Bienvenido a VLC!</string>
     <string name="welcome_subtitle">El reproductor multimedia libre y de código abierto</string>
-    <string name="permission_media">VLC requiere permiso para acceder a medios del dispositivo</string>
+    <string name="permission_media">Video Player requiere permiso para acceder a medios del dispositivo</string>
     <string name="medialibrary_scan_explanation">VLC puede escanear medios automáticamente su dispositvo para organizar su colección</string>
     <string name="onboarding_theme_title">Siéntete como en casa</string>
     <string name="done">Listo</string>
