@@ -24,6 +24,7 @@
 package com.video.offline.videoplayer.util
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
 import android.content.res.AssetManager
 import android.database.Cursor
@@ -36,6 +37,9 @@ import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.media.MediaUtils
 import kotlinx.coroutines.*
 import org.videolan.libvlc.util.AndroidUtil
 import org.videolan.medialibrary.Tools
@@ -45,9 +49,6 @@ import org.videolan.resources.AndroidDevices
 import org.videolan.resources.AppContextProvider
 import org.videolan.resources.util.isExternalStorageManager
 import org.videolan.tools.*
-import com.video.offline.videoplayer.BuildConfig
-import com.video.offline.videoplayer.R
-import com.video.offline.videoplayer.media.MediaUtils
 import java.io.*
 import java.lang.Runnable
 import java.util.*
@@ -63,19 +64,16 @@ object FileUtils {
         fun onResult(success: Boolean)
     }
 
-    fun getFileNameFromPath(filePath: String?) =  filePath?.substringAfterLast('/') ?: ""
+    fun getFileNameFromPath(filePath: String?) = filePath?.substringAfterLast('/') ?: ""
 
     fun getParent(path: String?): String? {
-        if (path == null || path == "/")
-            return path
+        if (path == null || path == "/") return path
         var parentPath: String = path
-        if (parentPath.endsWith("/"))
-            parentPath = parentPath.substring(0, parentPath.length - 1)
+        if (parentPath.endsWith("/")) parentPath = parentPath.substring(0, parentPath.length - 1)
         val index = parentPath.lastIndexOf('/')
         if (index > 0) {
             parentPath = parentPath.substring(0, index)
-        } else if (index == 0)
-            parentPath = "/"
+        } else if (index == 0) parentPath = "/"
         return parentPath
     }
 
@@ -83,7 +81,8 @@ object FileUtils {
      * Convert file:// uri from real path to emulated FS path.
      */
     fun convertLocalUri(uri: Uri): Uri {
-        return if (uri.scheme != "file" || !uri.path!!.startsWith("/sdcard")) uri else uri.toString().replace("/sdcard", AndroidDevices.EXTERNAL_PUBLIC_DIRECTORY).toUri()
+        return if (uri.scheme != "file" || !uri.path!!.startsWith("/sdcard")) uri else uri.toString()
+            .replace("/sdcard", AndroidDevices.EXTERNAL_PUBLIC_DIRECTORY).toUri()
     }
 
     @WorkerThread
@@ -91,9 +90,14 @@ object FileUtils {
         var cursor: Cursor? = null
         try {
             val proj = arrayOf(MediaStore.Images.Media.DATA)
-            cursor = AppContextProvider.appContext.contentResolver.query(contentUri, proj, null, null, null)
-            if (cursor == null || cursor.count == 0)
-                return ""
+            cursor = AppContextProvider.appContext.contentResolver.query(
+                contentUri,
+                proj,
+                null,
+                null,
+                null
+            )
+            if (cursor == null || cursor.count == 0) return ""
             val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
             cursor.moveToFirst()
             return Uri.fromFile(File(cursor.getString(columnIndex))).toString()
@@ -112,8 +116,9 @@ object FileUtils {
 
     fun copyHrtfs(context: Context, force: Boolean) {
         AppScope.launch(Dispatchers.IO) {
-            val destinationFolder = context.getDir("vlc",
-                    Context.MODE_PRIVATE).absolutePath + "/.share/hrtfs"
+            val destinationFolder = context.getDir(
+                "vlc", Context.MODE_PRIVATE
+            ).absolutePath + "/.share/hrtfs"
             val am = context.assets
             copyAssetFolder(am, "hrtfs", destinationFolder, force)
         }
@@ -121,15 +126,21 @@ object FileUtils {
 
     fun copyLua(context: Context, force: Boolean) {
         AppScope.launch(Dispatchers.IO) {
-            val destinationFolder = context.getDir("vlc",
-                    Context.MODE_PRIVATE).absolutePath + "/.share/lua"
+            val destinationFolder = context.getDir(
+                "vlc", Context.MODE_PRIVATE
+            ).absolutePath + "/.share/lua"
             val am = context.assets
             copyAssetFolder(am, "lua", destinationFolder, force)
         }
     }
 
     @WorkerThread
-    fun copyAssetFolder(assetManager: AssetManager, fromAssetPath: String, toPath: String, force: Boolean): Boolean {
+    fun copyAssetFolder(
+        assetManager: AssetManager,
+        fromAssetPath: String,
+        toPath: String,
+        force: Boolean,
+    ): Boolean {
         try {
             val files = assetManager.list(fromAssetPath)
             if (files.isNullOrEmpty()) return false
@@ -138,17 +149,11 @@ object FileUtils {
             for (file in files) {
                 res = if (file.contains(".")) {
                     res and copyAsset(
-                        assetManager,
-                        "$fromAssetPath/$file",
-                        "$toPath/$file",
-                        force
+                        assetManager, "$fromAssetPath/$file", "$toPath/$file", force
                     )
                 } else {
                     res and copyAssetFolder(
-                        assetManager,
-                        "$fromAssetPath/$file",
-                        "$toPath/$file",
-                        force
+                        assetManager, "$fromAssetPath/$file", "$toPath/$file", force
                     )
                 }
             }
@@ -161,7 +166,12 @@ object FileUtils {
     }
 
     @WorkerThread
-    private fun copyAsset(assetManager: AssetManager, fromAssetPath: String, toPath: String, force: Boolean): Boolean {
+    private fun copyAsset(
+        assetManager: AssetManager,
+        fromAssetPath: String,
+        toPath: String,
+        force: Boolean,
+    ): Boolean {
         val destFile = File(toPath)
         if (!force && destFile.exists()) return true
         var `in`: InputStream? = null
@@ -199,8 +209,7 @@ object FileUtils {
         if (src.isDirectory) {
             val filesList = src.listFiles()
             dst.mkdirs()
-            for (file in filesList ?: arrayOf())
-                ret = ret and copyFile(file, File(dst, file.name))
+            for (file in filesList ?: arrayOf()) ret = ret and copyFile(file, File(dst, file.name))
         } else if (src.isFile) {
             var inputStream: InputStream? = null
             var out: OutputStream? = null
@@ -227,14 +236,75 @@ object FileUtils {
     }
 
     @WorkerThread
-    fun deleteFile(uri: Uri): Boolean {
-        if (isExternalStorageManager() || !AndroidUtil.isLolliPopOrLater || uri.path!!.startsWith(AndroidDevices.EXTERNAL_PUBLIC_DIRECTORY)) return deleteFile(uri.path)
+    fun renameFile(uri: Uri, newName: String): Boolean {
+        // FIXME: Not working, with contentresolver
+//        if (isExternalStorageManager() || !AndroidUtil.isLolliPopOrLater || uri.path!!.startsWith(
+//                AndroidDevices.EXTERNAL_PUBLIC_DIRECTORY
+//            )
+//        )  {
+//                return  renameFile(uri.path, newName)
+//        }
         val docFile = findFile(uri)
-        if (docFile != null)
-            try {
-                return docFile.delete()
-            } catch (ignored: Exception) {
+        if (docFile != null && docFile.name != null) try {
+            val path = docFile.uri.path
+            val parentPath = path
+            val oldFileName = File(parentPath, docFile.name!!)
+            val newFileName = File(parentPath, newName)
+            return oldFileName.renameTo(newFileName)
+        } catch (ignored: Exception) {
+            Log.e(TAG, "renameFile 4 : $ignored", )
+        }
+        return false
+    }
+
+    @WorkerThread
+    fun renameFile(path: String?, newName: String) =
+        path?.let { renameFile(File(it), newName) } ?: false
+
+    @WorkerThread
+    fun renameFile(file: File, newName: String): Boolean {
+        val renamed: Boolean
+        if (file.isDirectory) {
+            renamed = false
+        } else {
+            val cr = AppContextProvider.appContext.contentResolver
+            val contentValues = ContentValues()
+            contentValues.put(MediaStore.Video.Media.TITLE, newName)
+            contentValues.put(MediaStore.Video.Media.DISPLAY_NAME, newName + file.extension)
+            renamed = try {
+                cr.update(
+                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                    contentValues,
+                    MediaStore.MediaColumns.DATA + "=?",
+                    arrayOf(file.path)
+                ) > 0
+            } catch (ignored: IllegalArgumentException) {
+                // FIXME: GETTING BELOW ERROR..
+//                Movement of content://media/external/video/media which isn't part of well-defined collection not allowed
+                Log.e(TAG, "renameFile Error 1 : $ignored", )
+                false
+            } catch (ignored: SecurityException) {
+                Log.e(TAG, "renameFile Error 2 : $ignored", )
+                false
+            } catch (ex: Exception) {
+                Log.e(TAG, "renameFile Error 3 : $ex", )
+                false
             }
+        }
+        return renamed
+    }
+
+    @WorkerThread
+    fun deleteFile(uri: Uri): Boolean {
+        if (isExternalStorageManager() || !AndroidUtil.isLolliPopOrLater || uri.path!!.startsWith(
+                AndroidDevices.EXTERNAL_PUBLIC_DIRECTORY
+            )
+        ) return deleteFile(uri.path)
+        val docFile = findFile(uri)
+        if (docFile != null) try {
+            return docFile.delete()
+        } catch (ignored: Exception) {
+        }
         return false
     }
 
@@ -252,8 +322,11 @@ object FileUtils {
         } else {
             val cr = AppContextProvider.appContext.contentResolver
             deleted = try {
-                cr.delete(MediaStore.Files.getContentUri("external"),
-                        MediaStore.Files.FileColumns.DATA + "=?", arrayOf(file.path)) > 0
+                cr.delete(
+                    MediaStore.Files.getContentUri("external"),
+                    MediaStore.Files.FileColumns.DATA + "=?",
+                    arrayOf(file.path)
+                ) > 0
             } catch (ignored: IllegalArgumentException) {
                 false
             } catch (ignored: SecurityException) {
@@ -277,12 +350,13 @@ object FileUtils {
 
     private fun asyncRecursiveDelete(fileOrDirectory: File, callback: Callback?) {
         runIO(Runnable {
-            if (!fileOrDirectory.exists() || !fileOrDirectory.canWrite())
-                return@Runnable
+            if (!fileOrDirectory.exists() || !fileOrDirectory.canWrite()) return@Runnable
             val success: Boolean
             if (fileOrDirectory.isDirectory) {
-                for (child in fileOrDirectory.listFiles() ?: arrayOf())
-                    asyncRecursiveDelete(child, null)
+                for (child in fileOrDirectory.listFiles() ?: arrayOf()) asyncRecursiveDelete(
+                    child,
+                    null
+                )
                 success = fileOrDirectory.delete()
             } else {
                 success = deleteFile(fileOrDirectory.path)
@@ -300,7 +374,9 @@ object FileUtils {
     @WorkerThread
     fun canWrite(uri: Uri?): Boolean {
         if (uri == null) return false
-        return if (uri.scheme == "file") canWrite(uri.path) else uri.scheme == "content" && canWrite(getPathFromURI(uri))
+        return if (uri.scheme == "file") canWrite(uri.path) else uri.scheme == "content" && canWrite(
+            getPathFromURI(uri)
+        )
     }
 
     @WorkerThread
@@ -324,15 +400,15 @@ object FileUtils {
     fun findFile(uri: Uri): DocumentFile? {
         uri.path?.let { path ->
             val context = (AppContextProvider.appContext as Context?) ?: return null
-            val treePref = getMediaStorage(uri)?.let { Settings.getInstance(context).getString("tree_uri_$it", null) } ?: return null
+            val treePref = getMediaStorage(uri)?.let {
+                Settings.getInstance(context).getString("tree_uri_$it", null)
+            } ?: return null
             val treeUri = treePref.toUri()
             var documentFile = DocumentFile.fromTreeUri(context, treeUri)
             val parts = path.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             for (i in 3 until parts.size) {
-                if (documentFile != null)
-                    documentFile = documentFile.findFile(parts[i])
-                else
-                    return null
+                if (documentFile != null) documentFile = documentFile.findFile(parts[i])
+                else return null
             }
             return documentFile
         }
@@ -351,24 +427,32 @@ object FileUtils {
                 var os: OutputStream? = null
                 var cursor: Cursor? = null
                 try {
-                    cursor = ctx.contentResolver.query(data,
-                            arrayOf(MediaStore.MediaColumns.DISPLAY_NAME), null, null, null)
+                    cursor = ctx.contentResolver.query(
+                        data, arrayOf(MediaStore.MediaColumns.DISPLAY_NAME), null, null, null
+                    )
                     if (cursor != null && cursor.moveToFirst()) {
-                        val filename = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME)).replace("/", "")
-                        if (BuildConfig.DEBUG) Log.i(TAG, "Getting file $filename from content:// URI")
+                        val filename =
+                            cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME))
+                                .replace("/", "")
+                        if (BuildConfig.DEBUG) Log.i(
+                            TAG,
+                            "Getting file $filename from content:// URI"
+                        )
                         inputStream = ctx.contentResolver.openInputStream(data)
                         if (inputStream == null) {
                             Log.i("FileUtils", "Expanding uri: $data to $data")
                             return data
                         }
-                        os = FileOutputStream(AndroidDevices.EXTERNAL_PUBLIC_DIRECTORY + "/Download/" + filename)
+                        os =
+                            FileOutputStream(AndroidDevices.EXTERNAL_PUBLIC_DIRECTORY + "/Download/" + filename)
                         val buffer = ByteArray(1024)
                         var bytesRead = inputStream.read(buffer)
                         while (bytesRead >= 0) {
                             os.write(buffer, 0, bytesRead)
                             bytesRead = inputStream.read(buffer)
                         }
-                        uri = AndroidUtil.PathToUri(AndroidDevices.EXTERNAL_PUBLIC_DIRECTORY + "/Download/" + filename)
+                        uri =
+                            AndroidUtil.PathToUri(AndroidDevices.EXTERNAL_PUBLIC_DIRECTORY + "/Download/" + filename)
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Couldn't download file from mail URI: $data")
@@ -388,8 +472,7 @@ object FileUtils {
                 uri = media.uri
             } else {
                 uri = MediaUtils.getContentMediaUri(data)
-                if (uri != null && uri != data)
-                    return uri
+                if (uri != null && uri != data) return uri
                 val inputPFD: ParcelFileDescriptor?
                 try {
                     inputPFD = ctx.contentResolver.openFileDescriptor(data, "r")
@@ -437,71 +520,78 @@ object FileUtils {
         if (!AndroidUtil.isMarshMallowOrLater) return null
         var volumeDescription: String? = null
         try {
-            val storageManager = AppContextProvider.appContext.getSystemService(StorageManager::class.java)
+            val storageManager =
+                AppContextProvider.appContext.getSystemService(StorageManager::class.java)
             val classType = storageManager.javaClass
             val findVolumeByUuid = classType.getDeclaredMethod("findVolumeByUuid", uuid.javaClass)
             findVolumeByUuid.isAccessible = true
             val volumeInfo = findVolumeByUuid.invoke(storageManager, uuid)
             val volumeInfoClass = Class.forName("android.os.storage.VolumeInfo")
-            val getBestVolumeDescription = classType.getDeclaredMethod("getBestVolumeDescription", volumeInfoClass)
+            val getBestVolumeDescription =
+                classType.getDeclaredMethod("getBestVolumeDescription", volumeInfoClass)
             getBestVolumeDescription.isAccessible = true
-            volumeDescription = getBestVolumeDescription.invoke(storageManager, volumeInfo) as String
+            volumeDescription =
+                getBestVolumeDescription.invoke(storageManager, volumeInfo) as String
         } catch (ignored: Throwable) {
         }
 
         return volumeDescription
     }
 
-    suspend fun unpackZip(path: String, unzipDirectory: String): ArrayList<String> = withContext(Dispatchers.IO) {
-        val fis: InputStream
-        val zis: ZipInputStream
-        val unzippedFiles = ArrayList<String>()
-        File(unzipDirectory).mkdirs()
-        try {
-            fis = FileInputStream(path)
-            zis = ZipInputStream(BufferedInputStream(fis))
-            var ze = zis.nextEntry
+    suspend fun unpackZip(path: String, unzipDirectory: String): ArrayList<String> =
+        withContext(Dispatchers.IO) {
+            val fis: InputStream
+            val zis: ZipInputStream
+            val unzippedFiles = ArrayList<String>()
+            File(unzipDirectory).mkdirs()
+            try {
+                fis = FileInputStream(path)
+                zis = ZipInputStream(BufferedInputStream(fis))
+                var ze = zis.nextEntry
 
-            while (ze != null) {
-                val baos = ByteArrayOutputStream()
-                val buffer = ByteArray(1024)
-                var count = zis.read(buffer)
+                while (ze != null) {
+                    val baos = ByteArrayOutputStream()
+                    val buffer = ByteArray(1024)
+                    var count = zis.read(buffer)
 
-                val filename = ze.name.replace('/', ' ')
-                if (filename.endsWith(".nfo")) {
+                    val filename = ze.name.replace('/', ' ')
+                    if (filename.endsWith(".nfo")) {
+                        zis.closeEntry()
+                        ze = zis.nextEntry
+                        continue
+                    }
+                    val fileToUnzip = File(unzipDirectory, filename)
+                    val fout = FileOutputStream(fileToUnzip)
+
+                    // reading and writing
+                    while (count != -1) {
+                        baos.write(buffer, 0, count)
+                        val bytes = baos.toByteArray()
+                        fout.write(bytes)
+                        baos.reset()
+                        count = zis.read(buffer)
+                    }
+
+                    unzippedFiles.add(fileToUnzip.absolutePath)
+                    fout.close()
                     zis.closeEntry()
                     ze = zis.nextEntry
-                    continue
                 }
-                val fileToUnzip = File(unzipDirectory, filename)
-                val fout = FileOutputStream(fileToUnzip)
-
-                // reading and writing
-                while (count != -1) {
-                    baos.write(buffer, 0, count)
-                    val bytes = baos.toByteArray()
-                    fout.write(bytes)
-                    baos.reset()
-                    count = zis.read(buffer)
-                }
-
-                unzippedFiles.add(fileToUnzip.absolutePath)
-                fout.close()
-                zis.closeEntry()
-                ze = zis.nextEntry
+                zis.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-            zis.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
+            unzippedFiles
         }
-        unzippedFiles
-    }
 
     const val BUFFER = 2048
-    fun zip(files: Array<String>, zipFileName: String):Boolean {
+    fun zip(files: Array<String>, zipFileName: String): Boolean {
         return try {
-            ZipOutputStream(BufferedOutputStream(
-                    FileOutputStream(zipFileName))).use { out ->
+            ZipOutputStream(
+                BufferedOutputStream(
+                    FileOutputStream(zipFileName)
+                )
+            ).use { out ->
                 val data = ByteArray(BUFFER)
                 for (i in files.indices) {
                     val fi = FileInputStream(files[i])
@@ -579,22 +669,20 @@ object FileUtils {
 fun String?.getParentFolder(): String? {
     if (this == null || this == "/") return this
     var parentPath: String = this
-    if (parentPath.endsWith("/"))
-        parentPath = parentPath.substring(0, parentPath.length - 1)
+    if (parentPath.endsWith("/")) parentPath = parentPath.substring(0, parentPath.length - 1)
     val index = parentPath.lastIndexOf('/')
     if (index > 0) {
         parentPath = parentPath.substring(0, index)
-    } else if (index == 0)
-        parentPath = "/"
+    } else if (index == 0) parentPath = "/"
     return parentPath
 }
 
-fun String.encodeMrlWithTrailingSlash():String {
+fun String.encodeMrlWithTrailingSlash(): String {
     val encoded = Tools.encodeVLCMrl(this)
     return if (encoded.endsWith("/")) encoded else encoded.addTrailingSlashIfNeeded()
 }
 
-fun Uri?.isSoundFont():Boolean {
+fun Uri?.isSoundFont(): Boolean {
     this?.lastPathSegment?.lowercase()?.let { lastPathSegment ->
         FileUtils.getSoundFontExtensions().forEach {
             if (lastPathSegment.endsWith(it)) return true

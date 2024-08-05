@@ -334,9 +334,11 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
     }
 
     private fun showInfoDialog(media: MediaWrapper) {
-        val i = Intent(requireActivity(), InfoActivity::class.java)
-        i.putExtra(TAG_ITEM, media)
-        startActivity(i)
+        // TODO: Show Dialog Instead
+
+//        val i = Intent(requireActivity(), InfoActivity::class.java)
+//        i.putExtra(TAG_ITEM, media)
+//        startActivity(i)
     }
 
     override fun onPopupMenu(view: View, position: Int, item: MediaWrapper?) {

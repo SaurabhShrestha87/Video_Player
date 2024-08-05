@@ -732,6 +732,7 @@
     <string name="browser_quick_access">Quick Access</string>
     <string name="browser_storages">Storages</string>
     <string name="msg_delete_failed">Failed to delete media %1$s</string>
+    <string name="msg_rename_failed">Failed to rename media %1$s</string>
     <string name="renderer_list_title">Displays</string>
     <string name="sdcard_permission_dialog_title">You have to grant Video Player write access to your SD Card</string>
     <string name="sdcard_permission_dialog_message">Video Player cannot delete this file without write access permission.\nPlease go to your SD Card and click on \"Select\".\nYou may have to click on \"Show SD card\" first in the top-right menu</string>

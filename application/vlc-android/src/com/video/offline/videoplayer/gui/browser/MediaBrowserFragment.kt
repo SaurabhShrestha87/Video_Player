@@ -23,12 +23,15 @@
 package com.video.offline.videoplayer.gui.browser
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -40,6 +43,8 @@ import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.BaseFragment
 import com.video.offline.videoplayer.gui.dialogs.ConfirmDeleteDialog
 import com.video.offline.videoplayer.gui.dialogs.ConfirmMakePrivateDialog
+import com.video.offline.videoplayer.gui.dialogs.RenameDialog
+import com.video.offline.videoplayer.gui.helpers.MedialibraryUtils
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.helpers.fillActionMode
 import com.video.offline.videoplayer.interfaces.Filterable
@@ -52,6 +57,9 @@ import com.video.offline.videoplayer.viewmodels.sortMenuTitles
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.videolan.medialibrary.interfaces.Medialibrary
+import org.videolan.medialibrary.interfaces.media.Folder
+import org.videolan.medialibrary.interfaces.media.VideoGroup
+import org.videolan.medialibrary.media.FolderImpl
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.tools.MultiSelectHelper
 
@@ -165,6 +173,26 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
         }
     }
 
+    protected open fun renameFile(media: MediaLibraryItem) {
+        val dialog = RenameDialog.newInstance(media)
+        dialog.setListener { item, name ->
+            MediaUtils.renameFile(requireActivity(), item, name) { onRenameFailed(it) }
+            (activity as? AppCompatActivity)?.run {
+                supportActionBar?.title = name
+            }
+        }
+        dialog.show(requireActivity().supportFragmentManager, RenameDialog::class.simpleName)
+    }
+
+    protected open fun renameItem(item: MediaLibraryItem): Boolean {
+        val dialog = ConfirmDeleteDialog.newInstance(arrayListOf(item))
+        dialog.show(requireActivity().supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
+        dialog.setListener {
+            MediaUtils.deleteItem(requireActivity(), item) { onDeleteFailed(it) }
+        }
+        return true
+    }
+
     protected open fun removeItem(item: MediaLibraryItem): Boolean {
         val dialog = ConfirmDeleteDialog.newInstance(arrayListOf(item))
         dialog.show(requireActivity().supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
@@ -201,6 +229,12 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
         return true
     }
 
+    private fun onRenameFailed(item: MediaLibraryItem) {
+        if (isAdded) UiTools.snacker(
+            requireActivity(),
+            getString(R.string.msg_rename_failed, item.title)
+        )
+    }
     private fun onDeleteFailed(item: MediaLibraryItem) {
         if (isAdded) UiTools.snacker(
             requireActivity(),

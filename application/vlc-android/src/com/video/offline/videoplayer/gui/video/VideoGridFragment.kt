@@ -961,7 +961,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                     }
 
                     R.id.action_ungroup -> viewModel.ungroup(selection.first() as VideoGroup)
-                    R.id.action_rename -> renameGroup(selection.first() as VideoGroup)
+                    R.id.action_rename -> renameFile(selection.first() as VideoGroup)
                     R.id.action_add_to_group -> addToGroup(selection)
                     R.id.action_mode_go_to_folder -> (selection.first() as? MediaWrapper)?.let {
                         showParentFolder(
@@ -1028,6 +1028,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 CTX_PLAY -> viewModel.play(position)
                 CTX_INFORMATION -> showInfoDialog(media)
                 CTX_DELETE -> removeItem(media)
+                CTX_RENAME -> renameFile(media)
                 CTX_PRIVATE -> makePrivateItem(media)
                 CTX_APPEND -> appendMedia(activity, media)
                 CTX_SET_RINGTONE -> requireActivity().setRingtone(media)
@@ -1079,10 +1080,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 CTX_PLAY -> viewModel.play(position)
                 CTX_APPEND -> viewModel.append(position)
                 CTX_PLAY_AS_AUDIO -> viewModel.playFoldersSelectionBackground(listOf(media))
-                CTX_RENAME -> {
-                    renameFolder(media)
-                }
-
+                CTX_RENAME -> renameFolder(media)
                 CTX_DELETE -> removeItems(media.getAll())
                 CTX_PRIVATE -> makePrivateItem(media)
                 CTX_ADD_TO_PLAYLIST -> viewModel.addItemToPlaylist(requireActivity(), position)
@@ -1107,6 +1105,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 CTX_APPEND -> viewModel.append(position)
                 CTX_ADD_TO_PLAYLIST -> viewModel.addItemToPlaylist(requireActivity(), position)
                 CTX_RENAME_GROUP -> renameGroup(media)
+                CTX_RENAME -> renameFile(media)
                 CTX_UNGROUP -> lifecycleScope.launch {
                     if (!requireActivity().showPinIfNeeded()) viewModel.ungroup(
                         media
