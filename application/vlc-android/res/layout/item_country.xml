@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:selectableItemBackground"
+    android:layout_marginHorizontal="@dimen/default_margin"
+    android:layout_marginVertical="@dimen/half_default_margin"
+    android:padding="5dp"
+    android:background="@drawable/pref_single_card_background"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -13,14 +15,22 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:src="@drawable/flag_ad"/>
 
     <TextView
+        style="@style/VLC.TextViewTitle"
         android:id="@+id/country_title"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="16dp"
-        android:textColor="@android:color/black" />
+        android:text="Espanol"/>
+
+    <RadioButton
+        android:id="@+id/selected_rb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

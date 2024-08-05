@@ -966,7 +966,6 @@
         </activity>
         <activity
             android:name="com.video.offline.videoplayer.gui.language.LanguageActivity"
-            android:exported="true"
             android:theme="@style/Theme.VLC" />
         <activity
             android:name=".gui.onboarding.OnboardingActivity"

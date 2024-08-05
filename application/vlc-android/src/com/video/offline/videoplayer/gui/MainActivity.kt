@@ -25,6 +25,7 @@ import com.video.offline.videoplayer.gui.helpers.Navigator
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.helpers.UiTools.isTablet
 import com.video.offline.videoplayer.gui.helpers.UiTools.showPinIfNeeded
+import com.video.offline.videoplayer.gui.language.LanguageActivity
 import com.video.offline.videoplayer.gui.preferences.PreferencesActivity
 import com.video.offline.videoplayer.gui.video.VideoGridFragment
 import com.video.offline.videoplayer.interfaces.Filterable
@@ -40,7 +41,9 @@ import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.resources.ACTIVITY_RESULT_OPEN
 import org.videolan.resources.ACTIVITY_RESULT_PREFERENCES
 import org.videolan.resources.ACTIVITY_RESULT_SECONDARY
+import org.videolan.resources.EXTRA_FIRST_RUN
 import org.videolan.resources.EXTRA_TARGET
+import org.videolan.resources.EXTRA_UPGRADE
 import org.videolan.tools.KEY_INCOGNITO
 import org.videolan.tools.KEY_MEDIALIBRARY_AUTO_RESCAN
 import org.videolan.tools.PERMISSION_NEVER_ASK

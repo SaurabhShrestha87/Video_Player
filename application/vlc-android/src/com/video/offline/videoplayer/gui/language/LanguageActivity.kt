@@ -3,16 +3,21 @@ package com.video.offline.videoplayer.gui.language
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.video.offline.videoplayer.BuildConfig
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.MainActivity
+import com.video.offline.videoplayer.gui.helpers.UiTools
 import org.videolan.resources.EXTRA_FIRST_RUN
 import org.videolan.resources.EXTRA_UPGRADE
 import org.videolan.tools.LocalePair
 import org.videolan.tools.LocaleUtils
+import org.videolan.tools.RESULT_RESTART
+import org.videolan.tools.Settings
+import org.videolan.tools.putSingle
 
 val COUNTRIES = arrayOf(
     Country("AD", "Andorra", R.drawable.flag_ad),
@@ -260,7 +265,7 @@ class LanguageActivity : AppCompatActivity() {
     private lateinit var localePair: LocalePair
     private lateinit var adapter: CountriesAdapter
     private lateinit var countriesRecyclerView: RecyclerView
-    private var selectedCountry: Country? = null
+    private var selectedCountry: Country = Country("default", "Device Default", R.drawable.flag_aq)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -274,42 +279,77 @@ class LanguageActivity : AppCompatActivity() {
 
     // endregion
     private fun setupRecyclerView(view: View) {
-        val searchResults = ArrayList<Country>()
-        localePair.localeEntries.forEachIndexed { index, it ->
-            val country = COUNTRIES.find { country ->
-                country.code.contains(it) || country.name.contains(
-                    localePair.localeEntryValues[index]
-                )
+        val finalCountryList = ArrayList<Country>()
+        localePair.localeEntryValues.forEachIndexed { index, it ->
+            var country = if (it.isNotEmpty()) {
+                COUNTRIES.find { country ->
+                    country.code.contains(it, true)
+                }
+            } else {
+                null
             }
             if (country != null) {
-                searchResults.add(country)
+                country.localeEntry = localePair.localeEntries[index]
+                country.localeEntryValue = localePair.localeEntryValues[index]
             } else {
-                searchResults.add(
-                    Country(
-                        it,
-                        localePair.localeEntryValues[index],
-                        R.drawable.flag_aq
-                    )
+                country = Country(
+                    /* code = */ it,
+                    /* countryName = */ "unknown",
+                    /* localeEntry = */ localePair.localeEntries[index],
+                    /* localeEntryValue = */ localePair.localeEntryValues[index],
+                    /* flag = */ R.drawable.flag_aq
                 )
+                if (index == 0) { // first option in the list.. should be DEFAULT.
+                    country.isSelected = true
+                    selectedCountry = country
+                }
             }
+            finalCountryList.add(
+                country
+            )
         }
 
-        adapter = CountriesAdapter(view.context, searchResults) { country: Country? ->
+        adapter = CountriesAdapter(
+            view.context, finalCountryList
+        ) { country: Country ->
             selectedCountry = country
-//            onDone()
+            adapter.notifyDataSetChanged()
         }
 
         val layoutManager = LinearLayoutManager(view.context)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         countriesRecyclerView.setLayoutManager(layoutManager)
         countriesRecyclerView.setAdapter(adapter)
+
+        findViewById<ImageView>(R.id.next).setOnClickListener {
+            onDone()
+        }
     }
 
     private fun onDone() {
+        if (selectedCountry.code.isEmpty() || selectedCountry.localeEntry == "Device Default") {
+            goNext()
+        } else {
+            Settings.getInstance(this).putSingle("set_locale", selectedCountry.localeEntryValue)
+            this@LanguageActivity.setRestart()
+            UiTools.restartDialog(this) { dialog, _ ->
+                run {
+                    dialog.dismiss()
+                    goNext()
+                }
+            }
+        }
+    }
+
+    private fun goNext() {
         val intent = Intent(this@LanguageActivity, MainActivity::class.java).putExtra(
-            EXTRA_FIRST_RUN, true
-        ).putExtra(EXTRA_UPGRADE, true)
-        startActivity(intent)
-        finish()
+                EXTRA_FIRST_RUN, true
+            ).putExtra(EXTRA_UPGRADE, true)
+            startActivity(intent)
+            finish()
+    }
+
+    private fun setRestart() {
+        setResult(RESULT_RESTART)
     }
 }
