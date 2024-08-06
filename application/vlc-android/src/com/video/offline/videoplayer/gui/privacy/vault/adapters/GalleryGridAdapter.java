@@ -51,31 +51,24 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridViewHold
     private final WeakReference<FragmentActivity> weakReference;
     private final List<GalleryFile> galleryFiles;
     private final UniqueLinkedList<GalleryFile> selectedFiles;
-    private final boolean isRootDir;
     private boolean showFileNames;
     private IOnFileDeleted onFileDeleted;
     private IOnFileClicked onFileCLicked;
     private IOnSelectionModeChanged onSelectionModeChanged;
     private boolean selectMode;
-    private String nestedPath;
     private int lastSelectedPos;
 
-    public GalleryGridAdapter(FragmentActivity context, @NonNull List<GalleryFile> galleryFiles, boolean showFileNames, boolean isRootDir) {
+    public GalleryGridAdapter(FragmentActivity context, @NonNull List<GalleryFile> galleryFiles, boolean showFileNames) {
         this.weakReference = new WeakReference<>(context);
         this.galleryFiles = galleryFiles;
         this.showFileNames = showFileNames;
         this.selectedFiles = new UniqueLinkedList<>();
-        this.isRootDir = isRootDir;
     }
 
     @NonNull
     @Override
     public String getSectionName(int position) {
         return simpleDateFormat.format(new Date(galleryFiles.get(position).getLastModified()));
-    }
-
-    public void setNestedPath(String nestedPath) {
-        this.nestedPath = nestedPath;
     }
 
     public void setOnFileCLicked(IOnFileClicked onFileCLicked) {
@@ -105,13 +98,13 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridViewHold
         updateSelectedView(holder, galleryFile);
         holder.binding.txtName.setVisibility(showFileNames || galleryFile.isDirectory() ? View.VISIBLE : View.GONE);
         holder.binding.imageView.setImageDrawable(null);
-        if (!isRootDir && (galleryFile.isGif() || galleryFile.isVideo() || galleryFile.isDirectory())) {
+        if ((galleryFile.isGif() || galleryFile.isVideo() || galleryFile.isDirectory())) {
             holder.binding.imgType.setVisibility(View.VISIBLE);
             holder.binding.imgType.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), galleryFile.isGif() ? R.drawable.ic_round_gif_24 : (galleryFile.isVideo() ? R.drawable.ic_outline_video_file_24 : R.drawable.ic_round_folder_open_24), context.getTheme()));
         } else {
             holder.binding.imgType.setVisibility(View.GONE);
         }
-        holder.binding.hasDescription.setVisibility(!isRootDir && galleryFile.hasNote() ? View.VISIBLE : View.GONE);
+        holder.binding.hasDescription.setVisibility(galleryFile.hasNote() ? View.VISIBLE : View.GONE);
 
         holder.binding.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         if (galleryFile.isAllFolder()) {
@@ -164,7 +157,7 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridViewHold
                 if (!selectMode) {
                     context.startActivity(new Intent(context, GalleryDirectoryActivity.class).putExtra(GalleryDirectoryActivity.EXTRA_IS_ALL, true));
                 }
-            } else if (selectMode && (isRootDir || !galleryFile.isDirectory())) {
+            } else if (selectMode && (!galleryFile.isDirectory())) {
                 if (!selectedFiles.contains(galleryFile)) {
                     selectedFiles.add(galleryFile);
                     lastSelectedPos = pos;
@@ -183,13 +176,7 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridViewHold
             } else {
                 if (galleryFile.isDirectory()) {
                     Intent intent = new Intent(context, GalleryDirectoryActivity.class);
-                    if (isRootDir) {
-                        intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, DocumentFile.fromTreeUri(context, galleryFile.getUri()).getUri().toString());
-                    } else if (nestedPath != null) {
-                        intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString()).putExtra(GalleryDirectoryActivity.EXTRA_NESTED_PATH, nestedPath + "/" + new File(galleryFile.getUri().getPath()).getName());
-                    } else {
-                        intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString());
-                    }
+                    intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString());
                     context.startActivity(intent);
                 } else {
                     if (onFileCLicked != null) {
@@ -199,7 +186,7 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridViewHold
             }
         });
         holder.binding.imageView.setOnLongClickListener(v -> {
-            if (!galleryFile.isAllFolder() && (isRootDir || !galleryFile.isDirectory())) {
+            if (!galleryFile.isAllFolder() && (!galleryFile.isDirectory())) {
                 int pos = holder.getBindingAdapterPosition();
                 if (!selectMode) {
                     setSelectMode(true);
@@ -272,7 +259,7 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridViewHold
     }
 
     private void updateSelectedView(GalleryGridViewHolder holder, GalleryFile galleryFile) {
-        if (selectMode && (isRootDir || !galleryFile.isDirectory())) {
+        if (selectMode && (!galleryFile.isDirectory())) {
             holder.binding.checked.setVisibility(View.VISIBLE);
             holder.binding.checked.setChecked(selectedFiles.contains(galleryFile));
         } else {
@@ -306,13 +293,9 @@ public class GalleryGridAdapter extends RecyclerView.Adapter<GalleryGridViewHold
     public void selectAll() {
         synchronized (LOCK) {
             selectedFiles.clear();
-            if (isRootDir) {
-                selectedFiles.addAll(galleryFiles);
-            } else {
-                for (GalleryFile g : galleryFiles) {
-                    if (!g.isDirectory()) {
-                        selectedFiles.add(g);
-                    }
+            for (GalleryFile g : galleryFiles) {
+                if (!g.isDirectory()) {
+                    selectedFiles.add(g);
                 }
             }
             notifyItemRangeChanged(0, galleryFiles.size(), new Payload(Payload.TYPE_SELECT_ALL));

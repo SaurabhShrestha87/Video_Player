@@ -32,7 +32,6 @@ import com.bumptech.glide.Glide;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.google.android.material.color.MaterialColors;
-
 import com.video.offline.videoplayer.R;
 import com.video.offline.videoplayer.databinding.AdapterGalleryViewpagerItemBinding;
 import com.video.offline.videoplayer.databinding.AdapterGalleryViewpagerItemDirectoryBinding;
@@ -68,21 +67,17 @@ public class GalleryPagerAdapter extends RecyclerView.Adapter<GalleryPagerViewHo
     private final List<GalleryFile> galleryFiles;
     private final IOnFileDeleted onFileDeleted;
     private final DocumentFile currentDirectory;
-    private final boolean isAllFolder;
     private final Settings settings;
-    private final String nestedPath;
     private final Map<Integer, ExoPlayer> players;
     private boolean isFullscreen;
 
-    public GalleryPagerAdapter(FragmentActivity context, @NonNull List<GalleryFile> galleryFiles, IOnFileDeleted onFileDeleted, DocumentFile currentDirectory, boolean isAllFolder, String nestedPath) {
+    public GalleryPagerAdapter(FragmentActivity context, @NonNull List<GalleryFile> galleryFiles, IOnFileDeleted onFileDeleted, DocumentFile currentDirectory) {
         this.weakReference = new WeakReference<>(context);
         this.galleryFiles = galleryFiles;
         this.onFileDeleted = onFileDeleted;
         this.currentDirectory = currentDirectory;
         this.isFullscreen = false;
         this.settings = Settings.getInstance(context);
-        this.isAllFolder = isAllFolder;
-        this.nestedPath = nestedPath;
         this.players = new HashMap<>();
     }
 
@@ -138,11 +133,7 @@ public class GalleryPagerAdapter extends RecyclerView.Adapter<GalleryPagerViewHo
         ((GalleryPagerViewHolder.GalleryPagerDirectoryViewHolder) holder).binding.name.setText(context.getString(R.string.gallery_click_to_open_directory, galleryFile.getNameWithPath()));
         ((GalleryPagerViewHolder.GalleryPagerDirectoryViewHolder) holder).binding.getRoot().setOnClickListener(v -> {
             Intent intent = new Intent(context, GalleryDirectoryActivity.class);
-            if (nestedPath != null) {
-                intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString()).putExtra(GalleryDirectoryActivity.EXTRA_NESTED_PATH, nestedPath + "/" + new File(galleryFile.getUri().getPath()).getName());
-            } else {
-                intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString());
-            }
+            intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString());
             context.startActivity(intent);
         });
         GalleryFile firstFile = galleryFile.getFirstFile();
@@ -375,9 +366,8 @@ public class GalleryPagerAdapter extends RecyclerView.Adapter<GalleryPagerViewHo
             }
             return true;
         });
-        menu.getItem(2).setVisible(!isAllFolder); // hide edit note in All folder
-        menu.getItem(2).setEnabled(!isAllFolder);
-
+        menu.getItem(2).setVisible(true); // hide edit note in All folder
+        menu.getItem(2).setEnabled(true);
         popup.show();
     }
 

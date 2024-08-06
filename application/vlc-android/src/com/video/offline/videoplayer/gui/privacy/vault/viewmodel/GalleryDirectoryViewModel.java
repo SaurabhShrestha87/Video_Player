@@ -1,4 +1,3 @@
-
 package com.video.offline.videoplayer.gui.privacy.vault.viewmodel;
 
 import androidx.annotation.NonNull;
@@ -21,17 +20,22 @@ public class GalleryDirectoryViewModel extends ViewModel {
         return initialised;
     }
 
-    @NonNull
-    public List<GalleryFile> getGalleryFiles() {
-        return galleryFiles;
-    }
-
     public void setInitialised(List<GalleryFile> galleryFiles) {
         //Log.e(TAG, "setInitialised: " + galleryFiles.size());
         if (initialised) {
             return;
         }
         this.initialised = true;
+        this.galleryFiles.addAll(galleryFiles);
+    }
+
+    @NonNull
+    public List<GalleryFile> getGalleryFiles() {
+        return galleryFiles;
+    }
+
+    public void resetInitialised(List<GalleryFile> galleryFiles) {
+        this.galleryFiles.clear();
         this.galleryFiles.addAll(galleryFiles);
     }
 

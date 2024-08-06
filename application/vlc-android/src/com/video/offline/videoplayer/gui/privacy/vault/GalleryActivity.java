@@ -32,7 +32,6 @@ import com.video.offline.videoplayer.gui.privacy.vault.utils.Settings;
 import com.video.offline.videoplayer.gui.privacy.vault.utils.Toaster;
 import com.video.offline.videoplayer.gui.privacy.vault.viewmodel.GalleryViewModel;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,9 +87,8 @@ public class GalleryActivity extends BaseActivity {
     private void init() {
         viewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
         settings = Settings.getInstance(this);
-
         galleryFiles = new ArrayList<>();
-        galleryGridAdapter = new GalleryGridAdapter(this, galleryFiles, true, true);
+        galleryGridAdapter = new GalleryGridAdapter(this, galleryFiles, true);
         galleryGridAdapter.setOnSelectionModeChanged(this::onSelectionModeChanged);
     }
 
@@ -195,7 +193,7 @@ public class GalleryActivity extends BaseActivity {
                         Toaster.getInstance(GalleryActivity.this).showLong(getString(R.string.gallery_added_folder, FileStuff.getFilenameWithPathFromUri(uri)));
 //                        addDirectory(documentFile.getUri());
                         GalleryFile galleryFile1 = GalleryFile.asDirectory(documentFile.getUri(), null);
-                        goNext(galleryFile1, false, null);
+                        goNext(galleryFile1);
                     }
 
                     @Override
@@ -367,16 +365,16 @@ public class GalleryActivity extends BaseActivity {
 
     private void goNextWithDirectory(@NonNull List<Uri> directories) {
         GalleryFile galleryFile1 = GalleryFile.asDirectory(directories.get(0), null);
-        goNext(galleryFile1, false, null);
+        goNext(galleryFile1);
     }
 
     private void addDirectories(@NonNull List<Uri> directories) {
         GalleryFile galleryFile1 = GalleryFile.asDirectory(directories.get(0), null);
-        goNext(galleryFile1, false, null);
+        goNext(galleryFile1);
         for (int i = 0; i < directories.size(); i++) {
             Uri uri = directories.get(i);
             GalleryFile galleryFile = GalleryFile.asDirectory(uri, null);
-            goNext(galleryFile, false, null);
+            goNext(galleryFile);
 
             runOnUiThread(() -> {
                 synchronized (LOCK) {
@@ -403,15 +401,9 @@ public class GalleryActivity extends BaseActivity {
         });
     }
 
-    private void goNext(GalleryFile galleryFile, boolean isRootDir, String nestedPath) {
+    private void goNext(GalleryFile galleryFile) {
         Intent intent = new Intent(this, GalleryDirectoryActivity.class);
-        if (isRootDir) {
-            intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, DocumentFile.fromTreeUri(this, galleryFile.getUri()).getUri().toString());
-        } else if (nestedPath != null) {
-            intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString()).putExtra(GalleryDirectoryActivity.EXTRA_NESTED_PATH, nestedPath + "/" + new File(galleryFile.getUri().getPath()).getName());
-        } else {
-            intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString());
-        }
+        intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString());
         this.startActivity(intent);
         finish();
     }
