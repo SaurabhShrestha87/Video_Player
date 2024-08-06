@@ -70,7 +70,7 @@ enum class ContextOption : Flag {
         }
 
         fun createCtxVideoFlags() = createBaseFlags().apply {
-            addAll(CTX_DELETE, CTX_RENAME, CTX_DOWNLOAD_SUBTITLES, CTX_INFORMATION)
+            addAll(CTX_PRIVATE, CTX_DELETE, CTX_RENAME, CTX_DOWNLOAD_SUBTITLES, CTX_INFORMATION)
             addAll(CTX_PLAY, CTX_PLAY_ALL, CTX_PLAY_AS_AUDIO, CTX_PLAY_NEXT)
             addAll(CTX_SET_RINGTONE, CTX_SHARE)
             removeAll(CTX_GROUP_SIMILAR, CTX_REMOVE_GROUP, CTX_ADD_GROUP, CTX_RENAME_GROUP)
@@ -100,7 +100,7 @@ enum class ContextOption : Flag {
 
         fun createCtxFolderFlags() = createBaseFlags().apply {
             removeAll(CTX_ADD_SHORTCUT, CTX_FAV_ADD)
-            addAll(CTX_BAN_FOLDER, CTX_SHARE, CTX_PRIVATE, CTX_PLAY_AS_AUDIO, CTX_RENAME, CTX_DELETE, CTX_MARK_ALL_AS_PLAYED, CTX_MARK_ALL_AS_UNPLAYED, CTX_PLAY_ALL)
+            addAll(CTX_PRIVATE, CTX_BAN_FOLDER, CTX_SHARE, CTX_PLAY_AS_AUDIO, CTX_RENAME, CTX_DELETE, CTX_MARK_ALL_AS_PLAYED, CTX_MARK_ALL_AS_UNPLAYED, CTX_PLAY_ALL)
         }
     }
 }

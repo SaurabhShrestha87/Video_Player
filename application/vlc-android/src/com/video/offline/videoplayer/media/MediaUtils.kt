@@ -167,7 +167,6 @@ object MediaUtils {
                     if (!makePrivateMedia(item, null, activity)) onDeleteFailed.invoke(item)
                 }
             }
-
             else -> Runnable { onDeleteFailed.invoke(item) }
         }
 
@@ -251,6 +250,7 @@ object MediaUtils {
 
     suspend fun makePrivateMedia(mw: MediaLibraryItem, failCB: Runnable? = null, context: Context) =
         withContext(Dispatchers.IO) {
+            TODO("NOT YET ABLE TO MAKE PRIVATE!")
             val foldersToReload = LinkedList<String>()
             val mediaPaths = LinkedList<String>()
             for (media in mw.tracks) {
