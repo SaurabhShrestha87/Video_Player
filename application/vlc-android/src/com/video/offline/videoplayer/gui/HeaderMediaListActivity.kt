@@ -46,6 +46,7 @@ import com.video.offline.videoplayer.gui.helpers.ExpandStateAppBarLayoutBehavior
 import com.video.offline.videoplayer.gui.helpers.SwipeDragItemTouchHelperCallback
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.helpers.UiTools.addToPlaylist
+import com.video.offline.videoplayer.gui.helpers.UiTools.showMediaInfo
 import com.video.offline.videoplayer.gui.helpers.UiTools.showPinIfNeeded
 import com.video.offline.videoplayer.gui.view.RecyclerSectionItemDecoration
 import com.video.offline.videoplayer.interfaces.Filterable
@@ -447,9 +448,8 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
     }
 
     private fun showInfoDialog(media: MediaWrapper) {
-        val i = Intent(this, InfoActivity::class.java)
-        i.putExtra(TAG_ITEM, media)
-        startActivity(i)
+        val dialog = InfoDialog.newInstance(media)
+        dialog.show(this.supportFragmentManager, "info")
     }
 
     override fun onCtxAction(position: Int, option: ContextOption) {

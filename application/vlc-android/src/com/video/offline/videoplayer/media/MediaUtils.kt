@@ -181,7 +181,6 @@ object MediaUtils {
         }
     }
 
-
     private suspend fun renameMedia(
         mw: MediaLibraryItem,
         newName: String,
@@ -189,6 +188,7 @@ object MediaUtils {
     ) = withContext(Dispatchers.IO) {
         val foldersToReload = LinkedList<String>()
         val mediaPaths = LinkedList<String>()
+//        (mw as MediaWrapper).rename(newName)
         for (media in mw.tracks) {
             val path = media.uri.path
             val parentPath = FileUtils.getParent(path)

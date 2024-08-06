@@ -69,6 +69,7 @@ class InfoActivity : AudioPlayerContainerActivity(), View.OnClickListener, PathA
 
     internal lateinit var binding: InfoActivityBinding
     override fun isTransparent() = true
+
     override val insetListener = {insets:Insets ->
         (binding.mlItemResolution.layoutParams as ConstraintLayout.LayoutParams).topMargin = insets.top + 16.dp
     }
@@ -257,7 +258,6 @@ class InfoModel : ViewModel() {
                 if (item.type == MediaWrapper.TYPE_VIDEO)  withContext(Dispatchers.IO) { ThumbnailsProvider.getVideoThumbnail(media, width) } else null
             }
         }
-
     }
 
     fun parseTracks(context: Context, mw: MediaWrapper) = viewModelScope.launch {

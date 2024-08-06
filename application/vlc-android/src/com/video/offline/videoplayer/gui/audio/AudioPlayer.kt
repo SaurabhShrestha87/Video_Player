@@ -46,9 +46,9 @@ import com.video.offline.videoplayer.PlaybackService
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.databinding.AudioPlayerBinding
 import com.video.offline.videoplayer.gui.AudioPlayerContainerActivity
-import com.video.offline.videoplayer.gui.InfoActivity
 import com.video.offline.videoplayer.gui.MainActivity
 import com.video.offline.videoplayer.gui.dialogs.CtxActionReceiver
+import com.video.offline.videoplayer.gui.dialogs.InfoDialog
 import com.video.offline.videoplayer.gui.dialogs.PlaybackSpeedDialog
 import com.video.offline.videoplayer.gui.dialogs.SleepTimerDialog
 import com.video.offline.videoplayer.gui.dialogs.showContext
@@ -334,11 +334,8 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
     }
 
     private fun showInfoDialog(media: MediaWrapper) {
-        // TODO: Show Dialog Instead
-
-//        val i = Intent(requireActivity(), InfoActivity::class.java)
-//        i.putExtra(TAG_ITEM, media)
-//        startActivity(i)
+        val dialog = InfoDialog.newInstance(media)
+        dialog.show(requireActivity().supportFragmentManager, "info")
     }
 
     override fun onPopupMenu(view: View, position: Int, item: MediaWrapper?) {

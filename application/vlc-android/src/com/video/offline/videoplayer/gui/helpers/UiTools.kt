@@ -500,9 +500,8 @@ object UiTools {
     }
 
     fun FragmentActivity.showMediaInfo(mediaWrapper: MediaWrapper) {
-        val i = Intent(this, InfoActivity::class.java)
-        i.putExtra(TAG_ITEM, mediaWrapper)
-        startActivity(i)
+        val dialog = InfoDialog.newInstance(mediaWrapper)
+        dialog.show(this.supportFragmentManager, "info")
     }
 
     fun Context.isTablet() = resources.getBoolean(R.bool.is_tablet)

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:vlc="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="org.videolan.medialibrary.Tools" />
+
+        <import type="com.video.offline.videoplayer.gui.helpers.TalkbackUtil" />
+
+        <import type="org.videolan.medialibrary.media.MediaLibraryItem" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="item"
+            type="MediaLibraryItem" />
+
+        <variable
+            name="cover"
+            type="android.graphics.drawable.BitmapDrawable" />
+
+        <variable
+            name="length"
+            type="Long" />
+
+        <variable
+            name="path"
+            type="String" />
+
+        <variable
+            name="sizeTitleText"
+            type="String" />
+
+        <variable
+            name="extraTitleText"
+            type="String" />
+
+        <variable
+            name="sizeValueText"
+            type="String" />
+
+        <variable
+            name="sizeValueContentDescription"
+            type="String" />
+
+        <variable
+            name="extraValueText"
+            type="String" />
+
+        <variable
+            name="format"
+            type="String" />
+
+        <variable
+            name="date"
+            type="String" />
+
+        <variable
+            name="progress"
+            type="int" />
+
+        <variable
+            name="resolution"
+            type="String" />
+
+        <variable
+            name="filepath"
+            type="String" />
+
+        <variable
+            name="scanned"
+            type="boolean" />
+
+        <variable
+            name="album"
+            type="String" />
+
+        <variable
+            name="artist"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minWidth="300dp"
+        android:orientation="vertical"
+        android:fillViewport="true"
+        android:paddingHorizontal="20dp">
+
+        <TextView
+            style="@style/VLC.TextViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/half_default_margin"
+            android:text="Properties"
+            android:textColor="?attr/font_audio_light"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/half_default_margin"
+            android:text="@{`File: ` + item.title}"
+            tools:text="File: Loki part 1"
+            android:textColor="?attr/font_audio_light"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/half_default_margin"
+            android:visibility="@{filepath == null ? View.GONE : View.VISIBLE}"
+            android:text="@{`Location: ` + filepath}"
+            tools:text="Locations: /storage/emulator/o/DCIM/camera"
+            android:textColor="?attr/font_audio_light"
+            android:textStyle="bold"/>
+
+
+        <TextView
+            android:id="@+id/size_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{sizeTitleText == null ? View.GONE : View.VISIBLE}"
+            android:layout_marginVertical="@dimen/half_default_margin"
+            android:contentDescription="@{sizeValueContentDescription}"
+            android:text="@{sizeTitleText + `: ` + sizeValueText}"
+            android:textColor="?attr/font_audio_light"
+            tools:text="File size: 3MB" />
+
+        <TextView
+            android:id="@+id/date_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/half_default_margin"
+            android:contentDescription="@{date}"
+            android:visibility="@{date == null ? View.GONE : View.VISIBLE}"
+            android:text="@{`Date: ` + date}"
+            android:textColor="?attr/font_audio_light"
+            tools:text="Date: Friday, 21 April 2023" />
+
+        <TextView
+            android:id="@+id/format_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/half_default_margin"
+            android:visibility="@{sizeValueText == null ? View.GONE : View.VISIBLE}"
+            android:contentDescription="@{sizeValueContentDescription}"
+            android:text="@{`Format: ` + sizeValueText}"
+            android:textColor="?attr/font_audio_light"
+            tools:text="Format .mp4" />
+
+        <TextView
+            android:id="@+id/length_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/half_default_margin"
+            android:contentDescription="@{TalkbackUtil.INSTANCE.millisToString(context,length)}"
+            android:text="@{`Length: ` + Tools.millisToTextLarge(length)}"
+            android:textColor="?attr/font_audio_light"
+            tools:text="Length: 10:30"/>
+
+        <TextView
+            android:id="@+id/albums_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/half_default_margin"
+            android:contentDescription="@{album}"
+            android:text="@{`Album: ` + album}"
+            android:visibility="@{album == null ? View.GONE : View.VISIBLE, default=gone}"
+            android:textColor="?attr/font_audio_light"
+            tools:text="Album: Crew"/>
+
+        <TextView
+            android:id="@+id/artist_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/half_default_margin"
+            android:contentDescription="@{artist}"
+            android:text="@{`Artist: ` + artist}"
+            android:visibility="@{artist == null ? View.GONE : View.VISIBLE, default=gone}"
+            android:textColor="?attr/font_audio_light"
+            tools:text="Artist : Diljit dosanjh, alka yagnik, alla arun"/>
+        <TextView
+            android:id="@+id/extra_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginVertical="@dimen/half_default_margin"
+            android:text="@{extraTitleText + `: ` + extraValueText}"
+            android:textColor="?attr/font_audio_light"
+            tools:text="Title: Beethoven - 9th symphony"
+            android:visibility="@{extraValueText == null ? View.GONE : View.VISIBLE, default=gone}"
+            vlc:layout_constraintBottom_toBottomOf="@+id/extra_icon"
+            vlc:layout_constraintStart_toStartOf="@+id/extra_title"
+            vlc:layout_constraintTop_toBottomOf="@+id/extra_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="@dimen/half_default_margin"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/listview_bottom_padding"
+            android:visibility="@{item.itemType == MediaLibraryItem.TYPE_MEDIA ? View.VISIBLE : View.INVISIBLE}"
+            vlc:layout_constraintBottom_toBottomOf="parent"
+            vlc:layout_constraintEnd_toEndOf="parent"
+            vlc:layout_constraintStart_toStartOf="parent"
+            vlc:layout_constraintTop_toBottomOf="@+id/extra_icon" />
+
+        <LinearLayout
+            android:id="@+id/button_lyt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/okay_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:minWidth="100dp"
+                android:text="@string/ok"
+                vlc:layout_constraintBottom_toBottomOf="parent"
+                vlc:layout_constraintEnd_toEndOf="parent"
+                vlc:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>
