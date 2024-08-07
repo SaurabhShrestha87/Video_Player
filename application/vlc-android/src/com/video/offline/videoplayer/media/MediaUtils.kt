@@ -28,6 +28,7 @@ import com.video.offline.videoplayer.util.Permissions
 import com.video.offline.videoplayer.util.TextUtils
 import com.video.offline.videoplayer.util.generateResolutionClass
 import com.video.offline.videoplayer.util.isSchemeStreaming
+import com.video.offline.videoplayer.util.makePrivate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -152,31 +153,6 @@ object MediaUtils {
             ) renameAction.run()
         } else {
             renameAction.run()
-        }
-    }
-
-
-    fun makePrivateItem(
-        activity: FragmentActivity,
-        item: MediaLibraryItem,
-        onDeleteFailed: (MediaLibraryItem) -> Unit,
-    ) {
-        val deletionAction = when (item) {
-            is MediaWrapper, is Album -> Runnable {
-                activity.lifecycleScope.launchWhenStarted {
-                    if (!makePrivateMedia(item, null, activity)) onDeleteFailed.invoke(item)
-                }
-            }
-            else -> Runnable { onDeleteFailed.invoke(item) }
-        }
-
-        if (item is MediaWrapper) {
-            if (Permissions.checkWritePermission(
-                    activity, item, deletionAction
-                )
-            ) deletionAction.run()
-        } else {
-            deletionAction.run()
         }
     }
 

@@ -85,7 +85,6 @@ class ConfirmMakePrivateDialog : DialogFragment() {
                 //folders and files
                 val nbFiles = mediaList.filter { it is MediaWrapper && it.type != MediaWrapper.TYPE_DIR }.size
                 val nbFolders = mediaList.filter { it is MediaWrapper && it.type == MediaWrapper.TYPE_DIR }.size
-                TODO("CHANGE STRINGS FROM DELETE TO CONFIRM")
                 when {
                     nbFiles == 0 -> getString(R.string.confirm_private_folders, nbFolders)
                     nbFolders == 0 -> getString(R.string.confirm_private_files, nbFiles)

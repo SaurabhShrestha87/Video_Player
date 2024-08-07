@@ -877,6 +877,7 @@
     <string name="url_copied_to_clipboard">Url copied to clipboard</string>
     <string name="share">Share</string>
     <string name="invalid_file">Invalid file. Cannot be shared.</string>
+    <string name="invalid_file_private">Invalid file. Files other than Videos/Gif/Image cannot be made Private.</string>
     <string name="share_file">Share %s</string>
     <string name="share_message">Here is %s</string>
     <string name="find_metadata">Find metadata</string>

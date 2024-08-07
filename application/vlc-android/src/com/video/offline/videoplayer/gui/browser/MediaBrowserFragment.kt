@@ -23,7 +23,6 @@
 package com.video.offline.videoplayer.gui.browser
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -31,7 +30,6 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -44,11 +42,13 @@ import com.video.offline.videoplayer.gui.BaseFragment
 import com.video.offline.videoplayer.gui.dialogs.ConfirmDeleteDialog
 import com.video.offline.videoplayer.gui.dialogs.ConfirmMakePrivateDialog
 import com.video.offline.videoplayer.gui.dialogs.RenameDialog
-import com.video.offline.videoplayer.gui.helpers.MedialibraryUtils
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.helpers.fillActionMode
 import com.video.offline.videoplayer.interfaces.Filterable
 import com.video.offline.videoplayer.media.MediaUtils
+import com.video.offline.videoplayer.media.getAll
+import com.video.offline.videoplayer.util.makePrivate
+import com.video.offline.videoplayer.util.makePrivateFolderItems
 import com.video.offline.videoplayer.viewmodels.DisplaySettingsViewModel
 import com.video.offline.videoplayer.viewmodels.MedialibraryViewModel
 import com.video.offline.videoplayer.viewmodels.SortableModel
@@ -58,8 +58,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.interfaces.media.Folder
-import org.videolan.medialibrary.interfaces.media.VideoGroup
-import org.videolan.medialibrary.media.FolderImpl
+import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.tools.MultiSelectHelper
 
@@ -103,14 +102,13 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
         viewLifecycleOwner.lifecycleScope.launch {
             //listen to display settings changes
             displaySettingsViewModel.settingChangeFlow.flowWithLifecycle(
-                    viewLifecycleOwner.lifecycle,
-                    Lifecycle.State.STARTED
-                ).collect {
-                    if (isResumed) {
-                        onDisplaySettingChanged(it.key, it.value)
-                        displaySettingsViewModel.consume()
-                    }
+                viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED
+            ).collect {
+                if (isResumed) {
+                    onDisplaySettingChanged(it.key, it.value)
+                    displaySettingsViewModel.consume()
                 }
+            }
         }
 
     }
@@ -206,12 +204,32 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
     protected open fun makePrivateItem(items: ArrayList<MediaLibraryItem>): Boolean {
         val dialog = ConfirmMakePrivateDialog.newInstance(items)
         dialog.show(
-            requireActivity().supportFragmentManager,
-            ConfirmMakePrivateDialog::class.simpleName
+            requireActivity().supportFragmentManager, ConfirmMakePrivateDialog::class.simpleName
         )
         dialog.setListener {
-            items.forEach { item ->
-                MediaUtils.makePrivateItem(requireActivity(), item) { onDeleteFailed(it) }
+            lifecycleScope.launch {
+                (requireActivity() as AppCompatActivity).makePrivateFolderItems(items as ArrayList<MediaWrapper>)
+            }
+        }
+        return true
+    }
+
+    protected open fun makePrivateFolder(folders: List<Folder>): Boolean {
+        // Flatten the list of media items from all folders
+        val medias = folders.flatMap { folder1: Folder -> folder1.getAll() }
+        // Safely map the items to MediaLibraryItem
+        val mediaLibraryItemList: ArrayList<MediaLibraryItem> =
+            ArrayList(medias.filterIsInstance<MediaLibraryItem>())
+        // Create the dialog instance with the media library items
+        val dialog = ConfirmMakePrivateDialog.newInstance(mediaLibraryItemList)
+        dialog.show(
+            requireActivity().supportFragmentManager, ConfirmMakePrivateDialog::class.simpleName
+        )
+        dialog.setListener {
+            lifecycleScope.launch {
+                (requireActivity() as AppCompatActivity).makePrivateFolderItems(
+                    medias
+                )
             }
         }
         return true
@@ -220,25 +238,23 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
     protected open fun makePrivateItem(item: MediaLibraryItem): Boolean {
         val dialog = ConfirmMakePrivateDialog.newInstance(arrayListOf(item))
         dialog.show(
-            requireActivity().supportFragmentManager,
-            ConfirmMakePrivateDialog::class.simpleName
+            requireActivity().supportFragmentManager, ConfirmMakePrivateDialog::class.simpleName
         )
         dialog.setListener {
-            MediaUtils.makePrivateItem(requireActivity(), item) { onDeleteFailed(it) }
+            lifecycleScope.launch { (requireActivity() as AppCompatActivity).makePrivate(item as MediaWrapper) }
         }
         return true
     }
 
     private fun onRenameFailed(item: MediaLibraryItem) {
         if (isAdded) UiTools.snacker(
-            requireActivity(),
-            getString(R.string.msg_rename_failed, item.title)
+            requireActivity(), getString(R.string.msg_rename_failed, item.title)
         )
     }
+
     private fun onDeleteFailed(item: MediaLibraryItem) {
         if (isAdded) UiTools.snacker(
-            requireActivity(),
-            getString(R.string.msg_delete_failed, item.title)
+            requireActivity(), getString(R.string.msg_delete_failed, item.title)
         )
     }
 
@@ -327,9 +343,7 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
             }
             if (actionMode != null) lifecycleScope.launch(Dispatchers.Main) {
                 @Suppress("UNCHECKED_CAST") fillActionMode(
-                    requireActivity(),
-                    actionMode!!,
-                    it as MultiSelectHelper<MediaLibraryItem>
+                    requireActivity(), actionMode!!, it as MultiSelectHelper<MediaLibraryItem>
                 )
             }
         }
@@ -350,8 +364,7 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
             val cs = ConstraintSet()
             cs.clone(cl)
             cs.setVisibility(
-                R.id.searchButton,
-                if (visible) ConstraintSet.VISIBLE else ConstraintSet.GONE
+                R.id.searchButton, if (visible) ConstraintSet.VISIBLE else ConstraintSet.GONE
             )
             transition.excludeChildren(RecyclerView::class.java, true)
             TransitionManager.beginDelayedTransition(cl, transition)

@@ -6,14 +6,17 @@ import android.content.Intent;
 import android.icu.text.DecimalFormat;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -32,13 +35,14 @@ import com.video.offline.videoplayer.gui.privacy.vault.utils.Settings;
 import com.video.offline.videoplayer.gui.privacy.vault.utils.Toaster;
 import com.video.offline.videoplayer.gui.privacy.vault.viewmodel.GalleryViewModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GalleryActivity extends BaseActivity {
+    public static final String EXTRA_MAKE_PRIVATE = "p";
     private static final String TAG = "GalleryActivity";
-
     private static final Object LOCK = new Object();
 
     private GalleryViewModel viewModel;
@@ -51,10 +55,12 @@ public class GalleryActivity extends BaseActivity {
     private boolean isWaitingForUnlock = false;
     private Snackbar snackBarBackPressed;
     private Intent shareIntent;
+    private boolean isMakePrivate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.w(TAG, "onCreate: Starting GalleryActivity");
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         binding = ActivityGalleryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -64,6 +70,7 @@ public class GalleryActivity extends BaseActivity {
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
+        isMakePrivate = intent.getBooleanExtra(EXTRA_MAKE_PRIVATE, false);
 
         if ((Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action)) && type != null) {
             if (settings.isLocked()) {
@@ -76,11 +83,12 @@ public class GalleryActivity extends BaseActivity {
             }
         } else {
             if (settings.isLocked()) {
-                finish();
+                Log.e(TAG, "Sharing/private didnt work!");
+                lockAndExit();
                 return;
             }
             setClickListeners();
-            findFolders();
+            findFolders(false);
         }
     }
 
@@ -94,7 +102,7 @@ public class GalleryActivity extends BaseActivity {
 
     private void handleShareIntent(Intent intent, String action, String type) {
         setClickListeners();
-        findFolders();
+        findFolders(true);
         if (Intent.ACTION_SEND.equals(action)) {
             if (type.startsWith("image/") || type.startsWith("video/")) {
                 handleSendSingle(intent);
@@ -107,24 +115,64 @@ public class GalleryActivity extends BaseActivity {
     }
 
     private void handleSendSingle(Intent intent) {
+//        doesn't work
+//        content://com.video.offline.videoplayer.debug.provider/external_files/emulated/0/DCIM/ScreenRecording/HD%201706624341%20test.mp4
+
+//        works!
+//        content://com.google.android.apps.nbu.files.provider/2/1000033296
+        Log.w(TAG, "handleSendSingle: Started");
+
         Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (uri != null) {
             List<Uri> list = new ArrayList<>(1);
-            list.add(uri);
-            List<DocumentFile> documentFiles = FileStuff.getDocumentsFromShareIntent(this, list);
+            List<DocumentFile> documentFiles = new ArrayList<>();
+            if (isMakePrivate) {
+                File file = new File(uri.getPath());
+                FileProvider.getUriForFile(this, getPackageName() + ".provider", file);
+                DocumentFile docFile = DocumentFile.fromFile(file);
+                documentFiles.add(docFile);
+            } else {
+                list.add(uri);
+                documentFiles = FileStuff.getDocumentsFromShareIntent(this, list);
+            }
             if (!documentFiles.isEmpty()) {
                 importFiles(documentFiles);
+            } else {
+                Toast.makeText(this, "Something Went Wrong while locking.", Toast.LENGTH_SHORT).show();
+                lockAndExit();
             }
+        } else {
+            Log.e(TAG, "handleSendSingle: Unable to read media");
+            Toast.makeText(this, "Unable to read media.", Toast.LENGTH_SHORT).show();
+            lockAndExit();
         }
     }
 
     private void handleSendMultiple(Intent intent) {
+        Log.w(TAG, "handleSendMultiple: Started");
+        List<DocumentFile> documentFiles = new ArrayList<>();
         ArrayList<Uri> uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         if (uris != null) {
-            List<DocumentFile> documentFiles = FileStuff.getDocumentsFromShareIntent(this, uris);
+            if (isMakePrivate) {
+                for (Uri uri : uris) {
+                    File file = new File(uri.getPath());
+                    FileProvider.getUriForFile(this, getPackageName() + ".provider", file);
+                    DocumentFile docFile = DocumentFile.fromFile(file);
+                    documentFiles.add(docFile);
+                }
+            } else {
+                documentFiles = FileStuff.getDocumentsFromShareIntent(this, uris);
+            }
             if (!documentFiles.isEmpty()) {
                 importFiles(documentFiles);
+            } else {
+                Toast.makeText(this, "Something Went Wrong while locking.", Toast.LENGTH_SHORT).show();
+                lockAndExit();
             }
+        } else {
+            Toast.makeText(this, "Unable to read media.", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "handleSendSingle: Unable to read media");
+            lockAndExit();
         }
     }
 
@@ -191,9 +239,15 @@ public class GalleryActivity extends BaseActivity {
                     @Override
                     public void onAddedAsRoot() {
                         Toaster.getInstance(GalleryActivity.this).showLong(getString(R.string.gallery_added_folder, FileStuff.getFilenameWithPathFromUri(uri)));
-//                        addDirectory(documentFile.getUri());
                         GalleryFile galleryFile1 = GalleryFile.asDirectory(documentFile.getUri(), null);
-                        goNext(galleryFile1);
+                        Intent intent = getIntent();
+                        String action = intent.getAction();
+                        String type = intent.getType();
+                        if ((Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action)) && type != null) {
+                            Log.w(TAG, "goNextWithDirectory: Not Going Next due to share intent!");
+                        } else {
+                            goNext(galleryFile1);
+                        }
                     }
 
                     @Override
@@ -205,7 +259,7 @@ public class GalleryActivity extends BaseActivity {
                     public void onAlreadyExists(boolean isRootDir) {
                         Toaster.getInstance(GalleryActivity.this).showLong(getString(R.string.gallery_added_folder_duplicate, FileStuff.getFilenameWithPathFromUri(uri)));
                         if (isRootDir) {
-                            findFolders();
+                            findFolders(false);
                         }
                     }
                 });
@@ -237,7 +291,7 @@ public class GalleryActivity extends BaseActivity {
         }
     }
 
-    private void findFolders() {
+    private void findFolders(boolean isShare) {
         setLoading(true);
         new Thread(() -> {
             runOnUiThread(() -> {
@@ -263,9 +317,8 @@ public class GalleryActivity extends BaseActivity {
 
             runOnUiThread(() -> {
                 synchronized (LOCK) {
-
                     if (!uriFiles.isEmpty()) {
-                        goNextWithDirectory(uriFiles);
+                        if (!isShare) goNextWithDirectory(uriFiles);
                     } else {
                         showAddFolderDialog();
                     }
@@ -276,7 +329,7 @@ public class GalleryActivity extends BaseActivity {
     }
 
     private void importFiles(List<DocumentFile> documentFiles) {
-        Dialogs.showImportGalleryChooseDestinationDialog(this, settings, documentFiles.size(), new Dialogs.IOnDirectorySelected() {
+        Dialogs.doNotShowImportGalleryChooseDestinationDialog(this, settings, documentFiles.size(), new Dialogs.IOnDirectorySelected() {
             @Override
             public void onDirectorySelected(@NonNull DocumentFile directory, boolean deleteOriginal) {
                 importToDirectory(documentFiles, directory, deleteOriginal);
@@ -334,77 +387,29 @@ public class GalleryActivity extends BaseActivity {
             runOnUiThread(() -> {
                 Toaster.getInstance(GalleryActivity.this).showLong(getString(R.string.gallery_importing_done, progress[0] - 1));
                 setLoading(false);
+                GalleryFile galleryFile1 = GalleryFile.asDirectory(directory.getUri(), null);
+                goNext(galleryFile1);
             });
-            settings.addGalleryDirectory(directory.getUri(), null);
-            synchronized (LOCK) {
-                for (int i = 0; i < GalleryActivity.this.galleryFiles.size(); i++) {
-                    GalleryFile g = GalleryActivity.this.galleryFiles.get(i);
-                    if (g.getUri() != null && g.getUri().equals(directory.getUri())) {
-                        List<GalleryFile> galleryFiles = FileStuff.getFilesInFolder(GalleryActivity.this, directory.getUri());
-                        g.setFilesInDirectory(galleryFiles);
-                        int finalI = i;
-                        GalleryFile removed = GalleryActivity.this.galleryFiles.remove(finalI);
-                        GalleryActivity.this.galleryFiles.add(0, removed);
-                        runOnUiThread(() -> {
-                            galleryGridAdapter.notifyItemMoved(finalI, 0);
-                            galleryGridAdapter.notifyItemChanged(0);
-                        });
-                        break;
-                    }
-                }
-            }
         }).start();
     }
 
-    private void addDirectory(Uri directoryUri) {
-        synchronized (LOCK) {
-            this.galleryFiles.add(0, GalleryFile.asDirectory(directoryUri, galleryFiles));
-            galleryGridAdapter.notifyItemInserted(0);
-        }
-    }
-
     private void goNextWithDirectory(@NonNull List<Uri> directories) {
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
         GalleryFile galleryFile1 = GalleryFile.asDirectory(directories.get(0), null);
-        goNext(galleryFile1);
-    }
-
-    private void addDirectories(@NonNull List<Uri> directories) {
-        GalleryFile galleryFile1 = GalleryFile.asDirectory(directories.get(0), null);
-        goNext(galleryFile1);
-        for (int i = 0; i < directories.size(); i++) {
-            Uri uri = directories.get(i);
-            GalleryFile galleryFile = GalleryFile.asDirectory(uri, null);
-            goNext(galleryFile);
-
-            runOnUiThread(() -> {
-                synchronized (LOCK) {
-                    this.galleryFiles.add(galleryFile);
-                    galleryGridAdapter.notifyItemInserted(this.galleryFiles.size() - 1);
-                }
-            });
-            new Thread(() -> {
-                List<GalleryFile> galleryFiles = FileStuff.getFilesInFolder(this, uri);
-                galleryFile.setFilesInDirectory(galleryFiles);
-                runOnUiThread(() -> galleryGridAdapter.notifyItemChanged(this.galleryFiles.indexOf(galleryFile)));
-            }).start();
+        if ((Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action)) && type != null) {
+            Log.w(TAG, "goNextWithDirectory: Not Going Next due to share intent!");
+        } else {
+            goNext(galleryFile1);
         }
-        runOnUiThread(() -> {
-            if (!this.galleryFiles.isEmpty()) {
-                synchronized (LOCK) {
-                    this.galleryFiles.add(0, GalleryFile.asAllFolder(getString(R.string.gallery_all)));
-                    galleryGridAdapter.notifyItemInserted(0);
-                }
-            } else {
-                showAddFolderDialog();
-            }
-            setLoading(false);
-        });
     }
 
     private void goNext(GalleryFile galleryFile) {
-        Intent intent = new Intent(this, GalleryDirectoryActivity.class);
-        intent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString());
-        this.startActivity(intent);
+        Intent galleryDirectoryIntent = new Intent(this, GalleryDirectoryActivity.class);
+        galleryDirectoryIntent.putExtra(GalleryDirectoryActivity.EXTRA_DIRECTORY, galleryFile.getUri().toString());
+        this.startActivity(galleryDirectoryIntent);
+        Log.e(TAG, "go Next");
         finish();
     }
 
@@ -426,7 +431,8 @@ public class GalleryActivity extends BaseActivity {
         // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
         builder.setNegativeButton("No", (dialog, which) -> {
             dialog.cancel();
-            finish();
+            Log.e(TAG, "Cancelled add folder!");
+            lockAndExit();
         });
         // Create the Alert dialog
         AlertDialog alertDialog = builder.create();
@@ -434,7 +440,7 @@ public class GalleryActivity extends BaseActivity {
         alertDialog.show();
     }
 
-    private void lock() {
+    private void lockAndExit() {
         Password.lock(this, settings);
         finish();
     }
@@ -447,10 +453,10 @@ public class GalleryActivity extends BaseActivity {
             isWaitingForUnlock = false;
             shareIntent = null;
         } else if (!isWaitingForUnlock && (settings == null || settings.isLocked())) {
-            finishAffinity();
+            Log.e(TAG, "onResume: not waiting, null setting, is locked");
+            finish();
         }
     }
-
 
     @Override
     public void onBackPressed() {

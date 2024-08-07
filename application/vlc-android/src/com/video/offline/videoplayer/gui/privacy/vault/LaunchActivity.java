@@ -34,6 +34,7 @@ public class LaunchActivity extends BaseActivity {
     private static final String TAG = "LaunchActivity";
     public static long GLIDE_KEY = System.currentTimeMillis();
     public static String EXTRA_ONLY_UNLOCK = "u";
+    boolean isUnlockOnly = false;
     Boolean isReset = false;
     private ActivityLaunchBinding binding;
     private Settings settings;
@@ -51,6 +52,8 @@ public class LaunchActivity extends BaseActivity {
         binding = ActivityLaunchBinding.inflate(getLayoutInflater());
         isReset = getIntent().getBooleanExtra("reset", false);
         setContentView(binding.getRoot());
+        Intent intent = getIntent();
+        isUnlockOnly = intent.getBooleanExtra(EXTRA_ONLY_UNLOCK, false);
         initPin();
     }
 
@@ -227,7 +230,9 @@ public class LaunchActivity extends BaseActivity {
             } else {
                 settings.setTempPassword("1234".toCharArray());
             }
-            startActivity(new Intent(this, GalleryActivity.class));
+            if (!isUnlockOnly) {
+                startActivity(new Intent(this, GalleryActivity.class));
+            }
             isStarting.set(false);
             lockStore.lock();
             finish();

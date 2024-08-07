@@ -46,14 +46,12 @@ import com.video.offline.videoplayer.gui.helpers.ExpandStateAppBarLayoutBehavior
 import com.video.offline.videoplayer.gui.helpers.SwipeDragItemTouchHelperCallback
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.helpers.UiTools.addToPlaylist
-import com.video.offline.videoplayer.gui.helpers.UiTools.showMediaInfo
 import com.video.offline.videoplayer.gui.helpers.UiTools.showPinIfNeeded
 import com.video.offline.videoplayer.gui.view.RecyclerSectionItemDecoration
 import com.video.offline.videoplayer.interfaces.Filterable
 import com.video.offline.videoplayer.interfaces.IEventsHandler
 import com.video.offline.videoplayer.interfaces.IListEventsHandler
 import com.video.offline.videoplayer.media.MediaUtils
-import com.video.offline.videoplayer.media.MediaUtils.makePrivateItem
 import com.video.offline.videoplayer.media.PlaylistManager
 import com.video.offline.videoplayer.util.*
 import com.video.offline.videoplayer.util.ContextOption.*
@@ -458,7 +456,7 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         when (option) {
             CTX_INFORMATION -> showInfoDialog(media)
             CTX_DELETE -> lifecycleScope.launch { removeItem(position, media) }
-            CTX_PRIVATE -> lifecycleScope.launch { makePrivateItem(position, media) }
+            CTX_PRIVATE -> lifecycleScope.launch { makePrivateItem(media) }
             CTX_APPEND -> MediaUtils.appendMedia(this, media.tracks)
             CTX_PLAY_NEXT -> MediaUtils.insertNext(this, media.tracks)
             CTX_ADD_TO_PLAYLIST -> addToPlaylist(media.tracks, SavePlaylistDialog.KEY_NEW_TRACKS)
@@ -493,13 +491,14 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         }
     }
 
-    private suspend fun makePrivateItem(position: Int, media: MediaWrapper) {
+    private suspend fun makePrivateItem(media: MediaWrapper) {
         if (isPlaylist) {
 //            removeFromPlaylist(listOf(media), listOf(position))
         } else {
             makePrivateItems(listOf(media))
         }
     }
+
     private fun removeItems(items: List<MediaWrapper>) {
         val dialog = ConfirmDeleteDialog.newInstance(ArrayList(items))
         dialog.show(supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
@@ -519,23 +518,12 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
             }
         }
     }
+
     private fun makePrivateItems(items: List<MediaWrapper>) {
-        val dialog = ConfirmDeleteDialog.newInstance(ArrayList(items))
-        dialog.show(supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
+        val dialog = ConfirmMakePrivateDialog.newInstance(ArrayList(items))
+        dialog.show(supportFragmentManager, ConfirmMakePrivateDialog::class.simpleName)
         dialog.setListener {
-            lifecycleScope.launch {
-                for (item in items) {
-                    val deleteAction = kotlinx.coroutines.Runnable {
-                        lifecycleScope.launch {
-                            makePrivateItem(this@HeaderMediaListActivity, item) {
-                                UiTools.snacker(this@HeaderMediaListActivity, getString(R.string.msg_delete_failed, it.title))
-                            }
-                            if (isStarted()) viewModel.refresh()
-                        }
-                    }
-                    if (Permissions.checkWritePermission(this@HeaderMediaListActivity, item, deleteAction)) deleteAction.run()
-                }
-            }
+            lifecycleScope.launch { makePrivate(items) }
         }
     }
 

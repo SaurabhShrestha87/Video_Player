@@ -9,13 +9,6 @@
         android:animateLayoutChanges="true"
         tools:context=".GalleryActivity">
 
-        <TextView
-            style="@style/VLC.TextViewTitle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="LOADING..." />
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnImportFiles"
             android:layout_width="wrap_content"

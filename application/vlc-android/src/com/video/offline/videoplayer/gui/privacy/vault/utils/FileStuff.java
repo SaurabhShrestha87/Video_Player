@@ -194,6 +194,8 @@ public class FileStuff {
         List<DocumentFile> documentFiles = new ArrayList<>();
         for (Uri uri : uris) {
             DocumentFile pickedFile = DocumentFile.fromSingleUri(context, uri);
+            String type = pickedFile.getType();
+
             if (pickedFile != null && pickedFile.getType() != null && (pickedFile.getType().startsWith("image/") || pickedFile.getType().startsWith("video/")) && !pickedFile.getName().startsWith(Encryption.ENCRYPTED_PREFIX)) {
                 documentFiles.add(pickedFile);
             }

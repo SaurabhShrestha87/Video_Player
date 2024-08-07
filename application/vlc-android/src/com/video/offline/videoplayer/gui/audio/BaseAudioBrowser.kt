@@ -77,6 +77,7 @@ import com.video.offline.videoplayer.util.ContextOption.Companion.createCtxAudio
 import com.video.offline.videoplayer.util.ContextOption.Companion.createCtxPlaylistAlbumFlags
 import com.video.offline.videoplayer.util.ContextOption.Companion.createCtxTrackFlags
 import com.video.offline.videoplayer.util.FlagSet
+import com.video.offline.videoplayer.util.makePrivate
 import com.video.offline.videoplayer.viewmodels.MedialibraryViewModel
 import java.security.SecureRandom
 import java.util.*

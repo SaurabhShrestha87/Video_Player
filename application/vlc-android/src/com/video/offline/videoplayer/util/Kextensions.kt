@@ -29,13 +29,27 @@ import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.*
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.SecondaryActivity
+import com.video.offline.videoplayer.gui.browser.KEY_MEDIA
+import com.video.offline.videoplayer.gui.privacy.vault.GalleryActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.videolan.libvlc.Media
 import org.videolan.libvlc.interfaces.IMedia
 import org.videolan.libvlc.util.AndroidUtil
@@ -53,26 +67,21 @@ import org.videolan.resources.util.getFromMl
 import org.videolan.tools.AppScope
 import org.videolan.tools.isStarted
 import org.videolan.tools.retrieveParent
-import com.video.offline.videoplayer.R
-import com.video.offline.videoplayer.gui.SecondaryActivity
-import com.video.offline.videoplayer.gui.browser.KEY_MEDIA
 import java.io.File
 import java.lang.ref.WeakReference
 import java.net.URI
 import java.net.URISyntaxException
 import java.security.SecureRandom
 import java.text.Normalizer
-import java.util.*
+import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
 fun String.validateLocation(): Boolean {
-    var location = this
-    /* Check if the MRL contains a scheme */
+    var location = this/* Check if the MRL contains a scheme */
     if (!location.matches("\\w+://.+".toRegex())) location = "file://$location"
-    if (location.lowercase(Locale.ENGLISH).startsWith("file://")) {
-        /* Ensure the file exists */
+    if (location.lowercase(Locale.ENGLISH).startsWith("file://")) {/* Ensure the file exists */
         val f: File
         try {
             f = File(URI(location))
@@ -86,31 +95,43 @@ fun String.validateLocation(): Boolean {
     return true
 }
 
-inline fun <reified T : ViewModel> Fragment.getModelWithActivity() = ViewModelProvider(requireActivity()).get(T::class.java)
-inline fun <reified T : ViewModel> Fragment.getModel() = ViewModelProvider(this).get(T::class.java)
-inline fun <reified T : ViewModel> FragmentActivity.getModel() = ViewModelProvider(this).get(T::class.java)
+inline fun <reified T : ViewModel> Fragment.getModelWithActivity() =
+    ViewModelProvider(requireActivity()).get(T::class.java)
 
-fun Media?.canExpand() = this != null && (type == IMedia.Type.Directory || type == IMedia.Type.Playlist)
+inline fun <reified T : ViewModel> Fragment.getModel() = ViewModelProvider(this).get(T::class.java)
+inline fun <reified T : ViewModel> FragmentActivity.getModel() =
+    ViewModelProvider(this).get(T::class.java)
+
+fun Media?.canExpand() =
+    this != null && (type == IMedia.Type.Directory || type == IMedia.Type.Playlist)
 
 fun FragmentActivity.share(file: File) {
     val intentShareFile = Intent(Intent.ACTION_SEND)
     val fileWithinMyDir = File(file.path)
     if (isStarted()) {
         intentShareFile.type = "*/*"
-        intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, "$packageName.provider", fileWithinMyDir))
+        intentShareFile.putExtra(
+            Intent.EXTRA_STREAM,
+            FileProvider.getUriForFile(this, "$packageName.provider", fileWithinMyDir)
+        )
         intentShareFile.putExtra(Intent.EXTRA_SUBJECT, file.name)
         intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_message, file.name))
-        startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file,file.name)))
+        startActivity(
+            Intent.createChooser(
+                intentShareFile,
+                getString(R.string.share_file, file.name)
+            )
+        )
     }
 }
 
-fun FragmentActivity.share(title:String, content: String) {
+fun FragmentActivity.share(title: String, content: String) {
     val intentShareFile = Intent(Intent.ACTION_SEND)
     if (isStarted()) {
         intentShareFile.type = "*/*"
         intentShareFile.putExtra(Intent.EXTRA_SUBJECT, title)
         intentShareFile.putExtra(Intent.EXTRA_TEXT, content)
-        startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file,title)))
+        startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file, title)))
     }
 }
 
@@ -121,20 +142,35 @@ suspend fun AppCompatActivity.share(media: MediaWrapper) {
         fileWithinMyDir.exists()
     }
 
-    if (isStarted())
-        if (validFile) {
-            intentShareFile.type = if (media.type == TYPE_VIDEO) "video/*" else "audio/*"
-            intentShareFile.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, "$packageName.provider", fileWithinMyDir))
-            intentShareFile.putExtra(Intent.EXTRA_SUBJECT, media.title)
-            intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_message, media.title))
-            startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file, media.title)))
-        } else Snackbar.make(findViewById(android.R.id.content), R.string.invalid_file, Snackbar.LENGTH_LONG).show()
+    if (isStarted()) if (validFile) {
+        intentShareFile.type = if (media.type == TYPE_VIDEO) "video/*" else "audio/*"
+        intentShareFile.putExtra(
+            Intent.EXTRA_STREAM,
+            FileProvider.getUriForFile(this, "$packageName.provider", fileWithinMyDir)
+        )
+        intentShareFile.putExtra(Intent.EXTRA_SUBJECT, media.title)
+        intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_message, media.title))
+        startActivity(
+            Intent.createChooser(
+                intentShareFile,
+                getString(R.string.share_file, media.title)
+            )
+        )
+    } else Snackbar.make(
+        findViewById(android.R.id.content),
+        R.string.invalid_file,
+        Snackbar.LENGTH_LONG
+    ).show()
 }
 
 fun FragmentActivity.share(medias: List<MediaWrapper>) = lifecycleScope.launch {
     val intentShareFile = Intent(Intent.ACTION_SEND_MULTIPLE)
     val uris = arrayListOf<Uri>()
-    val title = if (medias.size == 1) medias[0].title else resources.getQuantityString(R.plurals.media_quantity, medias.size, medias.size)
+    val title = if (medias.size == 1) medias[0].title else resources.getQuantityString(
+        R.plurals.media_quantity,
+        medias.size,
+        medias.size
+    )
     withContext(Dispatchers.IO) {
         medias.filter { it.uri.path != null && File(it.uri.path!!).exists() }.forEach {
             val file = File(it.uri.path!!)
@@ -142,18 +178,103 @@ fun FragmentActivity.share(medias: List<MediaWrapper>) = lifecycleScope.launch {
         }
     }
 
-    if (isStarted())
-        if (uris.isNotEmpty()) {
-            intentShareFile.type = "*/*"
-            intentShareFile.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
-            intentShareFile.putExtra(Intent.EXTRA_SUBJECT, title)
-            intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_message, title))
-            startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file, title)))
-        } else Snackbar.make(findViewById(android.R.id.content), R.string.invalid_file, Snackbar.LENGTH_LONG).show()
+    if (isStarted()) if (uris.isNotEmpty()) {
+        intentShareFile.type = "*/*"
+        intentShareFile.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
+        intentShareFile.putExtra(Intent.EXTRA_SUBJECT, title)
+        intentShareFile.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_message, title))
+        startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file, title)))
+    } else Snackbar.make(
+        findViewById(android.R.id.content),
+        R.string.invalid_file,
+        Snackbar.LENGTH_LONG
+    ).show()
 }
 
-fun MediaWrapper?.isMedia() = this != null && (type == MediaWrapper.TYPE_AUDIO || type == MediaWrapper.TYPE_VIDEO)
-fun MediaWrapper?.isBrowserMedia() = this != null && (isMedia() || type == MediaWrapper.TYPE_DIR || type == MediaWrapper.TYPE_PLAYLIST)
+suspend fun AppCompatActivity.makePrivate(media: MediaWrapper) {
+    val intentMakePrivate = Intent(this, GalleryActivity::class.java)
+    val fileWithinMyDir = File(media.uri.path)
+    val validFile = withContext(Dispatchers.IO) {
+        fileWithinMyDir.exists() && media.type == TYPE_VIDEO
+    }
+
+    if (isStarted()) if (validFile) {
+        intentMakePrivate.type = "video/*"
+        intentMakePrivate.action = Intent.ACTION_SEND
+        intentMakePrivate.putExtra(Intent.EXTRA_STREAM, media.uri)
+        intentMakePrivate.putExtra(Intent.EXTRA_SUBJECT, media.title)
+        intentMakePrivate.putExtra(GalleryActivity.EXTRA_MAKE_PRIVATE, true)
+        startActivity(intentMakePrivate)
+    } else Snackbar.make(
+        findViewById(android.R.id.content),
+        R.string.invalid_file_private,
+        Snackbar.LENGTH_LONG
+    ).show()
+}
+
+suspend fun AppCompatActivity.makePrivate(medias: List<MediaWrapper>) {
+    val intentShareFile = Intent(this, GalleryActivity::class.java)
+    val uris = arrayListOf<Uri>()
+    val title = if (medias.size == 1) medias[0].title else resources.getQuantityString(
+        R.plurals.media_quantity,
+        medias.size,
+        medias.size
+    )
+    withContext(Dispatchers.IO) {
+        medias.filter { it.uri.path != null && File(it.uri.path!!).exists() && it.type == TYPE_VIDEO }
+            .forEach {
+                uris.add(it.uri)
+            }
+    }
+
+    if (isStarted()) if (uris.isNotEmpty()) {
+        intentShareFile.type = "*/*"
+        intentShareFile.action = Intent.ACTION_SEND
+        intentShareFile.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
+        intentShareFile.putExtra(Intent.EXTRA_SUBJECT, title)
+        intentShareFile.putExtra(GalleryActivity.EXTRA_MAKE_PRIVATE, true)
+        startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file, title)))
+    } else Snackbar.make(
+        findViewById(android.R.id.content),
+        R.string.invalid_file_private,
+        Snackbar.LENGTH_LONG
+    ).show()
+}
+
+suspend fun AppCompatActivity.makePrivateFolderItems(medias: List<MediaWrapper>) {
+    val intentShareFile = Intent(this, GalleryActivity::class.java)
+    val uris = arrayListOf<Uri>()
+    val title = if (medias.size == 1) medias[0].title else resources.getQuantityString(
+        R.plurals.media_quantity,
+        medias.size,
+        medias.size
+    )
+    withContext(Dispatchers.IO) {
+        medias.filter { it.uri.path != null && File(it.uri.path!!).exists() && it.type == TYPE_VIDEO }
+            .forEach {
+                uris.add(it.uri)
+            }
+    }
+
+    if (isStarted()) if (uris.isNotEmpty()) {
+        intentShareFile.type = "*/*"
+        intentShareFile.action = Intent.ACTION_SEND_MULTIPLE
+        intentShareFile.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
+        intentShareFile.putExtra(Intent.EXTRA_SUBJECT, title)
+        intentShareFile.putExtra(GalleryActivity.EXTRA_MAKE_PRIVATE, true)
+        startActivity(intentShareFile)
+    } else Snackbar.make(
+        findViewById(android.R.id.content),
+        R.string.invalid_file_private,
+        Snackbar.LENGTH_LONG
+    ).show()
+}
+
+fun MediaWrapper?.isMedia() =
+    this != null && (type == MediaWrapper.TYPE_AUDIO || type == TYPE_VIDEO)
+
+fun MediaWrapper?.isBrowserMedia() =
+    this != null && (isMedia() || type == MediaWrapper.TYPE_DIR || type == MediaWrapper.TYPE_PLAYLIST)
 
 fun Context.getAppSystemService(name: String) = applicationContext.getSystemService(name)!!
 
@@ -162,7 +283,7 @@ fun Long.random() = (SecureRandom().nextFloat() * this).toLong()
 suspend fun Context.awaitMedialibraryStarted() = getFromMl { isStarted }
 
 @WorkerThread
-fun List<MediaWrapper>.updateWithMLMeta() : MutableList<MediaWrapper> {
+fun List<MediaWrapper>.updateWithMLMeta(): MutableList<MediaWrapper> {
     val ml = Medialibrary.getInstance()
     val list = mutableListOf<MediaWrapper>()
     for (media in this) {
@@ -176,13 +297,15 @@ fun List<MediaWrapper>.updateWithMLMeta() : MutableList<MediaWrapper> {
 suspend fun String.scanAllowed() = withContext(Dispatchers.IO) {
     val file = File(toUri().path ?: return@withContext false)
     if (!file.exists() || !file.canRead()) return@withContext false
-    if (AndroidDevices.watchDevices && file.list()?.any { it == ".nomedia" } == true) return@withContext false
+    if (AndroidDevices.watchDevices && file.list()
+            ?.any { it == ".nomedia" } == true
+    ) return@withContext false
     true
 }
 
 fun <X, Y> CoroutineScope.map(
-        source: LiveData<X>,
-        f : suspend (value: X?) -> Y
+    source: LiveData<X>,
+    f: suspend (value: X?) -> Y,
 ): LiveData<Y> {
     return MediatorLiveData<Y>().apply {
         addSource(source) {
@@ -211,7 +334,12 @@ fun asyncTextItem(view: TextView, item: MediaLibraryItem?) {
     val text = if (item is Playlist) {
         if (item.duration != 0L) {
             val duration = Tools.millisToString(item.duration)
-            TextUtils.separatedString(view.context.getString(R.string.track_number, item.tracksCount), if (item.nbDurationUnknown > 0) "$duration+" else duration)
+            TextUtils.separatedString(
+                view.context.getString(
+                    R.string.track_number,
+                    item.tracksCount
+                ), if (item.nbDurationUnknown > 0) "$duration+" else duration
+            )
         } else view.context.getString(R.string.track_number, item.tracksCount)
     } else item.description
     if (text.isNullOrEmpty()) {
@@ -251,13 +379,31 @@ fun browserDescription(view: TextView, description: String?) {
     (view as AppCompatTextView).text = description?.getDescriptionSpan(view.context)
 }
 
-fun CharSequence.getDescriptionSpan(context: Context):SpannableString {
+fun CharSequence.getDescriptionSpan(context: Context): SpannableString {
     val string = SpannableString(this)
     if (this.contains(folderReplacementMarker)) {
-        string.setSpan(ImageSpan(context, R.drawable.ic_emoji_folder, DynamicDrawableSpan.ALIGN_BASELINE), this.indexOf(folderReplacementMarker), this.indexOf(folderReplacementMarker)+3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        string.setSpan(
+            ImageSpan(
+                context,
+                R.drawable.ic_emoji_folder,
+                DynamicDrawableSpan.ALIGN_BASELINE
+            ),
+            this.indexOf(folderReplacementMarker),
+            this.indexOf(folderReplacementMarker) + 3,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
     if (this.contains(fileReplacementMarker)) {
-        string.setSpan(ImageSpan(context, R.drawable.ic_emoji_file, DynamicDrawableSpan.ALIGN_BASELINE), this.indexOf(fileReplacementMarker), this.indexOf(fileReplacementMarker)+3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        string.setSpan(
+            ImageSpan(
+                context,
+                R.drawable.ic_emoji_file,
+                DynamicDrawableSpan.ALIGN_BASELINE
+            ),
+            this.indexOf(fileReplacementMarker),
+            this.indexOf(fileReplacementMarker) + 3,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
     return string
 }
@@ -267,7 +413,7 @@ fun CharSequence.getDescriptionSpan(context: Context):SpannableString {
  *
  * @return the folder number
  */
-fun CharSequence?.getFolderNumber():Int {
+fun CharSequence?.getFolderNumber(): Int {
     if (isNullOrBlank()) return 0
     if (!contains(folderReplacementMarker)) return 0
     val cutString = replace(Regex("[^0-9 ]"), "")
@@ -279,11 +425,11 @@ fun CharSequence?.getFolderNumber():Int {
  *
  * @return the file number
  */
-fun CharSequence?.getFilesNumber():Int {
+fun CharSequence?.getFilesNumber(): Int {
     if (isNullOrBlank()) return 0
     if (!contains(fileReplacementMarker)) return 0
     val cutString = replace(Regex("[^0-9 ]"), "").trim().split(" ")
-    return cutString[cutString.size -1].toInt()
+    return cutString[cutString.size - 1].toInt()
 }
 
 /**
@@ -300,15 +446,18 @@ fun String.slugify(replacement: String = "-"): String {
     } else {
         Normalizer.normalize(this, Normalizer.Form.NFD)
     }
-    return s.replace("[^a-zA-Z0-9\\s]+".toRegex(), "").trim()
-            .replace("\\s+".toRegex(), replacement)
+    return s.replace("[^a-zA-Z0-9\\s]+".toRegex(), "").trim().replace("\\s+".toRegex(), replacement)
 }
 
 const val presentReplacementMarker = "§*§"
 const val missingReplacementMarker = "*§*"
 
 fun MediaLibraryItem.getPresenceDescription() = when (this) {
-    is VideoGroup -> TextUtils.separatedString("${this.presentCount} §*§", "${this.mediaCount() - this.presentCount} *§*")
+    is VideoGroup -> TextUtils.separatedString(
+        "${this.presentCount} §*§",
+        "${this.mediaCount() - this.presentCount} *§*"
+    )
+
     else -> ""
 }
 
@@ -317,13 +466,31 @@ fun presenceDescription(view: TextView, description: String?) {
     (view as AppCompatTextView).text = description?.getPresenceDescriptionSpan(view.context)
 }
 
-fun CharSequence.getPresenceDescriptionSpan(context: Context):SpannableString {
+fun CharSequence.getPresenceDescriptionSpan(context: Context): SpannableString {
     val string = SpannableString(this)
     if (this.contains(presentReplacementMarker)) {
-        string.setSpan(ImageSpan(context, R.drawable.ic_emoji_media_present, DynamicDrawableSpan.ALIGN_CENTER), this.indexOf(folderReplacementMarker), this.indexOf(folderReplacementMarker)+3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        string.setSpan(
+            ImageSpan(
+                context,
+                R.drawable.ic_emoji_media_present,
+                DynamicDrawableSpan.ALIGN_CENTER
+            ),
+            this.indexOf(folderReplacementMarker),
+            this.indexOf(folderReplacementMarker) + 3,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
     if (this.contains(missingReplacementMarker)) {
-        string.setSpan(ImageSpan(context, R.drawable.ic_emoji_media_absent, DynamicDrawableSpan.ALIGN_CENTER), this.indexOf(fileReplacementMarker), this.indexOf(fileReplacementMarker)+3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        string.setSpan(
+            ImageSpan(
+                context,
+                R.drawable.ic_emoji_media_absent,
+                DynamicDrawableSpan.ALIGN_CENTER
+            ),
+            this.indexOf(fileReplacementMarker),
+            this.indexOf(fileReplacementMarker) + 3,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
     return string
 }
@@ -334,7 +501,7 @@ fun Int.toPixel(): Int {
     return px.roundToInt()
 }
 
-fun Activity.getScreenWidth() : Int {
+fun Activity.getScreenWidth(): Int {
     val dm = DisplayMetrics().also { windowManager.defaultDisplay.getMetrics(it) }
     return dm.widthPixels
 }
@@ -349,12 +516,23 @@ fun Activity.getScreenHeight(): Int {
  * @return true if the device has a notch
  * @throws NullPointerException if the window is not attached yet
  */
-fun Activity.hasNotch() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && window.decorView.rootWindowInsets.displayCutout != null
+fun Activity.hasNotch() =
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && window.decorView.rootWindowInsets.displayCutout != null
 
 @TargetApi(Build.VERSION_CODES.O)
 fun Context.getPendingIntent(iPlay: Intent): PendingIntent {
-    return if (AndroidUtil.isOOrLater) PendingIntent.getForegroundService(applicationContext, 0, iPlay, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-    else PendingIntent.getService(applicationContext, 0, iPlay, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+    return if (AndroidUtil.isOOrLater) PendingIntent.getForegroundService(
+        applicationContext,
+        0,
+        iPlay,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+    else PendingIntent.getService(
+        applicationContext,
+        0,
+        iPlay,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
 }
 
 /**
@@ -366,7 +544,7 @@ fun Context.getPendingIntent(iPlay: Intent): PendingIntent {
  *
  * /!\ Make sure to unregister [RecyclerView.AdapterDataObserver]
  */
-fun RecyclerView.Adapter<*>.onAnyChange(listener: ()->Unit): RecyclerView.AdapterDataObserver {
+fun RecyclerView.Adapter<*>.onAnyChange(listener: () -> Unit): RecyclerView.AdapterDataObserver {
     val dataObserver = object : RecyclerView.AdapterDataObserver() {
         override fun onChanged() {
             super.onChanged()
@@ -424,8 +602,8 @@ fun generateResolutionClass(width: Int, height: Int): String? = if (width <= 0 |
     }
 }
 
-val View.scope : CoroutineScope
-    get() = when(val ctx = context) {
+val View.scope: CoroutineScope
+    get() = when (val ctx = context) {
         is CoroutineScope -> ctx
         is LifecycleOwner -> ctx.lifecycleScope
         else -> AppScope
@@ -445,11 +623,12 @@ fun <T> Flow<T>.launchWhenStarted(scope: LifecycleCoroutineScope): Job = scope.l
 fun String?.sanitizeStringForAlphaCompare(nbOfDigits: Int): String? {
     if (this == null) return null
     if (first().isDigit()) return buildString {
-        var numberOfPrependingZeros =0
+        var numberOfPrependingZeros = 0
         for (c in this@sanitizeStringForAlphaCompare) {
             if (c.isDigit() && c.digitToInt() == 0) numberOfPrependingZeros++ else break
         }
-        for (i in 0 until (nbOfDigits - numberOfPrependingZeros - (getStartingNumber()?.numberOfDigits() ?: 0))) {
+        for (i in 0 until (nbOfDigits - numberOfPrependingZeros - (getStartingNumber()?.numberOfDigits()
+            ?: 0))) {
             append("0")
         }
         append(this@sanitizeStringForAlphaCompare)
@@ -476,7 +655,7 @@ fun String.getStartingNumber(): Int? {
     return try {
         buildString {
             for (c in this@getStartingNumber)
-                //we exclude starting "0" to prevent bad sorts
+            //we exclude starting "0" to prevent bad sorts
                 if (c.isDigit()) {
                     if (!(this.isEmpty() && c.digitToInt() == 0)) append(c)
                 } else break
@@ -495,8 +674,10 @@ fun String.getStartingNumber(): Int? {
 fun List<MediaLibraryItem>.determineMaxNbOfDigits(): Int {
     var numberOfPrepending = 0
     forEach {
-        numberOfPrepending = max((it as? MediaWrapper)?.fileName?.getStartingNumber()?.numberOfDigits()
-                ?: 0, numberOfPrepending)
+        numberOfPrepending = max(
+            (it as? MediaWrapper)?.fileName?.getStartingNumber()?.numberOfDigits() ?: 0,
+            numberOfPrepending
+        )
     }
     return numberOfPrepending
 }

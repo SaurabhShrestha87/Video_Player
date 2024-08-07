@@ -766,58 +766,12 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                 )
 
                 ContextOption.CTX_PLAY -> viewModel.play(position)
-                ContextOption.CTX_INFORMATION -> showInfoDialog(media)
                 ContextOption.CTX_DELETE -> removeItem(media)
-                ContextOption.CTX_PRIVATE -> makePrivateItem(media)
-                ContextOption.CTX_APPEND -> MediaUtils.appendMedia(activity, media)
-                ContextOption.CTX_SET_RINGTONE -> requireActivity().setRingtone(media)
-                ContextOption.CTX_PLAY_NEXT -> MediaUtils.insertNext(
-                    requireActivity(), media.tracks
-                )
-
-                ContextOption.CTX_DOWNLOAD_SUBTITLES -> MediaUtils.getSubs(requireActivity(), media)
-                ContextOption.CTX_ADD_TO_PLAYLIST -> requireActivity().addToPlaylist(
-                    media.tracks, SavePlaylistDialog.KEY_NEW_TRACKS
-                )
-
-                ContextOption.CTX_FIND_METADATA -> {
-                    val intent = Intent().apply {
-                        setClassName(requireContext().applicationContext, MOVIEPEDIA_ACTIVITY)
-                        apply { putExtra(MOVIEPEDIA_MEDIA, media) }
-                    }
-                    startActivity(intent)
-                }
-
-                ContextOption.CTX_SHARE -> lifecycleScope.launch {
-                    (requireActivity() as AppCompatActivity).share(
-                        media
-                    )
-                }
-
-                ContextOption.CTX_REMOVE_GROUP -> viewModel.removeFromGroup(media)
-                ContextOption.CTX_ADD_GROUP -> requireActivity().addToGroup(listOf(media), true) {}
-                ContextOption.CTX_GROUP_SIMILAR -> lifecycleScope.launch {
-                    if (!requireActivity().showPinIfNeeded()) viewModel.groupSimilar(
-                        media
-                    )
-                }
-
-                ContextOption.CTX_MARK_AS_PLAYED -> lifecycleScope.launch {
-                    viewModel.markAsPlayed(
-                        media
-                    )
-                }
 
                 ContextOption.CTX_MARK_AS_UNPLAYED -> lifecycleScope.launch {
                     viewModel.markAsUnplayed(
                         media
                     )
-                }
-
-                ContextOption.CTX_FAV_ADD, ContextOption.CTX_FAV_REMOVE -> lifecycleScope.launch(
-                    Dispatchers.IO
-                ) {
-                    media.isFavorite = option == ContextOption.CTX_FAV_ADD
                 }
 
                 ContextOption.CTX_GO_TO_FOLDER -> showParentFolder(media)
