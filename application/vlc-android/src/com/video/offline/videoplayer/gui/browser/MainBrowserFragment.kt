@@ -359,11 +359,11 @@ class MainBrowserFragment : BaseFragment(), View.OnClickListener, CtxActionRecei
                     if (!isEmpty) add(CTX_PLAY)
                     val isFileBrowser = isFile && item.uri.scheme == "file"
                     val favExists = withContext(Dispatchers.IO) { browserFavRepository.browserFavExists(mw.uri) }
-                    if (favExists) {
-                        if (mw.uri.scheme.isSchemeFavoriteEditable() && withContext(Dispatchers.IO) { browserFavRepository.isFavNetwork(mw.uri) })
-                            addAll(CTX_FAV_EDIT, CTX_FAV_REMOVE)
-                        else add(CTX_FAV_REMOVE)
-                    } else add(CTX_FAV_ADD)
+//                    if (favExists) {
+//                        if (mw.uri.scheme.isSchemeFavoriteEditable() && withContext(Dispatchers.IO) { browserFavRepository.isFavNetwork(mw.uri) })
+//                            addAll(CTX_FAV_EDIT, CTX_FAV_REMOVE)
+//                        else add(CTX_FAV_REMOVE)
+//                    } else add(CTX_FAV_ADD)
                     if (isFileBrowser) {
                         if (localViewModel.provider.hasMedias(mw)) add(CTX_ADD_FOLDER_PLAYLIST)
                         if (localViewModel.provider.hasSubfolders(mw)) add(CTX_ADD_FOLDER_AND_SUB_PLAYLIST)

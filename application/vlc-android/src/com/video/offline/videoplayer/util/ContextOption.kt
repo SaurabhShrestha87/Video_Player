@@ -99,7 +99,7 @@ enum class ContextOption : Flag {
         }
 
         fun createCtxFolderFlags() = createBaseFlags().apply {
-            removeAll(CTX_ADD_SHORTCUT, CTX_FAV_ADD)
+            removeAll(CTX_ADD_SHORTCUT)
             addAll(CTX_PRIVATE, CTX_BAN_FOLDER, CTX_SHARE, CTX_PLAY_AS_AUDIO, CTX_RENAME, CTX_DELETE, CTX_MARK_ALL_AS_PLAYED, CTX_MARK_ALL_AS_UNPLAYED, CTX_PLAY_ALL)
         }
     }

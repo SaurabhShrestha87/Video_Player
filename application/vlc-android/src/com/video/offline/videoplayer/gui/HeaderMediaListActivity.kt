@@ -343,7 +343,7 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         if (actionMode == null) {
             (item as? MediaWrapper)?.let { media ->
                 val flags = createCtxPlaylistItemFlags().apply {
-                    if (item.isFavorite) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
+//                    if (item.isFavorite) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
                     if (media.type == MediaWrapper.TYPE_STREAM || (media.type == MediaWrapper.TYPE_ALL && isSchemeHttpOrHttps(media.uri.scheme)))
                         addAll(CTX_COPY, CTX_RENAME)
                     else add(CTX_SHARE)

@@ -76,8 +76,6 @@ import com.video.offline.videoplayer.util.ContextOption.CTX_APPEND
 import com.video.offline.videoplayer.util.ContextOption.CTX_BAN_FOLDER
 import com.video.offline.videoplayer.util.ContextOption.CTX_DELETE
 import com.video.offline.videoplayer.util.ContextOption.CTX_DOWNLOAD_SUBTITLES
-import com.video.offline.videoplayer.util.ContextOption.CTX_FAV_ADD
-import com.video.offline.videoplayer.util.ContextOption.CTX_FAV_REMOVE
 import com.video.offline.videoplayer.util.ContextOption.CTX_FIND_METADATA
 import com.video.offline.videoplayer.util.ContextOption.CTX_GO_TO_FOLDER
 import com.video.offline.videoplayer.util.ContextOption.CTX_GROUP_SIMILAR
@@ -1057,9 +1055,9 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 }
                 CTX_MARK_AS_PLAYED -> lifecycleScope.launch { viewModel.markAsPlayed(media) }
                 CTX_MARK_AS_UNPLAYED -> lifecycleScope.launch { viewModel.markAsUnplayed(media) }
-                CTX_FAV_ADD, CTX_FAV_REMOVE -> lifecycleScope.launch(Dispatchers.IO) {
-                    media.isFavorite = option == CTX_FAV_ADD
-                }
+//                CTX_FAV_ADD, CTX_FAV_REMOVE -> lifecycleScope.launch(Dispatchers.IO) {
+//                    media.isFavorite = option == CTX_FAV_ADD
+//                }
                 CTX_GO_TO_FOLDER -> showParentFolder(media)
                 CTX_ADD_SHORTCUT -> lifecycleScope.launch {
                     requireActivity().createShortcut(
@@ -1084,9 +1082,9 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                     )
                 }
 
-                CTX_FAV_ADD, CTX_FAV_REMOVE -> lifecycleScope.launch(Dispatchers.IO) {
-                    media.isFavorite = option == CTX_FAV_ADD
-                }
+//                CTX_FAV_ADD, CTX_FAV_REMOVE -> lifecycleScope.launch(Dispatchers.IO) {
+//                    media.isFavorite = option == CTX_FAV_ADD
+//                }
 
                 CTX_BAN_FOLDER -> banFolder(media)
                 else -> {}
@@ -1111,9 +1109,9 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                     )
                 }
                 CTX_ADD_GROUP -> requireActivity().addToGroup(listOf(media).getAll(), true) {}
-                CTX_FAV_ADD, CTX_FAV_REMOVE -> lifecycleScope.launch(Dispatchers.IO) {
-                    media.isFavorite = option == CTX_FAV_ADD
-                }
+//                CTX_FAV_ADD, CTX_FAV_REMOVE -> lifecycleScope.launch(Dispatchers.IO) {
+//                    media.isFavorite = option == CTX_FAV_ADD
+//                }
 
                 else -> {}
             }
@@ -1188,7 +1186,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                 when (item) {
                     is Folder -> {
                         val flags = createCtxFolderFlags().apply {
-                            if (item.isFavorite) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
+//                            if (item.isFavorite) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
                         }
                         showContext(
                             requireActivity(), this@VideoGridFragment, position, item, flags
@@ -1199,7 +1197,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                         if (item.presentCount == 0) UiTools.snackerMissing(requireActivity())
                         else {
                             val flags = createCtxVideoGroupFlags().apply {
-                                if (item.isFavorite) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
+//                                if (item.isFavorite) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
                             }
                             showContext(
                                 requireActivity(), this@VideoGridFragment, position, item, flags
@@ -1209,7 +1207,7 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
 
                     is MediaWrapper -> {
                         val flags = createCtxVideoFlags().apply {
-                            if (item.isFavorite) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
+//                            if (item.isFavorite) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
                             if (item.seen > 0) add(CTX_MARK_AS_UNPLAYED) else add(
                                 CTX_MARK_AS_PLAYED
                             )

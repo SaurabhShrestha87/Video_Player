@@ -826,8 +826,8 @@ abstract class BaseBrowserFragment : MediaBrowserFragment<BrowserModel>(), IRefr
                         this@BaseBrowserFragment is FileBrowserFragment && item.uri.scheme == "file"
                     val isNetworkBrowser = this@BaseBrowserFragment is NetworkBrowserFragment
                     if (isFileBrowser || isNetworkBrowser) {
-                        val favExists = browserFavRepository.browserFavExists(mw.uri)
-                        if (favExists) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
+//                        val favExists = browserFavRepository.browserFavExists(mw.uri)
+//                        if (favExists) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
                     }
                     if (isFileBrowser && !isRootDirectory && !MedialibraryUtils.isScanned(item.uri.toString())) {
                         add(CTX_ADD_SCANNED)
