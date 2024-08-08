@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/transparent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/popupImage"
+        app:layout_constraintEnd_toEndOf="@+id/cleanerImage"
+        app:layout_constraintStart_toStartOf="@+id/cleanerImage"
+        app:layout_constraintTop_toTopOf="@+id/cleanerImage" />
+
+    <View
+        android:id="@+id/imageCenter"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cleanerImage"
+        app:layout_constraintEnd_toEndOf="@+id/cleanerImage"
+        app:layout_constraintStart_toStartOf="@+id/cleanerImage"
+        app:layout_constraintTop_toTopOf="@+id/cleanerImage" />
+
+    <ImageView
+        android:id="@+id/cleanerImage"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:elevation="1dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/cleaner_rocket_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/free_up_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:gravity="center"
+        android:text="@string/free_up_3_2_mb_space"
+        android:textSize="22sp"
+        android:layout_marginHorizontal="@dimen/default_margin"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/cleanerImage"
+        app:layout_constraintEnd_toEndOf="@+id/cleanerImage"
+        app:layout_constraintStart_toStartOf="@+id/cleanerImage"
+         />
+
+    <ImageView
+        android:id="@+id/popupImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cleaner_popup_bg"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageCenter" />
+
+    <LinearLayout
+        android:id="@+id/linearLyt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cleanerImage">
+
+        <TextView
+            android:id="@+id/cleaning_up_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="@dimen/default_margin"
+            android:gravity="center"
+            android:text="Cleaning up unnecessary video can make your phone run faster!"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/free_up_text"
+            app:layout_constraintTop_toBottomOf="@+id/free_up_text" />
+
+        <Button
+            android:id="@+id/cleaningButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/default_margin"
+            android:text="@string/ok"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/cleaning_up_text"
+            app:layout_constraintTop_toBottomOf="@+id/cleaning_up_text" />
+    </LinearLayout>
+
+    <View
+        android:background="@drawable/rounded_corners_top"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLyt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

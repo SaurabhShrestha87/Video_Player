@@ -2,6 +2,11 @@
 
 <resources>
 
+    <attr name="cleaner_cloud_top_primary" format="reference|color" />
+    <attr name="cleaner_cloud_top_secondary" format="reference|color" />
+    <attr name="cleaner_cloud_bottom_primary" format="reference|color" />
+    <attr name="cleaner_cloud_bottom_secondary" format="reference|color" />
+
     <attr name="background_default" format="reference|color" />
     <attr name="tab_unselected_color" format="color" />
     <attr name="header_background" format="reference|color" />

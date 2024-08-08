@@ -78,4 +78,6 @@
     <string name="welcome_to">Welcome to</string>
     <string name="privacy_welcome_onboarding_desc">Open your video player app and start playing the video you want to watch</string>
     <string name="privacy_text">By starting, you accept our <a href="https://go.test.com" style="color:#017343"> Privacy Statement</a> and <a href="https://go.test.com" style="color:#017343">Privacy Policy.</a></string>
+    <string name="free_up_3_2_mb_space">Free up <font color='#017343'>7.8 MB</font> space!</string>
+
 </resources>
