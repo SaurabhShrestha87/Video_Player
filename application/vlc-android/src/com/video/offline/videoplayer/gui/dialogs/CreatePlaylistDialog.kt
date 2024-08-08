@@ -114,6 +114,7 @@ class CreatePlaylistDialog(private val onPlaylistAdded: () -> Unit) : DialogFrag
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setBackgroundDrawableResource(R.drawable.rounded_corners_dialog)
         binding.dialogPlaylistCreate.setOnClickListener(this)
+        binding.cancelButton.setOnClickListener(this)
 
         binding.dialogPlaylistName.editText!!.setOnEditorActionListener(this)
         binding.dialogPlaylistName.editText!!.setOnKeyListener { _, keyCode, _ ->
@@ -128,6 +129,7 @@ class CreatePlaylistDialog(private val onPlaylistAdded: () -> Unit) : DialogFrag
     override fun onClick(v: View) {
         when (v.id) {
             R.id.dialog_playlist_create -> addNewPlaylist()
+            R.id.cancel_button -> dismiss()
         }
     }
 
