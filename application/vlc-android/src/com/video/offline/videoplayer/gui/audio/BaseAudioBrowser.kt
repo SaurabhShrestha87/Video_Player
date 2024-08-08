@@ -295,7 +295,8 @@ abstract class BaseAudioBrowser<T : MedialibraryViewModel> : MediaBrowserFragmen
         }
         val isMedia = selection.first().itemType == MediaLibraryItem.TYPE_MEDIA
         val isSong = count == 1 && isMedia
-        menu.findItem(R.id.action_mode_audio_set_song).isVisible = isSong && AndroidDevices.isPhone
+//        menu.findItem(R.id.action_mode_audio_set_song).isVisible = isSong && AndroidDevices.isPhone
+        menu.findItem(R.id.action_mode_audio_set_song).isVisible = false
         menu.findItem(R.id.action_mode_audio_info).isVisible = count == 1
         menu.findItem(R.id.action_mode_audio_append).isVisible = PlaylistManager.hasMedia()
         menu.findItem(R.id.action_mode_audio_delete).isVisible = isMedia

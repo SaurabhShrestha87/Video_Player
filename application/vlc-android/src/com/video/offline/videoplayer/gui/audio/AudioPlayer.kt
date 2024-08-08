@@ -343,7 +343,9 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
         if (activity === null || position >= playlistAdapter.itemCount) return
         val flags = FlagSet(ContextOption::class.java).apply {
             addAll(CTX_GO_TO_FOLDER, CTX_INFORMATION, CTX_REMOVE_FROM_PLAYLIST, CTX_STOP_AFTER_THIS)
-            if (item?.uri?.scheme != "content") addAll(CTX_ADD_TO_PLAYLIST, CTX_SET_RINGTONE, CTX_SHARE)
+            if (item?.uri?.scheme != "content") addAll(CTX_ADD_TO_PLAYLIST
+//                , CTX_SET_RINGTONE
+                , CTX_SHARE)
         }
         showContext(activity, ctxReceiver, position, item, flags)
     }
