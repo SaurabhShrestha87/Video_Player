@@ -20,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.FragmentActivity
 import androidx.transition.TransitionManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.BaseActivity
 import com.video.offline.videoplayer.gui.SecondaryActivity
@@ -53,12 +54,14 @@ class EmptyLoadingStateView : FrameLayout {
         set(value) {
             loadingFlipper.visibility =
                 if (value == EmptyLoadingState.LOADING) View.VISIBLE else View.GONE
+
             loadingTitle.visibility =
                 if (value == EmptyLoadingState.LOADING) View.VISIBLE else View.GONE
             emptyTextView.visibility = if (value in arrayOf(
                     EmptyLoadingState.EMPTY,
                     EmptyLoadingState.EMPTY_SEARCH,
-                    EmptyLoadingState.EMPTY_FAVORITES
+                    EmptyLoadingState.EMPTY_FAVORITES,
+                    EmptyLoadingState.EMPTY_CLEANER
                 )
             ) View.VISIBLE else View.GONE
             emptyImageView.visibility = if (value in arrayOf(

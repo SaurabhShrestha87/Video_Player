@@ -39,8 +39,15 @@
         <item name="actionModeBackground">@color/grey400</item>
         <item name="background_default">@color/white</item>
         <item name="tab_unselected_color">@color/grey</item>
+
+        <item name="cleaner_cloud_top_primary">#FFE7FEE9</item>
+        <item name="cleaner_cloud_top_secondary">#FFFFFFFF</item>
+        <item name="cleaner_cloud_bottom_primary">#FFE5FEE8</item>
+        <item name="cleaner_cloud_bottom_secondary">#FFFFFFFF</item>
+
         <item name="play_circle_color">@color/grey875</item>
         <item name="play_circle_color_selected">@color/grey875</item>
+
         <item name="bottom_navigation_background">@drawable/bottom_navigation_background</item>
         <item name="audio_header_background">@color/white</item>
         <item name="audio_header_divider">@color/grey400</item>
@@ -207,8 +214,15 @@
         <item name="actionModeBackground">@color/grey875</item>
         <item name="background_default">@color/dark_background</item>
         <item name="tab_unselected_color">@color/grey875</item>
+
+        <item name="cleaner_cloud_top_primary">@color/grey800</item>
+        <item name="cleaner_cloud_top_secondary">@color/grey900</item>
+        <item name="cleaner_cloud_bottom_primary">@color/grey700</item>
+        <item name="cleaner_cloud_bottom_secondary">@color/grey800</item>
+
         <item name="play_circle_color">@color/grey875</item>
         <item name="play_circle_color_selected">@color/grey875</item>
+
         <item name="bottom_navigation_background">@drawable/bottom_navigation_background_dark</item>
         <item name="audio_header_background">@color/mini_player_dark</item>
         <item name="audio_header_divider">@color/black</item>
@@ -483,6 +497,11 @@
     </style>
 
     <style name="VLCTransparentTheme" parent="VLCTransparentThemeLight" />
+
+    <style name="CleanerTransparentTheme" parent="Theme.MaterialComponents.Light.Dialog.MinWidth">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 
     <style name="VLCTransparentThemeLight" parent="Theme.MaterialComponents.Light.Dialog.MinWidth">
 

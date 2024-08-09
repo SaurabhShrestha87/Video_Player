@@ -1,33 +1,22 @@
-/*
- * *************************************************************************
- *  MediaBrowserFragment.java
- * **************************************************************************
- *  Copyright © 2015-2016 VLC authors and VideoLAN
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
- *  ***************************************************************************
- */
-
 package com.video.offline.videoplayer.gui.browser
 
+import android.net.Uri
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.format.Formatter
+import android.text.style.ForegroundColorSpan
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+
+import android.widget.Button
+import android.widget.TextView
+
 import androidx.appcompat.app.AppCompatActivity
+
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.activityViewModels
@@ -37,6 +26,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
+
+import com.google.android.material.bottomsheet.BottomSheetDialog
+
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.BaseFragment
 import com.video.offline.videoplayer.gui.dialogs.ConfirmDeleteDialog
@@ -56,11 +48,18 @@ import com.video.offline.videoplayer.viewmodels.prepareOptionsMenu
 import com.video.offline.videoplayer.viewmodels.sortMenuTitles
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
+import kotlinx.coroutines.withContext
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.medialibrary.interfaces.media.Folder
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.tools.MultiSelectHelper
+
+import java.io.File
+
+
+
 
 private const val TAG = "VLC/MediaBrowserFragment"
 private const val KEY_SELECTION = "key_selection"
@@ -157,6 +156,61 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
     abstract fun onRefresh()
     open fun clear() {}
 
+    open fun showCleanedBottomSheet(items: List<MediaLibraryItem>) {
+        lifecycleScope.launch {
+            var bigItemFileLength = 0L
+            items.forEach {
+                if (it is MediaWrapper) {
+                    val itemFileLength =
+                        withContext(Dispatchers.IO) { File(Uri.decode(it.location.substring(5))) }.length()
+                    // if itemFileLength is greater than 50 MB, add it to bigFileList
+                    bigItemFileLength += itemFileLength
+                }
+            }
+            val bigFilesSize = Formatter.formatFileSize(requireContext(), bigItemFileLength)
+            val bottomSheetDialog = BottomSheetDialog(
+                requireContext(),
+                R.style.CleanerTransparentTheme
+            )
+            val bottomSheetView =
+                LayoutInflater.from(requireContext()).inflate(R.layout.cleaner_bottom_sheet, null)
+            val text: String = ("Free up $bigFilesSize space!")
+            val spannable: Spannable = SpannableString(text)
+            spannable.setSpan(
+                ForegroundColorSpan(requireContext().getColor(R.color.colorPrimary)),
+                "Free up ".length,
+                ("Free up $bigFilesSize").length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            bottomSheetView.findViewById<TextView>(R.id.free_up_text)
+                .setText(spannable, TextView.BufferType.SPANNABLE)
+            bottomSheetView.findViewById<Button>(R.id.cleaningButton).setOnClickListener {
+                bottomSheetDialog.dismiss()
+            }
+            bottomSheetDialog.setContentView(bottomSheetView)
+            bottomSheetDialog.show()
+
+        }
+    }
+
+    protected open fun cleanItem(item: MediaLibraryItem) {
+        MediaUtils.deleteItem(requireActivity(), item) {
+            onDeleteFailed(it)
+        }
+    }
+
+    protected open fun cleanItems(items: List<MediaLibraryItem>) {
+        if (items.size == 1) {
+            cleanItem(items[0])
+        } else {
+            for (item in items) {
+                cleanItem(item)
+            }
+        }
+        showCleanedBottomSheet(items)
+    }
+
     protected open fun removeItems(items: List<MediaLibraryItem>) {
         if (items.size == 1) {
             removeItem(items[0])
@@ -238,7 +292,8 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
     protected open fun makePrivateItem(item: MediaLibraryItem): Boolean {
         val dialog = ConfirmMakePrivateDialog.newInstance(arrayListOf(item))
         dialog.show(
-            requireActivity().supportFragmentManager, ConfirmMakePrivateDialog::class.simpleName
+            requireActivity().supportFragmentManager,
+            ConfirmMakePrivateDialog::class.simpleName
         )
         dialog.setListener {
             lifecycleScope.launch { (requireActivity() as AppCompatActivity).makePrivate(item as MediaWrapper) }
@@ -254,7 +309,8 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
 
     private fun onDeleteFailed(item: MediaLibraryItem) {
         if (isAdded) UiTools.snacker(
-            requireActivity(), getString(R.string.msg_delete_failed, item.title)
+            requireActivity(),
+            getString(R.string.msg_delete_failed, item.title)
         )
     }
 
@@ -343,7 +399,9 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
             }
             if (actionMode != null) lifecycleScope.launch(Dispatchers.Main) {
                 @Suppress("UNCHECKED_CAST") fillActionMode(
-                    requireActivity(), actionMode!!, it as MultiSelectHelper<MediaLibraryItem>
+                    requireActivity(),
+                    actionMode!!,
+                    it as MultiSelectHelper<MediaLibraryItem>
                 )
             }
         }
@@ -364,7 +422,8 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
             val cs = ConstraintSet()
             cs.clone(cl)
             cs.setVisibility(
-                R.id.searchButton, if (visible) ConstraintSet.VISIBLE else ConstraintSet.GONE
+                R.id.searchButton,
+                if (visible) ConstraintSet.VISIBLE else ConstraintSet.GONE
             )
             transition.excludeChildren(RecyclerView::class.java, true)
             TransitionManager.beginDelayedTransition(cl, transition)

@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.view.ActionMode
@@ -25,6 +26,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.databinding.VideoCleanerListBinding
@@ -491,7 +493,11 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
     }
 
     override fun onFabPlayClick(view: View) {
-        removeItems(videoListAdapter.all)
+        if(!multiSelectHelper.inActionMode || multiSelectHelper.getSelectionCount() < 1) {
+            Toast.makeText(requireContext(), "No item selected!", Toast.LENGTH_SHORT).show()
+            return
+        }
+        cleanItems(multiSelectHelper.getSelection())
     }
 
     private fun updateEmptyView() {
@@ -525,8 +531,6 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                 binding.sortIv.setOnClickListener(this)
                 binding.viewModeIv.setOnClickListener(this)
             }
-
-
         }
         setFabPlayVisibility(!empty)
         binding.cleanBtn.setOnClickListener {
@@ -622,7 +626,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                         }
 
                         R.id.action_mode_audio_add_playlist -> requireActivity().addToPlaylist(list)
-                        R.id.action_video_delete -> removeItems(list)
+                        R.id.action_video_delete -> cleanItems(list)
                         R.id.action_remove_from_group -> viewModel.removeFromGroup(list)
                         R.id.action_ungroup -> viewModel.ungroup(list)
                         R.id.action_add_to_group -> addToGroup(list)
@@ -664,7 +668,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                         requireActivity().addToPlaylist(withContext(Dispatchers.Default) { selection.getAll() })
                     }
 
-                    R.id.action_video_delete -> removeItems(selection.getAll())
+                    R.id.action_video_delete -> cleanItems(selection.getAll())
                     R.id.action_mode_favorite_add -> lifecycleScope.launch {
                         viewModel.changeFavorite(
                             selection.getAll(), true
@@ -711,7 +715,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                         )
                     }
 
-                    R.id.action_video_delete -> removeItems(selection.getAll())
+                    R.id.action_video_delete -> cleanItems(selection.getAll())
                     R.id.action_mode_favorite_add -> lifecycleScope.launch {
                         viewModel.changeFavorite(
                             selection.getAll(), true
@@ -766,7 +770,47 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                 )
 
                 ContextOption.CTX_PLAY -> viewModel.play(position)
-                ContextOption.CTX_DELETE -> removeItem(media)
+                ContextOption.CTX_INFORMATION -> showInfoDialog(media)
+                ContextOption.CTX_DELETE -> cleanItem(media)
+                ContextOption.CTX_PRIVATE -> makePrivateItem(media)
+                ContextOption.CTX_APPEND -> MediaUtils.appendMedia(activity, media)
+                ContextOption.CTX_SET_RINGTONE -> requireActivity().setRingtone(media)
+                ContextOption.CTX_PLAY_NEXT -> MediaUtils.insertNext(
+                    requireActivity(), media.tracks
+                )
+
+                ContextOption.CTX_DOWNLOAD_SUBTITLES -> MediaUtils.getSubs(requireActivity(), media)
+                ContextOption.CTX_ADD_TO_PLAYLIST -> requireActivity().addToPlaylist(
+                    media.tracks, SavePlaylistDialog.KEY_NEW_TRACKS
+                )
+
+                ContextOption.CTX_FIND_METADATA -> {
+                    val intent = Intent().apply {
+                        setClassName(requireContext().applicationContext, MOVIEPEDIA_ACTIVITY)
+                        apply { putExtra(MOVIEPEDIA_MEDIA, media) }
+                    }
+                    startActivity(intent)
+                }
+
+                ContextOption.CTX_SHARE -> lifecycleScope.launch {
+                    (requireActivity() as AppCompatActivity).share(
+                        media
+                    )
+                }
+
+                ContextOption.CTX_REMOVE_GROUP -> viewModel.removeFromGroup(media)
+                ContextOption.CTX_ADD_GROUP -> requireActivity().addToGroup(listOf(media), true) {}
+                ContextOption.CTX_GROUP_SIMILAR -> lifecycleScope.launch {
+                    if (!requireActivity().showPinIfNeeded()) viewModel.groupSimilar(
+                        media
+                    )
+                }
+
+                ContextOption.CTX_MARK_AS_PLAYED -> lifecycleScope.launch {
+                    viewModel.markAsPlayed(
+                        media
+                    )
+                }
 
                 ContextOption.CTX_MARK_AS_UNPLAYED -> lifecycleScope.launch {
                     viewModel.markAsUnplayed(
