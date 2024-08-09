@@ -68,7 +68,8 @@ abstract class MedialibraryViewModel(context: Context) : SortableModel(context),
 }
 
 fun MedialibraryViewModel.prepareOptionsMenu(menu: Menu) {
-    menu.findItem(R.id.ml_menu_sortby).isVisible = canSortByName()
+//    menu.findItem(R.id.ml_menu_sortby).isVisible = canSortByName()
+    menu.findItem(R.id.ml_menu_sortby).isVisible = false
     menu.findItem(R.id.ml_menu_sortby_filename).isVisible = canSortByFileNameName()
     menu.findItem(R.id.ml_menu_sortby_artist_name).isVisible = canSortByArtist()
     menu.findItem(R.id.ml_menu_sortby_album_name).isVisible = canSortByAlbum()

@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
         tools:ignore="MissingTranslation">
 
-    <!-- Main VLC Interface -->
+    <!-- Main Video Player Interface -->
     <string name="ok">እሺ</string>
     <string name="cancel">አቋርጥ</string>
     <string name="other">ሌላ</string>

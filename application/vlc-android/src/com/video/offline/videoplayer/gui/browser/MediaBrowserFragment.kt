@@ -11,8 +11,12 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+
 import android.widget.Button
 import android.widget.TextView
+
+import androidx.appcompat.app.AppCompatActivity
+
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.activityViewModels
@@ -22,15 +26,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.ChangeBounds
 import androidx.transition.TransitionManager
+
 import com.google.android.material.bottomsheet.BottomSheetDialog
+
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.BaseFragment
 import com.video.offline.videoplayer.gui.dialogs.ConfirmDeleteDialog
 import com.video.offline.videoplayer.gui.dialogs.ConfirmMakePrivateDialog
+import com.video.offline.videoplayer.gui.dialogs.RenameDialog
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.helpers.fillActionMode
 import com.video.offline.videoplayer.interfaces.Filterable
 import com.video.offline.videoplayer.media.MediaUtils
+import com.video.offline.videoplayer.media.getAll
+import com.video.offline.videoplayer.util.makePrivate
+import com.video.offline.videoplayer.util.makePrivateFolderItems
 import com.video.offline.videoplayer.viewmodels.DisplaySettingsViewModel
 import com.video.offline.videoplayer.viewmodels.MedialibraryViewModel
 import com.video.offline.videoplayer.viewmodels.SortableModel
@@ -38,12 +48,17 @@ import com.video.offline.videoplayer.viewmodels.prepareOptionsMenu
 import com.video.offline.videoplayer.viewmodels.sortMenuTitles
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 import kotlinx.coroutines.withContext
 import org.videolan.medialibrary.interfaces.Medialibrary
+import org.videolan.medialibrary.interfaces.media.Folder
 import org.videolan.medialibrary.interfaces.media.MediaWrapper
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.tools.MultiSelectHelper
+
 import java.io.File
+
+
 
 
 private const val TAG = "VLC/MediaBrowserFragment"
@@ -86,14 +101,13 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
         viewLifecycleOwner.lifecycleScope.launch {
             //listen to display settings changes
             displaySettingsViewModel.settingChangeFlow.flowWithLifecycle(
-                    viewLifecycleOwner.lifecycle,
-                    Lifecycle.State.STARTED
-                ).collect {
-                    if (isResumed) {
-                        onDisplaySettingChanged(it.key, it.value)
-                        displaySettingsViewModel.consume()
-                    }
+                viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED
+            ).collect {
+                if (isResumed) {
+                    onDisplaySettingChanged(it.key, it.value)
+                    displaySettingsViewModel.consume()
                 }
+            }
         }
 
     }
@@ -211,11 +225,66 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
         }
     }
 
+    protected open fun renameFile(media: MediaLibraryItem) {
+        val dialog = RenameDialog.newInstance(media)
+        dialog.setListener { item, name ->
+            MediaUtils.renameFile(requireActivity(), item, name) { onRenameFailed(it) }
+            (activity as? AppCompatActivity)?.run {
+                supportActionBar?.title = name
+            }
+        }
+        dialog.show(requireActivity().supportFragmentManager, RenameDialog::class.simpleName)
+    }
+
+    protected open fun renameItem(item: MediaLibraryItem): Boolean {
+        val dialog = ConfirmDeleteDialog.newInstance(arrayListOf(item))
+        dialog.show(requireActivity().supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
+        dialog.setListener {
+            MediaUtils.deleteItem(requireActivity(), item) { onDeleteFailed(it) }
+        }
+        return true
+    }
+
     protected open fun removeItem(item: MediaLibraryItem): Boolean {
         val dialog = ConfirmDeleteDialog.newInstance(arrayListOf(item))
         dialog.show(requireActivity().supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
         dialog.setListener {
             MediaUtils.deleteItem(requireActivity(), item) { onDeleteFailed(it) }
+        }
+        return true
+    }
+
+
+    protected open fun makePrivateItem(items: ArrayList<MediaLibraryItem>): Boolean {
+        val dialog = ConfirmMakePrivateDialog.newInstance(items)
+        dialog.show(
+            requireActivity().supportFragmentManager, ConfirmMakePrivateDialog::class.simpleName
+        )
+        dialog.setListener {
+            lifecycleScope.launch {
+                (requireActivity() as AppCompatActivity).makePrivateFolderItems(items as ArrayList<MediaWrapper>)
+            }
+        }
+        return true
+    }
+
+    protected open fun makePrivateFolder(folders: List<Folder>): Boolean {
+        // Flatten the list of media items from all folders
+        val medias = folders.flatMap { folder1: Folder -> folder1.getAll() }
+        // Safely map the items to MediaLibraryItem
+        val mediaLibraryItemList: ArrayList<MediaLibraryItem> =
+            ArrayList(medias.filterIsInstance<MediaLibraryItem>())
+        // Create the dialog instance with the media library items
+        val dialog = ConfirmMakePrivateDialog.newInstance(mediaLibraryItemList)
+        dialog.show(
+            requireActivity().supportFragmentManager, ConfirmMakePrivateDialog::class.simpleName
+        )
+        dialog.setListener {
+            lifecycleScope.launch {
+                (requireActivity() as AppCompatActivity).makePrivateFolderItems(
+                    medias
+                )
+            }
         }
         return true
     }
@@ -227,9 +296,15 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
             ConfirmMakePrivateDialog::class.simpleName
         )
         dialog.setListener {
-            MediaUtils.makePrivateItem(requireActivity(), item) { onDeleteFailed(it) }
+            lifecycleScope.launch { (requireActivity() as AppCompatActivity).makePrivate(item as MediaWrapper) }
         }
         return true
+    }
+
+    private fun onRenameFailed(item: MediaLibraryItem) {
+        if (isAdded) UiTools.snacker(
+            requireActivity(), getString(R.string.msg_rename_failed, item.title)
+        )
     }
 
     private fun onDeleteFailed(item: MediaLibraryItem) {

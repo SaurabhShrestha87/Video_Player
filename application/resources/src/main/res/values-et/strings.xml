@@ -106,7 +106,7 @@
     </plurals>
 
     <string name="internal_memory">Sisemälu</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Music</string>
     <string name="video">Video</string>
     <string name="bookmarks">Lemmikud</string>
     <string name="equalizer">Ekvalaiser</string>
@@ -607,7 +607,7 @@ Kas sa lubad seda?</string>
     <string name="removed_from_playlist_anonymous">Kirje(d) on esitusloendist eemaldatud</string>
     <string name="welcome_title">Tere tulemast VLC\'sse!</string>
     <string name="welcome_subtitle">Tasuta ja avatud koodiga meediamängija</string>
-    <string name="permission_media">VLC vajab ligipääsu sinu seadmes olevale meediale</string>
+    <string name="permission_media">Video Player vajab ligipääsu sinu seadmes olevale meediale</string>
     <string name="medialibrary_scan_explanation">Sinu meediakogu haldamiseks suudab VLC suudab sinu seadmes leiduvad meediafailid automaatselt tuvastada.</string>
     <string name="onboarding_theme_title">Tunne end nagu kodus</string>
     <string name="done">Valmis</string>

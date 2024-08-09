@@ -5,7 +5,13 @@ import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
+import android.text.Editable;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -28,11 +34,16 @@ public class LaunchActivity extends BaseActivity {
     private static final String TAG = "LaunchActivity";
     public static long GLIDE_KEY = System.currentTimeMillis();
     public static String EXTRA_ONLY_UNLOCK = "u";
+    boolean isUnlockOnly = false;
+    Boolean isReset = false;
     private ActivityLaunchBinding binding;
     private Settings settings;
     private AtomicBoolean isStarting;
     private LockStore lockStore;
-    Boolean isReset = false;
+
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,29 +52,79 @@ public class LaunchActivity extends BaseActivity {
         binding = ActivityLaunchBinding.inflate(getLayoutInflater());
         isReset = getIntent().getBooleanExtra("reset", false);
         setContentView(binding.getRoot());
-        init();
+        Intent intent = getIntent();
+        isUnlockOnly = intent.getBooleanExtra(EXTRA_ONLY_UNLOCK, false);
+        initPin();
     }
 
-    private void init() {
+    private void initEmail(String password) {
+        binding.title.setText("Set Email");
+        binding.close.setImageDrawable(getDrawable(R.drawable.ic_arrow_back));
+        binding.emailPassPreviewTv.setText(String.format(getString(R.string.your_pin_is_s), password));
+        if (!lockStore.getEmail().isBlank()) {
+            binding.emailEt.setText(lockStore.getEmail());
+        }
+        binding.pinLytMain.setVisibility(View.GONE);
+        binding.emailLytMain.setVisibility(View.VISIBLE);
+        binding.emailEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    binding.clearBtn.setVisibility(View.VISIBLE);
+                    binding.clearBtn.setOnClickListener(v -> {
+                        binding.emailEt.getText().clear();
+                        binding.clearBtn.setVisibility(View.GONE);
+                    });
+                }
+            }
+        });
+    }
+
+    private void initPin() {
+        SpannableString forgotString = new SpannableString("Forgot");
+        forgotString.setSpan(new UnderlineSpan(), 0, forgotString.length(), 0);
+        binding.forgot.setText(forgotString);
+
+        binding.close.setImageDrawable(getDrawable(R.drawable.ic_close_up));
+
         settings = Settings.getInstance(this);
         isStarting = new AtomicBoolean(false);
         lockStore = LockStore.getInstance(this);
         Password.lock(this, settings);
         lockStore.lock();
-        if(lockStore.hasPassword() && isReset) {
+        if (lockStore.hasPassword() && isReset) { // RESET
+            binding.title.setText("Modify PIN");
+            binding.pinLytMain.setVisibility(View.VISIBLE);
             binding.setPin.setVisibility(View.VISIBLE);
             binding.enterPin.setVisibility(View.GONE);
-        } else if (lockStore.hasPassword()) {
+            binding.emailLytMain.setVisibility(View.GONE);
+        } else if (lockStore.hasPassword()) { // UNLOCK WITH PASSWORD
+            binding.title.setText("Enter PIN");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && lockStore.isBiometricUnlockEnabled()) {
                 unlockViaBiometricAuthentication();
             }
+            binding.pinLytMain.setVisibility(View.VISIBLE);
             binding.setPin.setVisibility(View.GONE);
             binding.enterPin.setVisibility(View.VISIBLE);
-        } else {
+            binding.emailLytMain.setVisibility(View.GONE);
+        } else { // First LAUNCH
+            binding.title.setText("Set PIN");
+            binding.pinLytMain.setVisibility(View.VISIBLE);
             binding.setPin.setVisibility(View.VISIBLE);
             binding.enterPin.setVisibility(View.GONE);
+            binding.emailLytMain.setVisibility(View.GONE);
         }
-        setListeners();
+        setPinListeners();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -103,21 +164,17 @@ public class LaunchActivity extends BaseActivity {
             }
         });
     }
-    private void setListeners() {
+
+    private void setPinListeners() {
         binding.forgot.setOnClickListener(v -> {
-            Toast.makeText(this, "API/OTP?! NEW PASS: 1234", Toast.LENGTH_SHORT).show();
-            lockStore.setPassword("1234");
+            Toast.makeText(this, "TODO: Send email to reset password?", Toast.LENGTH_SHORT).show();
         });
         binding.key.setKeyPadListener(new KeyPadListerner() {
             @Override
             public void onKeyPadPressed(@Nullable String value) {
                 if (value != null && value.length() == 4) {
                     if (lockStore.hasPassword() && isReset) {
-                        if (binding.biometricCb.isChecked()) {
-                            lockStore.setBiometricUnlockEnabled(true);
-                        }
-                        lockStore.setPassword(value);
-                        doUnlock(value);
+                        getEmail(value, binding.biometricCb.isChecked());
                     } else if (lockStore.hasPassword()) {
                         if (lockStore.passwordMatch(value)) {
                             doUnlock(value);
@@ -127,11 +184,7 @@ public class LaunchActivity extends BaseActivity {
                             binding.key.setErrorText("Wrong Password!");
                         }
                     } else {
-                        if (binding.biometricCb.isChecked()) {
-                            lockStore.setBiometricUnlockEnabled(true);
-                        }
-                        lockStore.setPassword(value);
-                        doUnlock(value);
+                        getEmail(value, binding.biometricCb.isChecked());
                     }
                 }
             }
@@ -147,6 +200,27 @@ public class LaunchActivity extends BaseActivity {
 
             }
         });
+        binding.close.setOnClickListener(v -> {
+            Password.lock(LaunchActivity.this, settings);
+            finish();
+        });
+    }
+
+    private void getEmail(String password, boolean isBiometricUnlockEnabled) {
+        initEmail(password);
+        binding.close.setOnClickListener(v -> initPin());
+        binding.next.setOnClickListener(v -> {
+            //check for email formatting.
+            String email = binding.emailEt.getText().toString();
+            if (!isValidEmail(email)) {
+                binding.emailEt.setError("Invalid Email");
+                return;
+            }
+            lockStore.setBiometricUnlockEnabled(isBiometricUnlockEnabled);
+            lockStore.setPassword(password);
+            lockStore.setEmail(email);
+            doUnlock(password);
+        });
     }
 
     private void doUnlock(@Nullable String value) {
@@ -156,7 +230,9 @@ public class LaunchActivity extends BaseActivity {
             } else {
                 settings.setTempPassword("1234".toCharArray());
             }
-            startActivity(new Intent(this, GalleryActivity.class));
+            if (!isUnlockOnly) {
+                startActivity(new Intent(this, GalleryActivity.class));
+            }
             isStarting.set(false);
             lockStore.lock();
             finish();

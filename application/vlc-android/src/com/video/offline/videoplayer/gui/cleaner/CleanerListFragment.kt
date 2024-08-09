@@ -94,7 +94,6 @@ import org.videolan.medialibrary.media.FolderImpl
 import org.videolan.medialibrary.media.MediaLibraryItem
 import org.videolan.resources.AppContextProvider
 import org.videolan.resources.GROUP_VIDEOS_FOLDER
-import org.videolan.resources.GROUP_VIDEOS_NAME
 import org.videolan.resources.GROUP_VIDEOS_NONE
 import org.videolan.resources.KEY_CLEANER
 import org.videolan.resources.KEY_CLEANER_BIG
@@ -103,13 +102,11 @@ import org.videolan.resources.KEY_FOLDER
 import org.videolan.resources.KEY_GROUP
 import org.videolan.resources.KEY_GROUPING
 import org.videolan.resources.KEY_GROUP_VIDEOS
-import org.videolan.resources.KEY_MEDIA_LAST_PLAYLIST
 import org.videolan.resources.KEY_VIDEOS_CARDS
 import org.videolan.resources.KEY_VIDEOS_COMPACT
 import org.videolan.resources.KEY_VIDEOS_LIST
 import org.videolan.resources.MOVIEPEDIA_ACTIVITY
 import org.videolan.resources.MOVIEPEDIA_MEDIA
-import org.videolan.resources.PLAYLIST_TYPE_VIDEO
 import org.videolan.resources.util.parcelable
 import org.videolan.resources.util.waitForML
 import org.videolan.tools.MultiSelectHelper
@@ -120,6 +117,8 @@ import org.videolan.tools.dp
 import org.videolan.tools.isStarted
 import org.videolan.tools.putSingle
 import org.videolan.tools.retrieveParent
+import org.videolan.tools.setGone
+import org.videolan.tools.setVisible
 import java.io.File
 
 
@@ -198,10 +197,10 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
             val grouping =
                 if (parentGroup != null || folder != null) VideoGroupingType.NONE else when (Settings.getInstance(
                     requireContext()
-                ).getString(KEY_GROUP_VIDEOS, null) ?: GROUP_VIDEOS_NAME) {
+                ).getString(KEY_GROUP_VIDEOS, null) ?: GROUP_VIDEOS_NONE) {
                     GROUP_VIDEOS_NONE -> VideoGroupingType.NONE
                     GROUP_VIDEOS_FOLDER -> VideoGroupingType.FOLDER
-                    else -> VideoGroupingType.NAME
+                    else -> VideoGroupingType.NONE
                 }
             viewModel = getViewModel(grouping, folder, parentGroup)
             setDataObservers()
@@ -252,70 +251,18 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        menu.findItem(R.id.ml_menu_last_playlist).isVisible =
-            settings.contains(KEY_MEDIA_LAST_PLAYLIST)
-        menu.findItem(R.id.rename_group).isVisible = viewModel.group != null
-        menu.findItem(R.id.ungroup).isVisible = viewModel.group != null
+        menu.findItem(R.id.ml_menu_last_playlist).isVisible = false
+        menu.findItem(R.id.rename_group).isVisible = false
+        menu.findItem(R.id.ungroup).isVisible = false
         menu.findItem(R.id.ml_menu_sortby).isVisible = false
         // TODO: VISIBILITY
 //        menu.findItem(R.id.ml_menu_display_options).isVisible = parentFragment is VideoBrowserFragment
         menu.findItem(R.id.ml_menu_display_options).isVisible = false
-        if (requireActivity().isTalkbackIsEnabled()) menu.findItem(R.id.play_all).isVisible = true
+        if (requireActivity().isTalkbackIsEnabled()) menu.findItem(R.id.play_all).isVisible = false
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.ml_menu_last_playlist -> {
-                MediaUtils.loadlastPlaylist(activity, PLAYLIST_TYPE_VIDEO)
-            }
-
-            R.id.rename_group -> {
-                viewModel.group?.let { renameGroup(it) }
-            }
-
-            R.id.ungroup -> {
-                viewModel.group?.let {
-                    lifecycleScope.launch {
-                        if (requireActivity().showPinIfNeeded()) viewModel.ungroup(
-                            it
-                        )
-                    }
-                }
-            }
-
-            R.id.play_all -> {
-                onFabPlayClick(binding.root)
-            }
-
-            R.id.ml_menu_display_options -> {
-                //filter all sorts and keep only applicable ones
-                val sorts = arrayListOf(
-                    Medialibrary.SORT_ALPHA,
-                    Medialibrary.SORT_FILENAME,
-                    Medialibrary.SORT_ARTIST,
-                    Medialibrary.SORT_ALBUM,
-                    Medialibrary.SORT_DURATION,
-                    Medialibrary.SORT_RELEASEDATE,
-                    Medialibrary.SORT_LASTMODIFICATIONDATE,
-                    Medialibrary.SORT_FILESIZE,
-                    Medialibrary.NbMedia,
-                    Medialibrary.SORT_INSERTIONDATE
-                ).filter {
-                    viewModel.provider.canSortBy(it)
-                }
-                //Open the display settings Bottom sheet
-                DisplaySettingsDialog.newInstance(
-                    displayInCards = settings.getBoolean(KEY_VIDEOS_CARDS, true),
-                    onlyFavs = viewModel.provider.onlyFavorites,
-                    sorts = sorts,
-                    currentSort = viewModel.provider.sort,
-                    currentSortDesc = viewModel.provider.desc,
-                    videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NAME)
-                ).show(requireActivity().supportFragmentManager, "DisplaySettingsDialog")
-            }
-
-            else -> return super.onOptionsItemSelected(item)
-        }
         return true
     }
 
@@ -332,6 +279,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
         (activity as? AppCompatActivity)?.run {
             supportActionBar?.title = title
             invalidateOptionsMenu()
+            binding.cleanBtn.setGone()
         }
     }
 
@@ -433,13 +381,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
         )
     }
 
-    override fun getTitle() = when (viewModel.groupingType) {
-        VideoGroupingType.NONE -> viewModel.folder?.displayTitle ?: viewModel.group?.displayTitle
-        ?: getString(R.string.videos)
-
-        VideoGroupingType.FOLDER -> getString(R.string.videos_folders_title)
-        VideoGroupingType.NAME -> getString(R.string.videos_groups_title)
-    }
+    override fun getTitle() = "Cleaner"
 
     @Suppress("UNCHECKED_CAST")
     override fun getMultiHelper(): MultiSelectHelper<VideosViewModel>? =
@@ -512,8 +454,8 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                 SettingSortsDialog.newInstance(
                     currentSort = viewModel.provider.sort,
                     currentSortDesc = viewModel.provider.desc,
-                    videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NAME)
-                        ?: GROUP_VIDEOS_NAME
+                    videoGroup = settings.getString(KEY_GROUP_VIDEOS, GROUP_VIDEOS_NONE)
+                        ?: GROUP_VIDEOS_NONE
                 ).show(requireActivity().supportFragmentManager, "DisplaySettingsDialog")
             }
 
@@ -591,6 +533,12 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
             }
         }
         setFabPlayVisibility(!empty)
+        binding.cleanBtn.setOnClickListener {
+            if (multiSelectHelper.getSelection().isEmpty()) {
+                return@setOnClickListener
+            }
+            removeItems(multiSelectHelper.getSelection())
+        }
     }
 
     override fun onRefresh() {
@@ -870,12 +818,6 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                     )
                 }
 
-                ContextOption.CTX_FAV_ADD, ContextOption.CTX_FAV_REMOVE -> lifecycleScope.launch(
-                    Dispatchers.IO
-                ) {
-                    media.isFavorite = option == ContextOption.CTX_FAV_ADD
-                }
-
                 ContextOption.CTX_GO_TO_FOLDER -> showParentFolder(media)
                 ContextOption.CTX_ADD_SHORTCUT -> lifecycleScope.launch {
                     requireActivity().createShortcut(
@@ -1074,7 +1016,13 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
     private fun onLongClick(position: Int) {
         if (actionMode == null && inSearchMode()) UiTools.setKeyboardVisibility(binding.root, false)
         multiSelectHelper.toggleSelection(position, true)
-        if (actionMode == null) startActionMode() else invalidateActionMode()
+        if (actionMode == null) {
+            startActionMode()
+            binding.cleanBtn.setVisible()
+        } else {
+            invalidateActionMode()
+            binding.cleanBtn.setGone()
+        }
     }
 
     private fun onClick(position: Int, item: MediaLibraryItem) {
@@ -1083,6 +1031,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                 if (actionMode != null) {
                     multiSelectHelper.toggleSelection(position)
                     invalidateActionMode()
+                    binding.cleanBtn.setGone()
                 } else {
                     viewModel.playVideo(activity, item, position)
                 }
@@ -1093,6 +1042,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                 if (actionMode != null) {
                     multiSelectHelper.toggleSelection(position)
                     invalidateActionMode()
+                    binding.cleanBtn.setGone()
                 } else activity?.open(item)
             }
 
@@ -1100,6 +1050,7 @@ class CleanerListFragment : MediaBrowserFragment<VideosViewModel>(),
                 actionMode != null -> {
                     multiSelectHelper.toggleSelection(position)
                     invalidateActionMode()
+                    binding.cleanBtn.setGone()
                 }
 
                 item.presentCount == 0 -> UiTools.snackerMissing(requireActivity())

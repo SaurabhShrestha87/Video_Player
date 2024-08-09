@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.videolan.medialibrary.interfaces.Medialibrary
 import org.videolan.resources.GROUP_VIDEOS_FOLDER
-import org.videolan.resources.GROUP_VIDEOS_NAME
 import org.videolan.resources.GROUP_VIDEOS_NONE
 import org.videolan.tools.setGone
 import org.videolan.tools.setVisible
@@ -33,7 +32,7 @@ class SettingSortsDialog : DialogFragment() {
     private var currentSort: Int = -1
     private var currentSortDesc = false
     private var selectedSort: Int = -1
-    private var currentVideoGrouping: String = GROUP_VIDEOS_NAME
+    private var currentVideoGrouping: String = GROUP_VIDEOS_NONE
     private lateinit var binding: DialogSortSettingsBinding
 
     private val displaySettingsViewModel: DisplaySettingsViewModel by activityViewModels()
@@ -83,6 +82,10 @@ class SettingSortsDialog : DialogFragment() {
      */
     private fun initSortOptions() {
         Log.d(TAG, "updateSorts: $currentSort")
+        Log.d(TAG, "currentSortDesc: $currentSortDesc")
+        Log.d(TAG, "selectedSort: $selectedSort")
+        Log.d(TAG, "currentVideoGrouping: $currentVideoGrouping")
+
         binding.sortRg.setOnCheckedChangeListener { group: RadioGroup?, checkedId: Int ->
             when (checkedId) {
                 R.id.sort_name -> {

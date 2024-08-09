@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
         tools:ignore="MissingTranslation">
 
-    <!-- Main VLC Interface -->
+    <!-- Main Video Player Interface -->
     <string name="ok">Mat eo</string>
     <string name="cancel">Nullañ</string>
     <string name="other">All</string>
@@ -39,7 +39,7 @@
     <string name="play_as_audio">Lenn evel aodio</string>
     <string name="play_as_video">Lenn evel video</string>
     <string name="video_app_switch_title">Mod drekleur/PiP</string>
-    <string name="video_app_switch_summary">Diuzit emzalc\'h VLC pa dremenit d\'un arload all adalek al lenn video</string>
+    <string name="video_app_switch_summary">Diuzit emzalc\'h Video Player pa dremenit d\'un arload all adalek al lenn video</string>
     <string name="play_pip_title">Lenn ar videoioù e mod skeudenn-er-skeudenn</string>
     <string name="play_as_audio_background">Lenn videoioù en drekleur</string>
     <string name="insert_next">Ensoc\'hañ da-heul</string>
@@ -220,7 +220,7 @@
     <string name="streams">Froudoù</string>
     <string name="open_mrl_dialog_msg">Ebarzhiñ ar chomlec\'h kenrouedad: http://, mms:// pe rtsp:// da skouer</string>
     <string name="encountered_error_title">Fazi lenn</string>
-    <string name="encountered_error_message">VLC a zo en em gavet gant ur fazi gant ar media-mañ.\nKlaskit freskaat al levraoueg mediaoù.</string>
+    <string name="encountered_error_message">Video Player a zo en em gavet gant ur fazi gant ar media-mañ.\nKlaskit freskaat al levraoueg mediaoù.</string>
     <string name="invalid_location">Ne c\'hall ket bezañ lennet al lec\'hiadur %1$s.</string>
     <string name="search">Klask</string>
 
@@ -261,11 +261,11 @@
     <string name="hold_to_stop">Pouezit evit paouez</string>
 
     <!-- About -->
-    <string name="app_name_full">VLC evit Android</string>
+    <string name="app_name_full">Video Player evit Android</string>
     <string name="revision">Adwel</string>
     <string name="about">Diwar-benn</string>
     <string name="authors">Oberourien</string>
-    <string name="vlc_authors">hag aozerien VLC.</string>
+    <string name="vlc_authors">hag aozerien Video Player.</string>
     <string name="sources">Kod mammenn</string>
     <string name="feedback_forum">Forom an evezhiadennoù</string>
 
@@ -358,7 +358,7 @@
     <string name="enable_play_on_headset_insertion">Adkregiñ ganti pa vez ensoc\'het un tokarn-mikro</string>
     <string name="enable_play_on_headset_insertion_summary">Ehanañ mod-all</string>
     <string name="aout">Ezvont aodio</string>
-    <string name="audio_ducking_title">Izelaat live-son VLC da vare ar c\'hemennoù</string>
+    <string name="audio_ducking_title">Izelaat live-son Video Player da vare ar c\'hemennoù</string>
     <string name="casting_category">Skignañ</string>
     <string name="casting_switch_title">Strewiñ diorjal</string>
     <string name="casting_passthrough_title">Treuzell aodio</string>
@@ -393,7 +393,7 @@
     <string name="dump_media_db">Ezporzhiañ diaz-roadennoù ar mediaoù</string>
     <string name="clear_media_db">Sklaeraat diaz-roadennoù ar mediaoù</string>
     <string name="clear_app_data">Dilemel roadennoù an arload</string>
-    <string name="clear_app_data_summary">Dilemel roadennoù VLC evit Android</string>
+    <string name="clear_app_data_summary">Dilemel roadennoù Video Player evit Android</string>
     <string name="clear_history">Sklaeraat ar roll-istor</string>
     <string name="set_locale">Termeniñ ar yezh</string>
     <string name="network_caching">Talvoudegezh krubuilh ar genrouedad</string>
@@ -411,7 +411,7 @@
     <string name="start_logging">Loc\'hañ an enrollañ</string>
     <string name="stop_logging">Paouez an enrollañ</string>
     <string name="clear_log">Skarzhañ ar renabl</string>
-    <string name="log_service_title">Enrollañ renabloù VLC</string>
+    <string name="log_service_title">Enrollañ renabloù Video Player</string>
     <string name="log_service_text">Digeriñ koñsol ar renabl</string>
     <string name="copy_to_clipboard">Eilañ er golver</string>
     <string name="copied_to_clipboard">Renabl eilet er golver.</string>
@@ -420,7 +420,7 @@
     <string name="custom_libvlc_options">Dibarzhioù libVLC personelaet</string>
     <string name="custom_libvlc_options_invalid">Dibarzhioù libVLC direizh!</string>
 
-    <string name="restart_vlc">Adloc\'hañ VLC</string>
+    <string name="restart_vlc">Adloc\'hañ Video Player</string>
     <string name="send_log">Kas ar renabl</string>
     <string name="sending_log">O kas ar renabl...</string>
 
@@ -463,19 +463,19 @@
     <string name="music_now_playing">O lenn</string>
 
     <!-- Widget -->
-    <string name="widget_name_w">Widget VLC gwenn</string>
-    <string name="widget_name_b">Widget VLC teñval</string>
-    <string name="allow_storage_access_title">Aotren VLC da dizhout ar restroù video hag aodio</string>
-    <string name="allow_settings_access_ringtone_title">Aotren VLC da dermeniñ ar soniri</string>
-    <string name="allow_settings_access_ringtone_description">VLC en deus ezhomm ec\'h aotrefec\'h an arload-mañ evit lakaat ar sonenn-mañ evel soniri.</string>
-    <string name="allow_settings_access_brightness_title">Aotren VLC da cheñch ar mod lintr</string>
-    <string name="allow_settings_access_brightness_description">VLC en deus ezhomm ec\'h aotrefec\'h an arload-mañ da cheñch al lintr.</string>
-    <string name="allow_draw_overlays_title">Aotren pop-up al lenner VLC a-us an arloadoù all</string>
-    <string name="allow_sdraw_overlays_description">Ezhomm en deus VLC da gaout hoc\'h aotre da ziskouez ho video en ur pop-up a-us d\'an arloadoù all.</string>
+    <string name="widget_name_w">Widget Video Player gwenn</string>
+    <string name="widget_name_b">Widget Video Player teñval</string>
+    <string name="allow_storage_access_title">Aotren Video Player da dizhout ar restroù video hag aodio</string>
+    <string name="allow_settings_access_ringtone_title">Aotren Video Player da dermeniñ ar soniri</string>
+    <string name="allow_settings_access_ringtone_description">Video Player en deus ezhomm ec\'h aotrefec\'h an arload-mañ evit lakaat ar sonenn-mañ evel soniri.</string>
+    <string name="allow_settings_access_brightness_title">Aotren Video Player da cheñch ar mod lintr</string>
+    <string name="allow_settings_access_brightness_description">Video Player en deus ezhomm ec\'h aotrefec\'h an arload-mañ da cheñch al lintr.</string>
+    <string name="allow_draw_overlays_title">Aotren pop-up al lenner Video Player a-us an arloadoù all</string>
+    <string name="allow_sdraw_overlays_description">Ezhomm en deus Video Player da gaout hoc\'h aotre da ziskouez ho video en ur pop-up a-us d\'an arloadoù all.</string>
     <string name="permission_ask_again">Aotren</string>
     <string name="permission_not_granted">Aotre nac\'het</string>
-    <string name="exit_app">Serriñ VLC</string>
-    <string name="exit_app_msg">Ha sur oc\'h da gaout c\'hoant da guitaat VLC?</string>
+    <string name="exit_app">Serriñ Video Player</string>
+    <string name="exit_app_msg">Ha sur oc\'h da gaout c\'hoant da guitaat Video Player?</string>
     <!-- fast scroller -->
     <string name="fastscroller_track">Roud FastScroller</string>
     <string name="fastscroller_handle">Reti an dibunañ herrek</string>
@@ -509,7 +509,7 @@
     <string name="length">Padelezh</string>
     <string name="tv_settings_hint">Pouezit hir war ar bouton Mat eo evit kochiñ/digochiñ ar c\'havlec\'hioù</string>
     <string name="ml_external_storage_title">Lec\'h-stokañ nevez diguzhet</string>
-    <string name="ml_external_storage_msg">Ha c\'hoant ho peus ec\'h ouzhpennfe VLC an trevnad %1$s d\'ho levraoueg mediaoù?</string>
+    <string name="ml_external_storage_msg">Ha c\'hoant ho peus ec\'h ouzhpennfe Video Player an trevnad %1$s d\'ho levraoueg mediaoù?</string>
     <string name="ml_external_storage_accept">Ya</string>
     <string name="ml_external_storage_decline">Ket</string>
     <string name="auto_last_added_media">Ouzhpennet da ziwezhañ</string>
@@ -538,7 +538,7 @@
     <string name="browser_storages">Stokadurioù</string>
     <string name="msg_delete_failed">C\'hwitet ez eus bet war dilemel ar media %1$s</string>
     <string name="renderer_list_title">Doareoù diskouez</string>
-    <string name="sdcard_permission_dialog_title">Rankout a rit reiñ da VLC an aotre da skrivañ en ho kartenn SD</string>
+    <string name="sdcard_permission_dialog_title">Rankout a rit reiñ da Video Player an aotre da skrivañ en ho kartenn SD</string>
     <string name="dialog_sd_wizard">Diskouez din</string>
     <string name="renderers_disconnect">Digevreañ</string>
     <string name="audio_digital_failed">C\'hwitet ez eus bet war gemmañ ar stad ezvont aodio niverel</string>
@@ -584,16 +584,16 @@
     <string name="video_remote_enable">Tremen d\'ar mod kontroll a-bell</string>
     <string name="video_remote_disable">Eilañ ar skramm</string>
     <string name="removed_from_playlist_anonymous">Elfenn(où) dilamet diwar ar roll-lenn</string>
-    <string name="welcome_title">Degemer e-barzh VLC!</string>
+    <string name="welcome_title">Degemer e-barzh Video Player!</string>
     <string name="welcome_subtitle">Al lenner liesvedia frank hag en open source</string>
-    <string name="permission_media">Ezhomm en deus VLC hoc\'h aotre evit tizhout ar mediaoù a zo en hoc\'h aparailh</string>
-    <string name="medialibrary_scan_explanation">VLC a c\'hall skanañ hoc\'h aparailh evit aozañ ho tastumad mediaoù.</string>
+    <string name="permission_media">Ezhomm en deus Video Player hoc\'h aotre evit tizhout ar mediaoù a zo en hoc\'h aparailh</string>
+    <string name="medialibrary_scan_explanation">Video Player a c\'hall skanañ hoc\'h aparailh evit aozañ ho tastumad mediaoù.</string>
     <string name="onboarding_theme_title">Grit evel ma vefec\'h en ho ti</string>
     <string name="done">Graet</string>
     <string name="onboarding_scan_title">Em-zizoleiñ ho mediaoù</string>
-    <string name="onboarding_all_set">Prest eo VLC!</string>
-    <string name="onboarding_scanning_enable">Lezel VLC skanañ ma aparailh evit kavout endalc\'hadoù media</string>
-    <string name="onboarding_scan_customize">Lezel ac\'hanon dibab peseurt teuliadoù a c\'hall bezañ skanet gant VLC</string>
+    <string name="onboarding_all_set">Prest eo Video Player!</string>
+    <string name="onboarding_scanning_enable">Lezel Video Player skanañ ma aparailh evit kavout endalc\'hadoù media</string>
+    <string name="onboarding_scan_customize">Lezel ac\'hanon dibab peseurt teuliadoù a c\'hall bezañ skanet gant Video Player</string>
     <string name="button_medialibrary_preferences">Mont da arventennoù ar Vediaoueg</string>
     <string name="light_theme">Tem sklaer</string>
     <string name="add">Ouzhpennañ</string>
@@ -631,10 +631,10 @@
     <string name="validation_delete_playlist_text">N\'hall ket bezañ nullet.</string>
     <string name="display_in_list">Diskouez en ul listenn</string>
     <string name="display_in_grid">Diskouez e kael</string>
-    <string name="send_crash_title">Daneveller sac\'hadennoù VLC</string>
+    <string name="send_crash_title">Daneveller sac\'hadennoù Video Player</string>
     <string name="include_medialib">Enklozañ ho tiaz-roadennoù</string>
-    <string name="vlc_reporter">Daneveller VLC</string>
-    <string name="welcome_beta_title">VLC beta</string>
+    <string name="vlc_reporter">Daneveller Video Player</string>
+    <string name="welcome_beta_title">Video Player beta</string>
     <string name="send">Kas</string>
     <string name="send_crash_action_title">Petra ho peus c\'hoant d\'ober?</string>
     <string name="report_a_bug">Danevelliñ ur veugenn</string>
@@ -726,14 +726,14 @@
     <string name="sub_result_by_name_episode">Rann %s</string>
 
     <string name="sub_result_by_file">Disoc\'hoù evit ho restr</string>
-    <string name="donate">Skoazellañ VLC</string>
-    <string name="donate_desc">Skoazellit an dud a-youl vat a sav VLC</string>
+    <string name="donate">Skoazellañ Video Player</string>
+    <string name="donate_desc">Skoazellit an dud a-youl vat a sav Video Player</string>
     <string name="donate_subscribtion">Fellout a ra din e vefe graet ur roadenn-arc\'hant viziek</string>
     <string name="donate_send">Stagañ gant ho roadenn-arc\'hant</string>
     <string name="subscription_purchased">Koumanantet oc\'h d\'ar roadenn-arc\'hant miziek</string>
     <string name="subscription_cancel">Gellout a rit digoumanantiñ er Play Store</string>
     <string name="subscription_cancel_tv">Penaos digoumanantiñ</string>
-    <string name="tip_jar">Sikour VLC</string>
+    <string name="tip_jar">Sikour Video Player</string>
     <string name="thank_you">Trugarez vras</string>
     <string name="donate_again">Reiñ arc\'hant a-nevez</string>
 
@@ -764,7 +764,7 @@
     <string name="bookmarks_title">Sinedoù</string>
     <string name="bookmark_name">Sined %s</string>
     <string name="optional_features">Arc\'hweladurioù ouzhpenn</string>
-    <string name="start_vlc">Loc\'hañ VLC</string>
+    <string name="start_vlc">Loc\'hañ Video Player</string>
     <!-- Duplication Warning Dialog -->
     <string name="message_primary_default">Ouzhpennañ un elfenn(où) e doubl?</string>
     <string name="add_button">Ouzhpennañ</string>

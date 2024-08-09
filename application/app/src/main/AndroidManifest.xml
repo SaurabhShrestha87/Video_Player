@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
         android:installLocation="auto">
 
+<!--    android:allowBackup="true"-->
+<!--    android:fullBackupContent="@xml/backup_rules"-->
     <application
         android:name="com.video.offline.videoplayer.mobile.app.VLCApplication"
-        android:allowBackup="true"
         android:appCategory="audio"
         android:banner="@drawable/banner"
-        android:fullBackupContent="@xml/backup_rules"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"

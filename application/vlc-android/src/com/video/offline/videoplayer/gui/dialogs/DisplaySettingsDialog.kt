@@ -17,13 +17,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
-import kotlinx.coroutines.launch
-import org.videolan.medialibrary.interfaces.Medialibrary
-import org.videolan.resources.AppContextProvider
-import org.videolan.resources.GROUP_VIDEOS_FOLDER
-import org.videolan.resources.GROUP_VIDEOS_NAME
-import org.videolan.resources.GROUP_VIDEOS_NONE
-import org.videolan.tools.setGone
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.databinding.DialogDisplaySettingsBinding
 import com.video.offline.videoplayer.databinding.SortDisplaySettingBinding
@@ -31,6 +24,12 @@ import com.video.offline.videoplayer.gui.helpers.UiTools.showPinIfNeeded
 import com.video.offline.videoplayer.viewmodels.DisplaySettingsViewModel
 import com.video.offline.videoplayer.viewmodels.mobile.VideoGroupingType
 import com.video.offline.videoplayer.viewmodels.mobile.VideosViewModel
+import kotlinx.coroutines.launch
+import org.videolan.medialibrary.interfaces.Medialibrary
+import org.videolan.resources.AppContextProvider
+import org.videolan.resources.GROUP_VIDEOS_FOLDER
+import org.videolan.resources.GROUP_VIDEOS_NONE
+import org.videolan.tools.setGone
 
 
 const val DISPLAY_IN_CARDS = "display_in_cards"
@@ -338,7 +337,7 @@ class DisplaySettingsDialog : VLCBottomSheetDialogFragment() {
      * @property type the [VideosViewModel] type for this grouping
      */
     enum class VideoGroup(val value: String, val title: Int, val type: VideoGroupingType) {
-        GROUP_BY_NAME(GROUP_VIDEOS_NAME, R.string.video_min_group_length_name, VideoGroupingType.NAME),
+//        GROUP_BY_NAME(GROUP_VIDEOS_NONE, R.string.video_min_group_length_name, VideoGroupingType.NAME),
         GROUP_BY_FOLDER(GROUP_VIDEOS_FOLDER, R.string.video_min_group_length_folder, VideoGroupingType.FOLDER),
         NO_GROUP(GROUP_VIDEOS_NONE, R.string.video_min_group_length_disable, VideoGroupingType.NONE);
 
@@ -355,13 +354,8 @@ class DisplaySettingsDialog : VLCBottomSheetDialogFragment() {
              */
             fun findByValue(value: String?): VideoGroup {
                 values().forEach { if (value == it.value) return it }
-                return GROUP_BY_NAME
+                return NO_GROUP
             }
         }
     }
 }
-
-
-
-
-

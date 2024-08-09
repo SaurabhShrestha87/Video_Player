@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
@@ -23,10 +24,9 @@ import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.helpers.UiTools.showPinIfNeeded
 
 
-class ConfirmMakePrivateDialog : VLCBottomSheetDialogFragment() {
+class ConfirmMakePrivateDialog : DialogFragment() {
 
     private lateinit var listener: () -> Unit
-    private lateinit var deleteAnimation: ImageView
     private lateinit var title: TextView
     private lateinit var description: TextView
     private lateinit var deleteButton: Button
@@ -67,7 +67,7 @@ class ConfirmMakePrivateDialog : VLCBottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.dialog_confirm_make_private, container)
-        deleteAnimation = view.findViewById(R.id.delete_animation)
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.rounded_corners_dialog)
         title = view.findViewById(R.id.title)
         description = view.findViewById(R.id.message)
         deleteButton = view.findViewById(R.id.confirm_button)
@@ -85,41 +85,19 @@ class ConfirmMakePrivateDialog : VLCBottomSheetDialogFragment() {
                 //folders and files
                 val nbFiles = mediaList.filter { it is MediaWrapper && it.type != MediaWrapper.TYPE_DIR }.size
                 val nbFolders = mediaList.filter { it is MediaWrapper && it.type == MediaWrapper.TYPE_DIR }.size
-                TODO("CHANGE STRINGS FROM DELETE TO CONFIRM")
                 when {
-                    nbFiles == 0 -> getString(R.string.confirm_delete_folders, nbFolders)
-                    nbFolders == 0 -> getString(R.string.confirm_delete_files, nbFiles)
-                    else -> getString(R.string.confirm_delete_folders_and_files, nbFolders, nbFiles)
+                    nbFiles == 0 -> getString(R.string.confirm_private_folders, nbFolders)
+                    nbFolders == 0 -> getString(R.string.confirm_private_files, nbFiles)
+                    else -> getString(R.string.confirm_private_folders_and_files, nbFolders, nbFiles)
                 }
             }
             mediaList[0] is MediaWrapper -> getString(if ((mediaList[0] as MediaWrapper).type == MediaWrapper.TYPE_DIR) R.string.confirm_lock_folder else R.string.confirm_lock, mediaList[0].title)
-            mediaList[0] is Album -> getString(R.string.confirm_delete_album, mediaList[0].title)
+            mediaList[0] is Album -> getString(R.string.confirm_private_album, mediaList[0].title)
             else -> getString(R.string.confirm_lock_several_media, mediaList.size)
         }
 
         if (descriptionString?.isNotEmpty() == true) description.text = descriptionString
         if (buttonText?.isNotEmpty() == true) deleteButton.text = buttonText
-
-
-        val anim = AnimatedVectorDrawableCompat.create(requireActivity(), R.drawable.anim_delete)!!
-        deleteAnimation.setImageDrawable(anim)
-        anim.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
-            override fun onAnimationEnd(drawable: Drawable?) {
-                anim.start()
-                super.onAnimationEnd(drawable)
-            }
-        })
-        anim.start()
         return view
-    }
-
-    override fun getDefaultState(): Int {
-        return STATE_EXPANDED
-    }
-
-    override fun initialFocusedView(): View = deleteAnimation
-
-    override fun needToManageOrientation(): Boolean {
-        return true
     }
 }

@@ -52,7 +52,6 @@ import com.video.offline.videoplayer.interfaces.Filterable
 import com.video.offline.videoplayer.interfaces.IEventsHandler
 import com.video.offline.videoplayer.interfaces.IListEventsHandler
 import com.video.offline.videoplayer.media.MediaUtils
-import com.video.offline.videoplayer.media.MediaUtils.makePrivateItem
 import com.video.offline.videoplayer.media.PlaylistManager
 import com.video.offline.videoplayer.util.*
 import com.video.offline.videoplayer.util.ContextOption.*
@@ -242,12 +241,14 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.playlist_option, menu)
         if (!isPlaylist) {
-            menu.findItem(R.id.ml_menu_sortby).isVisible = true
+//            menu.findItem(R.id.ml_menu_sortby).isVisible = true
+            menu.findItem(R.id.ml_menu_sortby).isVisible = false
             val showTrackNumber = menu.findItem(R.id.ml_menu_albums_show_track_numbers)
             showTrackNumber.isVisible = true
             showTrackNumber.isChecked = Settings.showTrackNumber
         }
-        menu.findItem(R.id.ml_menu_sortby).isVisible = viewModel.canSortByName()
+//        menu.findItem(R.id.ml_menu_sortby).isVisible = viewModel.canSortByName()
+        menu.findItem(R.id.ml_menu_sortby).isVisible = false
         menu.findItem(R.id.ml_menu_sortby_filename).isVisible = viewModel.canSortByFileNameName()
         menu.findItem(R.id.ml_menu_sortby_artist_name).isVisible = viewModel.canSortByArtist()
         menu.findItem(R.id.ml_menu_sortby_length).isVisible = viewModel.canSortByDuration()
@@ -342,7 +343,7 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         if (actionMode == null) {
             (item as? MediaWrapper)?.let { media ->
                 val flags = createCtxPlaylistItemFlags().apply {
-                    if (item.isFavorite) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
+//                    if (item.isFavorite) add(CTX_FAV_REMOVE) else add(CTX_FAV_ADD)
                     if (media.type == MediaWrapper.TYPE_STREAM || (media.type == MediaWrapper.TYPE_ALL && isSchemeHttpOrHttps(media.uri.scheme)))
                         addAll(CTX_COPY, CTX_RENAME)
                     else add(CTX_SHARE)
@@ -404,7 +405,8 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         }
         val isMedia = audioBrowserAdapter.multiSelectHelper.getSelection()[0].itemType == MediaLibraryItem.TYPE_MEDIA
         val isSong = count == 1 && isMedia
-        menu.findItem(R.id.action_mode_audio_set_song).isVisible = isSong && AndroidDevices.isPhone && !isPlaylist
+//        menu.findItem(R.id.action_mode_audio_set_song).isVisible = isSong && AndroidDevices.isPhone && !isPlaylist
+        menu.findItem(R.id.action_mode_audio_set_song).isVisible = false
         menu.findItem(R.id.action_mode_audio_info).isVisible = isSong
         menu.findItem(R.id.action_mode_audio_append).isVisible = PlaylistManager.hasMedia()
         menu.findItem(R.id.action_mode_audio_delete).isVisible = true
@@ -445,9 +447,8 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
     }
 
     private fun showInfoDialog(media: MediaWrapper) {
-        val i = Intent(this, InfoActivity::class.java)
-        i.putExtra(TAG_ITEM, media)
-        startActivity(i)
+        val dialog = InfoDialog.newInstance(media)
+        dialog.show(this.supportFragmentManager, "info")
     }
 
     override fun onCtxAction(position: Int, option: ContextOption) {
@@ -456,7 +457,7 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         when (option) {
             CTX_INFORMATION -> showInfoDialog(media)
             CTX_DELETE -> lifecycleScope.launch { removeItem(position, media) }
-            CTX_PRIVATE -> lifecycleScope.launch { makePrivateItem(position, media) }
+            CTX_PRIVATE -> lifecycleScope.launch { makePrivateItem(media) }
             CTX_APPEND -> MediaUtils.appendMedia(this, media.tracks)
             CTX_PLAY_NEXT -> MediaUtils.insertNext(this, media.tracks)
             CTX_ADD_TO_PLAYLIST -> addToPlaylist(media.tracks, SavePlaylistDialog.KEY_NEW_TRACKS)
@@ -491,13 +492,14 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
         }
     }
 
-    private suspend fun makePrivateItem(position: Int, media: MediaWrapper) {
+    private suspend fun makePrivateItem(media: MediaWrapper) {
         if (isPlaylist) {
 //            removeFromPlaylist(listOf(media), listOf(position))
         } else {
             makePrivateItems(listOf(media))
         }
     }
+
     private fun removeItems(items: List<MediaWrapper>) {
         val dialog = ConfirmDeleteDialog.newInstance(ArrayList(items))
         dialog.show(supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
@@ -517,23 +519,12 @@ open class HeaderMediaListActivity : AudioPlayerContainerActivity(), IEventsHand
             }
         }
     }
+
     private fun makePrivateItems(items: List<MediaWrapper>) {
-        val dialog = ConfirmDeleteDialog.newInstance(ArrayList(items))
-        dialog.show(supportFragmentManager, ConfirmDeleteDialog::class.simpleName)
+        val dialog = ConfirmMakePrivateDialog.newInstance(ArrayList(items))
+        dialog.show(supportFragmentManager, ConfirmMakePrivateDialog::class.simpleName)
         dialog.setListener {
-            lifecycleScope.launch {
-                for (item in items) {
-                    val deleteAction = kotlinx.coroutines.Runnable {
-                        lifecycleScope.launch {
-                            makePrivateItem(this@HeaderMediaListActivity, item) {
-                                UiTools.snacker(this@HeaderMediaListActivity, getString(R.string.msg_delete_failed, it.title))
-                            }
-                            if (isStarted()) viewModel.refresh()
-                        }
-                    }
-                    if (Permissions.checkWritePermission(this@HeaderMediaListActivity, item, deleteAction)) deleteAction.run()
-                }
-            }
+            lifecycleScope.launch { makePrivate(items) }
         }
     }
 

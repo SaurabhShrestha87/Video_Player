@@ -11,14 +11,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import org.videolan.medialibrary.interfaces.Medialibrary
-import org.videolan.medialibrary.interfaces.media.MediaWrapper
-import org.videolan.medialibrary.media.MediaLibraryItem
-import org.videolan.resources.KEY_AUDIO_LAST_PLAYLIST
-import org.videolan.resources.KEY_MEDIA_LAST_PLAYLIST
-import org.videolan.tools.*
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.browser.MediaBrowserFragment
 import com.video.offline.videoplayer.gui.dialogs.ConfirmDeleteDialog
@@ -32,6 +24,14 @@ import com.video.offline.videoplayer.media.PlaylistManager
 import com.video.offline.videoplayer.util.launchWhenStarted
 import com.video.offline.videoplayer.util.showParentFolder
 import com.video.offline.videoplayer.viewmodels.HistoryModel
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import org.videolan.medialibrary.interfaces.Medialibrary
+import org.videolan.medialibrary.interfaces.media.MediaWrapper
+import org.videolan.medialibrary.media.MediaLibraryItem
+import org.videolan.resources.KEY_AUDIO_LAST_PLAYLIST
+import org.videolan.resources.KEY_MEDIA_LAST_PLAYLIST
+import org.videolan.tools.*
 
 private const val TAG = "VLC/HistoryFragment"
 
@@ -105,8 +105,15 @@ class HistoryFragment : MediaBrowserFragment<HistoryModel>(), IRefreshable, IHis
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        menu.findItem(R.id.ml_menu_clean).isVisible = Settings.getInstance(requireActivity()).getBoolean(PLAYBACK_HISTORY, true)
         super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.ml_menu_clean).isVisible =
+            Settings.getInstance(requireActivity()).getBoolean(PLAYBACK_HISTORY, true)
+        menu.findItem(R.id.ml_menu_select).isVisible = false
+        menu.findItem(R.id.ml_menu_network_stream).isVisible = false
+        menu.findItem(R.id.ml_menu_theme).isVisible = false
+        menu.findItem(R.id.ml_menu_refresh).isVisible = false
+        menu.findItem(R.id.ml_menu_equalizer).isVisible = false
+        menu.findItem(R.id.ml_menu_settings).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

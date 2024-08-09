@@ -118,7 +118,7 @@
     </plurals>
 
     <string name="internal_memory">Sisäinen muisti</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Music</string>
     <string name="video">Video</string>
     <string name="bookmarks">Kirjanmerkit</string>
     <string name="equalizer">Taajuuskorjain</string>
@@ -779,7 +779,7 @@ Voit toistaa vain suoratoistoa tai verkkomediaa</string>
     <string name="removed_from_playlist_anonymous">Kohteet poistettiin soittolistalta</string>
     <string name="welcome_title">Tervetuloa, tämä on VLC!</string>
     <string name="welcome_subtitle">Ilmainen ja avoimen lähdekoodin multimediasoitin</string>
-    <string name="permission_media">VLC tarvitsee luvan käyttääkseen laitteesi mediaa</string>
+    <string name="permission_media">Video Player tarvitsee luvan käyttääkseen laitteesi mediaa</string>
     <string name="medialibrary_scan_explanation">VLC voi hakea laitteesi median automaattisesti ja järjestää sen kokoelmaksi.</string>
     <string name="onboarding_theme_title">Ole kuin kotonasi</string>
     <string name="done">Valmis</string>

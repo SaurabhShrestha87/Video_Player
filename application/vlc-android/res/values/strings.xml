@@ -4,6 +4,7 @@
     <string name="clean">Clean</string>
     <string name="privacy">Privacy</string>
     <string name="all_folder">All Folder</string>
+    <string name="folder">Folder</string>
     <string name="all_videos">All Videos</string>
     <string name="sort_by">Sort by</string>
     <string name="error">Error</string>
@@ -71,13 +72,15 @@
     <string name="lock_in_private_folder">Lock in private folder</string>
     <string name="confirm_lock">Lock the file \'%1$s\'  in private folder ?</string>
     <string name="confirm_lock_folder">Lock the folder \'%1$s\' and all its contents?</string>
-    <string name="confirm_lock_several_media">Delete these %1$d media?</string>
+    <string name="confirm_lock_several_media">Lock these %1$d media?</string>
     <string name="export">Export</string>
     <string name="use">Use</string>
     <string name="allow_permissions">Allow Permissions</string>
     <string name="welcome_to">Welcome to</string>
     <string name="privacy_welcome_onboarding_desc">Open your video player app and start playing the video you want to watch</string>
-    <string name="privacy_text">By starting, you accept our <a href="https://go.test.com" style="color:#017343"> Privacy Statement</a> and <a href="https://go.test.com" style="color:#017343">Privacy Policy.</a></string>
     <string name="free_up_3_2_mb_space">Free up <font color='#017343'>7.8 MB</font> space!</string>
-
+    <string name="privacy_text">By starting, you accept our <a href="https://go.test.com" style="color:#017343">Term of Use</a> and <a href="https://go.test.com" style="color:#017343">Privacy Policy.</a></string>
+    <string name="view_mode">View Mode</string>
+    <string name="your_pin_is_s">Your PIN is %s</string>
+    <string name="cleaner_clean_up_size">Clean up %s</string>
 </resources>

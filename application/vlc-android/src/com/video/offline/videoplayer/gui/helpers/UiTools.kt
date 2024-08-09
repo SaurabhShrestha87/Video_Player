@@ -500,9 +500,8 @@ object UiTools {
     }
 
     fun FragmentActivity.showMediaInfo(mediaWrapper: MediaWrapper) {
-        val i = Intent(this, InfoActivity::class.java)
-        i.putExtra(TAG_ITEM, mediaWrapper)
-        startActivity(i)
+        val dialog = InfoDialog.newInstance(mediaWrapper)
+        dialog.show(this.supportFragmentManager, "info")
     }
 
     fun Context.isTablet() = resources.getBoolean(R.bool.is_tablet)
@@ -718,12 +717,12 @@ object UiTools {
     }
 
 
-    fun restartDialog(context: Context) {
+    fun restartDialog(context: Context, negativeListener : DialogInterface.OnClickListener? = null) {
         AlertDialog.Builder(context)
                 .setTitle(context.resources.getString(R.string.restart_vlc))
                 .setMessage(context.resources.getString(R.string.restart_message))
                 .setPositiveButton(R.string.restart_message_OK) { _, _ -> android.os.Process.killProcess(android.os.Process.myPid()) }
-                .setNegativeButton(R.string.restart_message_Later, null)
+                .setNegativeButton(R.string.restart_message_Later, negativeListener)
                 .create()
                 .show()
     }

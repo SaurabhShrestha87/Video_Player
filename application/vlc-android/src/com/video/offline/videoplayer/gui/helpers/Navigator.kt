@@ -24,9 +24,10 @@
 package com.video.offline.videoplayer.gui.helpers
 
 import android.app.Activity
-import android.content.*
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -35,17 +36,25 @@ import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
-import org.videolan.resources.*
-import org.videolan.tools.*
 import com.video.offline.videoplayer.BuildConfig
 import com.video.offline.videoplayer.R
-import com.video.offline.videoplayer.gui.*
+import com.video.offline.videoplayer.gui.BaseFragment
+import com.video.offline.videoplayer.gui.MainActivity
+import com.video.offline.videoplayer.gui.MoreFragment
+import com.video.offline.videoplayer.gui.PlaylistFragment
 import com.video.offline.videoplayer.gui.audio.AudioBrowserFragment
 import com.video.offline.videoplayer.gui.browser.BaseBrowserFragment
 import com.video.offline.videoplayer.gui.browser.MainBrowserFragment
 import com.video.offline.videoplayer.gui.helpers.UiTools.isTablet
 import com.video.offline.videoplayer.gui.video.VideoBrowserFragment
 import com.video.offline.videoplayer.util.getScreenWidth
+import org.videolan.resources.EXTRA_TARGET
+import org.videolan.resources.ID_AUDIO
+import org.videolan.resources.ID_DIRECTORIES
+import org.videolan.resources.ID_VIDEO
+import org.videolan.tools.isStarted
+import org.videolan.tools.setGone
+import org.videolan.tools.setVisible
 
 private const val TAG = "Navigator"
 
@@ -60,7 +69,6 @@ class Navigator : NavigationBarView.OnItemSelectedListener, DefaultLifecycleObse
     override lateinit var navigationView: List<NavigationBarView>
     override lateinit var appbarLayout: AppBarLayout
 
-
     override fun MainActivity.setupNavigation(state: Bundle?) {
         activity = this
         this@Navigator.settings = settings
@@ -71,10 +79,17 @@ class Navigator : NavigationBarView.OnItemSelectedListener, DefaultLifecycleObse
         lifecycle.addObserver(this@Navigator)
         navigationView = listOf(findViewById(R.id.navigation), findViewById(R.id.navigation_rail))
         appbarLayout = findViewById(R.id.appbar)
+        setUpTitle(currentFragmentId)
     }
 
     override fun onStart(owner: LifecycleOwner) {
-        if (currentFragment === null && !currentIdIsExtension()) showFragment(if (currentFragmentId != 0) currentFragmentId else settings.getInt("fragment_id", defaultFragmentId))
+        if (currentFragment === null && !currentIdIsExtension()) showFragment(
+            if (currentFragmentId != 0) {
+                currentFragmentId
+            } else {
+                settings.getInt("fragment_id", defaultFragmentId)
+            }
+        )
         navigationView.forEach { it.setOnItemSelectedListener(this) }
     }
 
@@ -100,6 +115,8 @@ class Navigator : NavigationBarView.OnItemSelectedListener, DefaultLifecycleObse
 
     private fun showFragment(fragment: Fragment, id: Int, tag: String = getTag(id)) {
         val fm = activity.supportFragmentManager
+        setUpTitle(id)
+
         if (currentFragment is BaseBrowserFragment) fm.popBackStackImmediate("root", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         val ft = fm.beginTransaction()
         ft.replace(R.id.fragment_placeholder, fragment, tag)
@@ -110,6 +127,15 @@ class Navigator : NavigationBarView.OnItemSelectedListener, DefaultLifecycleObse
         currentFragmentId = id
     }
 
+    private fun setUpTitle(id: Int) {
+        val title = when (id) {
+            R.id.nav_audio -> R.string.audio
+            R.id.nav_directories -> R.string.app_name
+            R.id.nav_playlists -> R.string.playlists
+            else -> R.string.app_name
+        }
+        activity.findViewById<TextView>(R.id.toolbar_vlc_title).text = activity.getString(title)
+    }
     override fun currentIdIsExtension() = idIsExtension(currentFragmentId)
 
     private fun idIsExtension(id: Int) = id in 1..100
@@ -177,6 +203,7 @@ class Navigator : NavigationBarView.OnItemSelectedListener, DefaultLifecycleObse
                 val current = it.menu.findItem(currentId)
                 if (current != null) current.isChecked = false
                 target.isChecked = true
+
                 /* Save the tab status in pref */
                 settings.edit { putInt("fragment_id", id) }
             }

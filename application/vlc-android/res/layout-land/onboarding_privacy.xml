@@ -47,7 +47,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
             android:contentDescription="@string/permission_onboarding_perm_all"
-            app:srcCompat="@drawable/uncheck_circle" />
+            app:srcCompat="@drawable/circle_uncheck" />
 
     </RelativeLayout>
 

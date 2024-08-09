@@ -9,6 +9,8 @@
 
     <attr name="background_default" format="reference|color" />
     <attr name="tab_unselected_color" format="color" />
+    <attr name="play_circle_color" format="color" />
+    <attr name="play_circle_color_selected" format="color" />
     <attr name="header_background" format="reference|color" />
     <attr name="bottom_navigation_background" format="reference|color" />
     <attr name="audio_header_background" format="reference|color" />
@@ -43,7 +45,6 @@
     <attr name="empty_foreground" format="color" />
     <attr name="empty_background" format="color" />
     <attr name="disabled_overlay_color" format="color" />
-    <attr name="video_card_background" format="reference"/>
     <attr name="video_list_background" format="reference"/>
     <attr name="audio_chip_background" format="color" />
     <attr name="audio_chip_text_color" format="color" />

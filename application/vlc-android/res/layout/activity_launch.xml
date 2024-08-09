@@ -11,93 +11,221 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/set_pin"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.4"
-            android:gravity="center|bottom"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_height="?actionBarSize"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/half_default_margin"
+                android:background="@drawable/lb_selectable_item_rounded_rect"
+                android:scaleType="center"
+                android:src="@drawable/ic_close_up" />
 
             <TextView
-                android:id="@+id/set_pin_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="Set New PIN"
+                android:id="@+id/title"
                 android:textSize="22sp"
+                android:textColor="?attr/font_default"
+                android:fontFamily="@font/urbanist_regular"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:src="@drawable/ic_close_up"
+                android:text="Enter PIN"
                 android:textStyle="bold" />
 
-            <CheckBox
-                android:id="@+id/biometric_cb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="center"
-                android:text="Unlock with fingerpint" />
-
-            <android.inputmethodservice.KeyboardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
+            <ImageView
+                android:id="@+id/next"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/half_default_margin"
+                android:background="@drawable/lb_selectable_item_rounded_rect"
+                android:scaleType="center"
+                android:src="@drawable/ic_check_large"
+                android:tint="?attr/colorControlNormal"
+                app:tint="?attr/colorControlNormal" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/enter_pin"
+            android:id="@+id/pin_lyt_main"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.4"
-            android:gravity="center"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/set_pin"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.4"
+                android:gravity="center|bottom"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/set_pin_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Set New PIN"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/biometric_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:text="Unlock with fingerpint" />
+
+                <android.inputmethodservice.KeyboardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/enter_pin"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.4"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Enter Current Pin"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/forgot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/lb_selectable_item_rounded_rect"
+                    android:gravity="center"
+                    android:text="forgot"
+                    android:textStyle="italic"
+                    android:textColor="?attr/font_default"
+                    />
+
+                <android.inputmethodservice.KeyboardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <com.karikari.goodpinkeypad.GoodPinKeyPad
+                android:id="@+id/key"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:defaultIndicator="@drawable/grey_solid_dot"
+                app:errorIndicator="@drawable/black_hollow_dot_error"
+                app:font="@font/urbanist_medium"
+                app:keyBackground="@drawable/keys_white_theme_selector"
+                app:keySize="65dp"
+                app:keyTextSize="30"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:marginTop="10dp"
+                app:pinEntry="four"
+                app:selectedIndicator="@drawable/black_solid_dot"
+                app:textColor="@color/black"
+                tools:layout_editor_absoluteY="100dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/email_lyt_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/email_pass_preview_tv"
+                style="@style/VLC.TextViewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:gravity="center"
+                android:text="@string/your_pin_is_s"
+                android:textAlignment="center"
+                android:textColor="@color/grey50" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginBottom="20dp"
                 android:gravity="center"
-                android:text="Enter Current Pin"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:maxLines="2"
+                android:text="Add an email to prevent you forgetting the PIN"
+                android:textAlignment="center"
+                android:textColor="?attr/colorControlNormal"
+                android:textSize="18sp" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginHorizontal="50dp"
+                android:background="@drawable/black_border_theme">
+
+                <EditText
+                    android:id="@+id/email_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/rounded_corners_edittext"
+                    android:hint="email"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="10dp" />
+
+                <ImageView
+                    android:id="@+id/clear_btn"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_close_up"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/forgot"
-                android:layout_width="wrap_content"
+                android:id="@+id/email_input_auto"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/lb_selectable_item_rounded_rect"
                 android:gravity="center"
-                android:text="Forgot"
-                android:textColor="?attr/font_default" />
-
-            <android.inputmethodservice.KeyboardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:src="@drawable/ic_close_up"
+                android:text="Input email automatically"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
-        <com.karikari.goodpinkeypad.GoodPinKeyPad
-            android:id="@+id/key"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:defaultIndicator="@drawable/grey_solid_dot"
-            app:errorIndicator="@drawable/black_hollow_dot_error"
-            app:font="@font/urbanist_medium"
-            app:keyBackground="@drawable/keys_white_theme_selector"
-            app:keySize="65dp"
-            app:keyTextSize="30"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:marginTop="10dp"
-            app:pinEntry="four"
-            app:textColor="@color/black"
-            app:selectedIndicator="@drawable/black_solid_dot"
-            tools:layout_editor_absoluteY="100dp" />
-
     </LinearLayout>
-
 
 </layout>

@@ -170,7 +170,7 @@ const val KEY_VIDEOS_COMPACT = "video_display_in_compact"
 const val KEY_GROUP_VIDEOS = "video_min_group_length"
 const val GROUP_VIDEOS_NONE = "-1"
 const val GROUP_VIDEOS_FOLDER = "0"
-const val GROUP_VIDEOS_NAME = "6"
+//const val GROUP_VIDEOS_NAME = "6"
 
 // Items updates
 const val UPDATE_SELECTION = 0

@@ -23,8 +23,9 @@
 
     <RelativeLayout
         android:id="@+id/privacy_check_root"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         android:background="@drawable/theme_selection_bg_rounded"
         android:padding="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
@@ -39,22 +40,22 @@
             android:layout_toEndOf="@+id/privacy_check_img"
             android:contentDescription="@string/privacy_text"
             android:text="@string/privacy_text"
-            android:textAlignment="center"
+            android:gravity="start|center_vertical"
+            android:textAlignment="viewStart"
             android:textAppearance="@style/VLC.Onboarding.Title"
             android:textSize="16sp"
             android:textStyle="bold"
             app:srcCompat="@drawable/ic_perm_media" />
 
-
         <ImageView
             android:id="@+id/privacy_check_img"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="16dp"
             android:contentDescription="@string/permission_onboarding_perm_all"
-            app:srcCompat="@drawable/uncheck_circle" />
+            app:srcCompat="@drawable/circle_check" />
 
     </RelativeLayout>
 
@@ -108,10 +109,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:gravity="center"
         android:padding="16dp"
         android:text="@string/privacy_welcome_onboarding_desc"
-        android:textAlignment="center"
         android:textAppearance="@style/VLC.Onboarding.Text"
         app:layout_constraintBottom_toTopOf="@+id/privacy_check_root"
         app:layout_constraintEnd_toEndOf="parent"

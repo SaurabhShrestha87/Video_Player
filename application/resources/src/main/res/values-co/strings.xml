@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools"
         tools:ignore="MissingTranslation">
 
-    <!-- Main VLC Interface -->
+    <!-- Main Video Player Interface -->
     <string name="ok">Vai</string>
     <string name="cancel">Abbandunà</string>
     <string name="other">Altru</string>
@@ -42,7 +42,7 @@
     <string name="play_as_video">Sunà cum’è video</string>
     <string name="return_to_video">Longa picchicciata nant’à a cuprendula per risturà a video</string>
     <string name="video_app_switch_title">Modu di fondu o fiura-nant’à-fiura (PIP)</string>
-    <string name="video_app_switch_summary">Selezziunà u cumpurtamentu di VLC quandu si passa da a ripruduzzione video à un’altra appiecazione</string>
+    <string name="video_app_switch_summary">Selezziunà u cumpurtamentu di Video Player quandu si passa da a ripruduzzione video à un’altra appiecazione</string>
     <string name="play_pip_title">Sunà e video in modu fiura-nant’à-fiura (PIP)</string>
     <string name="play_as_audio_background">Sunà e video in modu di fondu</string>
     <string name="append">Aghjunghje à a fila d’attesa di lettura</string>
@@ -113,7 +113,7 @@
     </plurals>
 
     <string name="internal_memory">Memoria interna</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Music</string>
     <string name="video">Video</string>
     <string name="bookmarks">Indette</string>
     <string name="equalizer">Ugualizatore</string>
@@ -205,7 +205,7 @@
     <string name="streams">Flussi</string>
     <string name="open_mrl_dialog_msg">Scrivite un indirizzu di reta : p.i. http://, mms:// o rtsp://</string>
     <string name="encountered_error_title">Sbagliu di ripruduzzione</string>
-    <string name="encountered_error_message">VLC hà scuntratu un sbagliu cù stu medià.\nCi vole à pruvà di rinfrescà a vostra mediateca.</string>
+    <string name="encountered_error_message">Video Player hà scuntratu un sbagliu cù stu medià.\nCi vole à pruvà di rinfrescà a vostra mediateca.</string>
     <string name="invalid_location">A lucalizazione %1$s ùn pò micca esse sunata.</string>
     <string name="missing_location">Stu medià pruvene da un discu indispunibule è ùn pò micca esse sunatu.</string>
 
@@ -266,12 +266,12 @@
     <string name="hold_to_stop">Mantene per piantà</string>
 
     <!-- About -->
-    <string name="app_name_full">VLC per Android</string>
+    <string name="app_name_full">Video Player per Android</string>
     <string name="revision">Revisione</string>
     <string name="about">Apprupositu</string>
-    <string name="about_vlc_text">VLC per Android™ hè una purtera di VLC media player, u lettore medià pupulare à fonte aperta. A versione Android™ pò leghje tutti i schedarii è i flussi di a reta.</string>
+    <string name="about_vlc_text">Video Player per Android™ hè una purtera di Video Player media player, u lettore medià pupulare à fonte aperta. A versione Android™ pò leghje tutti i schedarii è i flussi di a reta.</string>
     <string name="authors">Autori</string>
-    <string name="vlc_authors">è l’autori di VLC.</string>
+    <string name="vlc_authors">è l’autori di Video Player.</string>
     <string name="is_compiled_by">Cumpilatu da</string>
     <string name="sources">Codice di fonte</string>
     <string name="libraries">Bibliuteche</string>
@@ -427,8 +427,8 @@
     <string name="replaygain_track">Traccia</string>
     <string name="replaygain_album">Albumu</string>
     <string name="aout">Esciuta audio</string>
-    <string name="aout_summary">Cambià u metoda chì VLC impiega per l’esciuta audio s’ellu ùn funzioneghja micca</string>
-    <string name="audio_ducking_title">Diminuisce u vulume di VLC in casu di nutificazione</string>
+    <string name="aout_summary">Cambià u metoda chì Video Player impiega per l’esciuta audio s’ellu ùn funzioneghja micca</string>
+    <string name="audio_ducking_title">Diminuisce u vulume di Video Player in casu di nutificazione</string>
     <string name="audio_ducking_summary">Aiuta à stà à sente e nutificazioni aidio, l’istruzzioni parlate di navigazione o d’assistenza</string>
     <string name="casting_category">Diffusione</string>
     <string name="remote_access">Accessu à distanza</string>
@@ -500,7 +500,7 @@
     <string name="clear_media_db">Viutà a banca di dati medià</string>
     <string name="clear_media_database_summary">Squassa a basa di dati per riprincipià à zeru</string>
     <string name="clear_app_data">Squassà i dati di l’appiecazione</string>
-    <string name="clear_app_data_summary">Squassà i dati di VLC per Android</string>
+    <string name="clear_app_data_summary">Squassà i dati di Video Player per Android</string>
     <string name="clear_history">Viutà a cronolugia di lettura</string>
     <string name="clear_history_message">Pirderete a vostra cronolugia, e vostre liste di lettura attuale è e vostre prugressioni</string>
     <string name="set_locale">Definisce a lingua</string>
@@ -524,7 +524,7 @@
     <string name="start_logging">Principià l’arregistramentu di messaghju</string>
     <string name="stop_logging">Piantà l’arregistramentu di messaghju</string>
     <string name="clear_log">Viutà u ghjurnale di i messaghji</string>
-    <string name="log_service_title">Arregistramentu di i ghjurnali di VLC</string>
+    <string name="log_service_title">Arregistramentu di i ghjurnali di Video Player</string>
     <string name="log_service_text">Apre u dialogu di u ghjurnale di i messaghji</string>
     <string name="copy_to_clipboard">Cupià ver di u preme’papei</string>
     <string name="copied_to_clipboard">Ghjurnale di i messaghji cupiatu ver di u preme’papei.</string>
@@ -535,9 +535,9 @@
     <string name="custom_libvlc_options">Ozzioni libVLC persunalizate</string>
     <string name="custom_libvlc_options_invalid">Ozzioni inaccettevule per libVLC !</string>
 
-    <string name="serious_crash">Per disgrazia, un sbagliu seriu hè accadutu è VLC hè statu chjosu.</string>
-    <string name="help_us_send_log">Aiutatecci à megliurà VLC mandenduci quellu ghjurnale d’accidente :</string>
-    <string name="restart_vlc">Rilancià VLC</string>
+    <string name="serious_crash">Per disgrazia, un sbagliu seriu hè accadutu è Video Player hè statu chjosu.</string>
+    <string name="help_us_send_log">Aiutatecci à megliurà Video Player mandenduci quellu ghjurnale d’accidente :</string>
+    <string name="restart_vlc">Rilancià Video Player</string>
     <string name="send_log">Mandà u ghjurnale di i messaghji</string>
     <string name="sending_log">Inviu di u ghjurnale…</string>
 
@@ -575,8 +575,8 @@
     <string name="medialibrary_directories">Cartulari di a mediateca</string>
 
     <!--What's new-->
-    <string name="whats_new_title">Ciò chì hè novu in VLC per Android %s</string>
-    <string name="whats_new_36_webserver_text">Grazia à a funzione nova d’accessu à distanza, pigliate u cuntrollu di VLC per Android da qualsiasi altru apparechju.\nMandate u vostru medià in e duie direzzioni, cuntrollate a vostra ripruduzzione è ancu di più !</string>
+    <string name="whats_new_title">Ciò chì hè novu in Video Player per Android %s</string>
+    <string name="whats_new_36_webserver_text">Grazia à a funzione nova d’accessu à distanza, pigliate u cuntrollu di Video Player per Android da qualsiasi altru apparechju.\nMandate u vostru medià in e duie direzzioni, cuntrollate a vostra ripruduzzione è ancu di più !</string>
     <string name="whats_new_36_favorites_text">Avà si pò aghjunghje cum’è favuriti i vostri medià, liste di lettura, artisti o albumi.\nRitruvate in un’ochjata i vostri cuntenuti preferiti filtrenduli da i favuriti solu !</string>
 
 
@@ -588,26 +588,26 @@
     <string name="music_now_playing">Ripruduzzione in corsu</string>
 
     <!-- Widget -->
-    <string name="widget_name_w">Widget VLC Biancu</string>
-    <string name="widget_name_b">Widget VLC Scuru</string>
-    <string name="widget_name_mini_player">Mini lettore VLC</string>
+    <string name="widget_name_w">Widget Video Player Biancu</string>
+    <string name="widget_name_b">Widget Video Player Scuru</string>
+    <string name="widget_name_mini_player">Mini lettore Video Player</string>
     <string name="widget_old_text">Avemu messu à livellu i nostri widgets !</string>
     <string name="widget_old_description_start">Bella nutizia ! Avemu publicatu widgets amendati.\nPermettenu più di riattività è di persunalizazione</string>
     <string name="whats_next">Cosa hà da accade dopu ?</string>
     <string name="widget_old_description_end">Avemu vistu chì vo avete dighjà widgets in u vostru lanciadore. Per disgrazia, ùn sò micca cumpatibile cù i nostri widgets amendati.\nSecondu à u vostru lanciadore, ci vulerà forse à caccià i vechji per rimpiazzalli.</string>
     <string name="click_here">Fate un cliccu quì per sapene di più.</string>
-    <string name="allow_storage_access_title">Permette à VLC d’accede à i schedarii video è audio</string>
-    <string name="allow_storage_access_description">VLC hà bisognu di stu permessu per accede à i schedarii medià nant’à st’apparechju.</string>
-    <string name="allow_storage_manager_title">Permette à VLC d’accede à tutti i schedarii</string>
+    <string name="allow_storage_access_title">Permette à Video Player d’accede à i schedarii video è audio</string>
+    <string name="allow_storage_access_description">Video Player hà bisognu di stu permessu per accede à i schedarii medià nant’à st’apparechju.</string>
+    <string name="allow_storage_manager_title">Permette à Video Player d’accede à tutti i schedarii</string>
     <string name="allow_storage_manager_description">%s\n\nAccunsente u permessu ?</string>
-    <string name="allow_storage_manager_explanation">Per prufittà di tutte e pussibilità di VLC è piglià in carica tutti i tipi di medià, vi cunsigliemu forte d’accunsente à stu permessu.</string>
-    <string name="partial_content">VLC ùn pò micca accede à tutti i vostri schedarii</string>
+    <string name="allow_storage_manager_explanation">Per prufittà di tutte e pussibilità di Video Player è piglià in carica tutti i tipi di medià, vi cunsigliemu forte d’accunsente à stu permessu.</string>
+    <string name="partial_content">Video Player ùn pò micca accede à tutti i vostri schedarii</string>
     <string name="partial_content_description">Cù Android 11 è dopu, l’appiecazioni richiedenu un permessu speziale per accede à tutti i schedarii di l’apparechju.\n\n%s</string>
     <string name="never_ask_again">Ùn mi dumandà mai più</string>
     <string name="never_show_again">Ùn affissà mai più, mancu per e versioni future</string>
-    <string name="allow_settings_access_ringtone_title">Permette à VLC di definisce a suneria</string>
-    <string name="allow_settings_access_ringtone_description">VLC hà bisognu di stu permessu per definisce sta canzona cum’è a vostra suneria.</string>
-    <string name="allow_settings_access_brightness_title">Permette à VLC di cambià u modu di lucidezza</string>
+    <string name="allow_settings_access_ringtone_title">Permette à Video Player di definisce a suneria</string>
+    <string name="allow_settings_access_ringtone_description">Video Player hà bisognu di stu permessu per definisce sta canzona cum’è a vostra suneria.</string>
+    <string name="allow_settings_access_brightness_title">Permette à Video Player di cambià u modu di lucidezza</string>
     <string name="allow_settings_access_brightness_description">VLC hà bisognu di stu permessu per cambià u vostru modu di lucidezza.</string>
     <string name="allow_draw_overlays_title">Permette à u lettore VLC d’affissassi sopra à l’altre appiecazioni</string>
     <string name="allow_sdraw_overlays_description">VLC hà bisognu di stu permessu per affissà a vistra video in una finestra chì s’apre sopra à l’altre appiecazioni.</string>
@@ -758,7 +758,7 @@
     <string name="removed_from_playlist_anonymous">Elementu(i) cacciatu(i) da a lista di lettura</string>
     <string name="welcome_title">Benvenuta in VLC !</string>
     <string name="welcome_subtitle">U lettore multimedià liberu è di rigalu</string>
-    <string name="permission_media">VLC hà bisognu di u vostru accunsentu per accede à i medià nant’à u vostru apparechju</string>
+    <string name="permission_media">Video Player hà bisognu di u vostru accunsentu per accede à i medià nant’à u vostru apparechju</string>
     <string name="medialibrary_scan_explanation">VLC pò analizà autumaticamente u vostru apparechju per urganizà a vostra cullezzione medià.</string>
     <string name="onboarding_theme_title">Fatelu dapervoi in casa vostra</string>
     <string name="done">Fattu</string>

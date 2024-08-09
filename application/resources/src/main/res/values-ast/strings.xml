@@ -243,7 +243,7 @@
     <string name="ctx_pip_title">Ventanu emerxente</string>
     <string name="welcome_title">¡Afáyate en VLC!</string>
     <string name="welcome_subtitle">El reproductor multimedia de códigu abiertu</string>
-    <string name="permission_media">VLC precisa\'l to permisu p\'acceder a los ficheros del preséu</string>
+    <string name="permission_media">Video Player precisa\'l to permisu p\'acceder a los ficheros del preséu</string>
     <string name="medialibrary_scan_explanation">VLC pue escaniar automáticamente\'l preséu pa organizar la to coleición multimedia.</string>
     <string name="onboarding_theme_title">Siéntite como en casa</string>
     <string name="done">Fecho</string>

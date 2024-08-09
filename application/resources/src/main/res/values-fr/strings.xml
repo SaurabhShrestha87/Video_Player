@@ -127,7 +127,7 @@
     </plurals>
 
     <string name="internal_memory">Mémoire interne</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Music</string>
     <string name="video">Vidéo</string>
     <string name="bookmarks">Favoris</string>
     <string name="equalizer">Égaliseur</string>
@@ -776,7 +776,7 @@
     <string name="removed_from_playlist_anonymous">Élément(s) supprimé(s) de la liste de lecture</string>
     <string name="welcome_title">Bienvenue dans VLC !</string>
     <string name="welcome_subtitle">Le lecteur multimédia gratuit et libre</string>
-    <string name="permission_media">VLC a besoin de votre permission pour accéder aux médias sur votre appareil</string>
+    <string name="permission_media">Video Player a besoin de votre permission pour accéder aux médias sur votre appareil</string>
     <string name="medialibrary_scan_explanation">VLC peut analyser automatiquement votre appareil pour organiser votre collection de médias.</string>
     <string name="onboarding_theme_title">Faites comme chez vous</string>
     <string name="done">Terminé</string>

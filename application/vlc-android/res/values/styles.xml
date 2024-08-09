@@ -40,11 +40,13 @@
         <item name="background_default">@color/white</item>
         <item name="tab_unselected_color">@color/grey</item>
 
-
         <item name="cleaner_cloud_top_primary">#FFE7FEE9</item>
         <item name="cleaner_cloud_top_secondary">#FFFFFFFF</item>
         <item name="cleaner_cloud_bottom_primary">#FFE5FEE8</item>
         <item name="cleaner_cloud_bottom_secondary">#FFFFFFFF</item>
+
+        <item name="play_circle_color">@color/grey875</item>
+        <item name="play_circle_color_selected">@color/grey875</item>
 
         <item name="bottom_navigation_background">@drawable/bottom_navigation_background</item>
         <item name="audio_header_background">@color/white</item>
@@ -102,7 +104,6 @@
         <item name="empty_foreground">@color/grey300</item>
         <item name="empty_background">@color/grey50</item>
         <item name="disabled_overlay_color">@color/white_transparent_50</item>
-        <item name="video_card_background">@drawable/video_grid_card_background</item>
         <item name="video_list_background">@drawable/video_list_background</item>
         <item name="rounded_corners_bottom_default_darker">@drawable/rounded_corners_bottom_default_darker_light</item>
         <item name="audio_chip_background">@drawable/rounded_corners_audio</item>
@@ -127,6 +128,9 @@
         <item name="android:gridViewStyle">@style/Theme.VLC.List</item>
         <item name="background_default">@color/grey850</item>
         <item name="tab_unselected_color">@color/grey</item>
+
+        <item name="play_circle_color">@color/grey875</item>
+        <item name="play_circle_color_selected">@color/grey875</item>
         <item name="background_default_darker">@color/grey875</item>
         <item name="font_default">@color/grey50</item>
         <item name="font_light">@color/grey600</item>
@@ -149,6 +153,8 @@
         <item name="android:gridViewStyle">@style/Theme.VLC.List</item>
         <item name="background_default">@color/white</item>
         <item name="tab_unselected_color">@color/grey</item>
+        <item name="play_circle_color">@color/grey875</item>
+        <item name="play_circle_color_selected">@color/grey875</item>
         <item name="background_default_darker">@color/grey200</item>
         <item name="font_default">@color/black</item>
         <item name="font_light">@color/grey300</item>
@@ -214,6 +220,9 @@
         <item name="cleaner_cloud_bottom_primary">@color/grey700</item>
         <item name="cleaner_cloud_bottom_secondary">@color/grey800</item>
 
+        <item name="play_circle_color">@color/grey875</item>
+        <item name="play_circle_color_selected">@color/grey875</item>
+
         <item name="bottom_navigation_background">@drawable/bottom_navigation_background_dark</item>
         <item name="audio_header_background">@color/mini_player_dark</item>
         <item name="audio_header_divider">@color/black</item>
@@ -271,7 +280,6 @@
         <item name="empty_foreground">@color/grey800</item>
         <item name="empty_background">@color/grey900</item>
         <item name="disabled_overlay_color">@color/black_transparent_50</item>
-        <item name="video_card_background">@drawable/video_grid_card_background_dark</item>
         <item name="video_list_background">@drawable/video_list_background_dark</item>
         <item name="rounded_corners_bottom_default_darker">@drawable/rounded_corners_bottom_default_darker_dark</item>
         <item name="audio_chip_background">@drawable/rounded_corners_audio_dark</item>
@@ -284,10 +292,14 @@
         <item name="widget_preview_rounded_bg">@drawable/rounded_top_corners_left_background_dark</item>
     </style>
 
+<!--    TODO: Don't need black on onboarding theme! -->
     <style name="Theme.VLC.Onboarding" parent="Theme.VLC.Onboarding.7"/>
+
     <style name="Theme.VLC.Onboarding.7" parent="Theme.VLC.Black">
         <item name="background_default">@color/onboarding_grey</item>
         <item name="tab_unselected_color">@color/grey</item>
+        <item name="play_circle_color">@color/greyPlayBg</item>
+        <item name="play_circle_color_selected">@color/greyPlayBg</item>
         <item name="colorControlNormal">@color/white</item>
     </style>
 
@@ -320,6 +332,8 @@
         <item name="bookmark_background">@color/black_transparent_80</item>
         <item name="background_default">@color/grey850</item>
         <item name="tab_unselected_color">@color/grey</item>
+        <item name="play_circle_color">@color/grey875</item>
+        <item name="play_circle_color_selected">@color/grey875</item>
         <item name="actionBarItemBackground">@drawable/ic_circle_audio_player</item>
         <item name="primary_focus">@color/orange_500_transparent_20</item>
         <item name="empty_title">@color/grey300</item>
@@ -457,6 +471,8 @@
 
         <item name="background_default">@color/grey850</item>
         <item name="tab_unselected_color">@color/grey</item>
+        <item name="play_circle_color">@color/grey875</item>
+        <item name="play_circle_color_selected">@color/grey875</item>
         <item name="advanced_options_bg">@drawable/advanced_options_background</item>
         <item name="ic_playasaudio_on">@drawable/ic_playasaudio_on</item>
         <item name="ic_tips_double_tap">@drawable/tips_double_tap</item>
@@ -571,7 +587,6 @@
     <style name="VLC.Onboarding.Title" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/urbanist_regular</item>
-        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="KeyboardButton">
@@ -586,7 +601,6 @@
     <style name="VLC.Onboarding.Text" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/urbanist_regular</item>
-        <item name="android:textColor">@color/white_transparent_80</item>
     </style>
 
     <style name="VLC.Onboarding.Button.Next" parent="Widget.MaterialComponents.Button.OutlinedButton">

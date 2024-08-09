@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.Toast
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -45,9 +46,9 @@ import com.video.offline.videoplayer.PlaybackService
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.databinding.AudioPlayerBinding
 import com.video.offline.videoplayer.gui.AudioPlayerContainerActivity
-import com.video.offline.videoplayer.gui.InfoActivity
 import com.video.offline.videoplayer.gui.MainActivity
 import com.video.offline.videoplayer.gui.dialogs.CtxActionReceiver
+import com.video.offline.videoplayer.gui.dialogs.InfoDialog
 import com.video.offline.videoplayer.gui.dialogs.PlaybackSpeedDialog
 import com.video.offline.videoplayer.gui.dialogs.SleepTimerDialog
 import com.video.offline.videoplayer.gui.dialogs.showContext
@@ -333,9 +334,8 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
     }
 
     private fun showInfoDialog(media: MediaWrapper) {
-        val i = Intent(requireActivity(), InfoActivity::class.java)
-        i.putExtra(TAG_ITEM, media)
-        startActivity(i)
+        val dialog = InfoDialog.newInstance(media)
+        dialog.show(requireActivity().supportFragmentManager, "info")
     }
 
     override fun onPopupMenu(view: View, position: Int, item: MediaWrapper?) {
@@ -343,7 +343,9 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
         if (activity === null || position >= playlistAdapter.itemCount) return
         val flags = FlagSet(ContextOption::class.java).apply {
             addAll(CTX_GO_TO_FOLDER, CTX_INFORMATION, CTX_REMOVE_FROM_PLAYLIST, CTX_STOP_AFTER_THIS)
-            if (item?.uri?.scheme != "content") addAll(CTX_ADD_TO_PLAYLIST, CTX_SET_RINGTONE, CTX_SHARE)
+            if (item?.uri?.scheme != "content") addAll(CTX_ADD_TO_PLAYLIST
+//                , CTX_SET_RINGTONE
+                , CTX_SHARE)
         }
         showContext(activity, ctxReceiver, position, item, flags)
     }
@@ -592,11 +594,19 @@ class AudioPlayer : Fragment(), PlaylistAdapter.IPlayer, TextWatcher, IAudioPlay
         playlistModel.togglePlayPause()
     }
 
+    fun onStopSingleClick(@Suppress("UNUSED_PARAMETER") view: View?) {
+        onStopClick(null)
+    }
+
     fun onStopClick(@Suppress("UNUSED_PARAMETER") view: View?): Boolean {
         playlistModel.stop()
         if (activity is AudioPlayerContainerActivity)
             (activity as AudioPlayerContainerActivity).closeMiniPlayer()
         return true
+    }
+    
+    fun showQueueBottomSheet(@Suppress("UNUSED_PARAMETER") view: View?) {
+        Toast.makeText(activity, "TODO: QUEUE!", Toast.LENGTH_SHORT).show()
     }
 
     fun onNextClick(@Suppress("UNUSED_PARAMETER") view: View?) {

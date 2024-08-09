@@ -47,7 +47,7 @@
         <item quantity="other">%d ta video</item>
     </plurals>
     <string name="internal_memory">Ichki xotira</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Music</string>
     <string name="video">Video</string>
     <string name="bookmarks">Xatcho‘plar</string>
     <string name="equalizer">Ekvalayzer</string>

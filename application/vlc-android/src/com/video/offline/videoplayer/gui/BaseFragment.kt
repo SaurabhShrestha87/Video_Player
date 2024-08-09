@@ -24,6 +24,7 @@ import org.videolan.tools.setGone
 import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.gui.browser.KEY_IN_MEDIALIB
 import com.video.offline.videoplayer.gui.browser.KEY_MEDIA
+import com.video.offline.videoplayer.gui.dialogs.InfoDialog
 import com.video.offline.videoplayer.gui.helpers.FloatingActionButtonBehavior
 import com.video.offline.videoplayer.gui.helpers.UiTools.isTablet
 import com.video.offline.videoplayer.gui.view.SwipeRefreshLayout
@@ -129,9 +130,8 @@ abstract class BaseFragment : Fragment(), ActionMode.Callback {
     }
 
     protected fun showInfoDialog(item: MediaLibraryItem) {
-        val i = Intent(activity, InfoActivity::class.java)
-        i.putExtra(TAG_ITEM, item)
-        startActivity(i)
+        val dialog = InfoDialog.newInstance(item)
+        dialog.show(requireActivity().supportFragmentManager, "info")
     }
 
     protected fun setRefreshing(refreshing: Boolean, action: ((loading: Boolean) -> Unit)? = null) {

@@ -237,7 +237,7 @@ internal class AudioPlayerAnimator : IAudioPlayerAnimator, LifecycleObserver {
         binding.playlistSwitch.alpha = slideOffset
         binding.advFunction.alpha = slideOffset
         //views disappearing in full player
-        val disappearingViews = arrayOf(binding.headerPlayPause, binding.headerTime, binding.headerShuffle, binding.headerPrevious, binding.headerLargePlayPause, binding.headerNext, binding.headerRepeat)
+        val disappearingViews = arrayOf(binding.headerQueue, binding.closePlayback, binding.headerPlayPause, binding.headerTime, binding.headerShuffle, binding.headerPrevious, binding.headerLargePlayPause, binding.headerNext, binding.headerRepeat)
         disappearingViews.forEach {
             it.alpha = 1 - slideOffset
         }

@@ -11,8 +11,8 @@ class OnboardingViewModel : ViewModel() {
     var permissionType: PermissionType = PermissionType.ALL
 
     var theme = if (AndroidDevices.canUseSystemNightMode()) AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM else AppCompatDelegate.MODE_NIGHT_AUTO
-    var currentFragment = FragmentName.WELCOME
-    var privacyAccepted = false
+    var currentFragment = FragmentName.ASK_PERMISSION
+    var privacyAccepted = true
 }
 
 enum class PermissionType {

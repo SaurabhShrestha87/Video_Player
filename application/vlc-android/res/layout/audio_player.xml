@@ -70,24 +70,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.3" />
 
-        <ProgressBar
-                android:id="@+id/progressBar"
-                style="@android:style/Widget.ProgressBar.Horizontal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:indeterminate="false"
-                android:layoutDirection="ltr"
-                android:maxHeight="4dp"
-                android:minHeight="4dp"
-                android:paddingLeft="0px"
-                android:importantForAccessibility="no"
-                android:paddingRight="0px"
-                android:progressDrawable="?attr/progress_mini_player"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/header"
                 android:layout_width="0dp"
@@ -96,7 +78,7 @@
                 android:fitsSystemWindows="true"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/progressBar">
+                app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                     android:id="@+id/header_shuffle"
@@ -151,10 +133,28 @@
                     android:onLongClick="@{fragment::onStopClick}"
                     android:padding="4dp"
                     android:visibility="gone"
+                android:background="@drawable/button_circle_white_selector_visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/header_next"
                     app:layout_constraintStart_toEndOf="@+id/header_previous"
                     app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/header_large_queue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:contentDescription="@string/play"
+                android:elevation="4dp"
+                android:onClick="@{fragment::onPlayPauseClick}"
+                android:onLongClick="@{fragment::onStopClick}"
+                android:padding="4dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/header_next"
+                app:layout_constraintStart_toEndOf="@+id/header_previous"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                     android:id="@+id/header_next"
@@ -219,14 +219,31 @@
                     app:layout_constraintRight_toRightOf="parent" />
 
 
+
             <com.video.offline.videoplayer.gui.view.HeaderMediaSwitcher
                     android:id="@+id/audio_media_switcher"
                     android:layout_width="0dp"
                     android:layout_height="68dp"
                     android:background="#00000000"
                     app:layout_constraintEnd_toStartOf="@+id/barrier"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/close_playback"
                     app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/close_playback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/close_playback"
+                android:focusable="true"
+                android:onClick="@{fragment::onStopSingleClick}"
+                android:padding="8dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="@id/guideline_header_bottom"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_close_up" />
 
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/playlist_search_text"
@@ -318,7 +335,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/guideline_header_bottom"
                     app:layout_constraintEnd_toStartOf="@+id/adv_function"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_playlist_audio_on" />
+                    app:srcCompat="@drawable/queue_icon" />
 
             <ImageView
                     android:id="@+id/adv_function"
@@ -350,17 +367,33 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/header_queue"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:contentDescription="@string/queue"
+                android:focusable="true"
+                android:onClick="@{fragment::showQueueBottomSheet}"
+                android:scaleType="center"
+                android:background="@drawable/button_circle_white_selector_visible"
+                app:layout_constraintBottom_toBottomOf="@id/guideline_header_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/queue_icon" />
+
+            <ImageView
                     android:id="@+id/header_play_pause"
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
-                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="@dimen/half_default_margin"
                     android:contentDescription="@string/play"
                     android:focusable="true"
                     android:onClick="@{fragment::onPlayPauseClick}"
                     android:onLongClick="@{fragment::onStopClick}"
                     android:scaleType="fitXY"
+                    android:background="@drawable/button_circle_white_selector_visible"
                     app:layout_constraintBottom_toBottomOf="@id/guideline_header_bottom"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/header_queue"
                     app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Barrier
@@ -416,6 +449,24 @@
             </com.google.android.material.chip.ChipGroup>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:indeterminate="false"
+            android:layoutDirection="ltr"
+            android:maxHeight="4dp"
+            android:minHeight="4dp"
+            android:paddingLeft="0px"
+            android:importantForAccessibility="no"
+            android:paddingRight="0px"
+            android:progressDrawable="?attr/progress_mini_player"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header" />
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/songs_list"
@@ -661,6 +712,7 @@
                 android:onClick="@{fragment::onPlayPauseClick}"
                 android:onLongClick="@{fragment::onStopClick}"
                 android:padding="4dp"
+            android:background="@drawable/button_circle_white_selector_visible"
                 app:layout_constraintBottom_toBottomOf="@+id/backgroundView"
                 app:layout_constraintEnd_toStartOf="@+id/next"
                 app:layout_constraintHorizontal_bias="0.5"

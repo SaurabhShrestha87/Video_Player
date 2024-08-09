@@ -19,12 +19,13 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:popupTheme="?attr/toolbar_popup_style"
         app:theme="@style/Toolbar.VLC"
-        app:titleMarginStart="@dimen/default_margin"
+        app:titleMarginStart="@dimen/half_default_margin"
         app:titleTextColor="?attr/colorPrimary"
         tools:targetApi="o"
         app:elevation="0dp"
         android:elevation="0dp">
 
+<!--        Un-Used-->
         <ImageView
             android:id="@+id/toolbar_icon"
             android:layout_width="32dp"
@@ -37,9 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:importantForAccessibility="no"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
             android:text="@string/app_name"
+            android:textStyle="bold"
             android:textAppearance="@style/ToolbarTitleText" />
 
 

@@ -15,6 +15,20 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
+import com.video.offline.videoplayer.PlaybackService
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.gui.AudioPlayerContainerActivity
+import com.video.offline.videoplayer.gui.DialogActivity
+import com.video.offline.videoplayer.gui.dialogs.SubtitleDownloaderDialogFragment
+import com.video.offline.videoplayer.providers.medialibrary.FoldersProvider
+import com.video.offline.videoplayer.providers.medialibrary.MedialibraryProvider
+import com.video.offline.videoplayer.providers.medialibrary.VideoGroupsProvider
+import com.video.offline.videoplayer.util.FileUtils
+import com.video.offline.videoplayer.util.Permissions
+import com.video.offline.videoplayer.util.TextUtils
+import com.video.offline.videoplayer.util.generateResolutionClass
+import com.video.offline.videoplayer.util.isSchemeStreaming
+import com.video.offline.videoplayer.util.makePrivate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -52,19 +66,6 @@ import org.videolan.tools.Settings
 import org.videolan.tools.getFileNameFromPath
 import org.videolan.tools.localBroadcastManager
 import org.videolan.tools.markBidi
-import com.video.offline.videoplayer.PlaybackService
-import com.video.offline.videoplayer.R
-import com.video.offline.videoplayer.gui.AudioPlayerContainerActivity
-import com.video.offline.videoplayer.gui.DialogActivity
-import com.video.offline.videoplayer.gui.dialogs.SubtitleDownloaderDialogFragment
-import com.video.offline.videoplayer.providers.medialibrary.FoldersProvider
-import com.video.offline.videoplayer.providers.medialibrary.MedialibraryProvider
-import com.video.offline.videoplayer.providers.medialibrary.VideoGroupsProvider
-import com.video.offline.videoplayer.util.FileUtils
-import com.video.offline.videoplayer.util.Permissions
-import com.video.offline.videoplayer.util.TextUtils
-import com.video.offline.videoplayer.util.generateResolutionClass
-import com.video.offline.videoplayer.util.isSchemeStreaming
 import java.io.File
 import java.security.SecureRandom
 import java.util.LinkedList
@@ -76,55 +77,51 @@ private typealias MediaContentResolver = SimpleArrayMap<String, IMediaContentRes
 
 object MediaUtils {
     fun getSubs(activity: FragmentActivity, mediaList: List<MediaWrapper>) {
-        if (activity is AppCompatActivity) showSubtitleDownloaderDialogFragment(activity, mediaList.map { it.uri }, mediaList.map { it.title })
+        if (activity is AppCompatActivity) showSubtitleDownloaderDialogFragment(activity,
+            mediaList.map { it.uri },
+            mediaList.map { it.title })
         else {
-            val intent = Intent(activity, DialogActivity::class.java).setAction(DialogActivity.KEY_SUBS_DL)
+            val intent =
+                Intent(activity, DialogActivity::class.java).setAction(DialogActivity.KEY_SUBS_DL)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            intent.putParcelableArrayListExtra(DialogActivity.EXTRA_MEDIALIST, mediaList as? ArrayList
-                    ?: ArrayList(mediaList))
+            intent.putParcelableArrayListExtra(
+                DialogActivity.EXTRA_MEDIALIST, mediaList as? ArrayList ?: ArrayList(mediaList)
+            )
             ContextCompat.startActivity(activity, intent, null)
         }
     }
 
     fun getSubs(activity: FragmentActivity, media: MediaWrapper) = getSubs(activity, listOf(media))
 
-    fun showSubtitleDownloaderDialogFragment(activity: FragmentActivity, mediaUris: List<Uri>, mediaTitles:List<String>) {
-        SubtitleDownloaderDialogFragment.newInstance(mediaUris, mediaTitles).show(activity.supportFragmentManager, "Subtitle_downloader")
+    fun showSubtitleDownloaderDialogFragment(
+        activity: FragmentActivity,
+        mediaUris: List<Uri>,
+        mediaTitles: List<String>,
+    ) {
+        SubtitleDownloaderDialogFragment.newInstance(mediaUris, mediaTitles)
+            .show(activity.supportFragmentManager, "Subtitle_downloader")
     }
 
 
-    fun deleteItem(activity:FragmentActivity, item: MediaLibraryItem, onDeleteFailed:(MediaLibraryItem)->Unit) {
+    fun deleteItem(
+        activity: FragmentActivity,
+        item: MediaLibraryItem,
+        onDeleteFailed: (MediaLibraryItem) -> Unit,
+    ) {
         val deletionAction = when (item) {
             is MediaWrapper, is Album -> Runnable {
                 activity.lifecycleScope.launchWhenStarted {
                     if (!deleteMedia(item, null)) onDeleteFailed.invoke(item)
                 }
             }
+
             is Playlist -> Runnable { deletePlaylist(item) }
             else -> Runnable { onDeleteFailed.invoke(item) }
         }
 
         if (item is MediaWrapper) {
-            if (Permissions.checkWritePermission(activity, item, deletionAction)) deletionAction.run()
-        } else {
-            deletionAction.run()
-        }
-    }
-    fun makePrivateItem(activity:FragmentActivity, item: MediaLibraryItem, onDeleteFailed:(MediaLibraryItem)->Unit) {
-        val deletionAction = when (item) {
-            is MediaWrapper, is Album -> Runnable {
-                activity.lifecycleScope.launchWhenStarted {
-                    if (!makePrivateMedia(item, null, activity)) onDeleteFailed.invoke(item)
-                }
-            }
-            else -> Runnable { onDeleteFailed.invoke(item) }
-        }
-
-        if (item is MediaWrapper) {
             if (Permissions.checkWritePermission(
-                    activity,
-                    item,
-                    deletionAction
+                    activity, item, deletionAction
                 )
             ) deletionAction.run()
         } else {
@@ -132,17 +129,54 @@ object MediaUtils {
         }
     }
 
-        suspend fun deleteMedia(mw: MediaLibraryItem, failCB: Runnable? = null) = withContext(Dispatchers.IO) {
+    fun renameFile(
+        activity: FragmentActivity,
+        item: MediaLibraryItem,
+        newName: String,
+        onRenameFailed: (MediaLibraryItem) -> Unit,
+    ) {
+        val renameAction = when (item) {
+            is MediaWrapper -> Runnable {
+                activity.lifecycleScope.launchWhenStarted {
+                    if (!renameMedia(item, newName)) onRenameFailed.invoke(item)
+                }
+            }
+
+            is Playlist -> Runnable { renamePlaylist(item) }
+            else -> Runnable { onRenameFailed.invoke(item) }
+        }
+
+        if (item is MediaWrapper) {
+            if (Permissions.checkWritePermission(
+                    activity, item, renameAction
+                )
+            ) renameAction.run()
+        } else {
+            renameAction.run()
+        }
+    }
+
+    private suspend fun renameMedia(
+        mw: MediaLibraryItem,
+        newName: String,
+        failCB: Runnable? = null,
+    ) = withContext(Dispatchers.IO) {
         val foldersToReload = LinkedList<String>()
         val mediaPaths = LinkedList<String>()
+//        (mw as MediaWrapper).rename(newName)
         for (media in mw.tracks) {
             val path = media.uri.path
             val parentPath = FileUtils.getParent(path)
-            if (FileUtils.deleteFile(media.uri)) parentPath?.let {
-                if (media.id > 0L && !foldersToReload.contains(it)) {
-                    foldersToReload.add(it)
+            val oldFolder = File(path.toString())
+            val newFolder = File(parentPath, newName + ".${oldFolder.extension}")
+//            if (FileUtils.renameFile(media.uri, newName)) {
+            if (oldFolder.renameTo(newFolder)) {
+                parentPath?.let {
+                    if (media.id > 0L && !foldersToReload.contains(it)) {
+                        foldersToReload.add(it)
+                    }
+                    mediaPaths.add(media.location)
                 }
-                mediaPaths.add(media.location)
             }
         }
         val mediaLibrary = Medialibrary.getInstance()
@@ -160,8 +194,39 @@ object MediaUtils {
         } else true
     }
 
+
+    suspend fun deleteMedia(mw: MediaLibraryItem, failCB: Runnable? = null) =
+        withContext(Dispatchers.IO) {
+            val foldersToReload = LinkedList<String>()
+            val mediaPaths = LinkedList<String>()
+            for (media in mw.tracks) {
+                val path = media.uri.path
+                val parentPath = FileUtils.getParent(path)
+                if (FileUtils.deleteFile(media.uri)) parentPath?.let {
+                    if (media.id > 0L && !foldersToReload.contains(it)) {
+                        foldersToReload.add(it)
+                    }
+                    mediaPaths.add(media.location)
+                }
+            }
+            val mediaLibrary = Medialibrary.getInstance()
+            for (folder in foldersToReload) mediaLibrary.reload(folder)
+            if (mw is Album) {
+                foldersToReload.forEach {
+                    if (File(it).list().isNullOrEmpty()) {
+                        FileUtils.deleteFile(it)
+                    }
+                }
+            }
+            if (mediaPaths.isEmpty()) {
+                failCB?.run()
+                false
+            } else true
+        }
+
     suspend fun makePrivateMedia(mw: MediaLibraryItem, failCB: Runnable? = null, context: Context) =
         withContext(Dispatchers.IO) {
+            TODO("NOT YET ABLE TO MAKE PRIVATE!")
             val foldersToReload = LinkedList<String>()
             val mediaPaths = LinkedList<String>()
             for (media in mw.tracks) {
@@ -202,11 +267,14 @@ object MediaUtils {
             service.append(media)
             context.let {
                 if (it is Activity) {
-                    val text = context.resources.getQuantityString(R.plurals.tracks_appended, media.size, media.size)
+                    val text = context.resources.getQuantityString(
+                        R.plurals.tracks_appended, media.size, media.size
+                    )
                     if (it is AudioPlayerContainerActivity) {
                         Snackbar.make(it.appBarLayout, text, Snackbar.LENGTH_LONG).show()
-                    } else
-                    Snackbar.make(it.findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG).show()
+                    } else Snackbar.make(
+                        it.findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -216,7 +284,8 @@ object MediaUtils {
         if (media != null) appendMedia(context, arrayListOf(media))
     }
 
-    fun appendMedia(context: Context, array: Array<MediaWrapper>) = appendMedia(context, array.asList())
+    fun appendMedia(context: Context, array: Array<MediaWrapper>) =
+        appendMedia(context, array.asList())
 
     fun insertNext(context: Context?, media: Array<MediaWrapper>?) {
         if (media == null || context == null) return
@@ -224,8 +293,11 @@ object MediaUtils {
             service.insertNext(media)
             context.let {
                 if (it is Activity) {
-                    val text = context.resources.getQuantityString(R.plurals.tracks_inserted, media.size, media.size)
-                    Snackbar.make(it.findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG).show()
+                    val text = context.resources.getQuantityString(
+                        R.plurals.tracks_inserted, media.size, media.size
+                    )
+                    Snackbar.make(it.findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG)
+                        .show()
                 }
             }
         }
@@ -246,7 +318,8 @@ object MediaUtils {
         openMediaNoUi(ctx, media)
     }
 
-    fun openMediaNoUi(uri: Uri) = openMediaNoUi(AppContextProvider.appContext, MLServiceLocator.getAbstractMediaWrapper(uri))
+    fun openMediaNoUi(uri: Uri) =
+        openMediaNoUi(AppContextProvider.appContext, MLServiceLocator.getAbstractMediaWrapper(uri))
 
     fun openMediaNoUi(context: Context?, media: MediaWrapper?) {
         if (media == null || context == null) return
@@ -257,19 +330,34 @@ object MediaUtils {
         }
     }
 
-    fun playTracks(context: Context, item: MediaLibraryItem, position: Int, shuffle:Boolean = false) = context.scope.launch {
+    fun playTracks(
+        context: Context,
+        item: MediaLibraryItem,
+        position: Int,
+        shuffle: Boolean = false,
+    ) = context.scope.launch {
         openList(context, withContext(Dispatchers.IO) { item.tracks }.toList(), position, shuffle)
     }
 
-    fun playTracks(context: Context, provider: MedialibraryProvider<MediaWrapper>, position: Int, shuffle: Boolean = false) = context.scope.launch {
+    fun playTracks(
+        context: Context,
+        provider: MedialibraryProvider<MediaWrapper>,
+        position: Int,
+        shuffle: Boolean = false,
+    ) = context.scope.launch {
         provider.loadPagedList(context, {
-                provider.pagedList.value ?: listOf()
-            }, { list, _ ->
-           openList(context, list, position, shuffle)
+            provider.pagedList.value ?: listOf()
+        }, { list, _ ->
+            openList(context, list, position, shuffle)
         })
     }
 
-    fun playAlbums(context: Context?, provider: MedialibraryProvider<Album>, position: Int, shuffle: Boolean) = context?.scope?.launch {
+    fun playAlbums(
+        context: Context?,
+        provider: MedialibraryProvider<Album>,
+        position: Int,
+        shuffle: Boolean,
+    ) = context?.scope?.launch {
         provider.loadPagedList(context, {
             mutableListOf<MediaWrapper>().apply {
                 for (album in provider.getAll()) album.tracks?.let { addAll(it) }
@@ -282,51 +370,108 @@ object MediaUtils {
         })
     }
 
-    fun playAll(context: Activity?, provider: MedialibraryProvider<MediaWrapper>, position: Int, shuffle: Boolean) = context?.scope?.launch {
+    fun playAll(
+        context: Activity?,
+        provider: MedialibraryProvider<MediaWrapper>,
+        position: Int,
+        shuffle: Boolean,
+    ) = context?.scope?.launch {
         provider.loadPagedList(context, {
             provider.getAll().toList()
         }, { l, service ->
             l.takeIf { l.isNotEmpty() }?.let { list ->
-                service.load(list, if (shuffle) SecureRandom().nextInt(min(list.size, MEDIALIBRARY_PAGE_SIZE)) else position)
+                service.load(
+                    list, if (shuffle) SecureRandom().nextInt(
+                        min(
+                            list.size, MEDIALIBRARY_PAGE_SIZE
+                        )
+                    ) else position
+                )
                 if (shuffle && !service.isShuffling) service.shuffle()
             }
         })
     }
 
-    fun playAllTracks(context: Context?, provider: VideoGroupsProvider, mediaToPlay: MediaWrapper?, shuffle: Boolean) = context?.scope?.launch {
+    fun playAllTracks(
+        context: Context?,
+        provider: VideoGroupsProvider,
+        mediaToPlay: MediaWrapper?,
+        shuffle: Boolean,
+    ) = context?.scope?.launch {
         provider.loadPagedList(context, {
             provider.getAll().flatMap {
-                it.media(Medialibrary.SORT_DEFAULT, false, Settings.includeMissing, false, it.mediaCount(), 0).toList()
+                it.media(
+                    Medialibrary.SORT_DEFAULT,
+                    false,
+                    Settings.includeMissing,
+                    false,
+                    it.mediaCount(),
+                    0
+                ).toList()
             }
-        }, {l, service ->
+        }, { l, service ->
             l.takeIf { l.isNotEmpty() }?.let { list ->
-                service.load(list, if (shuffle) SecureRandom().nextInt(min(list.size, MEDIALIBRARY_PAGE_SIZE)) else list.indexOf(mediaToPlay))
+                service.load(
+                    list, if (shuffle) SecureRandom().nextInt(
+                        min(
+                            list.size, MEDIALIBRARY_PAGE_SIZE
+                        )
+                    ) else list.indexOf(mediaToPlay)
+                )
                 if (shuffle && !service.isShuffling) service.shuffle()
             }
         })
     }
 
-    fun playAllTracks(context: Context?, provider: FoldersProvider, position: Int, shuffle: Boolean) = context?.scope?.launch {
+    fun playAllTracks(
+        context: Context?,
+        provider: FoldersProvider,
+        position: Int,
+        shuffle: Boolean,
+    ) = context?.scope?.launch {
         SuspendDialogCallback(context) { service ->
             val count = withContext(Dispatchers.IO) { provider.getTotalCount() }
             fun play(list: List<MediaWrapper>) {
-                service.load(list, if (shuffle) SecureRandom().nextInt(min(count, MEDIALIBRARY_PAGE_SIZE)) else position)
+                service.load(
+                    list, if (shuffle) SecureRandom().nextInt(
+                        min(
+                            count, MEDIALIBRARY_PAGE_SIZE
+                        )
+                    ) else position
+                )
                 if (shuffle && !service.isShuffling) service.shuffle()
             }
             when (count) {
                 0 -> return@SuspendDialogCallback
                 in 1..MEDIALIBRARY_PAGE_SIZE -> play(withContext(Dispatchers.IO) {
                     provider.getAll().flatMap {
-                        it.media(provider.type, Medialibrary.SORT_DEFAULT, false, Settings.includeMissing, false, it.mediaCount(provider.type), 0).toList()
+                        it.media(
+                            provider.type,
+                            Medialibrary.SORT_DEFAULT,
+                            false,
+                            Settings.includeMissing,
+                            false,
+                            it.mediaCount(provider.type),
+                            0
+                        ).toList()
                     }
                 })
+
                 else -> {
                     var index = 0
                     while (index < count) {
                         val pageCount = min(MEDIALIBRARY_PAGE_SIZE, count - index)
                         val list = withContext(Dispatchers.IO) {
                             provider.getPage(pageCount, index).flatMap {
-                                it.media(provider.type, Medialibrary.SORT_DEFAULT, false, Settings.includeMissing, false, it.mediaCount(provider.type), 0).toList()
+                                it.media(
+                                    provider.type,
+                                    Medialibrary.SORT_DEFAULT,
+                                    false,
+                                    Settings.includeMissing,
+                                    false,
+                                    it.mediaCount(provider.type),
+                                    0
+                                ).toList()
                             }
                         }
                         if (index == 0) play(list)
@@ -339,7 +484,12 @@ object MediaUtils {
     }
 
     @JvmOverloads
-    fun openList(context: Context?, list: List<MediaWrapper>, position: Int, shuffle: Boolean = false) {
+    fun openList(
+        context: Context?,
+        list: List<MediaWrapper>,
+        position: Int,
+        shuffle: Boolean = false,
+    ) {
         if (list.isEmpty() || context == null) return
         SuspendDialogCallback(context) { service ->
             service.load(list, position)
@@ -348,11 +498,23 @@ object MediaUtils {
     }
 
     @JvmOverloads
-    fun openPlaylist(context: Context?, playlistId: Long, position: Int = 0, shuffle: Boolean = false) {
+    fun openPlaylist(
+        context: Context?,
+        playlistId: Long,
+        position: Int = 0,
+        shuffle: Boolean = false,
+    ) {
         if (playlistId == -1L || context == null) return
         SuspendDialogCallback(context) { service ->
-           val playlist =  context.getFromMl { getPlaylist(playlistId, Settings.includeMissing, false) }
-            service.load(playlist.getPagedTracks(playlist.getRealTracksCount(Settings.includeMissing, false), 0, Settings.includeMissing, false), position)
+            val playlist =
+                context.getFromMl { getPlaylist(playlistId, Settings.includeMissing, false) }
+            service.load(
+                playlist.getPagedTracks(
+                    playlist.getRealTracksCount(
+                        Settings.includeMissing, false
+                    ), 0, Settings.includeMissing, false
+                ), position
+            )
             if (shuffle && !service.isShuffling) service.shuffle()
         }
     }
@@ -382,8 +544,8 @@ object MediaUtils {
 
     fun getMediaReferenceArtist(ctx: Context, media: MediaWrapper?) = getMediaArtist(ctx, media)
 
-    fun getMediaAlbumArtist(ctx: Context, media: MediaWrapper?) = media?.albumArtist
-            ?: getMediaString(ctx, R.string.unknown_artist)
+    fun getMediaAlbumArtist(ctx: Context, media: MediaWrapper?) =
+        media?.albumArtist ?: getMediaString(ctx, R.string.unknown_artist)
 
     fun getMediaAlbum(ctx: Context, media: MediaWrapper?): String = when {
         media == null -> getMediaString(ctx, R.string.unknown_album)
@@ -393,8 +555,8 @@ object MediaUtils {
         else -> getMediaString(ctx, R.string.unknown_album)
     }
 
-    fun getMediaGenre(ctx: Context, media: MediaWrapper?) = media?.genre
-            ?: getMediaString(ctx, R.string.unknown_genre)
+    fun getMediaGenre(ctx: Context, media: MediaWrapper?) =
+        media?.genre ?: getMediaString(ctx, R.string.unknown_genre)
 
     fun getMediaSubtitle(media: MediaWrapper): String {
         val prefix = when {
@@ -403,7 +565,10 @@ object MediaUtils {
             else -> Tools.millisToString(media.length)
         }
         val suffix = when {
-            media.type == MediaWrapper.TYPE_VIDEO -> generateResolutionClass(media.width, media.height)
+            media.type == MediaWrapper.TYPE_VIDEO -> generateResolutionClass(
+                media.width, media.height
+            )
+
             media.length > 0L -> media.artist
             isSchemeStreaming(media.uri.scheme) -> media.uri.toString()
             else -> media.artist
@@ -411,22 +576,30 @@ object MediaUtils {
         return TextUtils.separatedString(prefix, suffix)
     }
 
-    fun getDisplaySubtitle(ctx: Context, media: MediaWrapper, mediaPosition: Int, mediaSize: Int): String {
+    fun getDisplaySubtitle(
+        ctx: Context,
+        media: MediaWrapper,
+        mediaPosition: Int,
+        mediaSize: Int,
+    ): String {
         val album = getMediaAlbum(ctx, media)
         val artist = getMediaArtist(ctx, media)
         val isAlbumUnknown = album == getMediaString(ctx, R.string.unknown_album)
         val isArtistUnknown = artist == getMediaString(ctx, R.string.unknown_artist)
         val prefix = if (mediaSize > 1) "${mediaPosition + 1} / $mediaSize" else null
-        val suffix = if (!isArtistUnknown && !isAlbumUnknown) TextUtils.separatedString('-', artist.markBidi(), album.markBidi()) else null
+        val suffix = if (!isArtistUnknown && !isAlbumUnknown) TextUtils.separatedString(
+            '-', artist.markBidi(), album.markBidi()
+        ) else null
         return TextUtils.separatedString(prefix, suffix)
     }
 
-    fun getMediaTitle(mediaWrapper: MediaWrapper) = mediaWrapper.title
-            ?: FileUtils.getFileNameFromPath(mediaWrapper.location)
+    fun getMediaTitle(mediaWrapper: MediaWrapper) =
+        mediaWrapper.title ?: FileUtils.getFileNameFromPath(mediaWrapper.location)
 
     fun getContentMediaUri(data: Uri) = try {
-        AppContextProvider.appContext.contentResolver.query(data,
-                arrayOf(MediaStore.Video.Media.DATA), null, null, null)?.use {
+        AppContextProvider.appContext.contentResolver.query(
+            data, arrayOf(MediaStore.Video.Media.DATA), null, null, null
+        )?.use {
             val columnIndex = it.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
             if (it.moveToFirst()) AndroidUtil.PathToUri(it.getString(columnIndex)) ?: data else data
         }
@@ -439,13 +612,12 @@ object MediaUtils {
     }
 
     private fun getMediaString(ctx: Context?, id: Int): String {
-        return ctx?.resources?.getString(id)
-                ?: when (id) {
-                    R.string.unknown_artist -> "Unknown Artist"
-                    R.string.unknown_album -> "Unknown Album"
-                    R.string.unknown_genre -> "Unknown Genre"
-                    else -> ""
-                }
+        return ctx?.resources?.getString(id) ?: when (id) {
+            R.string.unknown_artist -> "Unknown Artist"
+            R.string.unknown_album -> "Unknown Album"
+            R.string.unknown_genre -> "Unknown Genre"
+            else -> ""
+        }
     }
 
     @Suppress("LeakingThis")
@@ -461,10 +633,14 @@ object MediaUtils {
         abstract fun onServiceReady(service: PlaybackService)
     }
 
-    class SuspendDialogCallback(context: Context, private val task: suspend (service: PlaybackService) -> Unit) {
+    class SuspendDialogCallback(
+        context: Context,
+        private val task: suspend (service: PlaybackService) -> Unit,
+    ) {
         private lateinit var dialog: ProgressDialog
         var job: Job = Job()
         val scope = context.scope
+
         @OptIn(ObsoleteCoroutinesApi::class)
         val actor = scope.actor<Action>(capacity = Channel.UNLIMITED) {
             for (action in channel) when (action) {
@@ -478,6 +654,7 @@ object MediaUtils {
                         }
                     }
                 }
+
                 Disconnect -> dismiss()
                 is Task -> {
                     action.task.invoke(action.service)
@@ -491,9 +668,11 @@ object MediaUtils {
             job = scope.launch {
                 delay(300)
                 dialog = ProgressDialog.show(
-                        context,
-                        "${context.applicationContext.getString(R.string.loading)}…",
-                        context.applicationContext.getString(R.string.please_wait), true)
+                    context,
+                    "${context.applicationContext.getString(R.string.loading)}…",
+                    context.applicationContext.getString(R.string.please_wait),
+                    true
+                )
                 dialog.setCancelable(true)
                 dialog.setOnCancelListener { actor.trySend(Disconnect) }
             }
@@ -504,7 +683,8 @@ object MediaUtils {
             try {
                 if (this::dialog.isInitialized && dialog.isShowing) dialog.dismiss()
                 actor.close()
-            } catch (ignored: IllegalArgumentException) {}
+            } catch (ignored: IllegalArgumentException) {
+            }
         }
     }
 
@@ -520,9 +700,13 @@ object MediaUtils {
     } catch (ignored: IllegalArgumentException) {
     } catch (ignored: NullPointerException) {
     } catch (ignored: IllegalStateException) {
-    } catch (ignored: SecurityException) {}
+    } catch (ignored: SecurityException) {
+    }
 
     fun deletePlaylist(playlist: Playlist) = AppScope.launch(Dispatchers.IO) { playlist.delete() }
+    fun renamePlaylist(playlist: Playlist) = AppScope.launch(Dispatchers.IO) {
+        TODO("playlist rename Not yet implemented")
+    }
 
     fun openMediaNoUiFromTvContent(context: Context, data: Uri?) = AppScope.launch {
         val id = data?.lastPathSegment ?: return@launch
@@ -531,6 +715,7 @@ object MediaUtils {
                 val intent = Intent(ACTION_OPEN_CONTENT).putExtra(EXTRA_CONTENT_ID, id)
                 context.localBroadcastManager.sendBroadcast(intent)
             }
+
             else -> { //Media from medialib
                 val mw = context.getFromMl {
                     val longId = id.substringAfter("_").toLong()
@@ -567,7 +752,7 @@ object MediaUtils {
         }
     }
 
-    suspend fun useAsSoundFont(context: Context, uri:Uri) {
+    suspend fun useAsSoundFont(context: Context, uri: Uri) {
         withContext(Dispatchers.IO) {
             FileUtils.copyFile(File(uri.path), VLCOptions.getSoundFontFile(context))
         }
@@ -575,7 +760,13 @@ object MediaUtils {
 }
 
 @WorkerThread
-fun Folder.getAll(type: Int = Folder.TYPE_FOLDER_VIDEO, sort: Int = Medialibrary.SORT_DEFAULT, desc: Boolean = false, includeMissing:Boolean = true, onlyFavorites:Boolean = false): List<MediaWrapper> {
+fun Folder.getAll(
+    type: Int = Folder.TYPE_FOLDER_VIDEO,
+    sort: Int = Medialibrary.SORT_DEFAULT,
+    desc: Boolean = false,
+    includeMissing: Boolean = true,
+    onlyFavorites: Boolean = false,
+): List<MediaWrapper> {
     var index = 0
     val count = mediaCount(type)
     val all = mutableListOf<MediaWrapper>()
@@ -589,7 +780,12 @@ fun Folder.getAll(type: Int = Folder.TYPE_FOLDER_VIDEO, sort: Int = Medialibrary
 }
 
 @WorkerThread
-fun VideoGroup.getAll(sort: Int = Medialibrary.SORT_DEFAULT, desc: Boolean = false,  includeMissing:Boolean = true, onlyFavorites:Boolean = false): List<MediaWrapper> {
+fun VideoGroup.getAll(
+    sort: Int = Medialibrary.SORT_DEFAULT,
+    desc: Boolean = false,
+    includeMissing: Boolean = true,
+    onlyFavorites: Boolean = false,
+): List<MediaWrapper> {
     var index = 0
     val count = mediaCount()
     val all = mutableListOf<MediaWrapper>()
@@ -603,7 +799,12 @@ fun VideoGroup.getAll(sort: Int = Medialibrary.SORT_DEFAULT, desc: Boolean = fal
 }
 
 @WorkerThread
-fun Album.getAll(sort: Int = Medialibrary.SORT_DEFAULT, desc: Boolean = false,  includeMissing:Boolean = true, onlyFavorites:Boolean = false): List<MediaWrapper> {
+fun Album.getAll(
+    sort: Int = Medialibrary.SORT_DEFAULT,
+    desc: Boolean = false,
+    includeMissing: Boolean = true,
+    onlyFavorites: Boolean = false,
+): List<MediaWrapper> {
     var index = 0
     val count = realTracksCount
     val all = mutableListOf<MediaWrapper>()
@@ -617,7 +818,12 @@ fun Album.getAll(sort: Int = Medialibrary.SORT_DEFAULT, desc: Boolean = false,  
 }
 
 @WorkerThread
-fun Artist.getAll(sort: Int = Medialibrary.SORT_DEFAULT, desc: Boolean = false,  includeMissing:Boolean = true, onlyFavorites:Boolean = false): List<MediaWrapper> {
+fun Artist.getAll(
+    sort: Int = Medialibrary.SORT_DEFAULT,
+    desc: Boolean = false,
+    includeMissing: Boolean = true,
+    onlyFavorites: Boolean = false,
+): List<MediaWrapper> {
     var index = 0
     val count = tracksCount
     val all = mutableListOf<MediaWrapper>()
@@ -630,7 +836,11 @@ fun Artist.getAll(sort: Int = Medialibrary.SORT_DEFAULT, desc: Boolean = false, 
     return all
 }
 
-fun List<MediaLibraryItem>.getAll(sort: Int = Medialibrary.SORT_DEFAULT, desc: Boolean = false, onlyFavorites:Boolean = false) = flatMap {
+fun List<MediaLibraryItem>.getAll(
+    sort: Int = Medialibrary.SORT_DEFAULT,
+    desc: Boolean = false,
+    onlyFavorites: Boolean = false,
+) = flatMap {
     when (it) {
         is VideoGroup -> it.getAll(sort, desc, onlyFavorites)
         is MediaWrapper -> listOf(it)
@@ -638,7 +848,12 @@ fun List<MediaLibraryItem>.getAll(sort: Int = Medialibrary.SORT_DEFAULT, desc: B
     }
 }
 
-fun List<Folder>.getAll(type: Int = Folder.TYPE_FOLDER_VIDEO, sort: Int = Medialibrary.SORT_DEFAULT, desc: Boolean = false, onlyFavorites:Boolean = false) = flatMap {
+fun List<Folder>.getAll(
+    type: Int = Folder.TYPE_FOLDER_VIDEO,
+    sort: Int = Medialibrary.SORT_DEFAULT,
+    desc: Boolean = false,
+    onlyFavorites: Boolean = false,
+) = flatMap {
     it.getAll(type, sort, desc, onlyFavorites)
 }
 
@@ -648,13 +863,13 @@ private fun Array<MediaLibraryItem>.toList() = flatMap {
     } else listOf(it as MediaWrapper)
 }
 
-fun MediaContentResolver.canHandle(id: String) : Boolean {
+fun MediaContentResolver.canHandle(id: String): Boolean {
     for (i in 0 until size()) if (id.startsWith(keyAt(i))) return true
     return false
 }
 
-suspend fun MediaContentResolver.getList(context: Context, id: String) : ResumableList {
-    for ( i in 0 until size()) if (id.startsWith(keyAt(i))) return valueAt(i).getList(context, id)
+suspend fun MediaContentResolver.getList(context: Context, id: String): ResumableList {
+    for (i in 0 until size()) if (id.startsWith(keyAt(i))) return valueAt(i).getList(context, id)
     return null
 }
 
@@ -664,4 +879,7 @@ private val Context.scope: CoroutineScope
 open class Action
 private object Connect : Action()
 private object Disconnect : Action()
-private class Task(val service: PlaybackService, val task: suspend (service: PlaybackService) -> Unit) : Action()
+private class Task(
+    val service: PlaybackService,
+    val task: suspend (service: PlaybackService) -> Unit,
+) : Action()

@@ -7,13 +7,49 @@
         android:background="?attr/background_default"
         tools:context="com.video.offline.videoplayer.gui.onboarding.OnboardingActivity">
 
+    <LinearLayout
+        android:layout_marginHorizontal="@dimen/half_default_margin"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/urbanist_regular"
+            android:gravity="start|center_vertical"
+            android:src="@drawable/ic_close_up"
+            android:text="Languages"
+            android:textColor="?attr/font_default"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/next"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/half_default_margin"
+            android:background="@drawable/lb_selectable_item_rounded_rect"
+            android:scaleType="center"
+            android:src="@drawable/ic_check_large"
+            android:tint="?attr/colorControlNormal"
+            app:tint="?attr/colorControlNormal" />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countries_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

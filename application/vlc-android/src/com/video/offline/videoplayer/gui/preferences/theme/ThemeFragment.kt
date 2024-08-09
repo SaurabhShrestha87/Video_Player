@@ -57,6 +57,16 @@ class ThemeFragment : BaseFragment() {
         binding.recyclerView.setAdapter(adapter)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        menu.findItem(R.id.ml_menu_select).isVisible = false
+        menu.findItem(R.id.ml_menu_network_stream).isVisible = false
+        menu.findItem(R.id.ml_menu_theme).isVisible = false
+        menu.findItem(R.id.ml_menu_refresh).isVisible = false
+        menu.findItem(R.id.ml_menu_equalizer).isVisible = false
+        menu.findItem(R.id.ml_menu_settings).isVisible = false
+    }
+
     companion object {
         fun newInstance(): ThemeFragment {
             return ThemeFragment()

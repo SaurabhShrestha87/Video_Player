@@ -39,6 +39,7 @@
     </plurals>
 
     <string name="play">Play</string>
+    <string name="queue">queue</string>
     <string name="playback">Playback</string>
     <string name="playback_controls">Playback controls</string>
     <string name="medialibrary_scan">Media library scan</string>
@@ -63,6 +64,7 @@
     <string name="set_song">Set as ringtone</string>
     <string name="set_song_question">Set \'%1$s\' as ringtone?</string>
     <string name="info">Information</string>
+    <string  name="properties">Properties</string>
     <string name="confirm_delete">Delete the file \'%1$s\'?</string>
     <string name="confirm_delete_message">This is permanent and cannot be undone.</string>
     <string name="confirm_delete_album">Delete the album \'%1$s\'?</string>
@@ -72,6 +74,12 @@
     <string name="confirm_delete_files">Delete these %1$s files?</string>
     <string name="confirm_delete_folders_and_files">Delete these %1$s folders and %2$s files?</string>
     <string name="confirm_delete_playlist">Delete playlist \'%1$s\'?</string>
+
+    <string name="confirm_private_album">Lock the album \'%1$s\'?</string>
+    <string name="confirm_private_folders">Lock these %1$s folders and all their contents?</string>
+    <string name="confirm_private_files">Lock these %1$s files?</string>
+    <string name="confirm_private_folders_and_files">Lock these %1$s folders and %2$s files?</string>
+
     <string name="ringtone_set">The file \'%1$s\' was set as the ringtone.</string>
     <string name="ringtone_error">An error occurred while setting the ringtone.</string>
     <string name="pause">Pause</string>
@@ -119,7 +127,7 @@
     </plurals>
 
     <string name="internal_memory">Internal memory</string>
-    <string name="audio">Audio</string>
+    <string name="audio">Music</string>
     <string name="video">Video</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="equalizer">Equalizer</string>
@@ -265,7 +273,7 @@
     <string name="seek_tap">+/- 10 sec.</string>
     <string name="seek_tap_description">Double tap to go 10 sec forward or backward</string>
     <string name="close">Close</string>
-
+    <string name="close_playback">Close Playback</string>
     <string name="playlist_tips">Playlist tips</string>
     <string name="remove_song">Remove song</string>
     <string name="remove_playlist_item">%1$s has been dismissed from playlist</string>
@@ -730,6 +738,7 @@
     <string name="browser_quick_access">Quick Access</string>
     <string name="browser_storages">Storages</string>
     <string name="msg_delete_failed">Failed to delete media %1$s</string>
+    <string name="msg_rename_failed">Failed to rename media %1$s</string>
     <string name="renderer_list_title">Displays</string>
     <string name="sdcard_permission_dialog_title">You have to grant Video Player write access to your SD Card</string>
     <string name="sdcard_permission_dialog_message">Video Player cannot delete this file without write access permission.\nPlease go to your SD Card and click on \"Select\".\nYou may have to click on \"Show SD card\" first in the top-right menu</string>
@@ -793,7 +802,7 @@
     <string name="removed_from_playlist_anonymous">Item(s) removed from playlist</string>
     <string name="welcome_title">Welcome to Video Player!</string>
     <string name="welcome_subtitle">The free and fast multimedia player</string>
-    <string name="permission_media">Video Player needs your permission to access media on your device</string>
+    <string name="permission_media">Please grant Video player media files access to play Videos.</string>
     <string name="medialibrary_scan_explanation">Video Player can automatically scan your device to organize your media collection.</string>
     <string name="onboarding_theme_title">Make yourself at home</string>
     <string name="done">Done</string>
@@ -868,6 +877,7 @@
     <string name="url_copied_to_clipboard">Url copied to clipboard</string>
     <string name="share">Share</string>
     <string name="invalid_file">Invalid file. Cannot be shared.</string>
+    <string name="invalid_file_private">Invalid file. Files other than Videos/Gif/Image cannot be made Private.</string>
     <string name="share_file">Share %s</string>
     <string name="share_message">Here is %s</string>
     <string name="find_metadata">Find metadata</string>

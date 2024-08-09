@@ -70,15 +70,28 @@ enum class ContextOption : Flag {
         }
 
         fun createCtxVideoFlags() = createBaseFlags().apply {
-            addAll(CTX_DELETE, CTX_RENAME, CTX_PRIVATE, CTX_DOWNLOAD_SUBTITLES, CTX_INFORMATION)
+            addAll(CTX_PRIVATE, CTX_DELETE, CTX_RENAME, CTX_DOWNLOAD_SUBTITLES, CTX_INFORMATION)
             addAll(CTX_PLAY, CTX_PLAY_ALL, CTX_PLAY_AS_AUDIO, CTX_PLAY_NEXT)
-            addAll(CTX_SET_RINGTONE, CTX_SHARE)
+            addAll(
+//                CTX_SET_RINGTONE,
+                CTX_SHARE
+            )
             removeAll(CTX_GROUP_SIMILAR, CTX_REMOVE_GROUP, CTX_ADD_GROUP, CTX_RENAME_GROUP)
         }
 
         fun createCtxTrackFlags() = createBaseFlags().apply {
-            addAll(CTX_DELETE, CTX_PRIVATE, CTX_GO_TO_FOLDER, CTX_INFORMATION, CTX_PLAY_ALL, CTX_PLAY_NEXT)
-            addAll(CTX_SET_RINGTONE, CTX_SHARE)
+            addAll(
+                CTX_DELETE,
+                CTX_RENAME,
+                CTX_GO_TO_FOLDER,
+                CTX_INFORMATION,
+                CTX_PLAY_ALL,
+                CTX_PLAY_NEXT
+            )
+            addAll(
+//                CTX_SET_RINGTONE,
+                CTX_SHARE
+            )
         }
 
         fun createCtxAudioFlags() = createBaseFlags().apply {
@@ -90,17 +103,36 @@ enum class ContextOption : Flag {
         }
 
         fun createCtxPlaylistItemFlags() = createBaseFlags().apply {
-            addAll(CTX_DELETE, CTX_INFORMATION, CTX_PLAY_NEXT, CTX_SET_RINGTONE)
+            addAll(CTX_DELETE, CTX_INFORMATION, CTX_PLAY_NEXT,
+//                CTX_SET_RINGTONE
+            )
         }
 
         fun createCtxVideoGroupFlags() = createBaseFlags().apply {
             remove(CTX_ADD_SHORTCUT)
-            addAll(CTX_ADD_GROUP, CTX_MARK_ALL_AS_PLAYED, CTX_MARK_ALL_AS_UNPLAYED, CTX_PLAY_ALL, CTX_RENAME_GROUP, CTX_UNGROUP)
+            addAll(
+                CTX_ADD_GROUP,
+                CTX_MARK_ALL_AS_PLAYED,
+                CTX_MARK_ALL_AS_UNPLAYED,
+                CTX_PLAY_ALL,
+                CTX_RENAME_GROUP,
+                CTX_UNGROUP
+            )
         }
 
         fun createCtxFolderFlags() = createBaseFlags().apply {
-            removeAll(CTX_ADD_SHORTCUT, CTX_FAV_ADD)
-            addAll(CTX_BAN_FOLDER, CTX_SHARE, CTX_PRIVATE, CTX_PLAY_AS_AUDIO, CTX_RENAME, CTX_DELETE, CTX_MARK_ALL_AS_PLAYED, CTX_MARK_ALL_AS_UNPLAYED, CTX_PLAY_ALL)
+            removeAll(CTX_ADD_SHORTCUT)
+            addAll(
+                CTX_PRIVATE,
+                CTX_BAN_FOLDER,
+                CTX_SHARE,
+                CTX_PLAY_AS_AUDIO,
+                CTX_RENAME,
+                CTX_DELETE,
+                CTX_MARK_ALL_AS_PLAYED,
+                CTX_MARK_ALL_AS_UNPLAYED,
+                CTX_PLAY_ALL
+            )
         }
     }
 }

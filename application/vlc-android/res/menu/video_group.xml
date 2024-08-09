@@ -13,6 +13,7 @@
         android:title="@string/sortby"
         android:icon="@drawable/ic_sort"
         android:id="@+id/ml_menu_sortby"
+        android:visible="false"
         vlc:showAsAction="ifRoom">
         <menu>
             <item

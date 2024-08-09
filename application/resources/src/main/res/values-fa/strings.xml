@@ -677,7 +677,7 @@
     <string name="removed_from_playlist_anonymous">(موارد) مورد نظر از لیست پخش حذف شد</string>
     <string name="welcome_title">به پخش کننده VLC خوش آمدید</string>
     <string name="welcome_subtitle">پخش کننده چند رسانه ای رایگان و متن باز</string>
-    <string name="permission_media">پخش کننده VLC به مجوز دسترسی به رسانه در گوشی شما نیاز دارد</string>
+    <string name="permission_media">پخش کننده Video Player به مجوز دسترسی به رسانه در گوشی شما نیاز دارد</string>
     <string name="medialibrary_scan_explanation">پخش کننده VLC می تواند به طور خودکار دستگاه شما را برای سازماندهی مجموعه رسانه های شما بررسی کند</string>
     <string name="onboarding_theme_title">راحت باش انگار که خونه خودته</string>
     <string name="done">انجام شد</string>

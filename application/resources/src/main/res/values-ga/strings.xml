@@ -495,7 +495,7 @@
     <string name="removed_from_playlist_anonymous">Mír(eanna) a baineadh ón seinmliosta</string>
     <string name="welcome_title">Fáilte go VLC!</string>
     <string name="welcome_subtitle">An seinnteoir meán saor in aisce agus le foinse oscailte</string>
-    <string name="permission_media">Tá cead uait ag teastáil ó VLC chun meáin ar do ghléas a rochtain</string>
+    <string name="permission_media">Tá cead uait ag teastáil ó Video Player chun meáin ar do ghléas a rochtain</string>
     <string name="medialibrary_scan_explanation">Is féidir le VLC do ghléas a scrúdú go huathoibríoch chun do bhailiúchán meán a eagrú.</string>
     <string name="done">Déanta</string>
     <string name="onboarding_all_set">Tá VLC faoi réir!</string>
