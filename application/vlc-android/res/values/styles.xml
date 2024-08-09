@@ -760,7 +760,12 @@
     </style>
 
     <style name="ToolbarTitleText" parent="@style/TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textColor">?attr/colorControlNormal</item>
+        <item name="android:textColor">?attr/font_default</item>
+    </style>
+
+    <style name="ToolbarContentTitleText" parent="@style/TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">?attr/font_default</item>
+        <item name="android:fontFamily">@font/urbanist_bold</item>
     </style>
 
     <style name="VLCCardView" parent="@style/Widget.MaterialComponents.CardView">

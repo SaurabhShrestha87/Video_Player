@@ -3,6 +3,14 @@
     xmlns:vlc="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/cleaner_check_all"
+        android:title=""
+        android:icon="@drawable/circle_uncheck"
+        android:checked="true"
+        android:visible="false"
+        vlc:showAsAction="always"/>
+
+    <item
         android:id="@+id/ml_menu_select"
         android:icon="@drawable/ic_select"
         android:orderInCategory="0"

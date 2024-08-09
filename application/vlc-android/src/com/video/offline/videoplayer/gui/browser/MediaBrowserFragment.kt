@@ -200,7 +200,7 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
         }
     }
 
-    protected open fun cleanItems(items: List<MediaLibraryItem>) {
+    protected open fun cleanItems(items: List<MediaLibraryItem>, function: () -> Unit) {
         if (items.size == 1) {
             cleanItem(items[0])
         } else {
@@ -208,6 +208,7 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
                 cleanItem(item)
             }
         }
+        function.invoke()
         showCleanedBottomSheet(items)
     }
 
@@ -386,11 +387,9 @@ abstract class MediaBrowserFragment<T : SortableModel> : BaseFragment(), Filtera
 
     fun restoreMultiSelectHelper() {
         getMultiHelper()?.let {
-
             if (savedSelection.size > 0) {
                 var hasOneSelected = false
                 for (i in 0 until savedSelection.size) {
-
                     it.selectionMap.add(savedSelection[i])
                     hasOneSelected = savedSelection.isNotEmpty()
                 }

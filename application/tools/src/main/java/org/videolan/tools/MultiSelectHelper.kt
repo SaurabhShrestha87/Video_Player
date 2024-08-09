@@ -24,6 +24,46 @@ class MultiSelectHelper<T>(val adapter: MultiSelectAdapter<T>, private val paylo
         adapter.notifyItemRangeChanged(0, itemCount, payloadvalue)
     }
 
+    fun toggleSelectionCleaner(
+        position: Int,
+        forceShift: Boolean = false,
+        forceSelection: Boolean,
+    ) {
+        if ((KeyHelper.isShiftPressed || forceShift) && selectionMap.size != 0) {
+            val positions = HashSet<Int>()
+            for (i in 0 until selectionMap.size) {
+                positions.add(selectionMap[i])
+            }
+            val firstPosition = selectionMap[0]
+            selectionMap.clear()
+
+            for (i in min(firstPosition, position)..max(firstPosition, position)) {
+                selectionMap.add(i)
+                positions.add(i)
+            }
+
+            positions.forEach {
+                adapter.notifyItemChanged(it, payloadvalue)
+            }
+            return
+        }
+
+        if (isSelected(position)) {
+            if (forceSelection) {
+                return
+            }
+            selectionMap.remove(position)
+            adapter.notifyItemChanged(position, payloadvalue)
+        } else {
+            if (!forceSelection) {
+                return
+            }
+            selectionMap.add(position)
+            adapter.notifyItemChanged(position, payloadvalue)
+        }
+
+    }
+
     fun toggleSelection(position: Int, forceShift: Boolean = false) {
         if ((KeyHelper.isShiftPressed || forceShift) && selectionMap.size != 0) {
             val positions = HashSet<Int>()

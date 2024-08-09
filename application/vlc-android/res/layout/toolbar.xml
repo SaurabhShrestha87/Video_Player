@@ -16,12 +16,12 @@
         android:keyboardNavigationCluster="true"
         app:layout_scrollFlags="scroll|enterAlways|snap"
         app:navigationContentDescription="@string/abc_action_bar_up_description"
-        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:navigationIcon="@drawable/nav_back"
         app:popupTheme="?attr/toolbar_popup_style"
         app:theme="@style/Toolbar.VLC"
-        app:titleMarginStart="@dimen/half_default_margin"
-        app:titleTextColor="?attr/colorPrimary"
-        tools:targetApi="o"
+        app:title="0 Selected"
+        app:navigationIconTint="?attr/font_default"
+        app:titleTextAppearance="@style/ToolbarContentTitleText"
         app:elevation="0dp"
         android:elevation="0dp">
 
@@ -32,6 +32,7 @@
             android:layout_height="32dp"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_incognito" />
+<!--        Un-Used Ends -->
 
         <TextView
             android:id="@+id/toolbar_vlc_title"
@@ -40,6 +41,7 @@
             android:importantForAccessibility="no"
             android:text="@string/app_name"
             android:textStyle="bold"
+            android:fontFamily="@font/urbanist_bold"
             android:textAppearance="@style/ToolbarTitleText" />
 
 
