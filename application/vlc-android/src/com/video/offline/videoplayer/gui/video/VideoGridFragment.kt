@@ -1081,7 +1081,11 @@ class VideoGridFragment : MediaBrowserFragment<VideosViewModel>(),
                         media
                     )
                 }
-
+                CTX_SHARE -> lifecycleScope.launch {
+                    (requireActivity() as AppCompatActivity).share(
+                        media.getAll()
+                    )
+                }
 //                CTX_FAV_ADD, CTX_FAV_REMOVE -> lifecycleScope.launch(Dispatchers.IO) {
 //                    media.isFavorite = option == CTX_FAV_ADD
 //                }

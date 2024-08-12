@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.*
 import android.view.ViewGroup.LayoutParams
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
@@ -24,7 +23,7 @@ import com.google.android.material.slider.Slider
 import com.video.offline.videoplayer.BuildConfig
 import com.video.offline.videoplayer.PlaybackService
 import com.video.offline.videoplayer.R
-import com.video.offline.videoplayer.databinding.EqualizerBinding
+import com.video.offline.videoplayer.databinding.EqualizerNewBinding
 import com.video.offline.videoplayer.gui.helpers.UiTools
 import com.video.offline.videoplayer.gui.view.EqualizerBar
 import com.video.offline.videoplayer.interfaces.OnEqualizerBarChangeListener
@@ -42,7 +41,7 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
-class EqualizerFragment : BottomSheetDialogFragment(), Slider.OnChangeListener {
+class EqualizerNewFragment : BottomSheetDialogFragment(), Slider.OnChangeListener {
 
     private lateinit var equalizer: MediaPlayer.Equalizer
     private var customCount = 0
@@ -53,7 +52,7 @@ class EqualizerFragment : BottomSheetDialogFragment(), Slider.OnChangeListener {
     private var revertPos = 0
     private var savePos = 0
     private var updateAlreadyHandled = false
-    private lateinit var binding: EqualizerBinding
+    private lateinit var binding: EqualizerNewBinding
     private val state = EqualizerState()
     private val newPresetName = AppContextProvider.appResources.getString(R.string.equalizer_new_preset_name)
     private var bandCount = -1
@@ -74,7 +73,7 @@ class EqualizerFragment : BottomSheetDialogFragment(), Slider.OnChangeListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding = DataBindingUtil.inflate(inflater, R.layout.equalizer, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.equalizer_new, container, false)
         binding.state = state
         customCount = 0
         return binding.root
@@ -152,7 +151,7 @@ class EqualizerFragment : BottomSheetDialogFragment(), Slider.OnChangeListener {
 
         // preamp
         binding.equalizerPreamp.value = equalizer.preAmp.roundToInt().toFloat()
-        binding.equalizerPreamp.addOnChangeListener(this@EqualizerFragment)
+        binding.equalizerPreamp.addOnChangeListener(this@EqualizerNewFragment)
 
         eqBandsViews.clear()
         binding.equalizerBands.removeAllViews()
@@ -531,8 +530,8 @@ class EqualizerFragment : BottomSheetDialogFragment(), Slider.OnChangeListener {
                 return presets.toTypedArray()
             }
 
-        fun newInstance(): EqualizerFragment {
-            return EqualizerFragment()
+        fun newInstance(): EqualizerNewFragment {
+            return EqualizerNewFragment()
         }
     }
 
