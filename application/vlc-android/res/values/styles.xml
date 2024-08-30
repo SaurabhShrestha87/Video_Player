@@ -819,4 +819,15 @@
     <style name="RoundedCornersDialog" parent="@style/Theme.MaterialComponents.Dialog">
         <item name="dialogCornerRadius">16dp</item>
     </style>
+
+    <style name="Widget.MyApp.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.MyApp.Chip.Choice</item>
+    </style>
+    <!-- Disabling elevation overlays because when chip's default background/surface
+     composite are combined with elevation overlays in a highly elevated dialog,
+     the resulting color becomes too light and causes contrast
+     issues. -->
+    <style name="ThemeOverlay.MyApp.Chip.Choice" parent="">
+        <item name="elevationOverlayEnabled">false</item>
+    </style>
 </resources>

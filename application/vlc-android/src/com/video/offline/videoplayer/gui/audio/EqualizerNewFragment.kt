@@ -59,9 +59,7 @@ class EqualizerNewFragment : BottomSheetDialogFragment(), Slider.OnChangeListene
 
     private val eqBandsViews = ArrayList<EqualizerBar>()
 
-    var onDismissListener: DialogInterface.OnDismissListener? = null
-
-    fun onPresetSelected(pos: Int) {
+    private fun onPresetSelected(pos: Int) {
         if (!binding.equalizerButton.isChecked && !updateAlreadyHandled)
             binding.equalizerButton.isChecked = true
 
@@ -180,15 +178,11 @@ class EqualizerNewFragment : BottomSheetDialogFragment(), Slider.OnChangeListene
                 val item = adapter.getItem(i)
                 val chip = LayoutInflater.from(requireContext())
                     .inflate(R.layout.single_chip_layout, binding.chipGroup, false) as Chip
+                chip.id = View.generateViewId()
                 chip.text = item
 
                 // Optional: Set a click listener for each chip
                 chip.setOnClickListener {
-                    Toast.makeText(
-                        requireContext(),
-                        "Clicked: " + chip.text,
-                        Toast.LENGTH_SHORT
-                    ).show()
                     selectedPresetPos = i
                     onPresetSelected(i)
                 }
@@ -234,7 +228,6 @@ class EqualizerNewFragment : BottomSheetDialogFragment(), Slider.OnChangeListene
         super.onDismiss(dialog)
         if (!state.saved)
             createSaveCustomSetDialog(selectedPresetPos, displayedByUser = false, onPause = true)
-        onDismissListener?.onDismiss(dialog)
     }
 
     override fun onDestroy() {

@@ -18,6 +18,7 @@ import com.video.offline.videoplayer.R
 import com.video.offline.videoplayer.StartActivity
 import com.video.offline.videoplayer.gui.audio.AudioBrowserFragment
 import com.video.offline.videoplayer.gui.audio.EqualizerFragment
+import com.video.offline.videoplayer.gui.audio.EqualizerNewFragment
 import com.video.offline.videoplayer.gui.browser.BaseBrowserFragment
 import com.video.offline.videoplayer.gui.dialogs.AllAccessPermissionDialog
 import com.video.offline.videoplayer.gui.helpers.INavigator
@@ -202,7 +203,7 @@ class MainActivity : ContentActivity(), INavigator by Navigator() {
             }
 
             R.id.ml_menu_equalizer -> {
-                EqualizerFragment.newInstance().show(supportFragmentManager, "equalizer")
+                EqualizerNewFragment.newInstance().show(supportFragmentManager, "equalizer")
                 true
             }
 
