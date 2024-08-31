@@ -8,7 +8,5 @@
     style="@style/Widget.MyApp.Chip.Choice"
     app:chipIconVisible="false"
     app:closeIconVisible="false"
-    android:background="?attr/bottom_navigation_background"
-    app:itemRippleColor="?attr/bottom_navigation_focus"
     app:itemTextColor="@color/bottom_navigation_selector"
-    android:textColor="?attr/font_default" />
+    android:textColor="?attr/font_default"/>

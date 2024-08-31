@@ -12,6 +12,7 @@ import android.view.ViewGroup.LayoutParams
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
@@ -75,37 +76,20 @@ class EqualizerFragment : VLCBottomSheetDialogFragment(), Slider.OnChangeListene
         updateEqualizer(pos)
     }
 
+        override fun onStart() {
+            super.onStart()
+            //Get the bottom_sheet of the system
+            val view: FrameLayout = dialog?.findViewById(R.id.design_bottom_sheet)!!
+            //Set the round corners
+            view.background = AppCompatResources.getDrawable(requireContext(), R.drawable.rounded_corners_top)
+        }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = DataBindingUtil.inflate(inflater, R.layout.equalizer_new, container, false)
         binding.state = state
         customCount = 0
         return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        //Get the bottom_sheet of the system
-        val view: FrameLayout = dialog?.findViewById(R.id.design_bottom_sheet)!!
-        //Set the view height
-        view.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-        //Get behavior
-        val behavior = BottomSheetBehavior.from(view)
-        //Set the pop-up height
-        behavior.peekHeight = requireActivity().window.decorView.height
-        //Set the expanded state
-        behavior.state = STATE_EXPANDED
-
-        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if(newState== BottomSheetBehavior.STATE_COLLAPSED){
-                    dismiss()
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-
-        })
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -183,7 +167,7 @@ class EqualizerFragment : VLCBottomSheetDialogFragment(), Slider.OnChangeListene
             for (i in 0 until adapter.count) {
                 val item = adapter.getItem(i)
                 val chip = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.single_chip_layout, binding.chipGroup, false) as Chip
+                    .inflate(R.layout.single_chip_layout_player, binding.chipGroup, false) as Chip
                 chip.id = View.generateViewId()
                 chip.text = item
 
