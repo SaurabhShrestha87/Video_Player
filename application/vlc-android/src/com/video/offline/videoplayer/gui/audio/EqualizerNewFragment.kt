@@ -10,17 +10,23 @@ import android.util.Log
 import android.view.*
 import android.view.ViewGroup.LayoutParams
 import android.widget.*
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.slider.Slider
+import com.video.offline.videoplayer.BuildConfig
+import com.video.offline.videoplayer.PlaybackService
+import com.video.offline.videoplayer.R
+import com.video.offline.videoplayer.databinding.EqualizerNewBinding
+import com.video.offline.videoplayer.gui.helpers.UiTools
+import com.video.offline.videoplayer.gui.view.EqualizerBar
+import com.video.offline.videoplayer.interfaces.OnEqualizerBarChangeListener
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,24 +37,11 @@ import org.videolan.resources.VLCInstance
 import org.videolan.resources.VLCOptions
 import org.videolan.tools.Settings
 import org.videolan.tools.isStarted
-import com.video.offline.videoplayer.BuildConfig
-import com.video.offline.videoplayer.PlaybackService
-import com.video.offline.videoplayer.R
-import com.video.offline.videoplayer.databinding.EqualizerBinding
-import com.video.offline.videoplayer.databinding.EqualizerNewBinding
-import com.video.offline.videoplayer.gui.dialogs.VLCBottomSheetDialogFragment
-import com.video.offline.videoplayer.gui.helpers.UiTools
-import com.video.offline.videoplayer.gui.view.EqualizerBar
-import com.video.offline.videoplayer.interfaces.OnEqualizerBarChangeListener
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-class EqualizerFragment : VLCBottomSheetDialogFragment(), Slider.OnChangeListener {
-    override fun getDefaultState() = STATE_EXPANDED
 
-    override fun needToManageOrientation() = true
-
-    override fun initialFocusedView(): View = binding.equalizerContainer
+class EqualizerNewFragment : BottomSheetDialogFragment(), Slider.OnChangeListener {
 
     private lateinit var equalizer: MediaPlayer.Equalizer
     private var customCount = 0
@@ -60,7 +53,7 @@ class EqualizerFragment : VLCBottomSheetDialogFragment(), Slider.OnChangeListene
     private var savePos = 0
     private var updateAlreadyHandled = false
     private lateinit var binding: EqualizerNewBinding
-    private val state = EqualizerNewFragment().EqualizerState()
+    private val state = EqualizerState()
     private val newPresetName = AppContextProvider.appResources.getString(R.string.equalizer_new_preset_name)
     private var bandCount = -1
 
@@ -76,20 +69,37 @@ class EqualizerFragment : VLCBottomSheetDialogFragment(), Slider.OnChangeListene
         updateEqualizer(pos)
     }
 
-        override fun onStart() {
-            super.onStart()
-            //Get the bottom_sheet of the system
-            val view: FrameLayout = dialog?.findViewById(R.id.design_bottom_sheet)!!
-            //Set the round corners
-            view.background = AppCompatResources.getDrawable(requireContext(), R.drawable.rounded_corners_top)
-        }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = DataBindingUtil.inflate(inflater, R.layout.equalizer_new, container, false)
         binding.state = state
         customCount = 0
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        //Get the bottom_sheet of the system
+        val view: FrameLayout = dialog?.findViewById(R.id.design_bottom_sheet)!!
+        //Set the view height
+        view.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+        //Get behavior
+        val behavior = BottomSheetBehavior.from(view)
+        //Set the pop-up height
+        behavior.peekHeight = requireActivity().window.decorView.height
+        //Set the expanded state
+        behavior.state = STATE_EXPANDED
+
+        behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if(newState==BottomSheetBehavior.STATE_COLLAPSED){
+                    dismiss()
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+
+        })
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -139,7 +149,7 @@ class EqualizerFragment : VLCBottomSheetDialogFragment(), Slider.OnChangeListene
 
         // preamp
         binding.equalizerPreamp.value = equalizer.preAmp.roundToInt().toFloat()
-        binding.equalizerPreamp.addOnChangeListener(this@EqualizerFragment)
+        binding.equalizerPreamp.addOnChangeListener(this@EqualizerNewFragment)
 
         eqBandsViews.clear()
         binding.equalizerBands.removeAllViews()
@@ -167,7 +177,7 @@ class EqualizerFragment : VLCBottomSheetDialogFragment(), Slider.OnChangeListene
             for (i in 0 until adapter.count) {
                 val item = adapter.getItem(i)
                 val chip = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.single_chip_layout_player, binding.chipGroup, false) as Chip
+                    .inflate(R.layout.single_chip_layout, binding.chipGroup, false) as Chip
                 chip.id = View.generateViewId()
                 chip.text = item
 
@@ -218,7 +228,6 @@ class EqualizerFragment : VLCBottomSheetDialogFragment(), Slider.OnChangeListene
         super.onDismiss(dialog)
         if (!state.saved)
             createSaveCustomSetDialog(selectedPresetPos, displayedByUser = false, onPause = true)
-        onDismissListener?.onDismiss(dialog)
     }
 
     override fun onDestroy() {
@@ -319,25 +328,25 @@ class EqualizerFragment : VLCBottomSheetDialogFragment(), Slider.OnChangeListene
         container.addView(input)
 
         val saveEqualizer = AlertDialog.Builder(requireActivity())
-            .setTitle(resources.getString(if (displayedByUser)
-                R.string.custom_set_save_title
-            else
-                R.string.custom_set_save_warning))
-            .setMessage(resources.getString(if (getEqualizerType(positionToSave) == TYPE_CUSTOM)
-                R.string.existing_custom_set_save_message
-            else
-                R.string.new_custom_set_save_message))
-            .setView(container)
-            .setPositiveButton(R.string.save, null)
-            .setNegativeButton(R.string.do_not_save) { _, _ ->
-                if (onPause)
-                    VLCOptions.saveEqualizerInSettings(AppContextProvider.appContext, equalizer, allSets[positionToSave], binding.equalizerButton.isChecked, false)
-            }
-            .setOnCancelListener {
-                if (onPause)
-                    VLCOptions.saveEqualizerInSettings(AppContextProvider.appContext, equalizer, allSets[positionToSave], binding.equalizerButton.isChecked, false)
-            }
-            .create()
+                .setTitle(resources.getString(if (displayedByUser)
+                    R.string.custom_set_save_title
+                else
+                    R.string.custom_set_save_warning))
+                .setMessage(resources.getString(if (getEqualizerType(positionToSave) == TYPE_CUSTOM)
+                    R.string.existing_custom_set_save_message
+                else
+                    R.string.new_custom_set_save_message))
+                .setView(container)
+                .setPositiveButton(R.string.save, null)
+                .setNegativeButton(R.string.do_not_save) { _, _ ->
+                    if (onPause)
+                        VLCOptions.saveEqualizerInSettings(AppContextProvider.appContext, equalizer, allSets[positionToSave], binding.equalizerButton.isChecked, false)
+                }
+                .setOnCancelListener {
+                    if (onPause)
+                        VLCOptions.saveEqualizerInSettings(AppContextProvider.appContext, equalizer, allSets[positionToSave], binding.equalizerButton.isChecked, false)
+                }
+                .create()
         input.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 //Perform Code
@@ -538,4 +547,5 @@ class EqualizerFragment : VLCBottomSheetDialogFragment(), Slider.OnChangeListene
         }
         if (binding.equalizerButton.isChecked) PlaybackService.equalizer.value = equalizer
     }
+
 }

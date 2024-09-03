@@ -302,6 +302,7 @@ class PlayerOptionsDelegate(val activity: FragmentActivity, val service: Playbac
             newFragment.onDismissListener = DialogInterface.OnDismissListener { activity.overlayDelegate.dimStatusBar(true) }
         newFragment.show(activity.supportFragmentManager, tag)
         hide()
+
     }
 
     private fun showValueControls(action: Int) {
